@@ -14,20 +14,16 @@
 ' ----------------------------------------------------------------
 #include "nirvana+.bas"
 #include "lib/draw.bas"
+#include "lib/game.bas"
 
-' Set btiles address
 NIRVANAtiles(@btiles)
-
-' Activate NIRVANA ENGINE
 NIRVANAstart()
 
+INK 1: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+
 mapDraw()
-
+gameLoop()
 'NIRVANAdrawT(20, 16, 0)
-
-DO
-
-LOOP
 
 btiles:
     asm
