@@ -1,4 +1,4 @@
-#include "maps.bas"
+#include "../../output/maps.bas"
 
 CONST screenHeight AS UINTEGER = 11
 CONST screenWidth AS UINTEGER = 16
