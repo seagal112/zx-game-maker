@@ -27,15 +27,15 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 function canMoveLeft() as UBYTE
-	return (col > 0 AND !isSolidTile(lin, col - 1))
+	return col > 0 AND isSolidTile(lin, col - 1) <> 1
 end function
 
 function canMoveRight() as UBYTE
-	return col < 30 AND !isSolidTile(lin, col + 1)
+	return col < 30 AND isSolidTile(lin, col + 1) <> 1
 end function
 
 function canMoveUp() as UBYTE
-	return !isSolidTile(lin - 16, col)
+	return isSolidTile(lin - 16, col) <> 1
 end function
 
 function canFall() as UBYTE
@@ -48,7 +48,7 @@ end function
 
 sub checkIsJumping()
 	if isJumping = 1
-		if lin > goalJumping' AND canMoveUp()
+		if lin > goalJumping AND canMoveUp()
 			lin = lin - 16
 			shouldDrawSprite = 1
 		else
@@ -80,7 +80,7 @@ end sub
 
 
 sub keyboardListen()
-    if INKEY = "o"
+    if MultiKeys(KEYO)<>0
         if canMoveLeft()
             if protaRight = 1
                 changedDirection = 1
@@ -92,7 +92,7 @@ sub keyboardListen()
             shouldDrawSprite = 1
         end if
     END IF
-    if INKEY =  "p"
+    if MultiKeys(KEYP)<>0
         if canMoveRight()
             if protaLeft = 1
                 changedDirection = 1
@@ -104,14 +104,14 @@ sub keyboardListen()
             shouldDrawSprite = 1
         end if
     END IF
-    if INKEY =  "q"
-        if !isJumping AND landed
+    if MultiKeys(KEYQ)<>0
+        if !isJumping AND landed AND canMoveUp()
             isJumping = 1
             landed = 0
             goalJumping = lin - jumpSize
         end if
     END IF
-    if INKEY =  "a"
+    if MultiKeys(KEYA)<>0
 
     END IF
 end sub
@@ -202,6 +202,7 @@ end sub
 sub init()
 	tile = PEEK SPRITEVAL(0)
 	NIRVANAspriteT(0, tile, 160, 2)
+	' NIRVANAspriteT(0, tile, 16, 28)
 	protaRight = 1
 	isJumping = 0
 	landed = 1

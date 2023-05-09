@@ -1,4 +1,5 @@
 #include "../../output/maps.bas"
+#include "helper.bas"
 
 CONST screenHeight AS UINTEGER = 11
 CONST screenWidth AS UINTEGER = 16
@@ -10,6 +11,7 @@ function getCell(row as UINTEGER, col as UINTEGER) AS UINTEGER
 end function
 
 sub mapDraw()
+	disableInterrupts()
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
 		    dim cell as UINTEGER = getCell(row, col)
@@ -19,7 +21,8 @@ sub mapDraw()
 				NIRVANAdrawT(cell - 1, (row + 1) * 16, col * 2)
 			end if
 		next col
-	next row	
+	next row
+	enableInterrupts()
 end sub
 
 function getCellByNirvanaPosition(lin as UINTEGER, col as UINTEGER) AS UINTEGER
@@ -50,6 +53,8 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col) - 1, lin, col)
 	else
 		drawCell(getCellByNirvanaPosition(lin, col - 1) - 1, lin, col - 1)
+		NIRVANAhalt()
 		drawCell(getCellByNirvanaPosition(lin, col + 1) - 1, lin, col + 1)
 	end if
+	NIRVANAhalt()
 end sub
