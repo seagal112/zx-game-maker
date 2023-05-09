@@ -1,3 +1,5 @@
+#include <keys.bas>
+
 dim linInicial, colInicial, tile, protaRight as UBYTE
 dim isJumping, goalJumping, landed as UBYTE
 dim frameTile as UBYTE = 0
@@ -45,8 +47,8 @@ function canFall() as UBYTE
 end function
 
 sub checkIsJumping()
-	if isJumping
-		if lin > goalJumping AND canMoveUp()
+	if isJumping = 1
+		if lin > goalJumping' AND canMoveUp()
 			lin = lin - 16
 			shouldDrawSprite = 1
 		else
@@ -68,30 +70,17 @@ function isFalling() as UBYTE
 end function
 
 sub gravity()
-	if !isJumping and isFalling()
+	if isJumping <> 1 and isFalling()
 		lin = lin + 16
 		shouldDrawSprite = 1
-	elseif !isJumping and !isFalling()
+	elseif isJumping <> 1 and !isFalling()
 		landed = 1
 	end if
 end sub
 
-FUNCTION FASTCALL getLastKey() as uByte
-    'return peek 23560
-    ' This returns the lastK variable from the Spectrum System variables - telling us what keycode was pressed last.
-    ' The below assembly does exactly the same thing, but should be very slightly more streamlined.
-    ' For this game remember it's important to be able to pre-select directions - so it’s not the key that’s being pressed now that’s important - it’s the direction key that was pressed last.
-    asm
-        ld a,(23560)
-    end asm
-END FUNCTION
 
 sub keyboardListen()
-    dim keyPressed as UBYTE
-    
-    keyPressed = getLastKey()
-
-    if keyPressed=CODE "o"
+    if INKEY = "o"
         if canMoveLeft()
             if protaRight = 1
                 changedDirection = 1
@@ -103,7 +92,7 @@ sub keyboardListen()
             shouldDrawSprite = 1
         end if
     END IF
-    if keyPressed=CODE "p"
+    if INKEY =  "p"
         if canMoveRight()
             if protaLeft = 1
                 changedDirection = 1
@@ -115,14 +104,14 @@ sub keyboardListen()
             shouldDrawSprite = 1
         end if
     END IF
-    if keyPressed=CODE "q"
+    if INKEY =  "q"
         if !isJumping AND landed
             isJumping = 1
             landed = 0
             goalJumping = lin - jumpSize
         end if
     END IF
-    if keyPressed=CODE "p"
+    if INKEY =  "a"
 
     END IF
 end sub
@@ -160,7 +149,7 @@ function getNextFrameJumpingFalling() as UBYTE
 end function
 
 sub drawSprite()
-	if !shouldDrawSprite
+	if shouldDrawSprite <> 1
 		return
     end if
 
@@ -181,7 +170,7 @@ sub drawSprite()
     end if
 
 	NIRVANAspriteT(0, frameTile, lin, col)
-	drawToScr(linInicial, colInicial, isColPair, protaRight)
+	drawToScr(linInicial, colInicial, isColPair)
 END SUB
 
 sub gameLoop()
@@ -199,14 +188,13 @@ sub gameLoop()
 		keyboardListen()
 		checkIsJumping()
 		gravity()
+        ' col = col + 1
+        ' shouldDrawSprite = 1
 		drawSprite()
 	' 	// redrawFlame()
 	' 	// animateTiles()
 	' 	// drawSword()
-	' 	// NIRVANAP_halt()
 	' 	// eraseSword()
-	' 	NIRVANAP_halt()
-	' 	NIRVANAP_halt()
 		NIRVANAhalt()
     loop
 end sub

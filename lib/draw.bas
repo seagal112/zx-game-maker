@@ -29,7 +29,7 @@ function getCellByNirvanaPosition(lin as UINTEGER, col as UINTEGER) AS UINTEGER
 	return getCell(lin, col)
 end function
 
-SUB drawCell(cell as UBYTE, unlin as UBYTE, col as UBYTE)
+SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
 	if col > 30 OR lin < 2 OR lin > 160
 		return
 	end if
@@ -37,16 +37,15 @@ SUB drawCell(cell as UBYTE, unlin as UBYTE, col as UBYTE)
 	if lin mod 2 > 0
 		return
 	end if
-
-	if cell = 30
+	if cell = 29
 		NIRVANAfillT(0, lin, col)
 	else
 		NIRVANAdrawT(cell, lin, col)
 	end if
-	NIRVANAhalt()
+	' NIRVANAhalt()
 end sub
 
-sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE, protaRight AS UBYTE)
+sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 	if isColPair
 		drawCell(getCellByNirvanaPosition(lin, col) - 1, lin, col)
 	else
