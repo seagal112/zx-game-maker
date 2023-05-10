@@ -4,26 +4,9 @@ f = open('output/maps.json')
 
 data = json.load(f)
 
-screenWidth = 16
-screenHeight = 11
-
+mapStr = "DIM map(0 to " + str(len(data['layers'][0]['data']) - 1) + ") AS UBYTE = {";
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
-        mapStr = "DIM map(0 to " + str(len(layer['data']) - 1) + ") AS UBYTE = {";
-        screensCount = len(layer['data'])//screenWidth//screenHeight
-        mapRows = layer['height']//screenHeight
-        mapCols = layer['width']//screenWidth
-
-        cellsPerMapRow = mapCols * screenWidth * screenHeight
-
-
-
-        for mapRow in range(mapRows):
-            initialCell = mapRow * cellsPerMapRow
-            for cell in range(initialCell, initialCell + cellsPerMapRow):
-                print(layer['data'][cell])
-
-        exit
         for cell in layer['data']:
             mapStr += str(cell) + ", ";
         mapStr = mapStr[:-2] + "}"
