@@ -1,20 +1,20 @@
 #include "../../output/maps.bas"
 #include "helper.bas"
 
-CONST screenHeight AS UINTEGER = 11
-CONST screenWidth AS UINTEGER = 16
-CONST screenCount AS UINTEGER = 2
+CONST screenHeight AS UBYTE = 11
+CONST screenWidth AS UBYTE = 16
+CONST screenCount AS UBYTE = 2
 
-function getCell(row as UINTEGER, col as UINTEGER) AS UINTEGER
-	dim index as UINTEGER = (row * screenWidth * screenCount) + col
-	return map(index)
+Dim currentScreen as UBYTE = 0
+
+function getCell(row as UBYTE, col as UBYTE) AS UBYTE
+	return screens(currentScreen, row, col)
 end function
 
 sub mapDraw()
-	disableInterrupts()
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
-		    dim cell as UINTEGER = getCell(row, col)
+		    dim cell as UBYTE = getCell(row, col)
 			if cell = 1
 				NIRVANAfillT(0, (row + 1) * 16, col * 2)
 			else
@@ -22,10 +22,9 @@ sub mapDraw()
 			end if
 		next col
 	next row
-	enableInterrupts()
 end sub
 
-function getCellByNirvanaPosition(lin as UINTEGER, col as UINTEGER) AS UINTEGER
+function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 	lin = (lin / 16) - 1
 	col = col / 2
 

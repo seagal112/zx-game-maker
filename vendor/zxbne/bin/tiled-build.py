@@ -15,7 +15,7 @@ for layer in data['layers']:
         screensCount = len(layer['data'])//screenWidth//screenHeight
         mapRows = layer['height']//screenHeight
         mapCols = layer['width']//screenWidth
-        mapStr = "DIM map(" + str(screensCount) + ", " + str(screenHeight) + ", " + str(screenWidth) + ") AS UBYTE = {\n";
+        mapStr = "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = {";
 
         screens = defaultdict(dict)
 
@@ -33,15 +33,16 @@ for layer in data['layers']:
         pprint(screens)
         
         for screen in screens:
-            mapStr += '    {\n'
+            mapStr += '{'
             for row in screens[screen]:
-                mapStr += '       {'
+                mapStr += '{'
                 for cell in screens[screen][row]:
                     mapStr += str(screens[screen][row][cell]) + ","
                 mapStr = mapStr[:-1]
-                mapStr += "},\n"
-            mapStr = mapStr[:-2]
-            mapStr += "\n   },\n"
+                mapStr += "},"
+            mapStr = mapStr[:-1]
+            mapStr += "},"
+        mapStr = mapStr[:-1]
         mapStr += "}"
             
 
