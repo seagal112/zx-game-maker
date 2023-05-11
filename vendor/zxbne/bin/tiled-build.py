@@ -30,8 +30,6 @@ for layer in data['layers']:
 
             screens[screenId][mapY][mapX % screenWidth] = cell
 
-        pprint(screens)
-        
         for screen in screens:
             mapStr += '{'
             for row in screens[screen]:
@@ -51,6 +49,10 @@ with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
 # Construct enemies
+
+tileHeight = 16
+tileWidth = 16
+
 enemies = {}
 
 for layer in data['layers']:
@@ -59,24 +61,46 @@ for layer in data['layers']:
             if object['type'] == 'enemy':
                 enemies[str(object['id'])] = {
                     'name': object['name'],
-                    'xIni': str(int(object['x']/16)),
-                    'yIni': str(int(object['y']/16)),
+                    'screenId': (object['x'] % tileWidth) // screenWidth,
+                    'xIni': str(object['x'] % (screenWidth * tileWidth)),
+                    'yIni': str(object['y'] % (screenHeight * tileHeight)),
+                    'col': str(int(object['x'] // tileWidth % screenWidth)),
+                    'lin': str((int(object['y'] // tileHeight) - 1)  % screenHeight),
                     'endObject': object['properties'][0]['value']
                 }
+
 for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if object['type'] == 'path':
-                enemies[str(object['properties'][0]['value'])]['xEnd'] = str(int(object['x']/16))
-                enemies[str(object['properties'][0]['value'])]['yEnd'] = str(int(object['y']/16))
+                enemies[str(object['properties'][0]['value'])]['xEnd'] = str(int(object['x'] % (screenWidth * tileWidth)))
+                enemies[str(object['properties'][0]['value'])]['yEnd'] = str(int(object['y'] % (screenHeight * tileHeight)))
 
-enemStr = "typedef struct { char tile; char xIni; char yIni; char xEnd; char yEnd;} Enemy;\n"
-enemStr += "Enemy enemies[1][" + str(len(enemies)) + "] = {\n"
+screenEnemies = defaultdict(dict)
 
-for key in enemies:
-    enemStr += '    {' + enemies[key]['name'] + ', ' + enemies[key]['xIni'] + ', ' + enemies[key]['yIni'] + ', ' + enemies[key]['xEnd'] + ', ' + enemies[key]['yEnd'] + '}\n'
+for enemyId in enemies:
+    enemy = enemies[enemyId]
+    screenEnemies[enemy['screenId']][int(enemy['name'])] = defaultdict(dict)
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['name'] = enemy['name']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['lin'] = enemy['lin']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['col'] = enemy['col']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['xIni'] = enemy['xIni']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['yIni'] = enemy['yIni']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['xEnd'] = enemy['xEnd']
+    screenEnemies[enemy['screenId']][int(enemy['name'])]['yEnd'] = enemy['yEnd']
 
+
+enemStr = "DIM enemies(" + str(screensCount - 1) + ")(" + str(len(enemies)) + ") = {"
+
+for screenId in screenEnemies:
+    screen = screenEnemies[screenId]
+    enemStr += "{"
+    for enemyId in screen:
+        enemy = screen[enemyId]
+        pprint(enemy)
+        enemStr += '{' + enemy['name'] + ', ' + enemy['col'] + ', ' + enemy['lin'] + ', ' + enemy['xIni'] + ', ' + enemy['yIni'] + ', ' + enemy['xEnd'] + ', ' + enemy['yEnd'] + '}'
+    enemStr += "}"
 enemStr += '};'
 
-with open("output/enemies.h", "w") as text_file:
+with open("output/enemies.bas", "w") as text_file:
     print(enemStr, file=text_file)
