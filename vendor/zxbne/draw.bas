@@ -1,5 +1,4 @@
 #include "../../output/maps.bas"
-#include "helper.bas"
 
 CONST screenHeight AS UBYTE = 11
 CONST screenWidth AS UBYTE = 16
@@ -8,17 +7,17 @@ CONST screenCount AS UBYTE = 2
 Dim currentScreen as UBYTE = 0
 
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
-	return screens(currentScreen, row, col)
+	return screens(currentScreen, row, col) - 1
 end function
 
 sub mapDraw()
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
 		    dim cell as UBYTE = getCell(row, col)
-			if cell = 1
+			if cell = 0
 				NIRVANAfillT(0, (row + 1) * 16, col * 2)
 			else
-				NIRVANAdrawT(cell - 1, (row + 1) * 16, col * 2)
+				NIRVANAdrawT(cell, (row + 1) * 16, col * 2)
 			end if
 		next col
 	next row
@@ -50,9 +49,9 @@ end sub
 
 sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 	if isColPair
-		drawCell(getCellByNirvanaPosition(lin, col) - 1, lin, col)
+		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
 	else
-		drawCell(getCellByNirvanaPosition(lin, col - 1) - 1, lin, col - 1)
-		drawCell(getCellByNirvanaPosition(lin, col + 1) - 1, lin, col + 1)
+		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
+		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
 	end if
 end sub

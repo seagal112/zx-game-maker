@@ -20,7 +20,7 @@ dim redrawMap as UBYTE = 0
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
 
-	if tile = 13 OR tile = 21
+	if tile = 12 OR tile = 20
 		return 1
     else
 	    return 0
@@ -63,7 +63,7 @@ function onTheSolidTile() as UBYTE
 	dim preTile as UBYTE = getCellByNirvanaPosition(lin + 16, col - 1)
 	dim postTile as UBYTE = getCellByNirvanaPosition(lin + 16, col + 1)
 
-	return tile = 13 OR tile = 21 OR preTile = 13 OR preTile = 21 OR postTile = 13 OR postTile = 21
+	return tile = 12 OR tile = 20 OR preTile = 12 OR preTile = 20 OR postTile = 12 OR postTile = 22
 end function
 
 function isFalling() as UBYTE
@@ -79,14 +79,24 @@ sub gravity()
 	end if
 end sub
 
+sub moveToScreen(direction as Ubyte)
+	if direction = 6
+		col = 2
+		shouldDrawSprite = 1
+		currentScreen = currentScreen + 1
+		redrawMap = 1
+	elseif direction = 4
+		col = 28
+		shouldDrawSprite = 1
+		currentScreen = currentScreen - 1
+		redrawMap = 1
+	end if
+end sub
 
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if col = 0 and currentScreen > 0
-			col = 28
-			shouldDrawSprite = 1
-			currentScreen = currentScreen - 1
-			redrawMap = 1
+			moveToScreen(4)
         elseif canMoveLeft()
             if protaRight = 1
                 changedDirection = 1
@@ -100,10 +110,7 @@ sub keyboardListen()
     END IF
     if MultiKeys(KEYP)<>0
 		if col = 30 and currentScreen < 1
-			col = 2
-			shouldDrawSprite = 1
-			currentScreen = currentScreen + 1
-			redrawMap = 1
+			moveToScreen(6)
         elseif canMoveRight()
             if protaLeft = 1
                 changedDirection = 1
@@ -209,6 +216,9 @@ sub gameLoop()
 		NIRVANAhalt()
 		if redrawMap = 1
 			redrawMap = 0
+			CLS
+			PAUSE(1)
+			NIRVANAhalt()
 			mapDraw()
 		end if
     loop
