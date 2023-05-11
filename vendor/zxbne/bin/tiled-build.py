@@ -1,15 +1,50 @@
 import json
+from collections import defaultdict
+from pprint import pprint
 
 f = open('output/maps.json')
 
 data = json.load(f)
 
-mapStr = "DIM map(0 to " + str(len(data['layers'][0]['data']) - 1) + ") AS UBYTE = {";
+screenWidth = 16
+screenHeight = 11
+cellsPerScreen = screenWidth * screenHeight
+
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
-        for cell in layer['data']:
-            mapStr += str(cell) + ", ";
-        mapStr = mapStr[:-2] + "}"
+        screensCount = len(layer['data'])//screenWidth//screenHeight
+        mapRows = layer['height']//screenHeight
+        mapCols = layer['width']//screenWidth
+        mapStr = "DIM map(" + str(screensCount) + ", " + str(screenHeight) + ", " + str(screenWidth) + ") AS UBYTE = {\n";
+
+        screens = defaultdict(dict)
+
+        for idx, cell in enumerate(layer['data']):
+            mapX = idx % layer['width']
+            mapY = idx // layer['width']
+
+            screenId = mapX // screenWidth
+
+            if len(screens) == 0 or mapY not in screens[screenId]:
+                screens[screenId][mapY] = defaultdict(dict)
+
+            screens[screenId][mapY][mapX % screenWidth] = cell
+
+        pprint(screens)
+        
+        for screen in screens:
+            mapStr += '    {\n'
+            for row in screens[screen]:
+                mapStr += '       {'
+                for cell in screens[screen][row]:
+                    mapStr += str(screens[screen][row][cell]) + ","
+                mapStr = mapStr[:-1]
+                mapStr += "},\n"
+            mapStr = mapStr[:-2]
+            mapStr += "\n   },\n"
+        mapStr += "}"
+            
+
 
 with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
