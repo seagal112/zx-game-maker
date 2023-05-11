@@ -14,6 +14,7 @@ dim linSwordDrawed as UBYTE = 0
 dim colSwordDrawed as UBYTE = 0
 dim swordTile as UBYTE = 24
 dim isColPair as UBYTE = 1
+dim redrawMap as UBYTE = 0
 
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
@@ -81,7 +82,12 @@ end sub
 
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
-        if canMoveLeft()
+		if col = 0 and currentScreen > 0
+			col = 28
+			shouldDrawSprite = 1
+			currentScreen = currentScreen - 1
+			redrawMap = 1
+        elseif canMoveLeft()
             if protaRight = 1
                 changedDirection = 1
             else
@@ -93,7 +99,13 @@ sub keyboardListen()
         end if
     END IF
     if MultiKeys(KEYP)<>0
-        if canMoveRight()
+		if col = 30 and currentScreen < 1
+			col = 2
+			shouldDrawSprite = 1
+			currentScreen = currentScreen + 1
+			NIRVANAhalt()
+			redrawMap = 1
+        elseif canMoveRight()
             if protaLeft = 1
                 changedDirection = 1
             else
@@ -196,6 +208,10 @@ sub gameLoop()
 	' 	// drawSword()
 	' 	// eraseSword()
 		NIRVANAhalt()
+		if redrawMap = 1
+			redrawMap = 0
+			mapDraw()
+		end if
     loop
 end sub
 
