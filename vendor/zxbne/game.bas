@@ -103,7 +103,6 @@ sub keyboardListen()
 			col = 2
 			shouldDrawSprite = 1
 			currentScreen = currentScreen + 1
-			NIRVANAhalt()
 			redrawMap = 1
         elseif canMoveRight()
             if protaLeft = 1

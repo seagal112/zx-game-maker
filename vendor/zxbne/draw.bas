@@ -39,12 +39,13 @@ SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
 	if lin mod 2 > 0
 		return
 	end if
+	
+	NIRVANAhalt()
 	if cell = 29
 		NIRVANAfillT(0, lin, col)
 	else
 		NIRVANAdrawT(cell, lin, col)
 	end if
-	' NIRVANAhalt()
 end sub
 
 sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
@@ -52,8 +53,6 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col) - 1, lin, col)
 	else
 		drawCell(getCellByNirvanaPosition(lin, col - 1) - 1, lin, col - 1)
-		NIRVANAhalt()
 		drawCell(getCellByNirvanaPosition(lin, col + 1) - 1, lin, col + 1)
 	end if
-	NIRVANAhalt()
 end sub
