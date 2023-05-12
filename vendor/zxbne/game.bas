@@ -83,11 +83,13 @@ sub moveToScreen(direction as Ubyte)
 	if direction = 6
 		col = 2
 		shouldDrawSprite = 1
+		enemiesDraw(1)
 		currentScreen = currentScreen + 1
 		redrawMap = 1
 	elseif direction = 4
 		col = 28
 		shouldDrawSprite = 1
+		enemiesDraw(1)
 		currentScreen = currentScreen - 1
 		redrawMap = 1
 	end if
@@ -216,11 +218,9 @@ sub gameLoop()
 		NIRVANAhalt()
 		if redrawMap = 1
 			redrawMap = 0
-			NIRVANAhalt()
 			CLS
 			CLS
-			PAUSE(1)
-			enemiesDraw()
+			enemiesDraw(0)
 			mapDraw()
 		end if
     loop

@@ -29,11 +29,19 @@ sub mapDraw()
 	next row
 end sub
 
-sub enemiesDraw()
+sub enemiesDraw(delete as ubyte)
+	dim counter as ubyte = 1
 	for key=0 TO 1
 		if enemies(key, 7) = currentScreen
-			NIRVANAhalt()
-			NIRVANAspriteT(1, enemies(key, 0), (enemies(key, 2) + 1) * 16, enemies(key, 1) * 2)
+			if counter < 8
+				NIRVANAhalt()
+				if delete = 1
+					NIRVANAspriteT(counter, 29, (enemies(key, 2) + 1) * 16, enemies(key, 1) * 2)
+				else
+					NIRVANAspriteT(counter, enemies(key, 0), (enemies(key, 2) + 1) * 16, enemies(key, 1) * 2)
+				end if
+			end if
+			counter = counter + 1
 		end if
 	next key
 end sub

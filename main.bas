@@ -15,7 +15,7 @@ end asm
 
 'print enemies(1, 0, 1)
 mapDraw()
-enemiesDraw()
+enemiesDraw(0)
 gameLoop()
 btiles:
     asm
