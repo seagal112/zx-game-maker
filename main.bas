@@ -5,7 +5,7 @@
 NIRVANAtiles(@btiles)
 NIRVANAstart()
 
-INK 1: PAPER 0: BORDER 1: BRIGHT 0: FLASH 0: CLS
+INK 1: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
 
 currentScreen = 0
 
@@ -13,7 +13,9 @@ asm
     TOTAL_ROWS      EQU 20
 end asm
 
+'print enemies(1, 0, 1)
 mapDraw()
+enemiesDraw()
 gameLoop()
 btiles:
     asm

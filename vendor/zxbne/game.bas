@@ -216,9 +216,11 @@ sub gameLoop()
 		NIRVANAhalt()
 		if redrawMap = 1
 			redrawMap = 0
+			NIRVANAhalt()
+			CLS
 			CLS
 			PAUSE(1)
-			NIRVANAhalt()
+			enemiesDraw()
 			mapDraw()
 		end if
     loop
