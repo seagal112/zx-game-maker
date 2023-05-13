@@ -1,6 +1,7 @@
 #include "vendor/zxbne/nirvana+.bas"
 #include "vendor/zxbne/draw.bas"
 #include "vendor/zxbne/game.bas"
+#include "vendor/zxbne/sound.bas"
 
 NIRVANAtiles(@btiles)
 NIRVANAstart()

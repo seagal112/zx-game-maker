@@ -221,27 +221,31 @@ sub drawSprite()
 END SUB
 
 sub checkEnemyContact()
-	if isAnEnemy(lin, col + 2) = 1
+	if ((isColPair = 1 and isAnEnemy(lin, col + 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col + 1) = 1))
 		col = col - 2
 		shouldDrawSprite = 1
 		decrementLife()
+		damageSound()
 	end if
 
-	if isAnEnemy(lin, col - 2) = 1
+	if ((isColPair = 1 and isAnEnemy(lin, col - 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col - 1) = 1))
 		col = col + 2
 		shouldDrawSprite = 1
 		decrementLife()
+		damageSound()
 	end if
 
-	if isAnEnemy(lin + 16, col)
-		isJumping = 1
-		landed = 0
-		shouldDrawSprite = 1
-		decrementLife()
-	end if
+	' if isAnEnemy(lin + 16, col)
+		' isJumping = 1
+		' landed = 0
+		' shouldDrawSprite = 1
+		' decrementLife()
+		' damageSound()
+	' end if
 	
 	if isAnEnemy(lin - 16, col)
 		decrementLife()
+		damageSound()
 	end if
 end sub
 
