@@ -8,7 +8,6 @@ NIRVANAstart()
 INK 1: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
 
 currentScreen = 0
-currentLife = 100
 
 printLife()
 mapDraw()

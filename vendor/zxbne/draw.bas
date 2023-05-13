@@ -13,6 +13,8 @@ function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 sub mapDraw()
+	PRINT AT 0, 0; "Life:"
+	PRINT AT 0, 5; currentLife
 	dim counter as ubyte = 0
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
@@ -83,8 +85,7 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 end sub
 
 sub decrementLife()
-	print currentLife
-	if currentLife - 5 > 0
+	if currentLife > 5 then
 		currentLife = currentLife - 5
 	else
 		currentLife = 0
@@ -93,5 +94,5 @@ sub decrementLife()
 end sub
 
 sub printLife()
-	PRINT AT 0, 0; "Life: " + str(currentLife)
+	PRINT AT 0, 5; int(currentLife)
 end sub
