@@ -94,5 +94,5 @@ sub decrementLife()
 end sub
 
 sub printLife()
-	PRINT AT 0, 5; int(currentLife)
+	PRINT AT 0, 5; currentLife
 end sub
