@@ -220,6 +220,12 @@ sub drawSprite()
 	drawToScr(linInicial, colInicial, isColPair)
 END SUB
 
+sub checkEnemyContact()
+	if (isAnEnemy(lin, col + 2) = 1 or isAnEnemy(lin, col - 2) = 1 or isAnEnemy(lin + 16, col)) or isAnEnemy(lin - 16, col)
+		decrementLife()
+	end if
+end sub
+
 sub gameLoop()
 	init()
     do
@@ -235,6 +241,7 @@ sub gameLoop()
 		keyboardListen()
 		checkIsJumping()
 		gravity()
+		checkEnemyContact()
         ' col = col + 1
         ' shouldDrawSprite = 1
 		drawSprite()

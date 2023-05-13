@@ -22,7 +22,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="enemies">
-  <object id="9" name="enemy_1_end" type="path" x="208" y="96">
+  <object id="9" name="enemy_1_end" type="path" x="96" y="160">
    <properties>
     <property name="enemy" type="object" value="14"/>
    </properties>
@@ -34,7 +34,7 @@
    </properties>
    <point/>
   </object>
-  <object id="14" name="4" type="enemy" gid="5" x="176" y="96" width="16" height="16">
+  <object id="14" name="4" type="enemy" gid="5" x="48" y="160" width="16" height="16">
    <properties>
     <property name="end" type="object" value="9"/>
    </properties>

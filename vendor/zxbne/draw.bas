@@ -6,6 +6,7 @@ CONST screenWidth AS UBYTE = 16
 CONST screenCount AS UBYTE = 2
 
 Dim currentScreen as UBYTE = 0
+Dim currentLife as UBYTE = 100
 
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
@@ -79,4 +80,18 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
 		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
 	end if
+end sub
+
+sub decrementLife()
+	print currentLife
+	if currentLife - 5 > 0
+		currentLife = currentLife - 5
+	else
+		currentLife = 0
+	end if
+	printLife()
+end sub
+
+sub printLife()
+	PRINT AT 0, 0; "Life: " + str(currentLife)
 end sub
