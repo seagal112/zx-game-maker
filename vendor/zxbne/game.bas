@@ -27,23 +27,42 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
     end if
 end function
 
+function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
+	for i = 1 to 6
+		spriteLin = PEEK SPRITELIN(i)
+		spriteCol = PEEK SPRITECOL(i)
+		if lin = spriteLin and col = spriteCol
+			return 1
+		end if
+	next i
+	return 0
+end function
+
 function canMoveLeft() as UBYTE
-	return col > 0 AND isSolidTile(lin, col - 1) <> 1
+	if (isColPair)
+		return col > 0 AND isSolidTile(lin, col - 2) <> 1 and isAnEnemy(lin, col - 2) <> 1
+	else
+		return col > 0 AND isSolidTile(lin, col - 1) <> 1 and isAnEnemy(lin, col - 1) <> 1
+	end if
 end function
 
 function canMoveRight() as UBYTE
-	return col < 30 AND isSolidTile(lin, col + 1) <> 1
+	if (isColPair)
+		return col < 30 AND isSolidTile(lin, col + 2) <> 1 and isAnEnemy(lin, col + 2) <> 1
+	else
+		return col < 30 AND isSolidTile(lin, col + 1) <> 1 and isAnEnemy(lin, col + 1) <> 1
+	end if
 end function
 
 function canMoveUp() as UBYTE
-	return isSolidTile(lin - 16, col) <> 1
+	return isSolidTile(lin - 16, col) <> 1 and isAnEnemy(lin - 16, col) <> 1
 end function
 
 function canFall() as UBYTE
 	if (isColPair)
-		return !isSolidTile(lin + 16, col)
+		return isSolidTile(lin + 16, col) <> 1 and isAnEnemy(lin + 16, col) <> 1
 	else
-		return !isSolidTile(lin - 16, col - 1) AND !isSolidTile(lin - 16, col - 1)
+		return isSolidTile(lin + 16, col - 1) <> 1 and isAnEnemy(lin + 16, col - 1) <> 1
     end if
 end function
 
@@ -66,8 +85,16 @@ function onTheSolidTile() as UBYTE
 	return tile = 12 OR tile = 20 OR preTile = 12 OR preTile = 20 OR postTile = 12 OR postTile = 22
 end function
 
+function onTheEnemy() as UBYTE
+	if isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1
+		return 1
+	else
+		return 0
+	endif
+end function
+
 function isFalling() as UBYTE
-	return !onTheSolidTile()
+	return !onTheSolidTile() and onTheEnemy() <> 1
 end function
 
 sub gravity()
