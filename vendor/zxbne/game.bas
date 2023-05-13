@@ -216,8 +216,8 @@ sub drawSprite()
 		frameTile = getNextFrameJumpingFalling()
     end if
 
-	NIRVANAspriteT(0, frameTile, lin, col)
 	drawToScr(linInicial, colInicial, isColPair)
+	NIRVANAspriteT(0, frameTile, lin, col)
 END SUB
 
 sub checkEnemyContact()

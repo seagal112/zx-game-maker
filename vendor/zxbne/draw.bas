@@ -65,7 +65,6 @@ SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
 		return
 	end if
 		
-	NIRVANAhalt()
 	' NIRVANAfillT(1, lin, col)
 	if cell = 29
 		NIRVANAfillT(0, lin, col)
@@ -76,6 +75,7 @@ end sub
 
 sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 	' drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+	NIRVANAhalt()
 	if isColPair
 		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
 	else
@@ -85,6 +85,10 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 end sub
 
 sub decrementLife()
+	if (currentLife = 0)
+		return
+	end if
+
 	if currentLife > 5 then
 		currentLife = currentLife - 5
 	else
@@ -94,5 +98,6 @@ sub decrementLife()
 end sub
 
 sub printLife()
+	PRINT AT 0, 5; "   "
 	PRINT AT 0, 5; currentLife
 end sub
