@@ -13,8 +13,6 @@ function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 sub mapDraw()
-	PRINT AT 0, 0; "Life:"
-	PRINT AT 0, 5; currentLife
 	dim counter as ubyte = 0
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
@@ -98,6 +96,12 @@ sub decrementLife()
 end sub
 
 sub printLife()
+	PRINT AT 0, 0; "Life:"
 	PRINT AT 0, 5; "   "
 	PRINT AT 0, 5; currentLife
+end sub
+
+sub drawMenu()
+	PRINT AT 0, 5; "ZX BASIC NIRVANA ENGINE"
+	PRINT AT 5, 5; "PRESS ANY KEY TO START"
 end sub

@@ -138,7 +138,7 @@ sub keyboardListen()
         end if
     END IF
     if MultiKeys(KEYP)<>0
-		if col = 30 and currentScreen < 1
+		if col = 30 and currentScreen < 2
 			moveToScreen(6)
         elseif canMoveRight()
             if protaLeft = 1
@@ -221,9 +221,32 @@ sub drawSprite()
 END SUB
 
 sub checkEnemyContact()
-	if (isAnEnemy(lin, col + 2) = 1 or isAnEnemy(lin, col - 2) = 1 or isAnEnemy(lin + 16, col)) or isAnEnemy(lin - 16, col)
+	if isAnEnemy(lin, col + 2) = 1
+		col = col - 2
+		shouldDrawSprite = 1
 		decrementLife()
 	end if
+
+	if isAnEnemy(lin, col - 2) = 1
+		col = col + 2
+		shouldDrawSprite = 1
+		decrementLife()
+	end if
+
+	if isAnEnemy(lin + 16, col)
+		isJumping = 1
+		landed = 0
+		shouldDrawSprite = 1
+		decrementLife()
+	end if
+	
+	if isAnEnemy(lin - 16, col)
+		decrementLife()
+	end if
+end sub
+
+sub removePlayer()
+	NIRVANAspriteT(0, 29, 0, 0)
 end sub
 
 sub gameLoop()
@@ -255,14 +278,20 @@ sub gameLoop()
 			CLS
 			CLS
 			enemiesDraw(0)
+			printLife()
 			mapDraw()
+		end if
+
+		if currentLife = 0
+			removePlayer()
+			enemiesDraw(1)
+			go to menu
 		end if
     loop
 end sub
 
 sub init()
-	tile = PEEK SPRITEVAL(0)
-	NIRVANAspriteT(0, tile, 160, 2)
+	NIRVANAspriteT(0, 0, 160, 4)
 	' NIRVANAspriteT(0, tile, 16, 28)
 	protaRight = 1
 	isJumping = 0
