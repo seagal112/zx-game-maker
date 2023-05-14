@@ -8,6 +8,8 @@ CONST screenCount AS UBYTE = 2
 Dim currentScreen as UBYTE = 0
 Dim currentLife as UBYTE = 100
 
+dim enemiesCount as UBYTE
+
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
 end function
@@ -32,14 +34,15 @@ end sub
 
 sub enemiesDraw(delete as ubyte)
 	dim counter as ubyte = 1
-	for key=0 TO 1
-		if enemies(key, 7) = currentScreen
+
+	for key=0 TO enemiesCount
+		if enemies(key, 5) = currentScreen and enemies(key, 9) = 1 'In the screen and still live
 			if counter < 8
 				NIRVANAhalt()
 				if delete = 1
-					NIRVANAspriteT(counter, 29, (enemies(key, 2) + 1) * 16, enemies(key, 1) * 2)
+					NIRVANAspriteT(counter, 29, enemies(key, 7), enemies(key, 8))
 				else
-					NIRVANAspriteT(counter, enemies(key, 0), (enemies(key, 2) + 1) * 16, enemies(key, 1) * 2)
+					NIRVANAspriteT(counter, enemies(key, 0), enemies(key, 7), enemies(key, 8))
 				end if
 			end if
 			counter = counter + 1

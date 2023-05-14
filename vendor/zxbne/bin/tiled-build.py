@@ -64,8 +64,8 @@ for layer in data['layers']:
                     'screenId': str((object['x'] // tileWidth) // screenWidth),
                     # 'xIni': str(object['x'] % (screenWidth * tileWidth)),
                     # 'yIni': str(object['y'] % (screenHeight * tileHeight)),
-                    'linIni': str((int(object['y'] // tileHeight) - 1)  % screenHeight),
-                    'colIni': str(int(object['x'] // tileWidth % screenWidth)),
+                    'linIni': str(object['y'] // tileHeight % screenHeight * 16),
+                    'colIni': str(object['x'] // tileWidth % screenWidth * 2),
                     'tile': str(object['properties'][1]['value']),
                     'endObject': object['properties'][0]['value']
                 }
@@ -75,16 +75,20 @@ for layer in data['layers']:
             if object['type'] == 'path':
                 # enemies[str(object['properties'][0]['value'])]['xEnd'] = str(int(object['x'] % (screenWidth * tileWidth)))
                 # enemies[str(object['properties'][0]['value'])]['yEnd'] = str(int(object['y'] % (screenHeight * tileHeight)))
-                enemies[str(object['properties'][0]['value'])]['linEnd'] = str((int(object['y'] // tileHeight) - 1)  % screenHeight)
-                enemies[str(object['properties'][0]['value'])]['colEnd'] = str(int(object['x'] // tileWidth % screenWidth))
+                enemies[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
+                enemies[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
 
-enemStr = "DIM enemies(" + str(len(enemies) - 1) + ",5) as ubyte = {"
+enemStr = "DIM enemies(" + str(len(enemies) - 1) + ",9) as ubyte = {"
 
 screenEnemies = defaultdict(dict)
 
 for enemyId in enemies:
     enemy = enemies[enemyId]
-    enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + enemy['screenId'] + '},'
+    if (enemy['colIni'] < enemy['colEnd']):
+        right = '1'
+    else:
+        right = '0'
+    enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + enemy['screenId'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1},'
 enemStr = enemStr[:-1]
 enemStr += "}"
 

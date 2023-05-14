@@ -87,6 +87,7 @@ end function
 
 function onTheEnemy() as UBYTE
 	if isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1
+		killEnemy()
 		return 1
 	else
 		return 0
@@ -156,6 +157,7 @@ sub keyboardListen()
             isJumping = 1
             landed = 0
             goalJumping = lin - jumpSize
+			jumpSound()
         end if
     END IF
     if MultiKeys(KEYA)<>0
@@ -220,35 +222,6 @@ sub drawSprite()
 	NIRVANAspriteT(0, frameTile, lin, col)
 END SUB
 
-sub checkEnemyContact()
-	if ((isColPair = 1 and isAnEnemy(lin, col + 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col + 1) = 1))
-		col = col - 2
-		shouldDrawSprite = 1
-		decrementLife()
-		damageSound()
-	end if
-
-	if ((isColPair = 1 and isAnEnemy(lin, col - 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col - 1) = 1))
-		col = col + 2
-		shouldDrawSprite = 1
-		decrementLife()
-		damageSound()
-	end if
-
-	' if isAnEnemy(lin + 16, col)
-		' isJumping = 1
-		' landed = 0
-		' shouldDrawSprite = 1
-		' decrementLife()
-		' damageSound()
-	' end if
-	
-	if isAnEnemy(lin - 16, col)
-		decrementLife()
-		damageSound()
-	end if
-end sub
-
 sub removePlayer()
 	NIRVANAspriteT(0, 29, 0, 0)
 end sub
@@ -271,12 +244,12 @@ sub gameLoop()
 		checkEnemyContact()
         ' col = col + 1
         ' shouldDrawSprite = 1
+		moveEnemies(generalLoopCounter)
 		drawSprite()
 	' 	// redrawFlame()
 	' 	// animateTiles()
 	' 	// drawSword()
 	' 	// eraseSword()
-		NIRVANAhalt()
 		if redrawMap = 1
 			redrawMap = 0
 			CLS
@@ -291,6 +264,8 @@ sub gameLoop()
 			enemiesDraw(1)
 			go to menu
 		end if
+
+		generalLoopCounter = generalLoopCounter + 1
     loop
 end sub
 
