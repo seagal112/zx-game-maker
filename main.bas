@@ -9,8 +9,6 @@ NIRVANAstart()
 
 dim generalLoopCounter as UBYTE
 
-enemiesCount = UBOUND(enemies, 1)
-
 menu:
     INK 2: PAPER 1: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = 0

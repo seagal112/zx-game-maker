@@ -74,19 +74,33 @@ for layer in data['layers']:
                 enemies[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
                 enemies[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
 
-enemStr = "DIM enemies(" + str(len(enemies) - 1) + ",10) as ubyte = {"
-
 screenEnemies = defaultdict(dict)
 
-counter = 1
 for enemyId in enemies:
     enemy = enemies[enemyId]
-    if (enemy['colIni'] < enemy['colEnd']):
-        right = '1'
-    else:
-        right = '0'
-    enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + enemy['screenId'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(counter) + '},'
-    counter += 1
+    if len(screenEnemies[enemy['screenId']]) == 0:
+        screenEnemies[enemy['screenId']] = []
+    screenEnemies[enemy['screenId']].append(enemy)
+
+enemStr = "DIM enemies(" + str(len(screenEnemies)) + ",2,9) as ubyte = {"
+
+enemStr += '{{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}},'
+
+for screenId in screenEnemies:
+    enemStr += "{"
+    screen = screenEnemies[screenId]
+    for i in range(3):
+        if i <= len(screen) - 1:
+            enemy = screen[i]
+            if (enemy['colIni'] < enemy['colEnd']):
+                right = '1'
+            else:
+                right = '0'
+            enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '},'
+        else:
+            enemStr += '{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '},'
+    enemStr = enemStr[:-1]
+    enemStr += "},"
 enemStr = enemStr[:-1]
 enemStr += "}"
 
