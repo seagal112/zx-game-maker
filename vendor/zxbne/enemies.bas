@@ -81,17 +81,8 @@ end sub
 sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
-
-    for key=0 TO 2
-        if enemies(currentScreen, key, ENEMY_TILE) = 0
-            continue for
-        end if
-        if enemies(currentScreen, key, ENEMY_ALIVE) = 1
-            if col > enemies(currentScreen, key, ENEMY_COL_INI) and col < enemies(currentScreen, key, ENEMY_COL_END)
-                enemies(currentScreen, key, ENEMY_ALIVE) = 0 ' Mark as kill
-            end if
-        end if
-    next key
+    
+    enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
     
     drawToScr(lin, col, isColPair)
     NIRVANAspriteT(enemyToKill, 29, 0, 0)
