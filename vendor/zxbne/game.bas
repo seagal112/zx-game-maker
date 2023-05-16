@@ -15,6 +15,7 @@ dim colSwordDrawed as UBYTE = 0
 dim swordTile as UBYTE = 24
 dim isColPair as UBYTE = 1
 dim redrawMap as UBYTE = 0
+dim enemyToKill as UBYTE
 
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
@@ -32,6 +33,7 @@ function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
 		spriteLin = PEEK SPRITELIN(i)
 		spriteCol = PEEK SPRITECOL(i)
 		if lin = spriteLin and col = spriteCol
+			enemyToKill = i
 			return 1
 		end if
 	next i
@@ -87,7 +89,7 @@ end function
 
 function onTheEnemy() as UBYTE
 	if isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1
-		killEnemy()
+		killEnemy(enemyToKill, isColPair)
 		return 1
 	else
 		return 0
@@ -244,7 +246,7 @@ sub gameLoop()
 		checkEnemyContact()
         ' col = col + 1
         ' shouldDrawSprite = 1
-		moveEnemies(generalLoopCounter)
+		moveEnemies(generalLoopCounter, isColPair)
 		drawSprite()
 	' 	// redrawFlame()
 	' 	// animateTiles()

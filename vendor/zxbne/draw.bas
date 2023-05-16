@@ -32,24 +32,6 @@ sub mapDraw()
 	next row
 end sub
 
-sub enemiesDraw(delete as ubyte)
-	dim counter as ubyte = 1
-
-	for key=0 TO enemiesCount
-		if enemies(key, 5) = currentScreen and enemies(key, 9) = 1 'In the screen and still live
-			if counter < 8
-				NIRVANAhalt()
-				if delete = 1
-					NIRVANAspriteT(counter, 29, enemies(key, 7), enemies(key, 8))
-				else
-					NIRVANAspriteT(counter, enemies(key, 0), enemies(key, 7), enemies(key, 8))
-				end if
-			end if
-			counter = counter + 1
-		end if
-	next key
-end sub
-
 function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 	lin = (lin / 16) - 1
 	col = col / 2

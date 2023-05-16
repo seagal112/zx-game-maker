@@ -62,8 +62,6 @@ for layer in data['layers']:
                 enemies[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': str((object['x'] // tileWidth) // screenWidth),
-                    # 'xIni': str(object['x'] % (screenWidth * tileWidth)),
-                    # 'yIni': str(object['y'] % (screenHeight * tileHeight)),
                     'linIni': str(object['y'] // tileHeight % screenHeight * 16),
                     'colIni': str(object['x'] // tileWidth % screenWidth * 2),
                     'tile': str(object['properties'][1]['value']),
@@ -73,22 +71,22 @@ for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if object['type'] == 'path':
-                # enemies[str(object['properties'][0]['value'])]['xEnd'] = str(int(object['x'] % (screenWidth * tileWidth)))
-                # enemies[str(object['properties'][0]['value'])]['yEnd'] = str(int(object['y'] % (screenHeight * tileHeight)))
                 enemies[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
                 enemies[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
 
-enemStr = "DIM enemies(" + str(len(enemies) - 1) + ",9) as ubyte = {"
+enemStr = "DIM enemies(" + str(len(enemies) - 1) + ",10) as ubyte = {"
 
 screenEnemies = defaultdict(dict)
 
+counter = 1
 for enemyId in enemies:
     enemy = enemies[enemyId]
     if (enemy['colIni'] < enemy['colEnd']):
         right = '1'
     else:
         right = '0'
-    enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + enemy['screenId'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1},'
+    enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + enemy['screenId'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(counter) + '},'
+    counter += 1
 enemStr = enemStr[:-1]
 enemStr += "}"
 
