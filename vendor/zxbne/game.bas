@@ -159,7 +159,7 @@ sub keyboardListen()
             isJumping = 1
             landed = 0
             goalJumping = lin - jumpSize
-			jumpSound()
+			'jumpSound()
         end if
     END IF
     if MultiKeys(KEYA)<>0
@@ -210,9 +210,9 @@ sub drawSprite()
 		return
     end if
 
-	if (lin mod 2) > 0
-		return
-    end if
+	' if (lin mod 2) > 0
+	' 	return
+    ' end if
 
 	if !isJumping and !isFalling()
 		frameTile = getNextFrameRunning()
