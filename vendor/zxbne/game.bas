@@ -5,7 +5,7 @@ dim isJumping, goalJumping, landed as UBYTE
 dim frameTile as UBYTE = 0
 dim shouldDrawSprite as UBYTE = 0
 dim lin as UBYTE = 160
-dim col as UBYTE = 2
+dim col as UBYTE = 4
 dim jumpSize as UBYTE = 48
 dim animateFrame as UBYTE = 0
 dim changedDirection as UBYTE = 0
@@ -21,7 +21,7 @@ dim enemyToKill as UBYTE
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
 
-	if tile = 12 OR tile = 20
+	if tile = 1 OR tile = 2
 		return 1
     else
 	    return 0
@@ -84,11 +84,11 @@ function onTheSolidTile() as UBYTE
 	dim preTile as UBYTE = getCellByNirvanaPosition(lin + 16, col - 1)
 	dim postTile as UBYTE = getCellByNirvanaPosition(lin + 16, col + 1)
 
-	return tile = 12 OR tile = 20 OR preTile = 12 OR preTile = 20 OR postTile = 12 OR postTile = 22
+	return tile = 1 OR tile = 2 OR preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
 end function
 
 function onTheEnemy() as UBYTE
-	if isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1
+	if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1) and isFalling <> 0
 		killEnemy(enemyToKill, isColPair)
 		return 1
 	else
@@ -97,7 +97,8 @@ function onTheEnemy() as UBYTE
 end function
 
 function isFalling() as UBYTE
-	return !onTheSolidTile() and onTheEnemy() <> 1
+	' return 0
+	return !onTheSolidTile()' and onTheEnemy() <> 1
 end function
 
 sub gravity()
@@ -169,33 +170,33 @@ end sub
 
 function getNextFrameRunning() as UBYTE
 	if (protaRight)
-		if frameTile = 0
-			return 1
-        elseif frameTile = 1
-			return 2
-        elseif frameTile = 2
-			return 3
+		if frameTile = 50
+			return 51
+        elseif frameTile = 51
+			return 52
+        elseif frameTile = 52
+			return 53
 		else
-			return 0
+			return 50
 		end if
 	else
-        if frameTile = 6
-            return 7
-        elseif frameTile = 7
-            return 8
-        elseif frameTile = 8
-            return 9
+        if frameTile = 54
+            return 55
+        elseif frameTile = 55
+            return 56
+        elseif frameTile = 56
+            return 57
         else
-            return 6
+            return 54
         end if
 	end if
 end function
 
 function getNextFrameJumpingFalling() as UBYTE
 	if (protaRight)
-		return 4
+		return 58
 	else
-		return 10
+		return 59
     end if
 end function
 
@@ -214,7 +215,7 @@ sub drawSprite()
 	' 	return
     ' end if
 
-	if !isJumping and !isFalling()
+	if (!isJumping and !isFalling()) or (1 = 1)
 		frameTile = getNextFrameRunning()
 	else
 		frameTile = getNextFrameJumpingFalling()
@@ -241,9 +242,9 @@ sub gameLoop()
             isColPair = 0
         end if 
 		keyboardListen()
+		checkEnemyContact()
 		checkIsJumping()
 		gravity()
-		checkEnemyContact()
         ' col = col + 1
         ' shouldDrawSprite = 1
 		moveEnemies(generalLoopCounter, isColPair)
@@ -272,7 +273,7 @@ sub gameLoop()
 end sub
 
 sub init()
-	NIRVANAspriteT(0, 0, 160, 4)
+	NIRVANAspriteT(0, 50, 160, 4)
 	' NIRVANAspriteT(0, tile, 16, 28)
 	protaRight = 1
 	isJumping = 0

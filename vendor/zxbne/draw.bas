@@ -49,7 +49,7 @@ SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
 	' end if
 		
 	' NIRVANAfillT(1, lin, col)
-	if cell = 29
+	if cell = 0
 		NIRVANAfillT(0, lin, col)
 	else
 		NIRVANAdrawT(cell, lin, col)
