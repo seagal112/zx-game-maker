@@ -221,8 +221,8 @@ sub drawSprite()
 		frameTile = getNextFrameJumpingFalling()
     end if
 
-	drawToScr(linInicial, colInicial, isColPair)
 	NIRVANAspriteT(0, frameTile, lin, col)
+	drawToScr(linInicial, colInicial, isColPair)
 END SUB
 
 sub removePlayer()

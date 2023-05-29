@@ -9,6 +9,22 @@ NIRVANAstart()
 
 dim generalLoopCounter as UBYTE
 
+load "" CODE ' Load vtplayer
+load "" CODE ' Load music
+
+Music_Init()
+
+sub Music_Init()
+    asm
+    halt
+    call 52000
+    ld hl,52005
+    ld (64243),hl
+    ld a,$cd
+    ld (64242),a
+    end asm
+end sub
+
 menu:
     INK 2: PAPER 1: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = 0

@@ -70,8 +70,8 @@ sub moveEnemies(loopCounter as Ubyte, isColPair as Ubyte)
                     end if
                 end if
 
-                drawToScr(lin, col, isColPair)
                 NIRVANAspriteT(1, tile, lin, enemies(currentScreen, key, ENEMY_CURRENT_COL))
+                drawToScr(lin, col, isColPair)
             end if
             counter = counter + 1
         end if

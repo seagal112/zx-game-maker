@@ -63,6 +63,7 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
 	else
 		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
+		NIRVANAhalt()
 		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
 	end if
 end sub
