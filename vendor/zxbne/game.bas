@@ -247,7 +247,7 @@ sub gameLoop()
 		gravity()
         ' col = col + 1
         ' shouldDrawSprite = 1
-		moveEnemies(generalLoopCounter, isColPair)
+		moveEnemies(isColPair)
 		drawSprite()
 	' 	// redrawFlame()
 	' 	// animateTiles()
@@ -263,8 +263,6 @@ sub gameLoop()
 			enemiesDraw(1)
 			go to menu
 		end if
-
-		generalLoopCounter = generalLoopCounter + 1
     loop
 end sub
 

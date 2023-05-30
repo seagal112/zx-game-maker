@@ -38,7 +38,7 @@ sub checkEnemyContact()
 	end if
 end sub
 
-sub moveEnemies(loopCounter as Ubyte, isColPair as Ubyte)
+sub moveEnemies(isColPair as Ubyte)
     ' if framec bAND %10
     '     return
     ' end if
