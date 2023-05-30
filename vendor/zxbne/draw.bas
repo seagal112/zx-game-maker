@@ -1,5 +1,6 @@
 #include "../../output/maps.bas"
 #include "../../output/enemies.bas"
+#include <memcopy.bas>
 
 CONST screenHeight AS UBYTE = 8
 CONST screenWidth AS UBYTE = 16
@@ -15,14 +16,10 @@ function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 sub mapDraw()
-	NIRVANAstop()
 	dim counter as ubyte = 0
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
 		    dim cell as UBYTE = getCell(row, col)
-			' if counter mod 4 = 0
-			' 	NIRVANAhalt()
-			' end if
 			counter = counter + 1
 			if cell = 0
 				NIRVANAfillT(0, (row + 1) * 16, col * 2)
@@ -31,7 +28,15 @@ sub mapDraw()
 			end if
 		next col
 	next row
+end sub
+
+sub redrawScreen()
+	NIRVANAstop()
+	memset(22527,0,768)
+	mapDraw()
 	NIRVANAstart()
+	printLife()
+	enemiesDraw(currentScreen)
 end sub
 
 function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE

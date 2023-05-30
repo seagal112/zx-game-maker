@@ -255,13 +255,7 @@ sub gameLoop()
 	' 	// eraseSword()
 		if redrawMap = 1
 			redrawMap = 0
-			' CLS
-			' CLS
-			NIRVANAstop()
-			enemiesDraw(0)
-			printLife()
-			mapDraw()
-			NIRVANAstart()
+			redrawScreen()
 		end if
 
 		if currentLife = 0
