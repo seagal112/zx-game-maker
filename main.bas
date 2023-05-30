@@ -1,4 +1,5 @@
 #include "vendor/zxbne/nirvana+.bas"
+#include "vendor/zxbne/const.bas"
 #include "vendor/zxbne/draw.bas"
 #include "vendor/zxbne/game.bas"
 #include "vendor/zxbne/sound.bas"
@@ -19,14 +20,14 @@ sub Music_Init()
     halt
     call 52000
     ld hl,52005
-    ld (64243),hl
+    ld (61947),hl
     ld a,$cd
-    ld (64242),a
+    ld (61946),a
     end asm
 end sub
 
 menu:
-    INK 2: PAPER 1: BORDER 0: BRIGHT 0: FLASH 0: CLS
+    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = 0
     mapDraw()
     drawMenu()

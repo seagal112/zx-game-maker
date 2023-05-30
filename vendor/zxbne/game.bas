@@ -4,7 +4,7 @@ dim linInicial, colInicial, tile, protaRight as UBYTE
 dim isJumping, goalJumping, landed as UBYTE
 dim frameTile as UBYTE = 0
 dim shouldDrawSprite as UBYTE = 0
-dim lin as UBYTE = 160
+dim lin as UBYTE = MAX_LINE
 dim col as UBYTE = 4
 dim jumpSize as UBYTE = 48
 dim animateFrame as UBYTE = 0
@@ -207,7 +207,7 @@ sub drawSprite()
 
 	shouldDrawSprite = 0
 
-	if col > 30 OR lin < 2 OR lin > 160
+	if col > 30 OR lin < 2 OR lin > MAX_LINE
 		return
     end if
 
@@ -221,8 +221,8 @@ sub drawSprite()
 		frameTile = getNextFrameJumpingFalling()
     end if
 
-	NIRVANAspriteT(0, frameTile, lin, col)
 	drawToScr(linInicial, colInicial, isColPair)
+	NIRVANAspriteT(0, frameTile, lin, col)
 END SUB
 
 sub removePlayer()
@@ -273,7 +273,7 @@ sub gameLoop()
 end sub
 
 sub init()
-	NIRVANAspriteT(0, 50, 160, 4)
+	NIRVANAspriteT(0, 50, MAX_LINE, 4)
 	' NIRVANAspriteT(0, tile, 16, 28)
 	protaRight = 1
 	isJumping = 0

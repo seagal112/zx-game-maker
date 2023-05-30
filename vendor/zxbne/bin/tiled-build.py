@@ -7,7 +7,7 @@ f = open('output/maps.json')
 data = json.load(f)
 
 screenWidth = 16
-screenHeight = 11
+screenHeight = 8
 cellsPerScreen = screenWidth * screenHeight
 
 for layer in data['layers']:

@@ -1,7 +1,7 @@
 #include "../../output/maps.bas"
 #include "../../output/enemies.bas"
 
-CONST screenHeight AS UBYTE = 11
+CONST screenHeight AS UBYTE = 8
 CONST screenWidth AS UBYTE = 16
 CONST screenCount AS UBYTE = 2
 
@@ -40,7 +40,7 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
-	if col > 30 OR lin < 2 OR lin > 160
+	if col > 30 OR lin < 2 OR lin > MAX_LINE
 		return
 	end if
 
@@ -63,7 +63,6 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
 	else
 		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
-		NIRVANAhalt()
 		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
 	end if
 end sub

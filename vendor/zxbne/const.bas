@@ -1,0 +1,1 @@
+const MAX_LINE = 112
