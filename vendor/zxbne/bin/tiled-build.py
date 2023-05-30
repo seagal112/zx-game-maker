@@ -15,7 +15,7 @@ for layer in data['layers']:
         screensCount = len(layer['data'])//screenWidth//screenHeight
         mapRows = layer['height']//screenHeight
         mapCols = layer['width']//screenWidth
-        mapStr = "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = {";
+        mapStr = "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = defaultdict(dict)
 
@@ -31,17 +31,17 @@ for layer in data['layers']:
             screens[screenId][mapY][mapX % screenWidth] = cell
 
         for screen in screens:
-            mapStr += '{'
+            mapStr += '\t{ _\n'
             for row in screens[screen]:
-                mapStr += '{'
+                mapStr += '\t\t{'
                 for cell in screens[screen][row]:
-                    mapStr += str(screens[screen][row][cell]) + ","
+                    mapStr += "\t" + str(screens[screen][row][cell]) + ","
                 mapStr = mapStr[:-1]
-                mapStr += "},"
-            mapStr = mapStr[:-1]
-            mapStr += "},"
-        mapStr = mapStr[:-1]
-        mapStr += "}"
+                mapStr += "}, _\n"
+            mapStr = mapStr[:-4]
+            mapStr += " _\n\t}, _\n"
+        mapStr = mapStr[:-4]
+        mapStr += " _\n} _\n"
             
 
 
@@ -82,12 +82,12 @@ for enemyId in enemies:
         screenEnemies[enemy['screenId']] = []
     screenEnemies[enemy['screenId']].append(enemy)
 
-enemStr = "DIM enemies(" + str(len(screenEnemies)) + ",2,9) as ubyte = {"
+enemStr = "DIM enemies(" + str(len(screenEnemies)) + ",2,9) as ubyte = { _\n"
 
-enemStr += '{{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}},'
+enemStr += '\t{ _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1} _\n\t}, _\n'
 
 for screenId in screenEnemies:
-    enemStr += "{"
+    enemStr += "\t{ _\n"
     screen = screenEnemies[screenId]
     for i in range(3):
         if i <= len(screen) - 1:
@@ -96,13 +96,13 @@ for screenId in screenEnemies:
                 right = '1'
             else:
                 right = '0'
-            enemStr += '{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '},'
+            enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '}, _\n'
         else:
-            enemStr += '{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '},'
-    enemStr = enemStr[:-1]
-    enemStr += "},"
+            enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '}, _\n'
+    enemStr = enemStr[:-4]
+    enemStr += " _\n\t},"
 enemStr = enemStr[:-1]
-enemStr += "}"
+enemStr += " _\n}"
 
 with open("output/enemies.bas", "w") as text_file:
     print(enemStr, file=text_file)
