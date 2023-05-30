@@ -13,8 +13,6 @@ dim generalLoopCounter as UBYTE
 load "" CODE ' Load vtplayer
 load "" CODE ' Load music
 
-Music_Init()
-
 sub Music_Init()
     asm
     halt
@@ -29,9 +27,7 @@ end sub
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = 0
-    NIRVANAstop()
     mapDraw()
-    NIRVANAstart()
     drawMenu()
     do
     loop while inkey$=""
@@ -44,6 +40,7 @@ playGame:
     printLife()
     mapDraw()
     enemiesDraw(0)
+    Music_Init()
     gameLoop()
 
 btiles:

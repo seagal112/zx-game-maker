@@ -15,6 +15,7 @@ function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 sub mapDraw()
+	NIRVANAstop()
 	dim counter as ubyte = 0
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
@@ -30,6 +31,7 @@ sub mapDraw()
 			end if
 		next col
 	next row
+	NIRVANAstart()
 end sub
 
 function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
