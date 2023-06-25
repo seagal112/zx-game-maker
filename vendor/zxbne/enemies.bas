@@ -8,6 +8,7 @@ CONST ENEMY_CURRENT_LIN as UBYTE = 6
 CONST ENEMY_CURRENT_COL as UBYTE = 7
 CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_SPRITE as UBYTE = 9
+CONST ENEMY_BURST_CELL as UBYTE = 14
 
 sub checkEnemyContact()
 	if ((isColPair = 1 and isAnEnemy(lin, col + 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col + 1) = 1))
@@ -84,9 +85,16 @@ sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte)
     
     enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
     
-    drawToScr(lin, col, isColPair)
     NIRVANAspriteT(enemyToKill, 29, 0, 0)
+    drawCell(ENEMY_BURST_CELL, lin, col)
     killEnemySound()
+end sub
+
+sub cleanBurst(enemyToKill as Ubyte, isColPair as Ubyte)
+    dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
+    dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
+    
+    drawToScr(lin, col, isColPair)
 end sub
 
 sub enemiesDraw(delete as ubyte)

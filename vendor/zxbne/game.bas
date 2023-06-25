@@ -15,7 +15,7 @@ dim colSwordDrawed as UBYTE = 0
 dim swordTile as UBYTE = 24
 dim isColPair as UBYTE = 1
 dim redrawMap as UBYTE = 0
-dim enemyToKill as UBYTE
+dim enemyToKill as UBYTE = 0
 
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
@@ -88,7 +88,7 @@ function onTheSolidTile() as UBYTE
 end function
 
 function onTheEnemy() as UBYTE
-	if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1) and isFalling <> 0
+	if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1)' and isFalling <> 0
 		killEnemy(enemyToKill, isColPair)
 		return 1
 	else
@@ -98,7 +98,7 @@ end function
 
 function isFalling() as UBYTE
 	' return 0
-	return !onTheSolidTile()' and onTheEnemy() <> 1
+	return !onTheSolidTile() and onTheEnemy() <> 1
 end function
 
 sub gravity()
@@ -256,6 +256,11 @@ sub gameLoop()
 		if redrawMap = 1
 			redrawMap = 0
 			redrawScreen()
+		end if
+
+		if enemyToKill <> 0
+			cleanBurst(enemyToKill, isColPair)
+			enemyToKill = 0
 		end if
 
 		if currentLife = 0
