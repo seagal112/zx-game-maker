@@ -71,7 +71,12 @@ function onTheSolidTile() as UBYTE
 	dim preTile as UBYTE = getCellByNirvanaPosition(lin + 16, col - 1)
 	dim postTile as UBYTE = getCellByNirvanaPosition(lin + 16, col + 1)
 
-	return tile = 1 OR tile = 2 OR preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
+	if tile = 1 OR tile = 2 OR preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
+		landed = 1
+		return 1
+	else
+		return 0
+	end if 
 end function
 
 function onTheEnemy() as UBYTE
@@ -85,7 +90,7 @@ function onTheEnemy() as UBYTE
 end function
 
 function isFalling() as UBYTE
-	return !onTheSolidTile() and onTheEnemy() <> 1
+	return onTheSolidTile() <> 1 and onTheEnemy() <> 1
 end function
 
 sub gravity()
@@ -97,9 +102,6 @@ sub gravity()
 			lin = lin + 16
 			shouldDrawSprite = 1
 		end if
-	else
-		'debug ("not falling")
-		landed = 1
 	end if
 end sub
 
