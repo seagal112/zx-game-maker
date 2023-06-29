@@ -57,6 +57,7 @@ end function
 
 sub checkIsJumping()
 	if isJumping = 1
+		debug(STR(goalJumping))
 		if lin = 0
 			moveToScreen(8)
 		elseif lin > goalJumping AND canMoveUp()
@@ -121,13 +122,14 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen - 1
 		redrawMap = 1
 	elseif direction = 2
-		lin = 16
+		lin = 0
 		shouldDrawSprite = 1
 		enemiesDraw(1)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 		redrawMap = 1
 	elseif direction = 8
 		lin = MAX_LINE + 16
+		jump()
 		shouldDrawSprite = 1
 		enemiesDraw(1)
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
@@ -167,7 +169,11 @@ end sub
 sub jump()
 	isJumping = 1
 	landed = 0
-	goalJumping = lin - jumpSize
+	if lin >= jumpSize
+		goalJumping = lin - jumpSize
+	else
+		goalJumping = 0
+	end if
 	'jumpSound()
 end sub
 
