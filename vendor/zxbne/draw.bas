@@ -9,8 +9,6 @@ CONST screenCount AS UBYTE = 2
 Dim currentScreen as UBYTE = 0
 Dim currentLife as UBYTE = 100
 
-dim enemiesCount as UBYTE
-
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
 end function

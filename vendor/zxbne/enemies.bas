@@ -25,14 +25,6 @@ sub checkEnemyContact()
 		damageSound()
 	end if
 
-	' if isAnEnemy(lin + 16, col)
-		' isJumping = 1
-		' landed = 0
-		' shouldDrawSprite = 1
-		' decrementLife()
-		' damageSound()
-	' end if
-	
 	if isAnEnemy(lin - 16, col)
 		decrementLife()
 		damageSound()
@@ -85,15 +77,16 @@ sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte)
     
     enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
     
-    NIRVANAspriteT(enemyToKill, 29, 0, 0)
-    drawCell(ENEMY_BURST_CELL, lin, col)
-    killEnemySound()
+    NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
+    burnToClean = enemyToKill
+    'killEnemySound()
 end sub
 
 sub cleanBurst(enemyToKill as Ubyte, isColPair as Ubyte)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
-    
+
+    NIRVANAspriteT(enemyToKill, 29, 0, 0)
     drawToScr(lin, col, isColPair)
 end sub
 

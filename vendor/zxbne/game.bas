@@ -1,21 +1,16 @@
 #include <keys.bas>
 
-dim linInicial, colInicial, tile, protaRight as UBYTE
+dim linInicial, colInicial, protaRight as UBYTE
 dim isJumping, goalJumping, landed as UBYTE
 dim frameTile as UBYTE = 0
 dim shouldDrawSprite as UBYTE = 0
 dim lin as UBYTE = MAX_LINE
 dim col as UBYTE = 4
 dim jumpSize as UBYTE = 48
-dim animateFrame as UBYTE = 0
-dim changedDirection as UBYTE = 0
-dim swordDrawed as UBYTE = 0
-dim linSwordDrawed as UBYTE = 0
-dim colSwordDrawed as UBYTE = 0
-dim swordTile as UBYTE = 24
 dim isColPair as UBYTE = 1
 dim redrawMap as UBYTE = 0
 dim enemyToKill as UBYTE = 0
+dim burnToClean as UBYTE = 0
 
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
@@ -23,9 +18,9 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 
 	if tile = 1 OR tile = 2
 		return 1
-    else
-	    return 0
     end if
+	    
+	return 0
 end function
 
 function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
@@ -43,29 +38,21 @@ end function
 function canMoveLeft() as UBYTE
 	if (isColPair)
 		return col > 0 AND isSolidTile(lin, col - 2) <> 1 and isAnEnemy(lin, col - 2) <> 1
-	else
-		return col > 0 AND isSolidTile(lin, col - 1) <> 1 and isAnEnemy(lin, col - 1) <> 1
 	end if
+		
+	return col > 0 AND isSolidTile(lin, col - 1) <> 1 and isAnEnemy(lin, col - 1) <> 1
 end function
 
 function canMoveRight() as UBYTE
 	if (isColPair)
 		return col < 30 AND isSolidTile(lin, col + 2) <> 1 and isAnEnemy(lin, col + 2) <> 1
-	else
-		return col < 30 AND isSolidTile(lin, col + 1) <> 1 and isAnEnemy(lin, col + 1) <> 1
 	end if
+
+	return col < 30 AND isSolidTile(lin, col + 1) <> 1 and isAnEnemy(lin, col + 1) <> 1
 end function
 
 function canMoveUp() as UBYTE
 	return isSolidTile(lin - 16, col) <> 1 and isAnEnemy(lin - 16, col) <> 1
-end function
-
-function canFall() as UBYTE
-	if (isColPair)
-		return isSolidTile(lin + 16, col) <> 1 and isAnEnemy(lin + 16, col) <> 1
-	else
-		return isSolidTile(lin + 16, col - 1) <> 1 and isAnEnemy(lin + 16, col - 1) <> 1
-    end if
 end function
 
 sub checkIsJumping()
@@ -90,14 +77,14 @@ end function
 function onTheEnemy() as UBYTE
 	if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1)' and isFalling <> 0
 		killEnemy(enemyToKill, isColPair)
+		jump()
 		return 1
-	else
-		return 0
-	endif
+	end if
+		
+	return 0
 end function
 
 function isFalling() as UBYTE
-	' return 0
 	return !onTheSolidTile() and onTheEnemy() <> 1
 end function
 
@@ -131,11 +118,6 @@ sub keyboardListen()
 		if col = 0 and currentScreen > 0
 			moveToScreen(4)
         elseif canMoveLeft()
-            if protaRight = 1
-                changedDirection = 1
-            else
-                changedDirection = 0
-            end if
             protaRight = 0
             col = col - 1
             shouldDrawSprite = 1
@@ -145,11 +127,6 @@ sub keyboardListen()
 		if col = 30 and currentScreen < 2
 			moveToScreen(6)
         elseif canMoveRight()
-            if protaLeft = 1
-                changedDirection = 1
-            else
-                changedDirection = 0
-            end if
             protaRight = 1
             col = col + 1
             shouldDrawSprite = 1
@@ -157,15 +134,19 @@ sub keyboardListen()
     END IF
     if MultiKeys(KEYQ)<>0
         if !isJumping AND landed AND canMoveUp()
-            isJumping = 1
-            landed = 0
-            goalJumping = lin - jumpSize
-			'jumpSound()
+			jump()
         end if
     END IF
     if MultiKeys(KEYA)<>0
 
     END IF
+end sub
+
+sub jump()
+	isJumping = 1
+	landed = 0
+	goalJumping = lin - jumpSize
+	'jumpSound()
 end sub
 
 function getNextFrameRunning() as UBYTE
@@ -211,10 +192,6 @@ sub drawSprite()
 		return
     end if
 
-	' if (lin mod 2) > 0
-	' 	return
-    ' end if
-
 	if (!isJumping and !isFalling()) or (1 = 1)
 		frameTile = getNextFrameRunning()
 	else
@@ -229,38 +206,40 @@ sub removePlayer()
 	NIRVANAspriteT(0, 29, 0, 0)
 end sub
 
+sub refreshColAndLine()
+	lin = PEEK SPRITELIN(0)
+	col = PEEK SPRITECOL(0)
+	linInicial = lin
+	colInicial = col
+	if col mod 2 = 0
+		isColPair = 1
+	else
+		isColPair = 0
+	end if
+end sub
+
 sub gameLoop()
 	init()
     do
-		lin = PEEK SPRITELIN(0)
-		col = PEEK SPRITECOL(0)
-		linInicial = lin
-		colInicial = col
-        if col mod 2 = 0
-		    isColPair = 1
-        else
-            isColPair = 0
-        end if 
+		refreshColAndLine()
+
 		keyboardListen()
+
+		if burnToClean <> 0
+			cleanBurst(burnToClean, isColPair)
+			enemyToKill = 0
+			burnToClean = 0
+		end if
+
 		checkEnemyContact()
 		checkIsJumping()
 		gravity()
-        ' col = col + 1
-        ' shouldDrawSprite = 1
 		moveEnemies(isColPair)
 		drawSprite()
-	' 	// redrawFlame()
-	' 	// animateTiles()
-	' 	// drawSword()
-	' 	// eraseSword()
+
 		if redrawMap = 1
 			redrawMap = 0
 			redrawScreen()
-		end if
-
-		if enemyToKill <> 0
-			cleanBurst(enemyToKill, isColPair)
-			enemyToKill = 0
 		end if
 
 		if currentLife = 0
@@ -273,9 +252,7 @@ end sub
 
 sub init()
 	NIRVANAspriteT(0, 50, MAX_LINE, 4)
-	' NIRVANAspriteT(0, tile, 16, 28)
 	protaRight = 1
 	isJumping = 0
 	landed = 1
-	animateFrame = 0
 end sub

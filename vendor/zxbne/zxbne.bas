@@ -25,7 +25,7 @@ playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentLife=INITIAL_LIFE
     redrawScreen()
-    Music_Init()
+    'Music_Init()
     gameLoop()
 
 btiles:
