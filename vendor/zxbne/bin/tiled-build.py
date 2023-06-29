@@ -9,26 +9,37 @@ data = json.load(f)
 screenWidth = 16
 screenHeight = 8
 cellsPerScreen = screenWidth * screenHeight
+screensPerRow = 4
+mapWidth = screenWidth * screensPerRow
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
-        screensCount = len(layer['data'])//screenWidth//screenHeight
-        mapRows = layer['height']//screenHeight
-        mapCols = layer['width']//screenWidth
+        screensCount = len(layer['chunks'])
+        mapRows = layer['chunks'][0]['height']//screenHeight
+        mapCols = layer['chunks'][0]['width']//screenWidth
         mapStr = "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = defaultdict(dict)
 
-        for idx, cell in enumerate(layer['data']):
-            mapX = idx % layer['width']
-            mapY = idx // layer['width']
+        for idx, screen in enumerate(layer['chunks']):
+            screens[idx] = defaultdict(dict)
 
-            screenId = mapX // screenWidth
+            for jdx, cell in enumerate(screen['data']):
+                mapX = jdx % screen['width']
+                mapY = jdx // screen['width']
 
-            if len(screens) == 0 or mapY not in screens[screenId]:
-                screens[screenId][mapY] = defaultdict(dict)
+                screens[idx][mapY][mapX % screenWidth] = cell
 
-            screens[screenId][mapY][mapX % screenWidth] = cell
+        # for idx, cell in enumerate(layer['data']):
+        #     mapX = idx % layer['width']
+        #     mapY = idx // layer['width']
+
+        #     screenId = mapX // screenWidth
+
+        #     if len(screens) == 0 or mapY not in screens[screenId]:
+        #         screens[screenId][mapY] = defaultdict(dict)
+
+        #     screens[screenId][mapY][mapX % screenWidth] = cell
 
         for screen in screens:
             mapStr += '\t{ _\n'

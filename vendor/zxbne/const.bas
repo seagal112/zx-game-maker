@@ -1,1 +1,2 @@
 const MAX_LINE = 112
+const MAP_SCREENS_WIDTH_COUNT = 4

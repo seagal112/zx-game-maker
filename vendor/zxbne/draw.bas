@@ -95,3 +95,8 @@ sub drawMenu()
 	PRINT AT 0, 5; "ZX BASIC NIRVANA ENGINE"
 	PRINT AT 5, 5; "PRESS ANY KEY TO START"
 end sub
+
+sub debug(message as string)
+	PRINT AT 0, 10; "                         "
+	PRINT AT 0, 10; message
+end sub

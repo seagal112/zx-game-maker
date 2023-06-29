@@ -90,9 +90,15 @@ end function
 
 sub gravity()
 	if isJumping <> 1 and isFalling()
-		lin = lin + 16
-		shouldDrawSprite = 1
-	elseif isJumping <> 1 and !isFalling()
+		'debug ("falling")
+		if lin = MAX_LINE
+			moveToScreen(2)
+		else
+			lin = lin + 16
+			shouldDrawSprite = 1
+		end if
+	else
+		'debug ("not falling")
 		landed = 1
 	end if
 end sub
@@ -110,12 +116,18 @@ sub moveToScreen(direction as Ubyte)
 		enemiesDraw(1)
 		currentScreen = currentScreen - 1
 		redrawMap = 1
+	elseif direction = 2
+		lin = 16
+		shouldDrawSprite = 1
+		enemiesDraw(1)
+		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
+		redrawMap = 1
 	end if
 end sub
 
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
-		if col = 0 and currentScreen > 0
+		if col = 0
 			moveToScreen(4)
         elseif canMoveLeft()
             protaRight = 0
@@ -124,7 +136,7 @@ sub keyboardListen()
         end if
     END IF
     if MultiKeys(KEYP)<>0
-		if col = 30 and currentScreen < 2
+		if col = 30
 			moveToScreen(6)
         elseif canMoveRight()
             protaRight = 1
@@ -188,9 +200,9 @@ sub drawSprite()
 
 	shouldDrawSprite = 0
 
-	if col > 30 OR lin < 2 OR lin > MAX_LINE
-		return
-    end if
+	' if col > 30 OR lin < 2 OR lin > MAX_LINE
+	' 	return
+    ' end if
 
 	if (!isJumping and !isFalling()) or (1 = 1)
 		frameTile = getNextFrameRunning()
