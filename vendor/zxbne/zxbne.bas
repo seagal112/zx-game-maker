@@ -14,16 +14,16 @@ load "" CODE ' Load music
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    currentScreen = 0
+    currentScreen = MENU_SCREEN
     mapDraw()
     drawMenu()
     do
-    loop while inkey$=""
-    currentScreen=1
+    loop while inkey$ = ""
+    currentScreen = INITIAL_SCREEN
 
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    currentLife=INITIAL_LIFE
+    currentLife = INITIAL_LIFE
     redrawScreen()
     'Music_Init()
     gameLoop()
