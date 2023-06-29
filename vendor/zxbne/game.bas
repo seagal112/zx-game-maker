@@ -57,7 +57,9 @@ end function
 
 sub checkIsJumping()
 	if isJumping = 1
-		if lin > goalJumping AND canMoveUp()
+		if lin = 0
+			moveToScreen(8)
+		elseif lin > goalJumping AND canMoveUp()
 			lin = lin - 16
 			shouldDrawSprite = 1
 		else
@@ -123,6 +125,12 @@ sub moveToScreen(direction as Ubyte)
 		shouldDrawSprite = 1
 		enemiesDraw(1)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
+		redrawMap = 1
+	elseif direction = 8
+		lin = MAX_LINE + 16
+		shouldDrawSprite = 1
+		enemiesDraw(1)
+		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 		redrawMap = 1
 	end if
 end sub
