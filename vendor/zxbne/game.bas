@@ -57,7 +57,6 @@ end function
 
 sub checkIsJumping()
 	if isJumping = 1
-		debug(STR(goalJumping))
 		if lin = 0
 			moveToScreen(8)
 		elseif lin > goalJumping AND canMoveUp()
