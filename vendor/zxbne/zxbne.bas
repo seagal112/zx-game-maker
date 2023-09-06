@@ -37,5 +37,5 @@ btiles:
 
 titleScreen:
     asm
-        incbin "assets/screens/title.png.scr.zx0"
+        incbin "output/title.png.scr.zx0"
     end asm

@@ -7,7 +7,8 @@ tiled-build:
 
 screens-build:
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/title.png
-	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.png.scr assets/screens/title.png.scr.zx0
+	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
+	rm assets/screens/title.png.scr
 	#python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.png
 
 build:
