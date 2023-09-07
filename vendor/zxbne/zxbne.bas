@@ -13,9 +13,7 @@ load "" CODE ' Load vtplayer
 load "" CODE ' Load music
 
 menu:
-    musicStop()
-    NIRVANAstop()
-    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+    stopMusicAndNirvana()
     dzx0Standard(@titleScreen, $4000)
     do
     loop while inkey$ = ""
@@ -30,6 +28,20 @@ playGame:
     musicStart()
     gameLoop()
 
+ending:
+    stopMusicAndNirvana()
+    dzx0Standard(@endingScreen, $4000)
+    do
+    loop while inkey$ = ""
+    go to menu
+
+
+sub stopMusicAndNirvana()
+    musicStop()
+    NIRVANAstop()
+    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+end sub
+
 btiles:
     asm
         incbin "assets/tiles.btile"
@@ -38,4 +50,9 @@ btiles:
 titleScreen:
     asm
         incbin "output/title.png.scr.zx0"
+    end asm
+
+endingScreen:
+    asm
+        incbin "output/ending.png.scr.zx0"
     end asm
