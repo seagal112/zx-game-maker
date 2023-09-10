@@ -1,9 +1,9 @@
 #include "nirvana+.bas"
 #include "const.bas"
 #include "draw.bas"
+#include "enemies.bas"
 #include "game.bas"
 #include "sound.bas"
-#include "enemies.bas"
 #include "music.bas"
 #include <zx0.bas>
 
@@ -25,7 +25,7 @@ playGame:
     currentLife = INITIAL_LIFE
     currentKeys = 0
     redrawScreen()
-    musicStart()
+    ' musicStart()
     gameLoop()
 
 ending:
@@ -56,3 +56,13 @@ endingScreen:
     asm
         incbin "output/ending.png.scr.zx0"
     end asm
+
+sub debugA(value as UBYTE)
+    PRINT AT 0, 28; " "
+    PRINT AT 0, 28; value
+end sub
+
+sub debugB(value as UBYTE)
+    PRINT AT 0, 30; " "
+    PRINT AT 0, 30; value
+end sub

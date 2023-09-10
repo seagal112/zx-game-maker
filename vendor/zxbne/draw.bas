@@ -8,6 +8,8 @@ CONST screenCount AS UBYTE = 2
 
 Dim currentScreen as UBYTE = 0
 Dim currentLife as UBYTE = 100
+Dim currentKeys as UBYTE = 0
+Dim currentItems as UBYTE = 0
 
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
@@ -76,10 +78,26 @@ sub decrementLife()
 	printLife()
 end sub
 
+sub incrementKeys()
+	currentKeys = currentKeys + 1
+	printLife()
+end sub
+
+sub incrementItems()
+	currentItems = currentItems + 1
+	printLife()
+end sub
+
 sub printLife()
 	PRINT AT 0, 0; "Life:"
 	PRINT AT 0, 5; "   "
 	PRINT AT 0, 5; currentLife
+	PRINT AT 0, 10; "Keys:"
+	PRINT AT 0, 15; " "
+	PRINT AT 0, 15; currentKeys
+	PRINT AT 0, 20; "Items:"
+	PRINT AT 0, 26; " "
+	PRINT AT 0, 26; currentItems
 end sub
 
 sub drawMenu()

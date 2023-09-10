@@ -8,28 +8,21 @@ CONST ENEMY_CURRENT_LIN as UBYTE = 6
 CONST ENEMY_CURRENT_COL as UBYTE = 7
 CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_SPRITE as UBYTE = 9
+CONST OBJECT_TYPE as UBYTE = 9
 CONST ENEMY_BURST_CELL as UBYTE = 14
+CONST OBJECT_TYPE_EMPTY = 0
+CONST OBJECT_TYPE_ENEMY = 1
+CONST OBJECT_TYPE_KEY = 2
+CONST OBJECT_TYPE_ITEM = 3
 
-sub checkEnemyContact()
-	if ((isColPair = 1 and isAnEnemy(lin, col + 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col + 1) = 1))
-		col = col - 2
-		shouldDrawSprite = 1
-		decrementLife()
-		damageSound()
-	end if
-
-	if ((isColPair = 1 and isAnEnemy(lin, col - 2) = 1) or (isColPair <> 1 and isAnEnemy(lin, col - 1) = 1))
-		col = col + 2
-		shouldDrawSprite = 1
-		decrementLife()
-		damageSound()
-	end if
-
-	if isAnEnemy(lin - 16, col)
-		decrementLife()
-		damageSound()
-	end if
-end sub
+function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
+    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
+        if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ENEMY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
+            return 1
+        end if
+    next key
+	return 0
+end function
 
 sub moveEnemies(isColPair as Ubyte)
     ' if framec bAND %10
@@ -37,34 +30,45 @@ sub moveEnemies(isColPair as Ubyte)
     ' end if
 
     dim counter as ubyte = 0
-    for key=0 TO 2
+    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
+        if enemies(currentScreen, key, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
+            continue for
+        end if
         if enemies(currentScreen, key, ENEMY_TILE) = 0
             continue for
         end if
         if enemies(currentScreen, key, ENEMY_ALIVE) = 1 'In the screen and still live
             if counter < 8
                 dim tile as UBYTE = enemies(currentScreen, key, ENEMY_TILE)
-                dim col as UBYTE = PEEK SPRITECOL(enemies(currentScreen, key, ENEMY_SPRITE))
-                dim lin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, key, ENEMY_SPRITE))
+                dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, key, ENEMY_SPRITE))
+                dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, key, ENEMY_SPRITE))
 
-                if enemies(currentScreen, key, ENEMY_RIGHT) = 1 and enemies(currentScreen, key, ENEMY_COL_END) = col
+                if enemies(currentScreen, key, ENEMY_RIGHT) = 1 and enemies(currentScreen, key, ENEMY_COL_END) = enemyCol
                     enemies(currentScreen, key, ENEMY_RIGHT) = 0
-                elseif enemies(currentScreen, key, ENEMY_RIGHT) <> 1 and enemies(currentScreen, key, ENEMY_COL_INI) = col
+                elseif enemies(currentScreen, key, ENEMY_RIGHT) <> 1 and enemies(currentScreen, key, ENEMY_COL_INI) = enemyCol
                     enemies(currentScreen, key, ENEMY_RIGHT) = 1
                 end if
                     
                 if enemies(currentScreen, key, ENEMY_RIGHT) = 1
-                    if col < enemies(currentScreen, key, ENEMY_COL_END)
+                    if enemyCol < enemies(currentScreen, key, ENEMY_COL_END)
                         enemies(currentScreen, key, ENEMY_CURRENT_COL) = enemies(currentScreen, key, ENEMY_CURRENT_COL) + 1
                     end if
                 else
-                    if col > enemies(currentScreen, key, ENEMY_COL_INI)
+                    if enemyCol > enemies(currentScreen, key, ENEMY_COL_INI)
                         enemies(currentScreen, key, ENEMY_CURRENT_COL) = enemies(currentScreen, key, ENEMY_CURRENT_COL) - 1
                     end if
                 end if
 
-                drawToScr(lin, col, isColPair)
-                NIRVANAspriteT(1, tile, lin, enemies(currentScreen, key, ENEMY_CURRENT_COL))
+                protaLin = PEEK SPRITELIN(i)
+                protaCol = PEEK SPRITECOL(0)
+                if (protaLin = enemyLin and protaCol = enemyCol)
+                    shouldDrawSprite = 1
+                    decrementLife()
+                    damageSound()
+                end if
+
+                drawToScr(enemyLin, enemyCol, isColPair)
+                NIRVANAspriteT(1, tile, enemyLin, enemies(currentScreen, key, ENEMY_CURRENT_COL))
             end if
             counter = counter + 1
         end if
@@ -72,6 +76,7 @@ sub moveEnemies(isColPair as Ubyte)
 end sub
 
 sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte)
+    debugA(enemyToKill)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     
@@ -92,7 +97,7 @@ end sub
 
 sub enemiesDraw(delete as ubyte)
     dim tile as Ubyte = 29
-	for key=0 TO 2
+	for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
         if enemies(currentScreen, key, ENEMY_TILE) = 0
             continue for
         end if
@@ -105,4 +110,14 @@ sub enemiesDraw(delete as ubyte)
             NIRVANAspriteT(enemies(currentScreen, key, ENEMY_SPRITE), tile, enemies(currentScreen, key, ENEMY_CURRENT_LIN), enemies(currentScreen, key, ENEMY_CURRENT_COL))
 		end if
 	next key
+end sub
+
+sub removeAllObjects()
+    for i = 1 to 6
+        dim col as UBYTE = PEEK SPRITECOL(i)
+        dim lin as UBYTE = PEEK SPRITELIN(i)
+    
+        NIRVANAspriteT(i, 28, 0, 0)
+        drawToScr(lin, col, isColPair)
+	next i
 end sub

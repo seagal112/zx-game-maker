@@ -11,7 +11,7 @@ dim isColPair as UBYTE = 1
 dim redrawMap as UBYTE = 0
 dim enemyToKill as UBYTE = 0
 dim burnToClean as UBYTE = 0
-
+dim yStepSize = 16
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
@@ -23,36 +23,24 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	return 0
 end function
 
-function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
-	for i = 1 to 6
-		spriteLin = PEEK SPRITELIN(i)
-		spriteCol = PEEK SPRITECOL(i)
-		if lin = spriteLin and col = spriteCol
-			enemyToKill = i
-			return 1
-		end if
-	next i
-	return 0
-end function
-
 function canMoveLeft() as UBYTE
 	if (isColPair)
-		return col > 0 AND isSolidTile(lin, col - 2) <> 1 and isAnEnemy(lin, col - 2) <> 1
+		return col > 0 AND isSolidTile(lin, col - 2) <> 1
 	end if
 		
-	return col > 0 AND isSolidTile(lin, col - 1) <> 1 and isAnEnemy(lin, col - 1) <> 1
+	return col > 0 AND isSolidTile(lin, col - 1) <> 1
 end function
 
 function canMoveRight() as UBYTE
 	if (isColPair)
-		return col < 30 AND isSolidTile(lin, col + 2) <> 1 and isAnEnemy(lin, col + 2) <> 1
+		return col < 30 AND isSolidTile(lin, col + 2) <> 1
 	end if
 
-	return col < 30 AND isSolidTile(lin, col + 1) <> 1 and isAnEnemy(lin, col + 1) <> 1
+	return col < 30 AND isSolidTile(lin, col + 1) <> 1
 end function
 
 function canMoveUp() as UBYTE
-	return isSolidTile(lin - 16, col) <> 1 and isAnEnemy(lin - 16, col) <> 1
+	return isSolidTile(lin - 16, col) <> 1
 end function
 
 sub checkIsJumping()
@@ -60,7 +48,7 @@ sub checkIsJumping()
 		if lin = 0
 			moveToScreen(8)
 		elseif lin > goalJumping AND canMoveUp()
-			lin = lin - 16
+			lin = lin - yStepSize
 			shouldDrawSprite = 1
 		else
 			isJumping = 0
@@ -82,11 +70,11 @@ function onTheSolidTile() as UBYTE
 end function
 
 function onTheEnemy() as UBYTE
-	if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1)' and isFalling <> 0
-		killEnemy(enemyToKill, isColPair)
-		jump()
-		return 1
-	end if
+	' if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1)' and isFalling <> 0
+	' 	killEnemy(enemyToKill, isColPair)
+	' 	jump()
+	' 	return 1
+	' end if
 		
 	return 0
 end function
@@ -101,36 +89,33 @@ sub gravity()
 		if lin = MAX_LINE
 			moveToScreen(2)
 		else
-			lin = lin + 16
+			lin = lin + yStepSize
 			shouldDrawSprite = 1
 		end if
 	end if
 end sub
 
 sub moveToScreen(direction as Ubyte)
+	removeAllObjects()
 	if direction = 6
 		col = 2
 		shouldDrawSprite = 1
-		enemiesDraw(1)
 		currentScreen = currentScreen + 1
 		redrawMap = 1
 	elseif direction = 4
 		col = 28
 		shouldDrawSprite = 1
-		enemiesDraw(1)
 		currentScreen = currentScreen - 1
 		redrawMap = 1
 	elseif direction = 2
 		lin = 0
 		shouldDrawSprite = 1
-		enemiesDraw(1)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 		redrawMap = 1
 	elseif direction = 8
 		lin = MAX_LINE + 16
 		jump()
 		shouldDrawSprite = 1
-		enemiesDraw(1)
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 		redrawMap = 1
 	end if
@@ -245,6 +230,22 @@ sub refreshColAndLine()
 	end if
 end sub
 
+sub checkItemContact()
+	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
+
+	if tile = 18
+		incrementItems()
+	end if
+end sub
+
+sub checkKeyContact()
+	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
+
+	if tile = 19
+		incrementKeys()
+	end if
+end sub
+
 sub gameLoop()
 	init()
     do
@@ -258,7 +259,8 @@ sub gameLoop()
 			burnToClean = 0
 		end if
 
-		checkEnemyContact()
+		checkItemContact()
+		checkKeyContact()
 		checkIsJumping()
 		gravity()
 		moveEnemies(isColPair)
@@ -272,7 +274,7 @@ sub gameLoop()
 		if currentLife = 0
 			removePlayer()
 			enemiesDraw(1)
-			go to menu
+			go to ending
 		end if
     loop
 end sub
