@@ -83,7 +83,7 @@ sub gravity()
 			shouldDrawSprite = 1
 			sprite = isAnEnemy(lin, col)
 			if sprite
-				killEnemy(sprite, isColPair)
+				killEnemy(sprite, isColPair, 1)
 				jump()
 				burnToClean = sprite
 			end if
@@ -205,6 +205,18 @@ sub drawSprite()
 	else
 		frameTile = getNextFrameJumpingFalling()
     end if
+
+	sprite = isAKey(lin, col)
+	if sprite
+		killEnemy(sprite, isColPair, 0)
+		incrementKeys()
+	end if
+
+	sprite = isAnItem(lin, col)
+	if sprite
+		killEnemy(sprite, isColPair, 0)
+		incrementItems()
+	end if
 
 	drawToScr(linInicial, colInicial, isColPair)
 	NIRVANAspriteT(0, frameTile, lin, col)
