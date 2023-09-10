@@ -69,18 +69,8 @@ function onTheSolidTile() as UBYTE
 	end if 
 end function
 
-function onTheEnemy() as UBYTE
-	' if (isAnEnemy(lin + 16, col) = 1 or isAnEnemy(lin + 16, col + 1) = 1 or isAnEnemy(lin + 16, col - 1) = 1)' and isFalling <> 0
-	' 	killEnemy(enemyToKill, isColPair)
-	' 	jump()
-	' 	return 1
-	' end if
-		
-	return 0
-end function
-
 function isFalling() as UBYTE
-	return onTheSolidTile() <> 1 and onTheEnemy() <> 1
+	return onTheSolidTile() <> 1
 end function
 
 sub gravity()
