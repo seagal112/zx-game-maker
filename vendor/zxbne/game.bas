@@ -94,12 +94,12 @@ end sub
 sub moveToScreen(direction as Ubyte)
 	removeAllObjects()
 	if direction = 6
-		col = 2
+		col = 0
 		shouldDrawSprite = 1
 		currentScreen = currentScreen + 1
 		redrawMap = 1
 	elseif direction = 4
-		col = 28
+		col = 30
 		shouldDrawSprite = 1
 		currentScreen = currentScreen - 1
 		redrawMap = 1
@@ -109,7 +109,7 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 		redrawMap = 1
 	elseif direction = 8
-		lin = MAX_LINE + 16
+		lin = MAX_LINE
 		jump()
 		shouldDrawSprite = 1
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
