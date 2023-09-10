@@ -31,17 +31,6 @@ for layer in data['layers']:
 
                 screens[idx][mapY][mapX % screenWidth] = cell
 
-        # for idx, cell in enumerate(layer['data']):
-        #     mapX = idx % layer['width']
-        #     mapY = idx // layer['width']
-
-        #     screenId = mapX // screenWidth
-
-        #     if len(screens) == 0 or mapY not in screens[screenId]:
-        #         screens[screenId][mapY] = defaultdict(dict)
-
-        #     screens[screenId][mapY][mapX % screenWidth] = cell
-
         for screen in screens:
             mapStr += '\t{ _\n'
             for row in screens[screen]:
@@ -68,18 +57,25 @@ tileWidth = 16
 screenPixelsWidth = screenWidth * tileWidth
 screenPixelsHeight = screenHeight * tileHeight
 
-enemies = {}
+objects = {}
 keys = {}
 items = {}
 
 for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
-            if object['type'] == 'enemy':
+            if 'gid' in object:
                 xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
                 yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
                 screenId = xScreenPosition + (yScreenPosition * screensPerRow)
-                enemies[str(object['id'])] = {
+                type = 0
+                if object['type'] == 'enemy':
+                    type = '1'
+                elif object['type'] == 'key':
+                    type = '2'
+                elif object['type'] == 'item':
+                    type = '3'
+                objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,
                     'linIni': str(object['y'] // tileHeight % screenHeight * 16),
@@ -87,43 +83,27 @@ for layer in data['layers']:
                     'colIni': str(object['x'] // tileWidth % screenWidth * 2),
                     'colEnd': str(object['x'] // tileWidth % screenWidth * 2),
                     'tile': str(object['gid'] - 1),
-                    'endObject': object['properties'][0]['value']
-                }
-            elif object['type'] == 'key':
-                keys[str(object['id'])] = {
-                    'name': object['name'],
-                    'screenId': screenId,
-                    'linIni': str(object['y'] // tileHeight % screenHeight * 16),
-                    'colIni': str(object['x'] // tileWidth % screenWidth * 2),
-                    'tile': str(object['gid'] - 1),
-                }
-            elif object['type'] == 'items':
-                keys[str(object['id'])] = {
-                    'name': object['name'],
-                    'screenId': screenId,
-                    'linIni': str(object['y'] // tileHeight % screenHeight * 16),
-                    'colIni': str(object['x'] // tileWidth % screenWidth * 2),
-                    'tile': str(object['gid'] - 1),
+                    'type': type
                 }
 
 for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if object['type'] == 'path':
-                enemies[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
-                enemies[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
+                objects[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
+                objects[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
 
 screenEnemies = defaultdict(dict)
 
-for enemyId in enemies:
-    enemy = enemies[enemyId]
+for enemyId in objects:
+    enemy = objects[enemyId]
     if len(screenEnemies[enemy['screenId']]) == 0:
         screenEnemies[enemy['screenId']] = []
     screenEnemies[enemy['screenId']].append(enemy)
 
 print(screenEnemies)
 
-enemStr = "DIM enemies(" + str(screensCount - 1) + ",2,9) as ubyte = { _"
+enemStr = "DIM enemies(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -138,31 +118,16 @@ for layer in data['layers']:
                             right = '1'
                         else:
                             right = '0'
-                        enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '}, _\n'
+                        enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + ', ' + enemy['type'] + '}, _\n'
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '}, _\n'
             else:
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n"
+                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
             enemStr = enemStr[:-4]
             enemStr += " _\n\t}, _"
 
-# for screenId in screenEnemies:
-#     enemStr += "\t{ _\n"
-#     screen = screenEnemies[screenId]
-#     for i in range(3):
-#         if i <= len(screen) - 1:
-#             enemy = screen[i]
-#             if (enemy['colIni'] < enemy['colEnd']):
-#                 right = '1'
-#             else:
-#                 right = '0'
-#             enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '}, _\n'
-#         else:
-#             enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '}, _\n'
-#     enemStr = enemStr[:-4]
-#     enemStr += " _\n\t},"
 enemStr = enemStr[:-3]
 enemStr += " _\n}"
 
