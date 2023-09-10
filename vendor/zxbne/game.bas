@@ -91,6 +91,12 @@ sub gravity()
 		else
 			lin = lin + yStepSize
 			shouldDrawSprite = 1
+			sprite = isAnEnemy(lin, col)
+			if sprite
+				killEnemy(sprite, isColPair)
+				jump()
+				burnToClean = sprite
+			end if
 		end if
 	end if
 end sub

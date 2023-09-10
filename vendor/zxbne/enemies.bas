@@ -17,8 +17,8 @@ CONST OBJECT_TYPE_ITEM = 3
 
 function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
     for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ENEMY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
-            return 1
+        if enemies(currentScreen, key, ENEMY_ALIVE) = 1 and enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ENEMY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
+            return enemies(currentScreen, key, ENEMY_SPRITE)
         end if
     next key
 	return 0
@@ -59,7 +59,7 @@ sub moveEnemies(isColPair as Ubyte)
                     end if
                 end if
 
-                protaLin = PEEK SPRITELIN(i)
+                protaLin = PEEK SPRITELIN(0)
                 protaCol = PEEK SPRITECOL(0)
                 if (protaLin = enemyLin and protaCol = enemyCol)
                     shouldDrawSprite = 1
