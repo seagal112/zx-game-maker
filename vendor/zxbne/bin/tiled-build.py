@@ -7,11 +7,18 @@ f = open('output/maps.json')
 
 data = json.load(f)
 
-screenWidth = 16
-screenHeight = 8
-cellsPerScreen = screenWidth * screenHeight
+# Screens count per row
 screensPerRow = 4
+
+screenWidth = data['editorsettings']['chunksize']['width']
+screenHeight = data['editorsettings']['chunksize']['height']
+cellsPerScreen = screenWidth * screenHeight
 mapWidth = screenWidth * screensPerRow
+tileHeight = data['height']
+tileWidth = data['height']
+
+screenPixelsWidth = screenWidth * tileWidth
+screenPixelsHeight = screenHeight * tileHeight
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -50,12 +57,6 @@ with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
 # Construct enemies
-
-tileHeight = 16
-tileWidth = 16
-
-screenPixelsWidth = screenWidth * tileWidth
-screenPixelsHeight = screenHeight * tileHeight
 
 objects = {}
 keys = {}
