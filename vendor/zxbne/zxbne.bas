@@ -1,8 +1,11 @@
 #include "nirvana+.bas"
 #include "const.bas"
-#include "draw.bas"
+#include "spritesTileAndPosition.bas"
+#include "../../output/maps.bas"
+#include "../../output/enemies.bas"
 #include "enemies.bas"
-#include "game.bas"
+#include "draw.bas"
+#include "protaMovement.bas"
 #include "sound.bas"
 #include "music.bas"
 #include <zx0.bas>
@@ -26,7 +29,12 @@ playGame:
     currentKeys = 0
     redrawScreen()
     ' musicStart()
-    gameLoop()
+    initProta()
+    do
+        protaMovement()
+        drawSprites()
+        checkRemainLife()
+    loop
 
 ending:
     stopMusicAndNirvana()
@@ -40,6 +48,14 @@ sub stopMusicAndNirvana()
     musicStop()
     NIRVANAstop()
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+end sub
+
+sub checkRemainLife()
+    if currentLife = 0
+        removePlayer()
+        enemiesDraw(1)
+        go to ending
+    end if
 end sub
 
 btiles:
@@ -58,7 +74,7 @@ endingScreen:
     end asm
 
 sub debugA(value as UBYTE)
-    PRINT AT 0, 28; " "
+    PRINT AT 0, 28; "----"
     PRINT AT 0, 28; value
 end sub
 

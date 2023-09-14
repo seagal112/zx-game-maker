@@ -1,5 +1,3 @@
-#include "../../output/maps.bas"
-#include "../../output/enemies.bas"
 #include <memcopy.bas>
 
 CONST screenHeight AS UBYTE = 8
@@ -65,6 +63,20 @@ sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 	end if
 end sub
 
+sub restoreScr(lin as UBYTE, col as UBYTE)
+	NIRVANAhalt()
+	drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+	drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
+	drawCell(getCellByNirvanaPosition(lin, col - 2), lin, col - 2)
+	drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
+	' if col mod 2 = 0
+	' 	drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+	' else
+	' 	drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
+	' 	drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
+	' end if
+end sub
+
 sub decrementLife()
 	if (currentLife = 0)
 		return
@@ -109,3 +121,45 @@ sub debug(message as string)
 	PRINT AT 0, 10; "                         "
 	PRINT AT 0, 10; message
 end sub
+
+sub moveToScreen(direction as Ubyte)
+	removeAllObjects()
+	if direction = 6
+		setNewState(getNewSpriteStateLin(0), 1, getNewSpriteStateTile(0))
+		currentScreen = currentScreen + 1
+	elseif direction = 4
+		setNewState(getNewSpriteStateLin(0), 29, getNewSpriteStateTile(0))
+		currentScreen = currentScreen - 1
+	elseif direction = 2
+		setNewState(0, getNewSpriteStateCol(0), getNewSpriteStateTile(0))
+		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
+	elseif direction = 8
+		setNewState(MAX_LINE, getNewSpriteStateCol(0), getNewSpriteStateTile(0))
+		startJumping()
+		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
+	end if
+	redrawScreen()
+end sub
+
+sub drawSprites()
+	sprite = isAKey(getNewSpriteStateLin(0), col)
+	if sprite
+		killEnemy(sprite, isColPair, 0)
+		incrementKeys()
+	end if
+
+	sprite = isAnItem(getNewSpriteStateLin(0), col)
+	if sprite
+		killEnemy(sprite, isColPair, 0)
+		incrementItems()
+	end if
+	restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
+	debugA(getNewSpriteStateCol(0))
+	if getNewSpriteStateCol(0) = 0
+		moveToScreen(4)
+	else if getNewSpriteStateCol(0) = 30
+		moveToScreen(6)
+	end if
+	debugA(getNewSpriteStateCol(0))
+	NIRVANAspriteT(0, getNewSpriteStateTile(0), getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+END SUB
