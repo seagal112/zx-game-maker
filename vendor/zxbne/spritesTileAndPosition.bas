@@ -38,6 +38,7 @@ function startJumping()
 end function
 
 sub initProta()
+    saveOldSpriteState(0, MAX_LINE, 4, 50)
     saveNewSpriteState(0, MAX_LINE, 4, 50)
 end sub
 
@@ -75,4 +76,32 @@ end function
 
 function getNewSpriteStateTile(sprite as ubyte) as ubyte
     return spritesLinColAndTile1(sprite, 2)
+end function
+
+function checkMovement(sprites as ubyte) as ubyte
+    if getOldSpriteStateCol(sprite) <> getNewSpriteStateCol(sprite) or getOldSpriteStateLin(sprite) <> getNewSpriteStateLin(sprite)
+        return 1
+    else
+        return 0
+    end if
+end function
+
+sub updateOldSpriteState(sprite)
+    saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite))
+end sub
+
+function onLastColumn(sprite) as ubyte
+    if getNewSpriteStateCol(sprite) = 30
+        return 1
+    else
+        return 0
+    end if
+end function
+
+function onFirstColumn(sprite) as ubyte
+    if getNewSpriteStateCol(sprite) = 0
+        return 1
+    else
+        return 0
+    end if
 end function

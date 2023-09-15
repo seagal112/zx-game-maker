@@ -3,7 +3,6 @@
 dim linInicial, colInicial, protaRight as UBYTE
 dim goalJumping, landed as UBYTE
 dim frameTile as UBYTE = 0
-dim shouldDrawSprite as UBYTE = 0
 dim lin as UBYTE = MAX_LINE
 dim col as UBYTE = 4
 dim jumpSize as UBYTE = 48
@@ -69,7 +68,6 @@ sub checkIsJumping()
 		else
 			stopJumping()
         end if
-		shouldDrawSprite = 1
 	end if
 end sub
 
@@ -126,6 +124,7 @@ sub keyboardListen()
 			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
 			setNewState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning())
 			setColPair(getNewSpriteStateCol(0) - 1)
+			checkMoveScreen()
         end if
     END IF
     if MultiKeys(KEYP)<>0
@@ -134,6 +133,7 @@ sub keyboardListen()
 			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
 			setNewState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning())
 			setColPair(getNewSpriteStateCol(0) + 1)
+			checkMoveScreen()
         end if
     END IF
     if MultiKeys(KEYQ)<>0
@@ -145,6 +145,15 @@ sub keyboardListen()
     if MultiKeys(KEYA)<>0
 
     END IF
+end sub
+
+sub checkMoveScreen()
+	if onLastColumn(0) = 1
+		print "last column"
+		moveToScreen(6)
+	else if onFirstColumn(0) = 1
+		moveToScreen(4)
+	end if
 end sub
 
 sub setColPair(col as ubyte)
@@ -180,7 +189,7 @@ sub removePlayer()
 end sub
 
 sub checkItemContact()
-	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 
 	if tile = 18
 		incrementItems()
@@ -188,7 +197,7 @@ sub checkItemContact()
 end sub
 
 sub checkKeyContact()
-	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 
 	if tile = 19
 		incrementKeys()
@@ -197,21 +206,8 @@ end sub
 
 sub protaMovement()
 	keyboardListen()
-
-	if burnToClean <> 0
-		cleanBurst(burnToClean, isColPair)
-		enemyToKill = 0
-		burnToClean = 0
-	end if
-
-	checkItemContact()
-	checkKeyContact()
+	' checkItemContact()
+	' checkKeyContact()
 	checkIsJumping()
 	gravity()
-	moveEnemies(isColPair)
-
-	if redrawMap = 1
-		redrawMap = 0
-		jumpCurrentKey = jumpCurrentKey + 1
-	end if
 end sub

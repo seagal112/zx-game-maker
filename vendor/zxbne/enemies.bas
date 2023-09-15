@@ -80,7 +80,6 @@ sub moveEnemies(isColPair as Ubyte)
                 protaLin = PEEK SPRITELIN(0)
                 protaCol = PEEK SPRITECOL(0)
                 if (protaLin = enemyLin and protaCol = enemyCol)
-                    shouldDrawSprite = 1
                     decrementLife()
                     damageSound()
                 end if
@@ -94,7 +93,6 @@ sub moveEnemies(isColPair as Ubyte)
 end sub
 
 sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte, burst as Ubyte)
-    debugA(enemyToKill)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     

@@ -30,9 +30,10 @@ playGame:
     redrawScreen()
     ' musicStart()
     initProta()
+    drawSprites(1)
     do
         protaMovement()
-        drawSprites()
+        drawSprites(0)
         checkRemainLife()
     loop
 
