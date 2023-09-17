@@ -1,14 +1,7 @@
 #include <keys.bas>
 
-dim linInicial, colInicial, protaRight as UBYTE
-dim goalJumping, landed as UBYTE
-dim frameTile as UBYTE = 0
-dim lin as UBYTE = MAX_LINE
-dim col as UBYTE = 4
-dim jumpSize as UBYTE = 48
+dim landed as UBYTE
 dim isColPair as UBYTE = 1
-dim redrawMap as UBYTE = 0
-dim enemyToKill as UBYTE = 0
 dim burnToClean as UBYTE = 0
 dim yStepSize = 16
 
@@ -24,22 +17,22 @@ end function
 
 function canMoveLeft() as UBYTE
 	if (isColPair)
-		return col > 0 AND isSolidTile(getNewSpriteStateLin(0), col - 2) <> 1
+		return getNewSpriteStateCol(0) > 0 AND isSolidTile(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 2) <> 1
 	end if
 		
-	return col > 0 AND isSolidTile(getNewSpriteStateLin(0), col - 1) <> 1
+	return getNewSpriteStateCol(0) > 0 AND isSolidTile(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1) <> 1
 end function
 
 function canMoveRight() as UBYTE
 	if (isColPair)
-		return col < 30 AND isSolidTile(getNewSpriteStateLin(0), col + 2) <> 1
+		return getNewSpriteStateCol(0) < 30 AND isSolidTile(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 2) <> 1
 	end if
 
-	return col < 30 AND isSolidTile(getNewSpriteStateLin(0), col + 1) <> 1
+	return getNewSpriteStateCol(0) < 30 AND isSolidTile(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1) <> 1
 end function
 
 function canMoveUp() as UBYTE
-	return isSolidTile(getNewSpriteStateLin(0) - 16, col) <> 1
+	return isSolidTile(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0)) <> 1
 end function
 
 function onTheSolidTile() as UBYTE
@@ -62,8 +55,7 @@ sub checkIsJumping()
 		elseif jumpCurrentKey > 0 and onTheSolidTile()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount AND canMoveUp()
-			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
-			setNewState(getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
+			updateState(getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
 			stopJumping()
@@ -81,9 +73,8 @@ sub gravity()
 		if getNewSpriteStateLin(0) = MAX_LINE
 			moveToScreen(2)
 		else
-			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
-			setNewState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0))
-			sprite = isAnEnemy(getNewSpriteStateLin(0), col)
+			updateState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 			if sprite
 				killEnemy(sprite, isColPair, 1)
 				startJumping()
@@ -94,7 +85,7 @@ sub gravity()
 end sub
 
 function getNextFrameRunning() as UBYTE
-	if (protaRight)
+	if (getNewSpriteStateDirection(0))
 		if getOldSpriteStateTile(0) = 50
 			return 51
         elseif getOldSpriteStateTile(0) = 51
@@ -120,18 +111,14 @@ end function
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if canMoveLeft()
-            protaRight = 0
-			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
-			setNewState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning())
+			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
 			setColPair(getNewSpriteStateCol(0) - 1)
 			checkMoveScreen()
         end if
     END IF
     if MultiKeys(KEYP)<>0
 		if canMoveRight()
-            protaRight = 1
-			setOldState(getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0))
-			setNewState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning())
+			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
 			setColPair(getNewSpriteStateCol(0) + 1)
 			checkMoveScreen()
         end if
@@ -165,22 +152,17 @@ sub setColPair(col as ubyte)
 end sub
 
 function getNextFrameJumpingFalling() as UBYTE
-	if (protaRight)
+	if (getNewSpriteStateDirection(0))
 		return 58
 	else
 		return 59
     end if
 end function
 
-sub setOldState(lin as ubyte, col as ubyte, frameTile as ubyte)
+sub updateState(lin as ubyte, col as ubyte, frameTile as ubyte, directionRight as ubyte)
 	if isSolidTile(lin, col) <> 1
-		saveOldSpriteState(0, lin, col, frameTile)
-	end if
-end sub
-
-sub setNewState(lin as ubyte, col as ubyte, frameTile as ubyte)
-	if isSolidTile(lin, col) <> 1
-		saveNewSpriteState(0, lin, col, frameTile)
+		saveOldSpriteState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+		saveNewSpriteState(0, lin, col, frameTile, directionRight)
 	end if
 end sub
 

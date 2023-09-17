@@ -1,23 +1,23 @@
-DIM spritesLinColAndTile0(7,2) as ubyte => { _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0} _
+DIM spritesLinColAndTile0(7,3) as ubyte => { _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0} _
 }
 
-DIM spritesLinColAndTile1(7,2) as ubyte => { _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0}, _
-    {0, 0, 0} _
+DIM spritesLinColAndTile1(7,3) as ubyte => { _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0}, _
+    {0, 0, 0, 0} _
 }
 
 const jumpStopValue as ubyte = 255
@@ -38,20 +38,22 @@ function startJumping()
 end function
 
 sub initProta()
-    saveOldSpriteState(0, MAX_LINE, 4, 50)
-    saveNewSpriteState(0, MAX_LINE, 4, 50)
+    saveOldSpriteState(0, MAX_LINE, 4, 50, 1)
+    saveNewSpriteState(0, MAX_LINE, 4, 50, 1)
 end sub
 
-sub saveOldSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte)
+sub saveOldSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     spritesLinColAndTile0(sprite, 0) = lin
     spritesLinColAndTile0(sprite, 1) = col
     spritesLinColAndTile0(sprite, 2) = tile
+    spritesLinColAndTile0(sprite, 3) = directionRight
 end sub
 
-sub saveNewSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte)
+sub saveNewSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     spritesLinColAndTile1(sprite, 0) = lin
     spritesLinColAndTile1(sprite, 1) = col
     spritesLinColAndTile1(sprite, 2) = tile
+    spritesLinColAndTile1(sprite, 3) = directionRight
 end sub
 
 function getOldSpriteStateLin(sprite as ubyte) as ubyte
@@ -66,6 +68,10 @@ function getOldSpriteStateTile(sprite as ubyte) as ubyte
     return spritesLinColAndTile0(sprite, 2)
 end function
 
+function getOldSpriteStateDirection(sprite as ubyte) as ubyte
+    return spritesLinColAndTile0(sprite, 3)
+end function
+
 function getNewSpriteStateLin(sprite as ubyte) as ubyte
     return spritesLinColAndTile1(sprite, 0)
 end function
@@ -78,6 +84,10 @@ function getNewSpriteStateTile(sprite as ubyte) as ubyte
     return spritesLinColAndTile1(sprite, 2)
 end function
 
+function getNewSpriteStateDirection(sprite as ubyte) as ubyte
+    return spritesLinColAndTile1(sprite, 3)
+end function
+
 function checkMovement(sprites as ubyte) as ubyte
     if getOldSpriteStateCol(sprite) <> getNewSpriteStateCol(sprite) or getOldSpriteStateLin(sprite) <> getNewSpriteStateLin(sprite)
         return 1
@@ -87,7 +97,7 @@ function checkMovement(sprites as ubyte) as ubyte
 end function
 
 sub updateOldSpriteState(sprite)
-    saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite))
+    saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite), getNewSpriteStateDirection(sprite))
 end sub
 
 function onLastColumn(sprite) as ubyte

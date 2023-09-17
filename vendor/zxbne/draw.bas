@@ -111,16 +111,16 @@ end sub
 sub moveToScreen(direction as Ubyte)
 	removeAllObjects()
 	if direction = 6
-		saveNewSpriteState(0, getNewSpriteStateLin(0), 0, getNewSpriteStateTile(0))
+		saveNewSpriteState(0, getNewSpriteStateLin(0), 0, getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 		currentScreen = currentScreen + 1
 	elseif direction = 4
-		saveNewSpriteState(0, getNewSpriteStateLin(0), 30, getNewSpriteStateTile(0))
+		saveNewSpriteState(0, getNewSpriteStateLin(0), 30, getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 		currentScreen = currentScreen - 1
 	elseif direction = 2
-		setNewState(0, getNewSpriteStateCol(0), getNewSpriteStateTile(0))
+		saveNewSpriteState(0, 0, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		setNewState(MAX_LINE, getNewSpriteStateCol(0), getNewSpriteStateTile(0))
+		saveNewSpriteState(0, MAX_LINE, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 		startJumping()
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
@@ -137,14 +137,12 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
 		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
 	end if
-	' NIRVANAfillT(2, lin, col)
-	' NIRVANAfillT(2, lin, col - 1)
 	' if col mod 2 = 0
 	' 	NIRVANAfillT(1, lin, col)
+	' 	NIRVANAfillT(1, lin, col - 1)
 	' else
-	' 	NIRVANAfillT(2, lin, col)
 	' 	NIRVANAfillT(2, lin, col - 1)
-	' 	NIRVANAfillT(2, lin, col - 2)
+	' 	NIRVANAfillT(2, lin, col + 1)
 	' end if
 end sub
 
