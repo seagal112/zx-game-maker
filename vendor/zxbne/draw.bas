@@ -44,22 +44,18 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 	return getCell(lin, col)
 end function
 
-SUB drawCell(cell as UBYTE, lin as UBYTE, col as UBYTE)
-	if cell = 0
-		NIRVANAfillT(0, lin, col)
-	else
-		NIRVANAdrawT(cell, lin, col)
-	end if
+SUB drawCell(lin as UBYTE, col as UBYTE)
+	NIRVANAdrawT(getCellByNirvanaPosition(lin, col), lin, col)
 end sub
 
 sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
 	NIRVANAhalt()
-	' drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+	' drawCell(lin, col)
 	if isColPair
-		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+		drawCell(lin, col)
 	else
-		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
-		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
+		drawCell(lin, col - 1)
+		drawCell(lin, col + 1)
 	end if
 end sub
 
@@ -130,12 +126,22 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
-	' drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+	' drawCell(lin, col)
 	if col mod 2 = 0
-		drawCell(getCellByNirvanaPosition(lin, col), lin, col)
+		drawCell(lin, col)
+		if checkVerticalMovement(0) = 1
+			NIRVANAhalt()
+			if newSpriteStateDirectionIsRight(0)
+				drawCell(lin, col - 1)
+				' NIRVANAfillT(1, lin, col - 1)
+			else
+				drawCell(lin, col + 1)
+				' NIRVANAfillT(2, lin, col + 1)
+			end if
+		end if
 	else
-		drawCell(getCellByNirvanaPosition(lin, col - 1), lin, col - 1)
-		drawCell(getCellByNirvanaPosition(lin, col + 1), lin, col + 1)
+		drawCell(lin, col - 1)
+		drawCell(lin, col + 1)
 	end if
 	' if col mod 2 = 0
 	' 	NIRVANAfillT(1, lin, col)

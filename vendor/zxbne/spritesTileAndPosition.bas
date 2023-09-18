@@ -88,8 +88,20 @@ function getNewSpriteStateDirection(sprite as ubyte) as ubyte
     return spritesLinColAndTile1(sprite, 3)
 end function
 
-function checkMovement(sprites as ubyte) as ubyte
+function newSpriteStateDirectionIsRight(sprite) as ubyte
+    return getNewSpriteStateDirection(sprite)
+end function
+
+function checkMovement(sprite as ubyte) as ubyte
     if getOldSpriteStateCol(sprite) <> getNewSpriteStateCol(sprite) or getOldSpriteStateLin(sprite) <> getNewSpriteStateLin(sprite)
+        return 1
+    else
+        return 0
+    end if
+end function
+
+function checkVerticalMovement(sprite)
+    if getOldSpriteStateLin(sprite) <> getNewSpriteStateLin(sprite)
         return 1
     else
         return 0

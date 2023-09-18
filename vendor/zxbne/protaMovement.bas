@@ -64,7 +64,11 @@ sub checkIsJumping()
 end sub
 
 function isFalling() as UBYTE
-	return onTheSolidTile() <> 1
+	if onTheSolidTile() <> 1
+		return 1
+	else
+		return 0
+	end if
 end function
 
 sub gravity()
