@@ -108,6 +108,14 @@ function checkVerticalMovement(sprite)
     end if
 end function
 
+function checkHorizontalMovement(sprite)
+    if getOldSpriteStateCol(sprite) <> getNewSpriteStateCol(sprite)
+        return 1
+    else
+        return 0
+    end if
+end function
+
 sub updateOldSpriteState(sprite)
     saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite), getNewSpriteStateDirection(sprite))
 end sub

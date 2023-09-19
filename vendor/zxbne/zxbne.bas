@@ -10,6 +10,8 @@
 #include "music.bas"
 #include <zx0.bas>
 
+dim drawing as ubyte = 0
+
 NIRVANAtiles(@btiles)
 
 load "" CODE ' Load vtplayer

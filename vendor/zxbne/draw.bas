@@ -8,6 +8,7 @@ Dim currentScreen as UBYTE = 0
 Dim currentLife as UBYTE = 100
 Dim currentKeys as UBYTE = 0
 Dim currentItems as UBYTE = 0
+dim cell as ubyte = 0
 
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
@@ -45,7 +46,12 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 SUB drawCell(lin as UBYTE, col as UBYTE)
-	NIRVANAdrawT(getCellByNirvanaPosition(lin, col), lin, col)
+	cell = getCellByNirvanaPosition(lin, col)
+	if cell = 0
+		NIRVANAfillT(0, lin, col)
+	else
+		NIRVANAdrawT(cell, lin, col)
+	end if
 end sub
 
 sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
@@ -126,11 +132,10 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
-	' drawCell(lin, col)
+	drawCell(lin, col)
 	if col mod 2 = 0
-		drawCell(lin, col)
+		' drawCell(lin, col)
 		if checkVerticalMovement(0) = 1
-			NIRVANAhalt()
 			if newSpriteStateDirectionIsRight(0)
 				drawCell(lin, col - 1)
 				' NIRVANAfillT(1, lin, col - 1)
@@ -154,9 +159,11 @@ end sub
 
 sub drawSprites(force as ubyte)
 	if checkMovement(0) or force = 1
+		drawing = 1
 		NIRVANAhalt()
-		restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
 		NIRVANAspriteT(0, getNewSpriteStateTile(0), getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+		restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
 		updateOldSpriteState(0)
 	end if
+	drawing = 0
 END SUB
