@@ -30,30 +30,56 @@ function canMoveRight() as UBYTE
 	return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
 end function
 
-function canMoveUp() as UBYTE
-	return isSolidTile(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0)) <> 1
+function underSolidTile() as UBYTE
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0))
+
+	if tile = 1 OR tile = 2
+		landed = 1
+		return 1
+	else
+		if getNewSpriteStateCol(0) mod 2 = 0
+			return 0
+		end if
+
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0) + 1)
+		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
+			return 1
+		else
+			return 0
+		end if
+	end if
 end function
 
 function onTheSolidTile() as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0))
-	dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) - 1)
-	dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) + 1)
 
-	if tile = 1 OR tile = 2 OR preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
+	if tile = 1 OR tile = 2
 		landed = 1
 		return 1
 	else
-		return 0
-	end if 
+		if getNewSpriteStateCol(0) mod 2 = 0
+			return 0
+		end if
+
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) + 1)
+		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
+			landed = 1
+			return 1
+		else
+			return 0
+		end if
+	end if
 end function
 
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getNewSpriteStateLin(0) = 0
 			moveToScreen(8)
-		elseif jumpCurrentKey > 0 and onTheSolidTile()
+		elseif jumpCurrentKey > 0 and onTheSolidTile() = 1
 			stopJumping()
-		elseif jumpCurrentKey < jumpStepsCount AND canMoveUp()
+		elseif jumpCurrentKey < jumpStepsCount AND underSolidTile() = 0
 			updateState(getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
