@@ -47,11 +47,13 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 SUB drawCell(lin as UBYTE, col as UBYTE)
-	cell = getCellByNirvanaPosition(lin, col)
-	if cell = 0
-		NIRVANAfillT(0, lin, col)
-	else
-		NIRVANAdrawT(cell, lin, col)
+	if col >= 0 and col <= 30 and lin >= 0 and lin <= MAX_LINE
+		cell = getCellByNirvanaPosition(lin, col)
+		if cell = 0
+			NIRVANAfillT(0, lin, col)
+		else
+			NIRVANAdrawT(cell, lin, col)
+		end if
 	end if
 end sub
 
