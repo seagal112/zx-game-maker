@@ -10,8 +10,6 @@
 #include "music.bas"
 #include <zx0.bas>
 
-dim drawing as ubyte = 0
-
 NIRVANAtiles(@btiles)
 
 load "" CODE ' Load vtplayer
@@ -36,6 +34,7 @@ playGame:
     do
         protaMovement()
         drawSprites(0)
+        checkMoveScreen()
         checkRemainLife()
     loop
 
@@ -58,6 +57,13 @@ sub checkRemainLife()
         removePlayer()
         enemiesDraw(1)
         go to ending
+    end if
+end sub
+
+sub checkMoveScreen()
+    if moveScreen <> 0
+        moveToScreen(moveScreen)
+        moveScreen = 0
     end if
 end sub
 

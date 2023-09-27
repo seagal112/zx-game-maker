@@ -4,6 +4,7 @@ dim landed as UBYTE
 dim isColPair as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 16
+dim moveScreen as ubyte
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
@@ -76,7 +77,7 @@ end function
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getNewSpriteStateLin(0) = 0
-			moveToScreen(8)
+			moveScreen = 8
 		elseif jumpCurrentKey > 0 and onTheSolidTile() = 1
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount AND underSolidTile() = 0
@@ -100,7 +101,7 @@ sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
 		'debug ("falling")
 		if getNewSpriteStateLin(0) = MAX_LINE
-			moveToScreen(2)
+			moveScreen = 2
 		else
 			updateState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
@@ -142,15 +143,19 @@ sub keyboardListen()
 		if canMoveLeft()
 			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
 			setColPair(getNewSpriteStateCol(0) - 1)
-			checkMoveScreen()
         end if
+		if onFirstColumn(0)
+			moveScreen = 4
+		end if
     END IF
     if MultiKeys(KEYP)<>0
 		if canMoveRight()
 			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
 			setColPair(getNewSpriteStateCol(0) + 1)
-			checkMoveScreen()
         end if
+		if onLastColumn(0)
+			moveScreen = 6
+		end if
     END IF
     if MultiKeys(KEYQ)<>0
         if !isJumping() and landed
@@ -161,15 +166,6 @@ sub keyboardListen()
     if MultiKeys(KEYA)<>0
 
     END IF
-end sub
-
-sub checkMoveScreen()
-	if onLastColumn(0) = 1
-		print "last column"
-		moveToScreen(6)
-	else if onFirstColumn(0) = 1
-		moveToScreen(4)
-	end if
 end sub
 
 sub setColPair(col as ubyte)

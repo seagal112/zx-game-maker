@@ -9,6 +9,7 @@ Dim currentLife as UBYTE = 100
 Dim currentKeys as UBYTE = 0
 Dim currentItems as UBYTE = 0
 dim cell as ubyte = 0
+dim drawing as ubyte = 0
 
 function getCell(row as UBYTE, col as UBYTE) AS UBYTE
 	return screens(currentScreen, row, col) - 1
