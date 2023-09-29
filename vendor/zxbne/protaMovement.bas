@@ -4,22 +4,28 @@ dim landed as UBYTE
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 16
 
-function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
-	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
-
-	if tile = 1 OR tile = 2
-		return 1
-    end if
-	    
-	return 0
-end function
-
 function canMoveLeft() as UBYTE
-	return getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0)) <> 1
+	dim col as ubyte = getOldSpriteStateCol(0)
+	if isPair(col) = 0
+		col = col + 1
+	end if
+	if getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), col - 2) <> 1
+		return 1
+	else
+		return 0
+	end if
 end function
 
 function canMoveRight() as UBYTE
-	return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
+	dim col as ubyte = getOldSpriteStateCol(0)
+	if isPair(col) = 0
+		col = col - 1
+	end if
+	if getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), col + 2) <> 1
+		return 1
+	else
+		return 0
+	end if
 end function
 
 function underSolidTile() as UBYTE
@@ -72,7 +78,7 @@ sub checkIsJumping()
 		elseif jumpCurrentKey > 0 and onTheSolidTile() = 1
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount AND underSolidTile() = 0
-			updateState(getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+			updateState(0, getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
 			stopJumping()
@@ -94,7 +100,7 @@ sub gravity()
 		if getNewSpriteStateLin(0) = MAX_LINE
 			moveScreen = 2
 		else
-			updateState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+			updateState(0, getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 			if sprite
 				killEnemy(sprite, isPair(getNewSpriteStateCol(0)), 1)
@@ -132,7 +138,7 @@ end function
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if canMoveLeft()
-			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
+			updateState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
         end if
 		if onFirstColumn(0)
 			moveScreen = 4
@@ -140,7 +146,7 @@ sub keyboardListen()
     END IF
     if MultiKeys(KEYP)<>0
 		if canMoveRight()
-			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
+			updateState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
         end if
 		if onLastColumn(0)
 			moveScreen = 6
@@ -164,13 +170,6 @@ function getNextFrameJumpingFalling() as UBYTE
 		return 59
     end if
 end function
-
-sub updateState(lin as ubyte, col as ubyte, frameTile as ubyte, directionRight as ubyte)
-	if isSolidTile(lin, col) <> 1
-		saveOldSpriteState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
-		saveNewSpriteState(0, lin, col, frameTile, directionRight)
-	end if
-end sub
 
 sub removePlayer()
 	NIRVANAspriteT(0, 29, 0, 0)

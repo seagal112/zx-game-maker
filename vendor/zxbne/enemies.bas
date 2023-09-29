@@ -48,32 +48,32 @@ sub moveEnemies(isColPair as Ubyte)
     ' end if
 
     dim counter as ubyte = 0
-    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
+    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+        if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
             continue for
         end if
-        if enemies(currentScreen, key, ENEMY_TILE) = 0
+        if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
             continue for
         end if
-        if enemies(currentScreen, key, ENEMY_ALIVE) = 1 'In the screen and still live
+        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
             if counter < 8
-                dim tile as UBYTE = enemies(currentScreen, key, ENEMY_TILE)
-                dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, key, ENEMY_SPRITE))
-                dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, key, ENEMY_SPRITE))
+                dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
+                dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, enemyId, ENEMY_SPRITE))
+                dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, enemyId, ENEMY_SPRITE))
 
-                if enemies(currentScreen, key, ENEMY_RIGHT) = 1 and enemies(currentScreen, key, ENEMY_COL_END) = enemyCol
-                    enemies(currentScreen, key, ENEMY_RIGHT) = 0
-                elseif enemies(currentScreen, key, ENEMY_RIGHT) <> 1 and enemies(currentScreen, key, ENEMY_COL_INI) = enemyCol
-                    enemies(currentScreen, key, ENEMY_RIGHT) = 1
+                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
+                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 0
+                elseif enemies(currentScreen, enemyId, ENEMY_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
+                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
                 end if
                     
-                if enemies(currentScreen, key, ENEMY_RIGHT) = 1
-                    if enemyCol < enemies(currentScreen, key, ENEMY_COL_END)
-                        enemies(currentScreen, key, ENEMY_CURRENT_COL) = enemies(currentScreen, key, ENEMY_CURRENT_COL) + 1
+                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
+                    if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
                     end if
                 else
-                    if enemyCol > enemies(currentScreen, key, ENEMY_COL_INI)
-                        enemies(currentScreen, key, ENEMY_CURRENT_COL) = enemies(currentScreen, key, ENEMY_CURRENT_COL) - 1
+                    if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
                     end if
                 end if
 
@@ -85,11 +85,11 @@ sub moveEnemies(isColPair as Ubyte)
                 end if
 
                 drawToScr(enemyLin, enemyCol, isColPair)
-                NIRVANAspriteT(1, tile, enemyLin, enemies(currentScreen, key, ENEMY_CURRENT_COL))
+                NIRVANAspriteT(1, tile, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL))
             end if
             counter = counter + 1
         end if
-    next key
+    next enemyId
 end sub
 
 sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte, burst as Ubyte)

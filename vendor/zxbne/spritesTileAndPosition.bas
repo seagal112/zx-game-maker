@@ -135,3 +135,8 @@ function onFirstColumn(sprite) as ubyte
         return 0
     end if
 end function
+
+sub updateState(sprite as ubyte, lin as ubyte, col as ubyte, frameTile as ubyte, directionRight as ubyte)
+    saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite), getNewSpriteStateDirection(sprite))
+    saveNewSpriteState(sprite, lin, col, frameTile, directionRight)
+end sub

@@ -46,6 +46,16 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 	return getCell(lin, col)
 end function
 
+function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
+	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
+
+	if tile = 1 OR tile = 2
+		return 1
+    end if
+	    
+	return 0
+end function
+
 SUB drawCell(lin as UBYTE, col as UBYTE)
 	if isPair(col) = 1
 		if col >= 0 and col <= 30 and lin >= 0 and lin <= MAX_LINE
@@ -157,6 +167,7 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 			end if
 		end if
 	end if
+	NIRVANAhalt()
 	' if isColPair = 0
 	' 	NIRVANAfillT(1, lin, col)
 	' 	NIRVANAfillT(1, lin, col - 1)
