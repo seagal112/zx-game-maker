@@ -1,10 +1,8 @@
 #include <keys.bas>
 
 dim landed as UBYTE
-dim isColPair as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 16
-dim moveScreen as ubyte
 
 function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 	dim tile as UBYTE = getCellByNirvanaPosition(lin, col)
@@ -17,7 +15,7 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 function canMoveLeft() as UBYTE
-	if getOldSpriteStateCol(0) mod 2 = 0
+	if isColPair = 0
 		return getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) - 1) <> 1
 	end if
 	
@@ -25,7 +23,7 @@ function canMoveLeft() as UBYTE
 end function
 
 function canMoveRight() as UBYTE
-	if getOldSpriteStateCol(0) mod 2 = 0
+	if isColPair = 0
 		return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
 	end if
 	return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
@@ -38,7 +36,7 @@ function underSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0
+		if isColPair = 0
 			return 0
 		end if
 
@@ -59,7 +57,7 @@ function onTheSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0
+		if isColPair = 0
 			return 0
 		end if
 
@@ -168,8 +166,8 @@ sub keyboardListen()
     END IF
 end sub
 
-sub setColPair(col as ubyte)
-	if col mod 2 = 0
+sub setColPair()
+	if getNewSpriteStateCol(0) mod 2 = 0
 		isColPair = 1
 	else
 		isColPair = 0
@@ -218,5 +216,6 @@ sub protaMovement()
 		' checkKeyContact()
 		checkIsJumping()
 		gravity()
+		setColPair()
 	end if
 end sub

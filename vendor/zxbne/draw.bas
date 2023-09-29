@@ -136,7 +136,7 @@ end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
 	drawCell(lin, col)
-	if col mod 2 = 0
+	if isColPair = 0
 		' drawCell(lin, col)
 		if checkVerticalMovement(0) = 1
 			if newSpriteStateDirectionIsRight(0)
@@ -151,7 +151,7 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 		drawCell(lin, col - 1)
 		drawCell(lin, col + 1)
 	end if
-	' if col mod 2 = 0
+	' if isColPair = 0
 	' 	NIRVANAfillT(1, lin, col)
 	' 	NIRVANAfillT(1, lin, col - 1)
 	' else
