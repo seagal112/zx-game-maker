@@ -23,7 +23,7 @@ function canMoveRight() as UBYTE
 end function
 
 function underSolidTile() as UBYTE
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0))
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0))
 
 	if tile = 1 OR tile = 2
 		landed = 1
@@ -33,8 +33,8 @@ function underSolidTile() as UBYTE
 			return 0
 		end if
 
-		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0) - 1)
-		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - 16, getNewSpriteStateCol(0) + 1)
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0) + 1)
 		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
 			return 1
 		else
@@ -44,7 +44,7 @@ function underSolidTile() as UBYTE
 end function
 
 function onTheSolidTile() as UBYTE
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0))
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0))
 
 	if tile = 1 OR tile = 2
 		landed = 1
@@ -54,8 +54,8 @@ function onTheSolidTile() as UBYTE
 			return 0
 		end if
 
-		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) - 1)
-		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + 16, getNewSpriteStateCol(0) + 1)
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0) + 1)
 		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
 			landed = 1
 			return 1
