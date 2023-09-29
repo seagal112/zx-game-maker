@@ -47,12 +47,14 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 SUB drawCell(lin as UBYTE, col as UBYTE)
-	if col >= 0 and col <= 30 and lin >= 0 and lin <= MAX_LINE
-		cell = getCellByNirvanaPosition(lin, col)
-		if cell = 0
-			NIRVANAfillT(0, lin, col)
-		else
-			NIRVANAdrawT(cell, lin, col)
+	if col mod 2 = 0
+		if col >= 0 and col <= 30 and lin >= 0 and lin <= MAX_LINE
+			cell = getCellByNirvanaPosition(lin, col)
+			if cell = 0
+				NIRVANAfillT(0, lin, col)
+			else
+				NIRVANAdrawT(cell, lin, col)
+			end if
 		end if
 	end if
 end sub
@@ -135,21 +137,25 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
-	drawCell(lin, col)
-	if isColPair = 0
-		' drawCell(lin, col)
+	if col mod 2 <> 0
+		drawCell(lin, col - 1)
+		drawCell(lin, col + 1)
 		if checkVerticalMovement(0) = 1
 			if newSpriteStateDirectionIsRight(0)
-				drawCell(lin, col - 1)
-				' NIRVANAfillT(1, lin, col - 1)
+				drawCell(lin, col - 3)
 			else
-				drawCell(lin, col + 1)
-				' NIRVANAfillT(2, lin, col + 1)
+				drawCell(lin, col + 3)
 			end if
 		end if
 	else
-		drawCell(lin, col - 1)
-		drawCell(lin, col + 1)
+		drawCell(lin, col)
+		if checkVerticalMovement(0) = 1
+			if newSpriteStateDirectionIsRight(0)
+				drawCell(lin, col - 2)
+			else
+				drawCell(lin, col + 2)
+			end if
+		end if
 	end if
 	' if isColPair = 0
 	' 	NIRVANAfillT(1, lin, col)

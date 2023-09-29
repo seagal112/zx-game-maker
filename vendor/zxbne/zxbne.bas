@@ -1,5 +1,4 @@
 dim moveScreen as ubyte
-dim isColPair as UBYTE = 1
 
 #include "nirvana+.bas"
 #include "const.bas"

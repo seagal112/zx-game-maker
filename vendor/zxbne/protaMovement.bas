@@ -15,7 +15,7 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 function canMoveLeft() as UBYTE
-	if isColPair = 0
+	if getNewSpriteStateCol(0) mod 2 = 0 = 0
 		return getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) - 1) <> 1
 	end if
 	
@@ -23,7 +23,7 @@ function canMoveLeft() as UBYTE
 end function
 
 function canMoveRight() as UBYTE
-	if isColPair = 0
+	if getNewSpriteStateCol(0) mod 2 = 0 = 0
 		return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
 	end if
 	return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
@@ -36,7 +36,7 @@ function underSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if isColPair = 0
+		if getNewSpriteStateCol(0) mod 2 = 0 = 0
 			return 0
 		end if
 
@@ -57,7 +57,7 @@ function onTheSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if isColPair = 0
+		if getNewSpriteStateCol(0) mod 2 = 0 = 0
 			return 0
 		end if
 
@@ -104,7 +104,7 @@ sub gravity()
 			updateState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 			if sprite
-				killEnemy(sprite, isColPair, 1)
+				killEnemy(sprite, getNewSpriteStateCol(0) mod 2 = 0, 1)
 				startJumping()
 				burnToClean = sprite
 			end if
@@ -140,7 +140,6 @@ sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if canMoveLeft()
 			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
-			setColPair(getNewSpriteStateCol(0) - 1)
         end if
 		if onFirstColumn(0)
 			moveScreen = 4
@@ -149,7 +148,6 @@ sub keyboardListen()
     if MultiKeys(KEYP)<>0
 		if canMoveRight()
 			updateState(getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
-			setColPair(getNewSpriteStateCol(0) + 1)
         end if
 		if onLastColumn(0)
 			moveScreen = 6
@@ -164,14 +162,6 @@ sub keyboardListen()
     if MultiKeys(KEYA)<>0
 
     END IF
-end sub
-
-sub setColPair()
-	if getNewSpriteStateCol(0) mod 2 = 0
-		isColPair = 1
-	else
-		isColPair = 0
-	end if
 end sub
 
 function getNextFrameJumpingFalling() as UBYTE
@@ -216,6 +206,5 @@ sub protaMovement()
 		' checkKeyContact()
 		checkIsJumping()
 		gravity()
-		setColPair()
 	end if
 end sub
