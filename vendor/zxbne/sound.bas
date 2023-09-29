@@ -1,10 +1,12 @@
 sub damageSound()
+    NIRVANAhalt()
     NIRVANAstop()
     BEEP 0,16
     NIRVANAstart()
 end sub
 
 sub jumpSound()
+    NIRVANAhalt()
     NIRVANAstop()
     BEEP 0,6
     BEEP 0,14
@@ -12,6 +14,7 @@ sub jumpSound()
 end sub
 
 sub killEnemySound()
+    NIRVANAhalt()
     NIRVANAstop()
     BEEP 0,6
     BEEP 0,14
