@@ -63,7 +63,7 @@ SUB drawCell(lin as UBYTE, col as UBYTE)
 			if cell = 0
 				NIRVANAfillT(0, lin, col)
 			else
-				NIRVANAdrawT(cell, lin, col)
+				drawTile(cell, lin, col)
 			end if
 		end if
 	end if

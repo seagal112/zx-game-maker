@@ -6,6 +6,7 @@ dim moveScreen as ubyte
 #include "spritesTileAndPosition.bas"
 #include "../../output/maps.bas"
 #include "../../output/enemies.bas"
+#include "screenRender.bas"
 #include "enemies.bas"
 #include "draw.bas"
 #include "protaMovement.bas"
