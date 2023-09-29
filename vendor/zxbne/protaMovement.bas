@@ -29,7 +29,7 @@ function underSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0
+		if isPair(getNewSpriteStateCol(0)) = 1
 			return 0
 		end if
 
@@ -50,7 +50,7 @@ function onTheSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0
+		if isPair(getNewSpriteStateCol(0)) = 1
 			return 0
 		end if
 
@@ -97,7 +97,7 @@ sub gravity()
 			updateState(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 			if sprite
-				killEnemy(sprite, getNewSpriteStateCol(0) mod 2 = 0, 1)
+				killEnemy(sprite, isPair(getNewSpriteStateCol(0)), 1)
 				startJumping()
 				burnToClean = sprite
 			end if

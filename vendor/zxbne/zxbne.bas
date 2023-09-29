@@ -2,6 +2,7 @@ dim moveScreen as ubyte
 
 #include "nirvana+.bas"
 #include "const.bas"
+#include "functions.bas"
 #include "spritesTileAndPosition.bas"
 #include "../../output/maps.bas"
 #include "../../output/enemies.bas"

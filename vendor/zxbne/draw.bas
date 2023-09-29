@@ -47,7 +47,7 @@ function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
 end function
 
 SUB drawCell(lin as UBYTE, col as UBYTE)
-	if col mod 2 = 0
+	if isPair(col) = 1
 		if col >= 0 and col <= 30 and lin >= 0 and lin <= MAX_LINE
 			cell = getCellByNirvanaPosition(lin, col)
 			if cell = 0
@@ -137,7 +137,7 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
-	if col mod 2 <> 0
+	if isPair(col) = 0
 		drawCell(lin, col - 1)
 		drawCell(lin, col + 1)
 		if checkVerticalMovement(0) = 1
