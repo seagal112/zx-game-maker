@@ -167,7 +167,6 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 			end if
 		end if
 	end if
-	NIRVANAhalt()
 	' if isColPair = 0
 	' 	NIRVANAfillT(1, lin, col)
 	' 	NIRVANAfillT(1, lin, col - 1)
@@ -178,12 +177,10 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 end sub
 
 sub drawSprites(force as ubyte)
-	if checkMovement(0) or force = 1
-		drawing = 1
-		NIRVANAhalt()
-		NIRVANAspriteT(0, getNewSpriteStateTile(0), getNewSpriteStateLin(0), getNewSpriteStateCol(0))
-		restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
-		updateOldSpriteState(0)
-	end if
+	drawing = 1
+	NIRVANAhalt()
+	NIRVANAspriteT(0, getNewSpriteStateTile(0), getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+	restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
+	updateOldSpriteState(0)
 	drawing = 0
 END SUB
