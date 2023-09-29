@@ -103,7 +103,7 @@ sub gravity()
 			updateState(0, getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
 			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 			if sprite
-				killEnemy(sprite, isPair(getNewSpriteStateCol(0)), 1)
+				killEnemy(sprite, 1)
 				startJumping()
 				burnToClean = sprite
 			end if
@@ -176,26 +176,30 @@ sub removePlayer()
 end sub
 
 sub checkItemContact()
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+	dim sprite as UBYTE = isAnItem(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 
-	if tile = 18
+	if sprite <> 0
 		incrementItems()
+		resetItems()
+		killEnemy(sprite, 1)
 	end if
 end sub
 
 sub checkKeyContact()
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+	dim sprite as UBYTE = isAKey(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
 
-	if tile = 19
+	if sprite <> 0
 		incrementKeys()
+		resetKeys()
+		killEnemy(sprite, 1)
 	end if
 end sub
 
 sub protaMovement()
 	if drawing = 0
 		keyboardListen()
-		' checkItemContact()
-		' checkKeyContact()
+		checkItemContact()
+		checkKeyContact()
 		checkIsJumping()
 		gravity()
 	end if

@@ -1,4 +1,16 @@
+Dim currentLife as UBYTE = 100
+Dim currentKeys as UBYTE = 0
+Dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
+Dim currentScreen as UBYTE = 0
+
+dim key_lin as ubyte = 0
+dim key_col as ubyte = 0
+dim key_sprite as ubyte = 0
+
+dim item_lin as ubyte = 0
+dim item_col as ubyte = 0
+dim item_sprite as ubyte = 0
 
 #include "nirvana+.bas"
 #include "const.bas"
@@ -34,10 +46,12 @@ playGame:
     redrawScreen()
     ' musicStart()
     initProta()
-    drawSprites(1)
+    drawSprites()
+    setScreenElements()
     do
         protaMovement()
-        drawSprites(0)
+        moveEnemies()
+        drawSprites()
         checkMoveScreen()
         checkRemainLife()
     loop
@@ -94,4 +108,16 @@ end sub
 sub debugB(value as UBYTE)
     PRINT AT 0, 30; " "
     PRINT AT 0, 30; value
+end sub
+
+sub resetItems()
+    item_lin = 0
+    item_col = 0
+    item_sprite = 0
+end sub
+
+sub resetKeys()
+    key_lin = 0
+    key_col = 0
+    key_sprite = 0
 end sub

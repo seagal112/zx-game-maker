@@ -25,24 +25,36 @@ function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
-    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, ENEMY_ALIVE) = 1 and enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_KEY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
-            return enemies(currentScreen, key, ENEMY_SPRITE)
-        end if
-    next key
-	return 0
+    if lin = key_lin and col = key_col
+        return key_sprite
+	else
+        return 0
+    end if
 end function
 
 function isAnItem(lin as UBYTE, col as UBYTE) as UBYTE
-    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, ENEMY_ALIVE) = 1 and enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ITEM and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
-            return enemies(currentScreen, key, ENEMY_SPRITE)
-        end if
-    next key
-	return 0
+    if lin = item_lin and col = item_col
+        return item_sprite
+    else
+        return 0
+    end if
 end function
 
-sub moveEnemies(isColPair as Ubyte)
+sub setScreenElements()
+    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
+        if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_KEY and enemies(currentScreen, key, ENEMY_ALIVE) = 1
+            key_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
+            key_col = enemies(currentScreen, key, ENEMY_COL_INI)
+            key_sprite = enemies(currentScreen, key, ENEMY_SPRITE)
+        else if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ITEM and enemies(currentScreen, key, ENEMY_ALIVE) = 1
+            item_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
+            item_col = enemies(currentScreen, key, ENEMY_COL_INI)
+            item_sprite = enemies(currentScreen, key, ENEMY_SPRITE)
+        end if
+    next
+end sub
+
+sub moveEnemies()
     ' if framec bAND %10
     '     return
     ' end if
@@ -84,34 +96,34 @@ sub moveEnemies(isColPair as Ubyte)
                     damageSound()
                 end if
 
-                drawToScr(enemyLin, enemyCol, isColPair)
-                NIRVANAspriteT(1, tile, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL))
+                updateState(enemyId + 1, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, 0)
             end if
             counter = counter + 1
         end if
     next enemyId
 end sub
 
-sub killEnemy(enemyToKill as Ubyte, isColPair as Ubyte, burst as Ubyte)
+sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     
     enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
-    if burst
-        NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
-    else
-        NIRVANAspriteT(enemyToKill, 29, 0, 0)
-        drawToScr(lin, col, isColPair)
-    end if
-    'killEnemySound()
+    updateState(enemyToKill, 0, 0, 29, 0)
+    ' if burst
+    '     NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
+    ' else
+    '     NIRVANAspriteT(enemyToKill, 29, 0, 0)
+    '     restoreScr(lin, col)
+    ' end if
+    killEnemySound()
 end sub
 
-sub cleanBurst(enemyToKill as Ubyte, isColPair as Ubyte)
+sub cleanBurst(enemyToKill as Ubyte)
     dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
 
     NIRVANAspriteT(enemyToKill, 29, 0, 0)
-    drawToScr(lin, col, isColPair)
+    restoreScr(lin, col)
 end sub
 
 sub enemiesDraw(delete as ubyte)

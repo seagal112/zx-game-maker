@@ -3,11 +3,6 @@
 CONST screenHeight AS UBYTE = 8
 CONST screenWidth AS UBYTE = 16
 CONST screenCount AS UBYTE = 2
-
-Dim currentScreen as UBYTE = 0
-Dim currentLife as UBYTE = 100
-Dim currentKeys as UBYTE = 0
-Dim currentItems as UBYTE = 0
 dim cell as ubyte = 0
 dim drawing as ubyte = 0
 
@@ -141,9 +136,10 @@ sub moveToScreen(direction as Ubyte)
 		startJumping()
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
-	drawSprites(1)
+	drawSprites()
 	updateOldSpriteState(0)
 	redrawScreen()
+    setScreenElements()
 end sub
 
 sub restoreScr(lin as UBYTE, col as UBYTE)
@@ -176,11 +172,17 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 	' end if
 end sub
 
-sub drawSprites(force as ubyte)
+sub drawSprites()
 	drawing = 1
-	NIRVANAhalt()
-	NIRVANAspriteT(0, getNewSpriteStateTile(0), getNewSpriteStateLin(0), getNewSpriteStateCol(0))
-	restoreScr(getOldSpriteStateLin(0), getOldSpriteStateCol(0))
-	updateOldSpriteState(0)
+	for key = 0 to 7
+		if getNewSpriteStateTile(key) <> 0
+			if key mod 2 = 0
+				NIRVANAhalt()
+			end if
+			NIRVANAspriteT(key, getNewSpriteStateTile(key), getNewSpriteStateLin(key), getNewSpriteStateCol(key))
+			restoreScr(getOldSpriteStateLin(key), getOldSpriteStateCol(key))
+			updateOldSpriteState(key)
+		end if
+	next
 	drawing = 0
 END SUB
