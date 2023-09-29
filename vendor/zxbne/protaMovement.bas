@@ -15,17 +15,10 @@ function isSolidTile(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 function canMoveLeft() as UBYTE
-	if getNewSpriteStateCol(0) mod 2 = 0 = 0
-		return getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) - 1) <> 1
-	end if
-	
 	return getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0)) <> 1
 end function
 
 function canMoveRight() as UBYTE
-	if getNewSpriteStateCol(0) mod 2 = 0 = 0
-		return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
-	end if
 	return getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), getOldSpriteStateCol(0) + 2) <> 1
 end function
 
@@ -36,7 +29,7 @@ function underSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0 = 0
+		if getNewSpriteStateCol(0) mod 2 = 0
 			return 0
 		end if
 
@@ -57,7 +50,7 @@ function onTheSolidTile() as UBYTE
 		landed = 1
 		return 1
 	else
-		if getNewSpriteStateCol(0) mod 2 = 0 = 0
+		if getNewSpriteStateCol(0) mod 2 = 0
 			return 0
 		end if
 
