@@ -98,7 +98,7 @@
    </properties>
    <point/>
   </object>
-  <object id="22" name="enemy_1" type="enemy" gid="61" x="368" y="240" width="16" height="16">
+  <object id="22" name="enemy_1" type="enemy" gid="61" x="320" y="240" width="16" height="16">
    <properties>
     <property name="end" type="object" value="9"/>
    </properties>
