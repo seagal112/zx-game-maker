@@ -89,13 +89,13 @@ sub moveEnemies()
                     end if
                 end if
 
-                protaLin = PEEK SPRITELIN(0)
-                protaCol = PEEK SPRITECOL(0)
+                debugA(PROTA_SPRITE)
+                protaLin = PEEK SPRITELIN(PROTA_SPRITE)
+                protaCol = PEEK SPRITECOL(PROTA_SPRITE)
                 if (protaLin = enemyLin and protaCol = enemyCol)
                     decrementLife()
                     damageSound()
                 end if
-
                 updateState(enemyId + 1, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, 0)
             end if
             counter = counter + 1

@@ -123,21 +123,21 @@ end sub
 sub moveToScreen(direction as Ubyte)
 	removeAllObjects()
 	if direction = 6
-		saveNewSpriteState(0, getNewSpriteStateLin(0), 0, getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+		saveNewSpriteState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), 0, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + 1
 	elseif direction = 4
-		saveNewSpriteState(0, getNewSpriteStateLin(0), 30, getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+		saveNewSpriteState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), 30, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		currentScreen = currentScreen - 1
 	elseif direction = 2
-		saveNewSpriteState(0, 0, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+		saveNewSpriteState(PROTA_SPRITE, 0, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		saveNewSpriteState(0, MAX_LINE, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+		saveNewSpriteState(PROTA_SPRITE, MAX_LINE, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		startJumping()
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 	drawSprites()
-	updateOldSpriteState(0)
+	updateOldSpriteState(PROTA_SPRITE)
 	redrawScreen()
     setScreenElements()
 end sub
@@ -146,8 +146,8 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 	if isPair(col) = 0
 		drawCell(lin, col - 1)
 		drawCell(lin, col + 1)
-		if checkVerticalMovement(0) = 1
-			if newSpriteStateDirectionIsRight(0)
+		if checkVerticalMovement(PROTA_SPRITE) = 1
+			if newSpriteStateDirectionIsRight(PROTA_SPRITE)
 				drawCell(lin, col - 3)
 			else
 				drawCell(lin, col + 3)
@@ -155,8 +155,8 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 		end if
 	else
 		drawCell(lin, col)
-		if checkVerticalMovement(0) = 1
-			if newSpriteStateDirectionIsRight(0)
+		if checkVerticalMovement(PROTA_SPRITE) = 1
+			if newSpriteStateDirectionIsRight(PROTA_SPRITE)
 				drawCell(lin, col - 2)
 			else
 				drawCell(lin, col + 2)

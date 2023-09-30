@@ -5,11 +5,11 @@ dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 16
 
 function canMoveLeft() as UBYTE
-	dim col as ubyte = getOldSpriteStateCol(0)
+	dim col as ubyte = getOldSpriteStateCol(PROTA_SPRITE)
 	if isPair(col) = 0
 		col = col + 1
 	end if
-	if getOldSpriteStateCol(0) > 0 AND isSolidTile(getOldSpriteStateLin(0), col - 2) <> 1
+	if getOldSpriteStateCol(PROTA_SPRITE) > 0 AND isSolidTile(getOldSpriteStateLin(PROTA_SPRITE), col - 2) <> 1
 		return 1
 	else
 		return 0
@@ -17,11 +17,11 @@ function canMoveLeft() as UBYTE
 end function
 
 function canMoveRight() as UBYTE
-	dim col as ubyte = getOldSpriteStateCol(0)
+	dim col as ubyte = getOldSpriteStateCol(PROTA_SPRITE)
 	if isPair(col) = 0
 		col = col - 1
 	end if
-	if getOldSpriteStateCol(0) < 30 AND isSolidTile(getOldSpriteStateLin(0), col + 2) <> 1
+	if getOldSpriteStateCol(PROTA_SPRITE) < 30 AND isSolidTile(getOldSpriteStateLin(PROTA_SPRITE), col + 2) <> 1
 		return 1
 	else
 		return 0
@@ -29,18 +29,18 @@ function canMoveRight() as UBYTE
 end function
 
 function underSolidTile() as UBYTE
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0))
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) - yStepSize, getNewSpriteStateCol(PROTA_SPRITE))
 
 	if tile = 1 OR tile = 2
 		landed = 1
 		return 1
 	else
-		if isPair(getNewSpriteStateCol(0)) = 1
+		if isPair(getNewSpriteStateCol(PROTA_SPRITE)) = 1
 			return 0
 		end if
 
-		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0) - 1)
-		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) - yStepSize, getNewSpriteStateCol(0) + 1)
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) - yStepSize, getNewSpriteStateCol(PROTA_SPRITE) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) - yStepSize, getNewSpriteStateCol(PROTA_SPRITE) + 1)
 		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
 			return 1
 		else
@@ -50,7 +50,7 @@ function underSolidTile() as UBYTE
 end function
 
 function onTheSolidTile() as UBYTE
-	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0))
+	dim tile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) + yStepSize, getNewSpriteStateCol(PROTA_SPRITE))
 
 	if tile = 1 OR tile = 2
 		landed = 1
@@ -60,8 +60,8 @@ function onTheSolidTile() as UBYTE
 			return 0
 		end if
 
-		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0) - 1)
-		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0) + 1)
+		dim preTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) + yStepSize, getNewSpriteStateCol(PROTA_SPRITE) - 1)
+		dim postTile as UBYTE = getCellByNirvanaPosition(getNewSpriteStateLin(PROTA_SPRITE) + yStepSize, getNewSpriteStateCol(PROTA_SPRITE) + 1)
 		if preTile = 1 OR preTile = 2 OR postTile = 1 OR postTile = 2
 			landed = 1
 			return 1
@@ -73,12 +73,12 @@ end function
 
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
-		if getNewSpriteStateLin(0) = 0
+		if getNewSpriteStateLin(PROTA_SPRITE) = 0
 			moveScreen = 8
 		elseif jumpCurrentKey > 0 and onTheSolidTile() = 1
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount AND underSolidTile() = 0
-			updateState(0, getNewSpriteStateLin(0) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
+			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
 			stopJumping()
@@ -100,8 +100,8 @@ sub gravity()
 		if getNewSpriteStateLin(0) = MAX_LINE
 			moveScreen = 2
 		else
-			updateState(0, getNewSpriteStateLin(0) + yStepSize, getNewSpriteStateCol(0), getNewSpriteStateTile(0), getNewSpriteStateDirection(0))
-			sprite = isAnEnemy(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) + yStepSize, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+			sprite = isAnEnemy(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
 			if sprite
 				killEnemy(sprite, 1)
 				startJumping()
@@ -112,22 +112,22 @@ sub gravity()
 end sub
 
 function getNextFrameRunning() as UBYTE
-	if (getNewSpriteStateDirection(0))
-		if getOldSpriteStateTile(0) = 50
+	if (getNewSpriteStateDirection(PROTA_SPRITE))
+		if getOldSpriteStateTile(PROTA_SPRITE) = 50
 			return 51
-        elseif getOldSpriteStateTile(0) = 51
+        elseif getOldSpriteStateTile(PROTA_SPRITE) = 51
 			return 52
-        elseif getOldSpriteStateTile(0) = 52
+        elseif getOldSpriteStateTile(PROTA_SPRITE) = 52
 			return 53
 		else
 			return 50
 		end if
 	else
-        if getOldSpriteStateTile(0) = 54
+        if getOldSpriteStateTile(PROTA_SPRITE) = 54
             return 55
-        elseif getOldSpriteStateTile(0) = 55
+        elseif getOldSpriteStateTile(PROTA_SPRITE) = 55
             return 56
-        elseif getOldSpriteStateTile(0) = 56
+        elseif getOldSpriteStateTile(PROTA_SPRITE) = 56
             return 57
         else
             return 54
@@ -138,17 +138,17 @@ end function
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if canMoveLeft()
-			updateState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0) - 1, getNextFrameRunning(), 0)
+			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) - 1, getNextFrameRunning(), 0)
         end if
-		if onFirstColumn(0)
+		if onFirstColumn(PROTA_SPRITE)
 			moveScreen = 4
 		end if
     END IF
     if MultiKeys(KEYP)<>0
 		if canMoveRight()
-			updateState(0, getNewSpriteStateLin(0), getNewSpriteStateCol(0) + 1, getNextFrameRunning(), 1)
+			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) + 1, getNextFrameRunning(), 1)
         end if
-		if onLastColumn(0)
+		if onLastColumn(PROTA_SPRITE)
 			moveScreen = 6
 		end if
     END IF
@@ -164,7 +164,7 @@ sub keyboardListen()
 end sub
 
 function getNextFrameJumpingFalling() as UBYTE
-	if (getNewSpriteStateDirection(0))
+	if (getNewSpriteStateDirection(PROTA_SPRITE))
 		return 58
 	else
 		return 59
@@ -172,11 +172,11 @@ function getNextFrameJumpingFalling() as UBYTE
 end function
 
 sub removePlayer()
-	NIRVANAspriteT(0, 29, 0, 0)
+	NIRVANAspriteT(PROTA_SPRITE, 29, 0, 0)
 end sub
 
 sub checkItemContact()
-	dim sprite as UBYTE = isAnItem(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+	dim sprite as UBYTE = isAnItem(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
 
 	if sprite <> 0
 		incrementItems()
@@ -186,7 +186,7 @@ sub checkItemContact()
 end sub
 
 sub checkKeyContact()
-	dim sprite as UBYTE = isAKey(getNewSpriteStateLin(0), getNewSpriteStateCol(0))
+	dim sprite as UBYTE = isAKey(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
 
 	if sprite <> 0
 		incrementKeys()

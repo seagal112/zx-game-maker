@@ -38,8 +38,8 @@ function startJumping()
 end function
 
 sub initProta()
-    saveOldSpriteState(0, MAX_LINE, INITIAL_COL, 50, 1)
-    saveNewSpriteState(0, MAX_LINE, INITIAL_COL, 50, 1)
+    saveOldSpriteState(PROTA_SPRITE, MAX_LINE, INITIAL_COL, 50, 1)
+    saveNewSpriteState(PROTA_SPRITE, MAX_LINE, INITIAL_COL, 50, 1)
 end sub
 
 sub saveOldSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
