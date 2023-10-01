@@ -93,8 +93,8 @@ sub moveEnemies()
                     end if
                 end if
 
-                protaLin = getOldSpriteStateLin(PROTA_SPRITE)
-                protaCol = getOldSpriteStateCol(PROTA_SPRITE)
+                protaLin = PEEK SPRITELIN(PROTA_SPRITE)
+                protaCol = PEEK SPRITECOL(PROTA_SPRITE)
                 if protaLin = enemyLin and protaCol = enemyCol
                     protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
                     decrementLife()
