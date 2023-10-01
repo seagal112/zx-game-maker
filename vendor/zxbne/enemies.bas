@@ -96,7 +96,7 @@ sub moveEnemies()
                 protaLin = getOldSpriteStateLin(PROTA_SPRITE)
                 protaCol = getOldSpriteStateCol(PROTA_SPRITE)
                 if protaLin = enemyLin and protaCol = enemyCol
-                    protaBounce()
+                    protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
                     decrementLife()
                     damageSound()
                 end if

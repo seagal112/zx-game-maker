@@ -141,10 +141,10 @@ sub updateState(sprite as ubyte, lin as ubyte, col as ubyte, frameTile as ubyte,
     saveNewSpriteState(sprite, lin, col, frameTile, directionRight)
 end sub
 
-sub protaBounce()
-    if newSpriteStateDirectionIsRight(PROTA_SPRITE)
-        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) - PROTA_BOUNCE_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
-    else
+sub protaBounce(toRight as ubyte)
+    if toRight = 1
         updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) + PROTA_BOUNCE_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+    else
+        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) - PROTA_BOUNCE_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
     end if
 end sub
