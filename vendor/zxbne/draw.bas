@@ -64,17 +64,6 @@ SUB drawCell(lin as UBYTE, col as UBYTE)
 	end if
 end sub
 
-sub drawToScr(lin as UBYTE, col as UBYTE, isColPair AS UBYTE)
-	NIRVANAhalt()
-	' drawCell(lin, col)
-	if isColPair
-		drawCell(lin, col)
-	else
-		drawCell(lin, col - 1)
-		drawCell(lin, col + 1)
-	end if
-end sub
-
 sub decrementLife()
 	if (currentLife = 0)
 		return
@@ -139,6 +128,7 @@ sub moveToScreen(direction as Ubyte)
 	drawSprites()
 	updateOldSpriteState(PROTA_SPRITE)
 	redrawScreen()
+	resetItemsAndKeys()
     setScreenElements()
 end sub
 
@@ -163,13 +153,6 @@ sub restoreScr(lin as UBYTE, col as UBYTE)
 			end if
 		end if
 	end if
-	' if isColPair = 0
-	' 	NIRVANAfillT(1, lin, col)
-	' 	NIRVANAfillT(1, lin, col - 1)
-	' else
-	' 	NIRVANAfillT(2, lin, col - 1)
-	' 	NIRVANAfillT(2, lin, col + 1)
-	' end if
 end sub
 
 sub drawSprites()

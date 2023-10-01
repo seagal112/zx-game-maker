@@ -3,6 +3,7 @@ Dim currentKeys as UBYTE = 0
 Dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
 Dim currentScreen as UBYTE = 0
+dim animateEnemies as ubyte = 1
 
 dim key_lin as ubyte = 0
 dim key_col as ubyte = 0
@@ -34,8 +35,7 @@ load "" CODE ' Load music
 menu:
     stopMusicAndNirvana()
     dzx0Standard(@titleScreen, $4000)
-    do
-    loop while inkey$ = ""
+    pauseUntilPressKey()
     currentScreen = INITIAL_SCREEN
 
 playGame:
@@ -58,9 +58,9 @@ playGame:
 
 ending:
     stopMusicAndNirvana()
-    dzx0Standard(@endingScreen, $4000)
-    do
-    loop while inkey$ = ""
+    ' dzx0Standard(@endingScreen, $4000)
+    ' do
+    ' loop while inkey$ = ""
     go to menu
 
 
@@ -95,10 +95,10 @@ titleScreen:
         incbin "output/title.png.scr.zx0"
     end asm
 
-endingScreen:
-    asm
-        incbin "output/ending.png.scr.zx0"
-    end asm
+' endingScreen:
+'     asm
+'         incbin "output/ending.png.scr.zx0"
+'     end asm
 
 sub debugA(value as UBYTE)
     PRINT AT 0, 28; "----"
@@ -120,4 +120,9 @@ sub resetKeys()
     key_lin = 0
     key_col = 0
     key_sprite = 0
+end sub
+
+sub resetItemsAndKeys()
+    resetItems()
+    resetKeys()
 end sub

@@ -5,3 +5,8 @@ function isPair(number as ubyte) as ubyte
         return 0
     end if
 end function
+
+sub pauseUntilPressKey()
+    WHILE INKEY$<>"":WEND
+    WHILE INKEY$="":WEND
+end sub

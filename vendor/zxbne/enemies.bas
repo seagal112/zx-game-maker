@@ -59,6 +59,10 @@ sub moveEnemies()
     '     return
     ' end if
 
+    if animateEnemies <> 1
+        return
+    end if
+
     dim counter as ubyte = 0
     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
@@ -89,10 +93,10 @@ sub moveEnemies()
                     end if
                 end if
 
-                debugA(PROTA_SPRITE)
-                protaLin = PEEK SPRITELIN(PROTA_SPRITE)
-                protaCol = PEEK SPRITECOL(PROTA_SPRITE)
-                if (protaLin = enemyLin and protaCol = enemyCol)
+                protaLin = getOldSpriteStateLin(PROTA_SPRITE)
+                protaCol = getOldSpriteStateCol(PROTA_SPRITE)
+                if protaLin = enemyLin and protaCol = enemyCol
+                    protaBounce()
                     decrementLife()
                     damageSound()
                 end if
@@ -144,11 +148,14 @@ sub enemiesDraw(delete as ubyte)
 end sub
 
 sub removeAllObjects()
-    for i = 1 to 6
+    animateEnemies = 0
+    for i = 0 to 5
         dim col as UBYTE = PEEK SPRITECOL(i)
         dim lin as UBYTE = PEEK SPRITELIN(i)
-    
-        NIRVANAspriteT(i, 28, 0, 0)
-        drawToScr(lin, col, isColPair)
+
+        updateState(i, 0, 0, getNewSpriteStateTile(i), 0)
+        NIRVANAspriteT(i, 29, 0, 0)
+        restoreScr(lin, col)
 	next i
+    animateEnemies = 1
 end sub
