@@ -20,8 +20,8 @@ sub mapDraw()
 		    cell = getCell(row, col)
 			if cell = 1 or cell = 2
 				SetTiledObject(4, 2, 2, 52, x, y)
-			else
-				SetTiledObject(8, 2, 2, 61, x, y)
+			' else
+			' 	SetTiledObject(8, 2, 2, 61, x, y)
 			end if
 			x = x + 2
 			if x = 32
