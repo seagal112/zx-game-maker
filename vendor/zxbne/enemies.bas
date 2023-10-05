@@ -54,62 +54,62 @@ sub setScreenElements()
     next
 end sub
 
-sub moveEnemies()
-    ' if framec bAND %10
-    '     return
-    ' end if
+' sub moveEnemies()
+'     ' if framec bAND %10
+'     '     return
+'     ' end if
 
-    if animateEnemies <> 1
-        return
-    end if
+'     if animateEnemies <> 1
+'         return
+'     end if
 
-    dim counter as ubyte = 0
-    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
-            continue for
-        end if
-        if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
-            continue for
-        end if
-        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
-            if counter < 8
-                dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
-                dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, enemyId, ENEMY_SPRITE))
-                dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, enemyId, ENEMY_SPRITE))
+'     dim counter as ubyte = 0
+'     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+'         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
+'             continue for
+'         end if
+'         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
+'             continue for
+'         end if
+'         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
+'             if counter < 8
+'                 dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
+'                 dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, enemyId, ENEMY_SPRITE))
+'                 dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, enemyId, ENEMY_SPRITE))
 
-                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
-                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 0
-                elseif enemies(currentScreen, enemyId, ENEMY_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
-                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
-                end if
+'                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
+'                     enemies(currentScreen, enemyId, ENEMY_RIGHT) = 0
+'                 elseif enemies(currentScreen, enemyId, ENEMY_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
+'                     enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
+'                 end if
                     
-                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
-                    if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
-                    end if
-                else
-                    if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
-                    end if
-                end if
+'                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
+'                     if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
+'                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
+'                     end if
+'                 else
+'                     if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
+'                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
+'                     end if
+'                 end if
 
-                protaLin = PEEK SPRITELIN(PROTA_SPRITE)
-                protaCol = PEEK SPRITECOL(PROTA_SPRITE)
-                if protaLin = enemyLin and protaCol = enemyCol
-                    protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
-                    decrementLife()
-                    damageSound()
-                end if
-                updateState(enemyId + 1, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, 0)
-            end if
-            counter = counter + 1
-        end if
-    next enemyId
-end sub
+'                 protaLin = PEEK SPRITELIN(PROTA_SPRITE)
+'                 protaCol = PEEK SPRITECOL(PROTA_SPRITE)
+'                 if protaLin = enemyLin and protaCol = enemyCol
+'                     protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
+'                     decrementLife()
+'                     damageSound()
+'                 end if
+'                 updateState(enemyId + 1, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, 0)
+'             end if
+'             counter = counter + 1
+'         end if
+'     next enemyId
+' end sub
 
 sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
-    dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
-    dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
+    ' dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
+    ' dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     
     enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
     updateState(enemyToKill, 0, 0, 29, 0)
@@ -122,40 +122,32 @@ sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
     killEnemySound()
 end sub
 
-sub cleanBurst(enemyToKill as Ubyte)
-    dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
-    dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
+' sub enemiesDraw(delete as ubyte)
+'     dim tile as Ubyte = 29
+' 	for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
+'         if enemies(currentScreen, key, ENEMY_TILE) = 0
+'             continue for
+'         end if
+' 		if enemies(currentScreen, key, ENEMY_ALIVE) = 1 'In the screen and still live
+'             if delete = 1
+'                 tile = 29
+'             else
+'                 tile = enemies(currentScreen, key, ENEMY_TILE)
+'             end if
+'             NIRVANAspriteT(enemies(currentScreen, key, ENEMY_SPRITE), tile, enemies(currentScreen, key, ENEMY_CURRENT_LIN), enemies(currentScreen, key, ENEMY_CURRENT_COL))
+' 		end if
+' 	next key
+' end sub
 
-    NIRVANAspriteT(enemyToKill, 29, 0, 0)
-    restoreScr(lin, col)
-end sub
+' sub removeAllObjects()
+'     animateEnemies = 0
+'     for i = 0 to 5
+'         dim col as UBYTE = PEEK SPRITECOL(i)
+'         dim lin as UBYTE = PEEK SPRITELIN(i)
 
-sub enemiesDraw(delete as ubyte)
-    dim tile as Ubyte = 29
-	for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, ENEMY_TILE) = 0
-            continue for
-        end if
-		if enemies(currentScreen, key, ENEMY_ALIVE) = 1 'In the screen and still live
-            if delete = 1
-                tile = 29
-            else
-                tile = enemies(currentScreen, key, ENEMY_TILE)
-            end if
-            NIRVANAspriteT(enemies(currentScreen, key, ENEMY_SPRITE), tile, enemies(currentScreen, key, ENEMY_CURRENT_LIN), enemies(currentScreen, key, ENEMY_CURRENT_COL))
-		end if
-	next key
-end sub
-
-sub removeAllObjects()
-    animateEnemies = 0
-    for i = 0 to 5
-        dim col as UBYTE = PEEK SPRITECOL(i)
-        dim lin as UBYTE = PEEK SPRITELIN(i)
-
-        updateState(i, 0, 0, getNewSpriteStateTile(i), 0)
-        NIRVANAspriteT(i, 29, 0, 0)
-        restoreScr(lin, col)
-	next i
-    animateEnemies = 1
-end sub
+'         updateState(i, 0, 0, getNewSpriteStateTile(i), 0)
+'         ' NIRVANAspriteT(i, 29, 0, 0)
+'         restoreScr(lin, col)
+' 	next i
+'     animateEnemies = 1
+' end sub

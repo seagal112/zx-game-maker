@@ -36,7 +36,7 @@ for layer in data['layers']:
                 mapX = jdx % screen['width']
                 mapY = jdx // screen['width']
 
-                screens[idx][mapY][mapX % screenWidth] = cell
+                screens[idx][mapY][mapX % screenWidth] = cell - 1
 
         for screen in screens:
             mapStr += '\t{ _\n'

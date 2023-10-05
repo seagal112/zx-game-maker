@@ -17,8 +17,8 @@ screens-build:
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
-	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -ta /app/main.bas
-	cat vendor/zxbne/loader.tap main.tap assets/music.tap > output/${PROJECT_NAME}.tap
-	rm -f main.tap
+	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -tBa /app/main.bas
+	# cat vendor/zxbne/loader.tap main.tap assets/music.tap > output/${PROJECT_NAME}.tap
+	mv -f main.tap output/${PROJECT_NAME}.tap
 run:
 	fuse --machine=plus2a output/${PROJECT_NAME}.tap

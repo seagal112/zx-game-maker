@@ -13,7 +13,30 @@ dim item_lin as ubyte = 0
 dim item_col as ubyte = 0
 dim item_sprite as ubyte = 0
 
-#include "nirvana+.bas"
+' #include "nirvana+.bas"
+#include "GuSprites.zxbas"
+
+InitGFXLib()
+
+Dim tileSet(11,7) as uByte => { _ 
+    {0, 0, 0, 0, 0, 0, 0, 0}, _
+    {0, 0, 0, 0, 0, 0, 0, 0}, _
+    {0, 0, 0, 0, 0, 0, 0, 0}, _
+    {0, 0, 0, 0, 0, 0, 0, 0}, _
+    {255, 255, 192, 192, 192, 192, 192, 192}, _
+    {192, 192, 192, 192, 192, 192, 255, 255}, _
+    {255, 255, 3, 3, 3, 3, 3, 3}, _
+    {3, 3, 3, 3, 3, 3, 255, 255}, _
+    {255, 128, 128, 128, 128, 128, 128, 128}, _
+    {128, 128, 128, 128, 128, 128, 128, 255}, _
+    {255, 1, 1, 1, 1, 1, 1, 1}, _
+    {1, 1, 1, 1, 1, 1, 1, 255} _
+}
+
+SetTileset(@tileSet)
+
+#include "../../assets/sprites.bas"
+
 #include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
@@ -27,37 +50,30 @@ dim item_sprite as ubyte = 0
 #include "music.bas"
 #include <zx0.bas>
 
-NIRVANAtiles(@btiles)
-
-load "" CODE ' Load vtplayer
-load "" CODE ' Load music
-
 menu:
-    stopMusicAndNirvana()
+    ' stopMusicAndNirvana()
     dzx0Standard(@titleScreen, $4000)
     pauseUntilPressKey()
     currentScreen = INITIAL_SCREEN
 
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    NIRVANAstart()
     currentLife = INITIAL_LIFE
     currentKeys = 0
-    redrawScreen()
-    ' musicStart()
     initProta()
+    mapDraw()
     drawSprites()
-    setScreenElements()
+    ' setScreenElements()
     do
         protaMovement()
-        moveEnemies()
+        ' moveEnemies()
         drawSprites()
         checkMoveScreen()
-        checkRemainLife()
+        ' checkRemainLife()
     loop
 
 ending:
-    stopMusicAndNirvana()
+    ' stopMusicAndNirvana()
     ' dzx0Standard(@endingScreen, $4000)
     ' do
     ' loop while inkey$ = ""
@@ -66,14 +82,13 @@ ending:
 
 sub stopMusicAndNirvana()
     musicStop()
-    NIRVANAstop()
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
 end sub
 
 sub checkRemainLife()
     if currentLife = 0
         removePlayer()
-        enemiesDraw(1)
+        ' enemiesDraw(1)
         go to ending
     end if
 end sub
@@ -85,10 +100,10 @@ sub checkMoveScreen()
     end if
 end sub
 
-btiles:
-    asm
-        incbin "assets/tiles.btile"
-    end asm
+' btiles:
+'     asm
+'         incbin "assets/tiles.btile"
+'     end asm
 
 titleScreen:
     asm
@@ -101,13 +116,23 @@ titleScreen:
 '     end asm
 
 sub debugA(value as UBYTE)
-    PRINT AT 0, 28; "----"
-    PRINT AT 0, 28; value
+    PRINT AT 18, 10; "----"
+    PRINT AT 18, 10; value
 end sub
 
 sub debugB(value as UBYTE)
-    PRINT AT 0, 30; " "
-    PRINT AT 0, 30; value
+    PRINT AT 18, 15; "  "
+    PRINT AT 18, 15; value
+end sub
+
+sub debugC(value as UBYTE)
+    PRINT AT 18, 20; "  "
+    PRINT AT 18, 20; value
+end sub
+
+sub debugD(value as UBYTE)
+    PRINT AT 18, 25; "  "
+    PRINT AT 18, 25; value
 end sub
 
 sub resetItems()

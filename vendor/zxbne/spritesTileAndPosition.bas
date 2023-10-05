@@ -21,12 +21,16 @@ DIM spritesLinColAndTile1(7,3) as ubyte => { _
 }
 
 const jumpStopValue as ubyte = 255
-const jumpStepsCount as ubyte = 2
+const jumpStepsCount as ubyte = 4
 dim jumpCurrentKey as ubyte = jumpStopValue
-dim jumpArray(jumpStepsCount - 1) AS byte = {-16, -16}
+dim jumpArray(jumpStepsCount - 1) AS byte = {-1, -2, -3, -4}
 
 function isJumping() as ubyte
-    return jumpCurrentKey <> jumpStopValue
+    if jumpCurrentKey <> jumpStopValue
+        return 1
+    else
+        return 0
+    end if
 end function
 
 function stopJumping()
@@ -38,8 +42,8 @@ function startJumping()
 end function
 
 sub initProta()
-    saveOldSpriteState(PROTA_SPRITE, MAX_LINE, INITIAL_COL, 50, 1)
-    saveNewSpriteState(PROTA_SPRITE, MAX_LINE, INITIAL_COL, 50, 1)
+    saveOldSpriteState(PROTA_SPRITE, 24, 34, 0, 1)
+    saveNewSpriteState(PROTA_SPRITE, 24, 34, 0, 1)
 end sub
 
 sub saveOldSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
@@ -121,7 +125,7 @@ sub updateOldSpriteState(sprite)
 end sub
 
 function onLastColumn(sprite) as ubyte
-    if getNewSpriteStateCol(sprite) = 30
+    if getNewSpriteStateCol(sprite) = 60
         return 1
     else
         return 0
