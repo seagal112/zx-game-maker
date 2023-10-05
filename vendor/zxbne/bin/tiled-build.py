@@ -79,10 +79,10 @@ for layer in data['layers']:
                 objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,
-                    'linIni': str(object['y'] // tileHeight % screenHeight * 16),
-                    'linEnd': str(object['y'] // tileHeight % screenHeight * 16),
-                    'colIni': str(object['x'] // tileWidth % screenWidth * 2),
-                    'colEnd': str(object['x'] // tileWidth % screenWidth * 2),
+                    'linIni': str(object['y'] // tileHeight % screenHeight * 4 - 4),
+                    'linEnd': str(object['y'] // tileHeight % screenHeight * 4),
+                    'colIni': str(object['x'] // tileWidth % screenWidth * 4 - 4),
+                    'colEnd': str(object['x'] // tileWidth % screenWidth * 4),
                     'tile': str(object['gid'] - 1),
                     'type': type
                 }
@@ -91,8 +91,8 @@ for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if object['type'] == 'path':
-                objects[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 16)
-                objects[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 2)
+                objects[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 4 - 4)
+                objects[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 4)
 
 screenEnemies = defaultdict(dict)
 

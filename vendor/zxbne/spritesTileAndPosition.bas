@@ -42,8 +42,8 @@ function startJumping()
 end function
 
 sub initProta()
-    saveOldSpriteState(PROTA_SPRITE, 24, 34, 0, 1)
-    saveNewSpriteState(PROTA_SPRITE, 24, 34, 0, 1)
+    saveOldSpriteState(PROTA_SPRITE, 24, 10, 0, 1)
+    saveNewSpriteState(PROTA_SPRITE, 24, 10, 0, 1)
 end sub
 
 sub saveOldSpriteState(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
@@ -147,8 +147,8 @@ end sub
 
 sub protaBounce(toRight as ubyte)
     if toRight = 1
-        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) + PROTA_BOUNCE_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getNewSpriteStateCol(PROTA_SPRITE) + PROTA_BOUNCE_X_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
     else
-        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE) - PROTA_BOUNCE_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+        updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getNewSpriteStateCol(PROTA_SPRITE) - PROTA_BOUNCE_X_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
     end if
 end sub

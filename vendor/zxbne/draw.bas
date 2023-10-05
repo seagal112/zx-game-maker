@@ -20,6 +20,10 @@ sub mapDraw()
 		    cell = getCell(row, col)
 			if cell = 1 or cell = 2
 				SetTiledObject(4, 2, 2, 52, x, y)
+			elseif cell = 13
+				SetTiledObject(12, 2, 2, 104, x, y)
+			elseif cell = 3
+				SetTiledObject(16, 2, 2, 112, x, y)
 			' else
 			' 	SetTiledObject(8, 2, 2, 61, x, y)
 			end if
@@ -136,5 +140,10 @@ end sub
 
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getNewSpriteStateTile(PROTA_SPRITE)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateLin(PROTA_SPRITE))
+	if getNewSpriteStateDirection(0) = 1
+		Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+	else
+		Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+	end if
 	RenderFrame()
 END SUB

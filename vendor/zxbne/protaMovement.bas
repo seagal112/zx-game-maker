@@ -2,20 +2,7 @@
 
 dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
-dim yStepSize as ubyte = 1
-
-function checkNoSolidOffset(xOffset as ubyte, yOffset as ubyte) as ubyte
-	dim col as integer = getNewSpriteStateCol(PROTA_SPRITE)/2 + xOffset
-	dim lin as integer = getNewSpriteStateLin(PROTA_SPRITE)/2 + yOffset
-
-	dim tile as ubyte = GetTile(col, lin)
-
-	if isSolidTile(tile) <> 1
-		return 1
-	else
-		return 0
-	end if
-end function
+dim yStepSize as ubyte = 2
 
 function canMoveLeft() as UBYTE
 	dim col, lin0, lin1, x, y, prevY, nextY, module as integer
@@ -232,7 +219,7 @@ sub gravity()
 		else
 			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) + yStepSize, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 			sprite = isAnEnemy(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
-			if sprite
+			if sprite <> 10
 				killEnemy(sprite, 1)
 				startJumping()
 				burnToClean = sprite
@@ -291,10 +278,6 @@ function getNextFrameJumpingFalling() as UBYTE
 		return 59
     end if
 end function
-
-sub removePlayer()
-	' NIRVANAspriteT(PROTA_SPRITE, 29, 0, 0)
-end sub
 
 sub checkItemContact()
 	dim sprite as UBYTE = isAnItem(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))

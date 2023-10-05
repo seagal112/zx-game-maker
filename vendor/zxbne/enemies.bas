@@ -18,10 +18,10 @@ CONST OBJECT_TYPE_ITEM = 3
 function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
     for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
         if enemies(currentScreen, key, ENEMY_ALIVE) = 1 and enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ENEMY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
-            return enemies(currentScreen, key, ENEMY_SPRITE)
+            return key 'enemies(currentScreen, key, ENEMY_SPRITE)
         end if
     next key
-	return 0
+	return 10
 end function
 
 function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
@@ -54,64 +54,64 @@ sub setScreenElements()
     next
 end sub
 
-' sub moveEnemies()
-'     ' if framec bAND %10
-'     '     return
-'     ' end if
+sub moveEnemies()
+    ' if framec bAND %10
+    '     return
+    ' end if
 
-'     if animateEnemies <> 1
-'         return
-'     end if
+    if animateEnemies <> 1
+        return
+    end if
 
-'     dim counter as ubyte = 0
-'     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
-'         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
-'             continue for
-'         end if
-'         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
-'             continue for
-'         end if
-'         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
-'             if counter < 8
-'                 dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
-'                 dim enemyCol as UBYTE = PEEK SPRITECOL(enemies(currentScreen, enemyId, ENEMY_SPRITE))
-'                 dim enemyLin as UBYTE = PEEK SPRITELIN(enemies(currentScreen, enemyId, ENEMY_SPRITE))
+    dim counter as ubyte = 0
+    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+        if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
+            continue for
+        end if
+        if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
+            continue for
+        end if
+        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
+            if counter < 8
+                dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
+                dim enemyCol as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
+                dim enemyLin as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) 
 
-'                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
-'                     enemies(currentScreen, enemyId, ENEMY_RIGHT) = 0
-'                 elseif enemies(currentScreen, enemyId, ENEMY_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
-'                     enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
-'                 end if
+                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
+                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 0
+                elseif enemies(currentScreen, enemyId, ENEMY_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
+                    enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
+                end if
                     
-'                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
-'                     if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
-'                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
-'                     end if
-'                 else
-'                     if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
-'                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
-'                     end if
-'                 end if
+                if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
+                    if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
+                    end if
+                else
+                    if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
+                    end if
+                end if
 
-'                 protaLin = PEEK SPRITELIN(PROTA_SPRITE)
-'                 protaCol = PEEK SPRITECOL(PROTA_SPRITE)
-'                 if protaLin = enemyLin and protaCol = enemyCol
-'                     protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
-'                     decrementLife()
-'                     damageSound()
-'                 end if
-'                 updateState(enemyId + 1, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, 0)
-'             end if
-'             counter = counter + 1
-'         end if
-'     next enemyId
-' end sub
+                protaLin = getNewSpriteStateLin(PROTA_SPRITE)
+                protaCol = getNewSpriteStateCol(PROTA_SPRITE)
+                if protaLin = enemyLin and protaCol = enemyCol
+                    protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
+                    decrementLife()
+                    damageSound()
+                end if
+                updateState(enemyId, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_RIGHT))
+            end if
+            counter = counter + 1
+        end if
+    next enemyId
+end sub
 
 sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
     ' dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
     ' dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
-    
-    enemies(currentScreen, enemyToKill - 1, ENEMY_ALIVE) = 0
+    enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
+
     updateState(enemyToKill, 0, 0, 29, 0)
     ' if burst
     '     NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)

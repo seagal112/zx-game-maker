@@ -18,7 +18,7 @@ dim item_sprite as ubyte = 0
 
 InitGFXLib()
 
-Dim tileSet(11,7) as uByte => { _ 
+Dim tileSet(23,7) as uByte => { _ 
     {0, 0, 0, 0, 0, 0, 0, 0}, _
     {0, 0, 0, 0, 0, 0, 0, 0}, _
     {0, 0, 0, 0, 0, 0, 0, 0}, _
@@ -30,7 +30,19 @@ Dim tileSet(11,7) as uByte => { _
     {255, 128, 128, 128, 128, 128, 128, 128}, _
     {128, 128, 128, 128, 128, 128, 128, 255}, _
     {255, 1, 1, 1, 1, 1, 1, 1}, _
-    {1, 1, 1, 1, 1, 1, 1, 255} _
+    {1, 1, 1, 1, 1, 1, 1, 255}, _
+    {224, 224, 245, 245, 247, 247, 245, 245}, _
+    {245, 245, 245, 247, 247, 245, 224, 224}, _
+    {7, 7, 79, 79, 111, 111, 79, 79}, _
+    {79, 239, 111, 111, 79, 79, 7, 7}, _
+    {255, 255, 255, 255, 254, 254, 252, 240}, _
+    {128, 0, 0, 0, 0, 131, 195, 243}, _
+    {127, 63, 31, 15, 15, 7, 7, 7}, _
+    {7, 3, 3, 3, 135, 135, 143, 223}, _
+    {191, 135, 129, 224, 224, 224, 224, 192}, _
+    {128, 0, 0, 0, 4, 135, 199, 247}, _ 
+    {255, 255, 255, 63, 63, 31, 31, 15}, _
+    {15, 7, 7, 7, 7, 15, 15, 31} _
 }
 
 SetTileset(@tileSet)
@@ -62,11 +74,12 @@ playGame:
     currentKeys = 0
     initProta()
     mapDraw()
+    printLife()
     drawSprites()
-    ' setScreenElements()
+    setScreenElements()
     do
         protaMovement()
-        ' moveEnemies()
+        moveEnemies()
         drawSprites()
         checkMoveScreen()
         ' checkRemainLife()
@@ -87,7 +100,6 @@ end sub
 
 sub checkRemainLife()
     if currentLife = 0
-        removePlayer()
         ' enemiesDraw(1)
         go to ending
     end if
