@@ -1,4 +1,7 @@
-DIM spritesLinColAndTile0(7,3) as ubyte => { _
+const screenSpritesCount as ubyte = 8
+const spritesDataCount as ubyte = 4
+
+DIM spritesLinColAndTile0(screenSpritesCount - 1, spritesDataCount - 1) as ubyte => { _
     {0, 0, 0, 0}, _
     {0, 0, 0, 0}, _
     {0, 0, 0, 0}, _
@@ -9,7 +12,7 @@ DIM spritesLinColAndTile0(7,3) as ubyte => { _
     {0, 0, 0, 0} _
 }
 
-DIM spritesLinColAndTile1(7,3) as ubyte => { _
+DIM spritesLinColAndTile1(screenSpritesCount - 1, spritesDataCount - 1) as ubyte => { _
     {0, 0, 0, 0}, _
     {0, 0, 0, 0}, _
     {0, 0, 0, 0}, _
@@ -151,4 +154,13 @@ sub protaBounce(toRight as ubyte)
     else
         updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getNewSpriteStateCol(PROTA_SPRITE) - PROTA_BOUNCE_X_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
     end if
+end sub
+
+sub removeScreenObjectFromBuffer()
+    for i = 0 to 4
+        for j = 0 to spritesDataCount - 1
+            spritesLinColAndTile0(i, j) = 0
+            spritesLinColAndTile1(i, j) = 0
+        next j
+    next i
 end sub

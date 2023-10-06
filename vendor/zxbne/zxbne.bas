@@ -18,7 +18,7 @@ dim item_sprite as ubyte = 0
 
 InitGFXLib()
 
-Dim tileSet(23,7) as uByte => { _ 
+Dim tileSet(35,7) as uByte => { _ 
     {0, 0, 0, 0, 0, 0, 0, 0}, _
     {0, 0, 0, 0, 0, 0, 0, 0}, _
     {0, 0, 0, 0, 0, 0, 0, 0}, _
@@ -42,7 +42,19 @@ Dim tileSet(23,7) as uByte => { _
     {191, 135, 129, 224, 224, 224, 224, 192}, _
     {128, 0, 0, 0, 4, 135, 199, 247}, _ 
     {255, 255, 255, 63, 63, 31, 31, 15}, _
-    {15, 7, 7, 7, 7, 15, 15, 31} _
+    {15, 7, 7, 7, 7, 15, 15, 31}, _
+    {0, 0, 16, 0, 0, 32, 0, 0}, _
+    {0, 0, 32, 0, 2, 0, 0, 0}, _
+    {0, 0, 0, 16, 0, 0, 64, 0}, _
+    {0, 0, 0, 8, 0, 32, 0, 0}, _
+    {0, 0, 85, 170, 87, 153, 81, 117}, _
+    {255, 240, 164, 213, 156, 208, 164, 155}, _
+    {0, 0, 85, 170, 87, 153, 81, 117}, _
+    {255, 130, 41, 153, 8, 134, 40, 211}, _
+    {255, 1, 17, 33, 255, 8, 8, 10}, _
+    {255, 1, 33, 25, 255, 8, 73, 72}, _
+    {255, 1, 33, 1, 255, 2, 2, 6}, _
+    {255, 1, 5, 1, 255, 8, 136, 26} _
 }
 
 SetTileset(@tileSet)
@@ -70,6 +82,7 @@ menu:
 
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+    currentScreen = INITIAL_SCREEN
     currentLife = INITIAL_LIFE
     currentKeys = 0
     initProta()
@@ -82,14 +95,16 @@ playGame:
         moveEnemies()
         drawSprites()
         checkMoveScreen()
-        ' checkRemainLife()
+        checkRemainLife()
     loop
 
 ending:
     ' stopMusicAndNirvana()
-    ' dzx0Standard(@endingScreen, $4000)
-    ' do
-    ' loop while inkey$ = ""
+    ClearScreen(7, 0, 0)
+    removeScreenObjectFromBuffer()
+    dzx0Standard(@endingScreen, $4000)
+    do
+    loop while inkey$ = ""
     go to menu
 
 
@@ -122,10 +137,10 @@ titleScreen:
         incbin "output/title.png.scr.zx0"
     end asm
 
-' endingScreen:
-'     asm
-'         incbin "output/ending.png.scr.zx0"
-'     end asm
+endingScreen:
+    asm
+        incbin "output/ending.png.scr.zx0"
+    end asm
 
 sub debugA(value as UBYTE)
     PRINT AT 18, 10; "----"

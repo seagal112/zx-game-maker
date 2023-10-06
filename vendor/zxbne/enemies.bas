@@ -55,9 +55,9 @@ sub setScreenElements()
 end sub
 
 sub moveEnemies()
-    ' if framec bAND %10
-    '     return
-    ' end if
+    if framec bAND %10
+        return
+    end if
 
     if animateEnemies <> 1
         return
@@ -112,7 +112,7 @@ sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
     ' dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
 
-    updateState(enemyToKill, 0, 0, 29, 0)
+    updateState(enemyToKill, 0, 0, 0, 0)
     ' if burst
     '     NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
     ' else

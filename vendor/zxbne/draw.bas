@@ -18,12 +18,22 @@ sub mapDraw()
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
 		    cell = getCell(row, col)
-			if cell = 1 or cell = 2
-				SetTiledObject(4, 2, 2, 52, x, y)
+			if cell = 2
+				SetTiledObject(32, 2, 2, 40, x, y)
 			elseif cell = 13
 				SetTiledObject(12, 2, 2, 104, x, y)
 			elseif cell = 3
 				SetTiledObject(16, 2, 2, 112, x, y)
+			elseif cell = 4
+				SetTile(24, 1, x, y)
+				SetTile(25, 6, x + 1, y)
+				SetTile(26, 6, x, y + 1)
+				SetTile(27, 1, x + 1, y + 1)
+			elseif cell = 1
+				SetTile(29, 96, x, y)
+				SetTile(29, 96, x + 1, y)
+				SetTile(29, 16, x, y + 1)
+				SetTile(29, 16, x + 1, y + 1)
 			' else
 			' 	SetTiledObject(8, 2, 2, 61, x, y)
 			end if
@@ -57,7 +67,7 @@ function getAttr(x as ubyte, y as ubyte) as ubyte
 end function
 
 function isSolidTile(tile as ubyte) as ubyte
-	if tile > 3 and tile < 8
+	if (tile > 31 and tile < 35) or tile = 29
 		return 1
     end if
 	    
@@ -132,18 +142,20 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 	updateOldSpriteState(PROTA_SPRITE)
+	removeScreenObjectFromBuffer()
 	redrawScreen()
-	drawSprites()
 	resetItemsAndKeys()
     setScreenElements()
 end sub
 
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getNewSpriteStateTile(PROTA_SPRITE)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateLin(PROTA_SPRITE))
-	if getNewSpriteStateDirection(0) = 1
-		Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
-	else
-		Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+	if getNewSpriteStateLin(0) <> 0
+		if getNewSpriteStateDirection(0) = 1
+			Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+		else
+			Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+		end if
 	end if
 	RenderFrame()
 END SUB
