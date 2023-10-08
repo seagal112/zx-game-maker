@@ -17,7 +17,10 @@ CONST OBJECT_TYPE_ITEM = 3
 
 function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
     for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, ENEMY_ALIVE) = 1 and enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ENEMY and enemies(currentScreen, key, ENEMY_CURRENT_LIN) = lin and enemies(currentScreen, key, ENEMY_CURRENT_COL) = col 
+        dim isAlive as ubyte = enemies(currentScreen, key, ENEMY_ALIVE)
+        dim enemyLin as ubyte = getNewSpriteStateLin(key)/2
+        dim enemyCol as ubyte = getNewSpriteStateCol(key)/2
+        if isAlive = 1 and enemyLin = lin and enemyCol = col 
             return key 'enemies(currentScreen, key, ENEMY_SPRITE)
         end if
     next key
@@ -85,11 +88,11 @@ sub moveEnemies()
                     
                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
                     if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
+                        'enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
                     end if
                 else
                     if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
+                        'enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
                     end if
                 end if
 
