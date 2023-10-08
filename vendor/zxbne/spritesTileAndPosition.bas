@@ -26,7 +26,7 @@ DIM spritesLinColAndTile1(screenSpritesCount - 1, spritesDataCount - 1) as ubyte
 const jumpStopValue as ubyte = 255
 const jumpStepsCount as ubyte = 6
 dim jumpCurrentKey as ubyte = jumpStopValue
-dim jumpArray(jumpStepsCount - 1) AS byte = {-1, -2, -3, -4, -2, -2}
+dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -4, -2, -2}
 
 function isJumping() as ubyte
     if jumpCurrentKey <> jumpStopValue
@@ -149,6 +149,17 @@ sub updateState(sprite as ubyte, lin as ubyte, col as ubyte, frameTile as ubyte,
 end sub
 
 sub protaBounce(toRight as ubyte)
+    dim x as integer = getNewSpriteStateCol(PROTA_SPRITE)
+    dim y as integer = getNewSpriteStateLin(PROTA_SPRITE)
+
+    if not isPair(x)
+        x = x - 1
+    end if
+
+    if not isPair(y)
+        y = y - 1
+    end if
+     
     if toRight = 1
         updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getNewSpriteStateCol(PROTA_SPRITE) + PROTA_BOUNCE_X_SIZE, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
     else
