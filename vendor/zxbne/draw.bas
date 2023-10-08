@@ -35,7 +35,10 @@ sub mapDraw()
 				SetTile(29, 16, x, y + 1)
 				SetTile(29, 16, x + 1, y + 1)
 			' else
-			' 	SetTiledObject(8, 2, 2, 61, x, y)
+			' 	SetTile(8, 61, x, y)
+            '     SetTile(8, 61, x + 1, y)
+            '     SetTile(8, 61, x, y + 1)
+            '     SetTile(8, 61, x + 1, y + 1)
 			end if
 			x = x + 2
 			if x = 32
@@ -47,7 +50,7 @@ sub mapDraw()
 end sub
 
 sub redrawScreen()
-	' memset(22527,0,768)
+	memset(22527,0,768)
 	ClearScreen(7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
@@ -67,6 +70,10 @@ function getAttr(x as ubyte, y as ubyte) as ubyte
 end function
 
 function isSolidTile(tile as ubyte) as ubyte
+	' if tile > 30
+	' 	debugA(tile)
+	' 	pauseUntilPressKey()
+	' end if
 	if (tile > 31 and tile < 35) or tile = 29
 		return 1
     end if
@@ -76,6 +83,12 @@ end function
 
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile = GetTile(col, lin)
+	' if currentScreen = 3
+	' 	debugA(col)
+	' 	debugB(lin)
+	' 	debugC(tile)
+	' 	pauseUntilPressKey()
+	' end if
 
 	return isSolidTile(tile)
 end function
@@ -137,7 +150,7 @@ sub moveToScreen(direction as Ubyte)
 		saveNewSpriteState(PROTA_SPRITE, 0, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		saveNewSpriteState(PROTA_SPRITE, MAX_LINE + 1, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		saveNewSpriteState(PROTA_SPRITE, MAX_LINE, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 		startJumping()
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
