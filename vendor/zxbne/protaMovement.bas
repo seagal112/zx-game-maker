@@ -4,6 +4,17 @@ dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2
 
+function checkIfDestroyEnemy(col as ubyte, lin as ubyte) as ubyte
+	sprite = isAnEnemy(lin, col)	
+	if sprite <> 10
+		killEnemy(sprite, 1)
+		startJumping()
+		burnToClean = sprite
+		return 1
+	end if
+	return 0
+end function
+
 function canMoveHorizontal(xOffset as integer) as UBYTE
 	dim col, lin0, lin1, x, y, prevY, nextY, module as integer
 
@@ -47,9 +58,15 @@ function canMoveVertical(yOffset as integer) as UBYTE
 		return 1
 	end if
 
-	if isPair(x)
-		col0 = x/2
+	col0 = x/2
 
+	' if yOffset > 0
+	' 	if checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
+	' 		return 0
+	' 	end if
+	' end if
+
+	if isPair(x)
 		if x mod 4 = 0
 			return not isSolidTileByColLin(col0, lin)
 		else
@@ -112,12 +129,6 @@ sub gravity()
 			moveScreen = 2
 		else
 			updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), yStepSize), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
-			sprite = isAnEnemy(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
-			if sprite <> 10
-				killEnemy(sprite, 1)
-				startJumping()
-				burnToClean = sprite
-			end if
 		end if
 	end if
 end sub
@@ -154,6 +165,7 @@ sub keyboardListen()
 		end if
     END IF
     if MultiKeys(KEYQ)<>0
+		' isFalling()
 		' updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - 1, getNewSpriteStateCol(PROTA_SPRITE), getNextFrameRunning(), 1)
 		' if getNewSpriteStateLin(PROTA_SPRITE) < 2
 		' 	moveScreen = 8
