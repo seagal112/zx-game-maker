@@ -1,9 +1,5 @@
 function isPair(number as ubyte) as ubyte
-    if number bAND 1 = 0
-        return 1
-    else
-        return 0
-    end if
+    return number bAND 1 = 0
 end function
 
 sub pauseUntilPressKey()
@@ -22,7 +18,7 @@ end function
 function secureXIncrement(x as integer, increment as integer) as integer
     dim result = x + increment
 
-    if result < 0 and result > 60
+    if result < 0 or result > 60
         return x
     end if
 
@@ -34,7 +30,7 @@ function secureYIncrement(y as integer, increment as integer) as integer
 
     if result < 0 or result > MAX_LINE + 4
         return y
-    else
-        return result
     end if
+    
+    return result
 end function
