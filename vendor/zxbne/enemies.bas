@@ -88,11 +88,11 @@ sub moveEnemies()
                     
                 if enemies(currentScreen, enemyId, ENEMY_RIGHT) = 1
                     if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
-                        'enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
                     end if
                 else
                     if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
-                        'enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
+                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
                     end if
                 end if
 
