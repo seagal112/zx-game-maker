@@ -60,11 +60,11 @@ function canMoveVertical(yOffset as integer) as UBYTE
 
 	col0 = x/2
 
-	' if yOffset > 0
-	' 	if checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
-	' 		return 0
-	' 	end if
-	' end if
+	if yOffset > 0
+		if checkIfDestroyEnemy(col0, lin) or checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
+			return 0
+		end if
+	end if
 
 	if isPair(x)
 		if x mod 4 = 0
