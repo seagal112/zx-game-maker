@@ -33,7 +33,7 @@ function canMoveHorizontal(xOffset as integer) as UBYTE
 		if y mod 4 = 0
 			return not isSolidTileByColLin(col, lin0)
 		else
-			return not isSolidTileByColLin(col, lin0 + 2) and isSolidTileByColLin(col, lin0 - 2)
+			return not isSolidTileByColLin(col, lin0 + 2) and not isSolidTileByColLin(col, lin0 - 2)
 		end if
 	else
 		prevY = y - y mod 4
