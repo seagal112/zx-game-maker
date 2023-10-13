@@ -18,27 +18,11 @@ sub mapDraw()
 	for row=0 to screenHeight - 1
 		for col=0 to screenWidth - 1
 		    cell = getCell(row, col)
-			if cell = 2
-				SetTiledObject(32, 2, 2, 40, x, y)
-			elseif cell = 13
-				SetTiledObject(12, 2, 2, 104, x, y)
-			elseif cell = 3
-				SetTiledObject(16, 2, 2, 112, x, y)
-			elseif cell = 4
-				SetTile(24, 1, x, y)
-				SetTile(25, 6, x + 1, y)
-				SetTile(26, 6, x, y + 1)
-				SetTile(27, 1, x + 1, y + 1)
-			elseif cell = 1
-				SetTile(29, 96, x, y)
-				SetTile(29, 96, x + 1, y)
-				SetTile(29, 16, x, y + 1)
-				SetTile(29, 16, x + 1, y + 1)
-			' else
-			' 	SetTile(8, 61, x, y)
-            '     SetTile(8, 61, x + 1, y)
-            '     SetTile(8, 61, x, y + 1)
-            '     SetTile(8, 61, x + 1, y + 1)
+			if cell > 0
+				SetTile(cell * 4, attrSet(cell * 4), x, y)
+				SetTile(cell * 4 + 1, attrSet(cell * 4 + 1), x, y + 1)
+				SetTile(cell * 4 + 2, attrSet(cell * 4 + 2), x + 1, y)
+				SetTile(cell * 4 + 3, attrSet(cell * 4 + 3), x + 1, y + 1)
 			end if
 			x = x + 2
 			if x = 32
@@ -74,7 +58,11 @@ function isSolidTile(tile as ubyte) as ubyte
 	' 	debugA(tile)
 	' 	pauseUntilPressKey()
 	' end if
-	if (tile > 31 and tile < 35) or tile = 29
+	if tile > 3
+		return 1
+	end if
+
+	if (tile > 3 and tile < 8) or (tile > 19 and tile < 24)
 		return 1
     end if
 	    
