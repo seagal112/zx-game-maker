@@ -1,36 +1,50 @@
 #include <memcopy.bas>
 
-CONST screenHeight AS UBYTE = 8
-CONST screenWidth AS UBYTE = 16
+CONST screenHeight AS UBYTE = 16
+CONST screenWidth AS UBYTE = 32
 CONST screenCount AS UBYTE = 2
 dim cell as ubyte = 0
 dim drawing as ubyte = 0
 
-function getCell(row as UBYTE, col as UBYTE) AS UBYTE
-	return screens(currentScreen, row, col)
+function getTile(x as UBYTE, y as UBYTE) AS UBYTE
+	return screens(currentScreen, y, x)
 end function
 
 sub mapDraw()
-	dim x, y, cell as ubyte
-	dim row, col as ubyte
+	asm
+		di
+	end asm
+	dim tile, index, y, x, count, offset as integer
+
+	count = screenHeight * screenWidth - 1
 	x = 0
 	y = 0
-	for row=0 to screenHeight - 1
-		for col=0 to screenWidth - 1
-		    cell = getCell(row, col)
-			if cell > 0
-				SetTile(cell * 4, attrSet(cell * 4), x, y)
-				SetTile(cell * 4 + 1, attrSet(cell * 4 + 1), x, y + 1)
-				SetTile(cell * 4 + 2, attrSet(cell * 4 + 2), x + 1, y)
-				SetTile(cell * 4 + 3, attrSet(cell * 4 + 3), x + 1, y + 1)
-			end if
-			x = x + 2
-			if x = 32
-				x = 0
-				y = y + 2
-			end if
-		next col
-	next row
+	
+	offset = screenHeight * screenWidth * currentScreen
+	for index=0 to count
+		tile = peek (@screens + offset + index)
+		if tile <> 0
+			SetTile(tile, attrSet(tile), x, y)
+		end if
+		x = x + 1
+		if x = screenWidth
+			x = 0
+			y = y + 1
+		end if
+	next index
+
+	' for y=0 to screenHeight - 1
+	' 	for x=0 to screenWidth - 1
+	' 	    tile = getTile(x, y)
+	' 		' tile = 2
+	' 		if tile <> 0
+	' 			SetTile(tile, attrSet(tile), x, y)
+	' 		end if
+	' 	next x
+	' next y
+	asm
+		ei
+	end asm
 end sub
 
 sub redrawScreen()
@@ -42,18 +56,16 @@ sub redrawScreen()
 	' enemiesDraw(currentScreen)
 end sub
 
-function getCellByNirvanaPosition(lin as UBYTE, col as UBYTE) AS UBYTE
-	lin = (lin / 16) - 1
-	col = col / 2
-
-	return getCell(lin, col)
-end function
-
 function getAttr(x as ubyte, y as ubyte) as ubyte
 	return PEEK $5800+32*lin+col
 end function
 
 function isSolidTile(tile as ubyte) as ubyte
+	if tile <> 0
+		return 1
+	else
+		return 0
+	end if 
 	' if tile > 30
 	' 	debugA(tile)
 	' 	pauseUntilPressKey()
@@ -79,6 +91,39 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	' end if
 
 	return isSolidTile(tile)
+end function
+
+
+function checkCollision(sprite as ubyte, x as ubyte, y as ubyte) as ubyte
+    dim col, lin as ubyte
+
+    if isPair(x) and isPair(y)
+        col = x/2
+        lin = y/2
+
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1)
+    elseif isPair(x) and not isPair(y)
+        col = x/2
+        lin = (y - 1)/2
+
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) _
+            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2)
+	elseif not isPair(x) and isPair(y)
+		col = (x - 1)/2
+		lin = y/2
+
+		return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
+			or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1)
+    elseif not isPair(x) and not isPair(y)
+        col = (x - 1)/2
+        lin = (y - 1)/2
+
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1) _
+            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2) or isSolidTileByColLin(col + 2, lin + 2)
+    end if
 end function
 
 sub decrementLife()

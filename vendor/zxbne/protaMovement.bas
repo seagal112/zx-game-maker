@@ -29,20 +29,14 @@ function canMoveHorizontal(xOffset as integer) as UBYTE
 
 	if isPair(y)
 		lin0 = y/2
-
-		if y mod 4 = 0
-			return not isSolidTileByColLin(col, lin0)
-		else
-			return not isSolidTileByColLin(col, lin0 + 2) and not isSolidTileByColLin(col, lin0 - 2)
-		end if
+		debugC(lin0)
+		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin0 + 1)
 	else
-		prevY = y - y mod 4
-		nextY = prevY + 4
+		prevY = y - 1
 
 		lin0 = prevY / 2
-		lin1 = nextY / 2
 
-		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin1)
+		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin0 + 1) and not isSolidTileByColLin(col, lin0 + 2)
 	end if
 end function
 
@@ -67,36 +61,38 @@ function canMoveVertical(yOffset as integer) as UBYTE
 	end if
 
 	if isPair(x)
-		if x mod 4 = 0
-			return not isSolidTileByColLin(col0, lin)
-		else
-			return not isSolidTileByColLin(col0 + 2, lin) and not isSolidTileByColLin(col0 - 2, lin)
-		end if
+		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col0 + 1, lin)
 	else
-		prevX = x - x mod 4
-		nextX = prevX + 4
+		prevX = x - 1
 
 		col0 = prevX / 2
-		col1 = nextX / 2
 
-		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col1, lin)
+		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col + 1, lin) and not isSolidTileByColLin(col + 2, lin)
 	end if
 end function
 
 function canMoveLeft() as ubyte
-	return canMoveHorizontal(-1)
+	x = getNewSpriteStateCol(PROTA_SPRITE)
+	y = getNewSpriteStateLin(PROTA_SPRITE)
+	return not checkCollision(PROTA_SPRITE, x - 1, y)
 end function
 
 function canMoveRight() as ubyte
-	return canMoveHorizontal(2)
+	x = getNewSpriteStateCol(PROTA_SPRITE)
+	y = getNewSpriteStateLin(PROTA_SPRITE)
+	return not checkCollision(PROTA_SPRITE, x + 1, y)
 end function
 
 function canMoveUp() as ubyte
-	return canMoveVertical(-1)
+	x = getNewSpriteStateCol(PROTA_SPRITE)
+	y = getNewSpriteStateLin(PROTA_SPRITE)
+	return not checkCollision(PROTA_SPRITE, x, y - 1)
 end function
 
 function canMoveDown() as ubyte
-	return canMoveVertical(2)
+	x = getNewSpriteStateCol(PROTA_SPRITE)
+	y = getNewSpriteStateLin(PROTA_SPRITE)
+	return not checkCollision(PROTA_SPRITE, x, y + 1)
 end function
 
 sub checkIsJumping()
@@ -105,8 +101,10 @@ sub checkIsJumping()
 			moveScreen = 8
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			stopJumping()
-		elseif jumpCurrentKey < jumpStepsCount AND canMoveUp()
-			updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		elseif jumpCurrentKey < jumpStepsCount
+			if not checkCollision(PROTA_SPRITE, getNewSpriteStateCol(PROTA_SPRITE), secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
+				updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
 			stopJumping()
@@ -135,13 +133,13 @@ end sub
 
 function getNextFrameRunning() as UBYTE
 	if getNewSpriteStateDirection(PROTA_SPRITE) = 1
-		if getOldSpriteStateTile(PROTA_SPRITE) = 0
+		if getNewSpriteStateTile(PROTA_SPRITE) = 0
 			return 1
         else
 			return 0
 		end if
 	else
-        if getOldSpriteStateTile(PROTA_SPRITE) = 2
+        if getNewSpriteStateTile(PROTA_SPRITE) = 2
             return 3
         else
             return 2
@@ -165,10 +163,11 @@ sub keyboardListen()
 		end if
     END IF
     if MultiKeys(KEYQ)<>0
-		' isFalling()
-		' updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - 1, getNewSpriteStateCol(PROTA_SPRITE), getNextFrameRunning(), 1)
-		' if getNewSpriteStateLin(PROTA_SPRITE) < 2
-		' 	moveScreen = 8
+		' if canMoveUp()
+		' 	updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - 1, getNewSpriteStateCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+		' 	if getNewSpriteStateLin(PROTA_SPRITE) < 2
+		' 		moveScreen = 8
+		' 	end if
 		' end if
         if isJumping() = 0 and landed
 			landed = 0

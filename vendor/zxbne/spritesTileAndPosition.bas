@@ -144,8 +144,11 @@ function onFirstColumn(sprite) as ubyte
 end function
 
 sub updateState(sprite as ubyte, lin as ubyte, col as ubyte, frameTile as ubyte, directionRight as ubyte)
-    saveOldSpriteState(sprite, getNewSpriteStateLin(sprite), getNewSpriteStateCol(sprite), getNewSpriteStateTile(sprite), getNewSpriteStateDirection(sprite))
     saveNewSpriteState(sprite, lin, col, frameTile, directionRight)
+end sub
+
+sub restoreState(sprite as ubyte)
+    saveNewSpriteState(sprite, getOldSpriteStateLin(sprite), getOldSpriteStateCol(sprite), getOldSpriteStateTile(sprite), getOldSpriteStateDirection(sprite))
 end sub
 
 sub protaBounce(toRight as ubyte)
