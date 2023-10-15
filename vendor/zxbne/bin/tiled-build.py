@@ -8,14 +8,14 @@ f = open('output/maps.json')
 data = json.load(f)
 
 # Screens count per row
-screensPerRow = 4
+screensPerRow = 2
 
 screenWidth = data['editorsettings']['chunksize']['width']
 screenHeight = data['editorsettings']['chunksize']['height']
 cellsPerScreen = screenWidth * screenHeight
 mapWidth = screenWidth * screensPerRow
-tileHeight = data['height']
-tileWidth = data['height']
+tileHeight = data['tileheight']
+tileWidth = data['tilewidth']
 
 screenPixelsWidth = screenWidth * tileWidth
 screenPixelsHeight = screenHeight * tileHeight
@@ -79,10 +79,10 @@ for layer in data['layers']:
                 objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,
-                    'linIni': str(object['y'] // tileHeight % screenHeight * 4 - 4),
-                    'linEnd': str(object['y'] // tileHeight % screenHeight * 4),
-                    'colIni': str(object['x'] // tileWidth % screenWidth * 4 - 4),
-                    'colEnd': str(object['x'] // tileWidth % screenWidth * 4),
+                    'linIni': str((object['y'] % (tileHeight * screenHeight)) // 4),
+                    'linEnd': str((object['y'] % (tileHeight * screenHeight)) // 4),
+                    'colIni': str((object['x'] % (tileWidth * screenWidth)) // 4),
+                    'colEnd': str((object['x'] % (tileWidth * screenWidth)) // 4),
                     'tile': str(object['gid'] - 1),
                     'type': type
                 }
@@ -90,9 +90,9 @@ for layer in data['layers']:
 for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
-            if object['type'] == 'path':
-                objects[str(object['properties'][0]['value'])]['linEnd'] = str(object['y'] // tileHeight % screenHeight * 4 - 4)
-                objects[str(object['properties'][0]['value'])]['colEnd'] = str(object['x'] // tileWidth % screenWidth * 4)
+            if 'point' in object and object['point'] == True:
+                objects[str(object['properties'][0]['value'])]['linEnd'] = str((object['y'] % (tileHeight * screenHeight)) // 4)
+                objects[str(object['properties'][0]['value'])]['colEnd'] = str((object['x'] % (tileWidth * screenWidth)) // 4)
 
 screenEnemies = defaultdict(dict)
 
@@ -101,8 +101,6 @@ for enemyId in objects:
     if len(screenEnemies[enemy['screenId']]) == 0:
         screenEnemies[enemy['screenId']] = []
     screenEnemies[enemy['screenId']].append(enemy)
-
-print(screenEnemies)
 
 enemStr = "DIM enemies(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
 
@@ -121,7 +119,7 @@ for layer in data['layers']:
                             right = '0'
                         enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + ', ' + enemy['type'] + '}, _\n'
                     else:
-                        enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '}, _\n'
+                        enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
