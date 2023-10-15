@@ -196,12 +196,14 @@ end sub
 
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getNewSpriteStateTile(PROTA_SPRITE)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateLin(PROTA_SPRITE))
-	if getNewSpriteStateLin(0) <> 0
-		if getNewSpriteStateDirection(0) = 1
-			Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
-		else
-			Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(0), getNewSpriteStateLin(0))
+	for i = 0 to 2
+		if getNewSpriteStateLin(i)
+			if getNewSpriteStateDirection(i) = 1
+				Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(i), getNewSpriteStateLin(i))
+			else
+				Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(i), getNewSpriteStateLin(i))
+			end if
 		end if
-	end if
+	next i
 	RenderFrame()
 END SUB
