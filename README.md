@@ -19,7 +19,7 @@ You should create a 256x48 tiles png file (tiles.png) into assets folder. ZX Gam
 
 The first tile always should be the background.
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/assets/tiles.png?token=GHSAT0AAAAAACHC47OR7A3OIC2LLBWKFUAOZJLTVEA)
+![](./assets/tiles.png)
 
 #### Sprites
 
@@ -31,7 +31,7 @@ The following 8 tiles wil be used for movement platforms, 2 tiles for each platf
 
 The rest 16 tiles are reserved for enemies, 4 for each enemy, 2 frames for direction
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/assets/sprites.png?token=GHSAT0AAAAAACHC47ORU2NAFRCHY7ADDCJOZJLTWYQ)
+![](./assets/sprites.png)
 
 ### Tiled
 
@@ -49,17 +49,17 @@ You should create a map with the following properties:
 * Map size: Infinite.
 * Tile size: 8x8px.
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/new_map.png?token=GHSAT0AAAAAACHC47ORKYHOMXM743OVY7XGZJLUVJA)
+![](./doc/new_map.png)
 
 Then go to Map > Properties and set the map to infinite and Output Chunk Width to 32 and Output Chunk Height to 16
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/map_properties.png?token=GHSAT0AAAAAACHC47OQ3WYRON4NI22EEJCQZJLUWEA)
+![](./doc/map_properties.png)
 
 #### Preferences
 
 Or game will have 32x16 pixels for screen, then is recommended set in Preferences > Interface > Major grid to 32 tiles x 16 tiles to view each screen division
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tiled_preferences.png?token=GHSAT0AAAAAACHC47OQDDDR43QOZMZXWYJ6ZJLUXCQ)
+![](./doc/tiled_preferences.png)
 
 #### Create tilesets
 
@@ -67,16 +67,16 @@ You should create 2 tilesets, tiles, importing tiles.png (8x8px) and sprites imp
 
 Is important to set Object Aligment to sprites tileset properties to Top Left.
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tilesets.png?token=GHSAT0AAAAAACHC47OQZFCDK553KSFHRGF2ZJLUZ5Q)
+![](./doc/tilesets.png)
 
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tileset_sprites.png?token=GHSAT0AAAAAACHC47OR77672U2Y2CSDPQLQZJLU3GA)
+![](./doc/tileset_sprites.png)
 
 #### Create layers
 
 I will use 2 layers a tile layer for tiles and object layer for enemies, keys, items, doors...
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/layers.png?token=GHSAT0AAAAAACHC47OR5LN4PAIC5JGGVMAOZJLUZFQ)
+![](./doc/layers.png)
 
 #### Adding elements
 
@@ -95,4 +95,4 @@ For add en position:
 * Put the point in the map (same x than enemy).
 * Add custom object property and select the enemy related.
 
-![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/enemy_movement.png?token=GHSAT0AAAAAACHC47OQOAG5SQ7ZN4T3T754ZJLU4BA)
+![](./doc/enemy_movement.png)
