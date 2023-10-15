@@ -82,7 +82,7 @@ I will use 2 layers a tile layer for tiles and object layer for enemies, keys, i
 
 ##### Enemy
 
-You can add enemies into your map and set its movement (just horizontal for now).
+You can add enemies into your map and set its movement (just horizontal for now). Set enemy in Type into object properties
 
 ##### Initial position
 
