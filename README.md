@@ -49,11 +49,17 @@ You should create a map with the following properties:
 * Map size: Infinite.
 * Tile size: 8x8px.
 
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/new_map.png?token=GHSAT0AAAAAACHC47ORKYHOMXM743OVY7XGZJLUVJA)
+
 Then go to Map > Properties and set the map to infinite and Output Chunk Width to 32 and Output Chunk Height to 16
+
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/map_properties.png?token=GHSAT0AAAAAACHC47OQ3WYRON4NI22EEJCQZJLUWEA)
 
 #### Preferences
 
 Or game will have 32x16 pixels for screen, then is recommended set in Preferences > Interface > Major grid to 32 tiles x 16 tiles to view each screen division
+
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tiled_preferences.png?token=GHSAT0AAAAAACHC47OQDDDR43QOZMZXWYJ6ZJLUXCQ)
 
 #### Create tilesets
 
@@ -61,9 +67,16 @@ You should create 2 tilesets, tiles, importing tiles.png (8x8px) and sprites imp
 
 Is important to set Object Aligment to sprites tileset properties to Top Left.
 
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tilesets.png?token=GHSAT0AAAAAACHC47OQZFCDK553KSFHRGF2ZJLUZ5Q)
+
+
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/tileset_sprites.png?token=GHSAT0AAAAAACHC47OR77672U2Y2CSDPQLQZJLU3GA)
+
 #### Create layers
 
 I will use 2 layers a tile layer for tiles and object layer for enemies, keys, items, doors...
+
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/layers.png?token=GHSAT0AAAAAACHC47OR5LN4PAIC5JGGVMAOZJLUZFQ)
 
 #### Adding elements
 
@@ -81,3 +94,5 @@ For add en position:
 * Click on insert point button.
 * Put the point in the map (same x than enemy).
 * Add custom object property and select the enemy related.
+
+![](https://raw.githubusercontent.com/rtorralba/zxbne/main/doc/enemy_movement.png?token=GHSAT0AAAAAACHC47OQOAG5SQ7ZN4T3T754ZJLU4BA)
