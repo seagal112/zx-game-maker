@@ -1,8 +1,10 @@
-Dim currentLife as UBYTE = 100
-Dim currentKeys as UBYTE = 0
-Dim currentItems as UBYTE = 0
+const MAX_LINE as UBYTE = 24
+
+dim currentLife as UBYTE = 100
+dim currentKeys as UBYTE = 0
+dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
-Dim currentScreen as UBYTE = 0
+dim currentScreen as UBYTE = 0
 dim animateEnemies as ubyte = 1
 
 dim key_lin as ubyte = 0

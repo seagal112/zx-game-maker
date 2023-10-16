@@ -8,17 +8,27 @@ f = open('output/maps.json')
 data = json.load(f)
 
 # Screens count per row
-screensPerRow = 2
+screensPerRow = 0
 
 screenWidth = data['editorsettings']['chunksize']['width']
 screenHeight = data['editorsettings']['chunksize']['height']
 cellsPerScreen = screenWidth * screenHeight
-mapWidth = screenWidth * screensPerRow
+
 tileHeight = data['tileheight']
 tileWidth = data['tilewidth']
 
 screenPixelsWidth = screenWidth * tileWidth
 screenPixelsHeight = screenHeight * tileHeight
+
+spriteTileOffset = 0
+
+for tileset in data['tilesets']:
+    if tileset['name'] == 'sprites':
+        spriteTileOffset = tileset['firstgid']
+
+if spriteTileOffset == 0:
+    print('ERROR: Sprite tileset should be called "sprites"')
+    exit
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -31,6 +41,9 @@ for layer in data['layers']:
 
         for idx, screen in enumerate(layer['chunks']):
             screens[idx] = defaultdict(dict)
+
+            if screen['x'] == 0:
+                screensPerRow += 1
 
             for jdx, cell in enumerate(screen['data']):
                 mapX = jdx % screen['width']
@@ -52,6 +65,7 @@ for layer in data['layers']:
         mapStr += " _\n} _\n"
             
 
+mapStr = "const MAP_SCREENS_WIDTH_COUNT as UBYTE = " + str(screensPerRow) + "\n\n" + mapStr
 
 with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
@@ -83,7 +97,7 @@ for layer in data['layers']:
                     'linEnd': str((object['y'] % (tileHeight * screenHeight)) // 4),
                     'colIni': str((object['x'] % (tileWidth * screenWidth)) // 4),
                     'colEnd': str((object['x'] % (tileWidth * screenWidth)) // 4),
-                    'tile': str(object['gid'] - 1),
+                    'tile': str(object['gid'] - spriteTileOffset),
                     'type': type
                 }
 
