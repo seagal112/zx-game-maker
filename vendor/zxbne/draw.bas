@@ -93,36 +93,44 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	return isSolidTile(tile)
 end function
 
+dim collidableTiles(7) as ubyte = {2, 3, 12, 13, 34, 35, 44, 45}
 
-function checkCollision(sprite as ubyte, x as ubyte, y as ubyte) as ubyte
-    dim col, lin as ubyte
+function IsEven(Number as uByte) as uByte
+    return Number bAND 1 = 0
+end function
 
-    if isPair(x) and isPair(y)
-        col = x/2
-        lin = y/2
+function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte)
+	dim value as uByte
+	for i = 0 to arraySize
+		value = peek(Haystack + i)
+		if value = Needle
+			return value
+		end if
+	next i
 
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1)
-    elseif isPair(x) and not isPair(y)
-        col = x/2
-        lin = (y - 1)/2
+	return 0
+end function
 
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) _
-            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2)
-	elseif not isPair(x) and isPair(y)
-		col = (x - 1)/2
-		lin = y/2
+function CheckCollision(x as uByte, y as uByte, colidableTilesArray as uInteger, collidableTilesArraySize as ubyte) as uByte
+    Dim xIsEven as uByte = (x bAnd 1) = 0
+    Dim yIsEven as uByte = (y bAnd 1) = 0
+    Dim col as uByte = x >> 1
+    Dim lin as uByte = y >> 1
 
-		return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
-			or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1)
-    elseif not isPair(x) and not isPair(y)
-        col = (x - 1)/2
-        lin = (y - 1)/2
-
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1) _
-            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2) or isSolidTileByColLin(col + 2, lin + 2)
+    if xIsEven and yIsEven
+        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) _
+            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize)
+    elseif xIsEven and not yIsEven
+        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) _
+            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) _
+            or InArray(GetTile(col, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 2), colidableTilesArray, collidableTilesArraySize)
+	elseif not xIsEven and yIsEven
+		return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin), colidableTilesArray, collidableTilesArraySize) _
+			or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 1), colidableTilesArray, collidableTilesArraySize)
+    elseif not xIsEven and not yIsEven
+        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin), colidableTilesArray, collidableTilesArraySize) _
+            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 1), colidableTilesArray, collidableTilesArraySize) _
+            or InArray(GetTile(col, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 2), colidableTilesArray, collidableTilesArraySize)
     end if
 end function
 
