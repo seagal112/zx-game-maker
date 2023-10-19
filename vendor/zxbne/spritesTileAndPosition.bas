@@ -155,11 +155,11 @@ sub protaBounce(toRight as ubyte)
     dim x as integer = getNewSpriteStateCol(PROTA_SPRITE)
     dim y as integer = getNewSpriteStateLin(PROTA_SPRITE)
 
-    if not isPair(x)
+    if not isEven(x)
         x = x - 1
     end if
 
-    if not isPair(y)
+    if not isEven(y)
         y = y - 1
     end if
      

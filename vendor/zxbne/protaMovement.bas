@@ -21,13 +21,13 @@ function canMoveHorizontal(xOffset as integer) as UBYTE
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
 
-	if isPair(x)
+	if isEven(x)
 		col = x / 2 + xOffset
 	else
 		return 1
 	end if
 
-	if isPair(y)
+	if isEven(y)
 		lin0 = y/2
 		debugC(lin0)
 		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin0 + 1)
@@ -46,7 +46,7 @@ function canMoveVertical(yOffset as integer) as UBYTE
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
 
-	if isPair(y)
+	if isEven(y)
 		lin = y / 2 + yOffset
 	else
 		return 1
@@ -60,7 +60,7 @@ function canMoveVertical(yOffset as integer) as UBYTE
 		end if
 	end if
 
-	if isPair(x)
+	if isEven(x)
 		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col0 + 1, lin)
 	else
 		prevX = x - 1
@@ -74,25 +74,25 @@ end function
 function canMoveLeft() as ubyte
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
-	return not CheckCollision(x - 1, y, @collidableTiles, colidableArraySize)
+	return not CheckCollision(x - 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveRight() as ubyte
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
-	return not CheckCollision(x + 1, y, @collidableTiles, colidableArraySize)
+	return not CheckCollision(x + 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveUp() as ubyte
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
-	return not CheckCollision(x, y - 1, @collidableTiles, colidableArraySize)
+	return not CheckCollision(x, y - 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveDown() as ubyte
 	x = getNewSpriteStateCol(PROTA_SPRITE)
 	y = getNewSpriteStateLin(PROTA_SPRITE)
-	return not CheckCollision(x, y + 1, @collidableTiles, colidableArraySize)
+	return not CheckCollision(x, y + 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 sub checkIsJumping()
@@ -102,7 +102,7 @@ sub checkIsJumping()
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
-			if not CheckCollision(getNewSpriteStateCol(PROTA_SPRITE), secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @collidableTiles, colidableArraySize)
+			if not CheckCollision(getNewSpriteStateCol(PROTA_SPRITE), secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @solidTiles, SOLID_TILES_ARRAY_SIZE)
 				updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1

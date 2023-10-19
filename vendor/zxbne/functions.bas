@@ -1,4 +1,4 @@
-function isPair(number as ubyte) as ubyte
+function isEven(number as ubyte) as ubyte
     return number bAND 1 = 0
 end function
 
