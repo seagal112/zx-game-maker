@@ -93,12 +93,6 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	return isSolidTile(tile)
 end function
 
-dim collidableTiles(7) as ubyte = {2, 3, 12, 13, 34, 35, 44, 45}
-
-function IsEven(Number as uByte) as uByte
-    return Number bAND 1 = 0
-end function
-
 function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte)
 	dim value as uByte
 	for i = 0 to arraySize

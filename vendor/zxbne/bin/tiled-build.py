@@ -22,20 +22,29 @@ screenPixelsHeight = screenHeight * tileHeight
 
 spriteTileOffset = 0
 
+solidTiles = []
+
 for tileset in data['tilesets']:
-    if tileset['name'] == 'sprites':
+    if tileset['name'] == 'tiles':
+        for tile in tileset['tiles']:
+            if tile['type'] == 'solid':
+                solidTiles.append(str(tile['id']))
+    elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
 if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
     exit
 
+mapStr = "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
+
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
         screensCount = len(layer['chunks'])
         mapRows = layer['chunks'][0]['height']//screenHeight
         mapCols = layer['chunks'][0]['width']//screenWidth
-        mapStr = "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
+        mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = defaultdict(dict)
 
@@ -62,10 +71,9 @@ for layer in data['layers']:
             mapStr = mapStr[:-4]
             mapStr += " _\n\t}, _\n"
         mapStr = mapStr[:-4]
-        mapStr += " _\n} _\n"
-            
+        mapStr += " _\n}\n\n"
 
-mapStr = "const MAP_SCREENS_WIDTH_COUNT as UBYTE = " + str(screensPerRow) + "\n\n" + mapStr
+mapStr += "const MAP_SCREENS_WIDTH_COUNT as UBYTE = " + str(screensPerRow) + "\n\n"
 
 with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)

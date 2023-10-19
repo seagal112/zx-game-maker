@@ -15,8 +15,6 @@ dim item_lin as ubyte = 0
 dim item_col as ubyte = 0
 dim item_sprite as ubyte = 0
 
-dim colidableArraySize = 7
-
 ' #include "nirvana+.bas"
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"

@@ -5,6 +5,14 @@
  </editorsettings>
  <tileset firstgid="1" name="tiles" tilewidth="8" tileheight="8" tilecount="192" columns="32">
   <image source="tiles.png" width="256" height="48"/>
+  <tile id="2" type="solid"/>
+  <tile id="3" type="solid"/>
+  <tile id="12" type="solid"/>
+  <tile id="13" type="solid"/>
+  <tile id="34" type="solid"/>
+  <tile id="35" type="solid"/>
+  <tile id="44" type="solid"/>
+  <tile id="45" type="solid"/>
  </tileset>
  <tileset firstgid="193" name="sprites" tilewidth="16" tileheight="16" tilecount="32" columns="16" objectalignment="topleft">
   <image source="sprites.png" width="256" height="32"/>
