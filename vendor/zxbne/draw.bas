@@ -176,20 +176,20 @@ end sub
 sub moveToScreen(direction as Ubyte)
 	' removeAllObjects()
 	if direction = 6
-		saveNewSpriteState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), 2, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 2, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + 1
 	elseif direction = 4
-		saveNewSpriteState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), 60, getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 60, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen - 1
 	elseif direction = 2
-		saveNewSpriteState(PROTA_SPRITE, 0, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, 0, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		saveNewSpriteState(PROTA_SPRITE, MAX_LINE, getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, MAX_LINE, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		startJumping()
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
-	updateOldSpriteState(PROTA_SPRITE)
+
 	removeScreenObjectFromBuffer()
 	redrawScreen()
 	resetItemsAndKeys()
@@ -197,14 +197,11 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub drawSprites()
-	Draw2x2Sprite(spritesSet(getNewSpriteStateTile(PROTA_SPRITE)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateLin(PROTA_SPRITE))
+	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 	for i = 0 to 2
-		if getNewSpriteStateLin(i)
-			if getNewSpriteStateDirection(i) = 1
-				Draw2x2Sprite(spriteEnemy1Right, getNewSpriteStateCol(i), getNewSpriteStateLin(i))
-			else
-				Draw2x2Sprite(spriteEnemy1Left, getNewSpriteStateCol(i), getNewSpriteStateLin(i))
-			end if
+		if getSpriteLin(i)
+			dim tile as ubyte = getSpriteTile(i)
+			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
 		end if
 	next i
 	RenderFrame()

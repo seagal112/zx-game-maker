@@ -18,8 +18,8 @@ end function
 function canMoveHorizontal(xOffset as integer) as UBYTE
 	dim col, lin0, lin1, x, y, prevY, nextY, module as integer
 
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 
 	if isEven(x)
 		col = x / 2 + xOffset
@@ -43,8 +43,8 @@ end function
 function canMoveVertical(yOffset as integer) as UBYTE
 	dim lin, col0, col1, x, y, prevX, nextX, module as integer
 
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 
 	if isEven(y)
 		lin = y / 2 + yOffset
@@ -72,38 +72,38 @@ function canMoveVertical(yOffset as integer) as UBYTE
 end function
 
 function canMoveLeft() as ubyte
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x - 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveRight() as ubyte
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x + 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveUp() as ubyte
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y - 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveDown() as ubyte
-	x = getNewSpriteStateCol(PROTA_SPRITE)
-	y = getNewSpriteStateLin(PROTA_SPRITE)
+	x = getSpriteCol(PROTA_SPRITE)
+	y = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y + 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
-		if getNewSpriteStateLin(PROTA_SPRITE) < 2
+		if getSpriteLin(PROTA_SPRITE) < 2
 			moveScreen = 8
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
-			if not CheckCollision(getNewSpriteStateCol(PROTA_SPRITE), secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @solidTiles, SOLID_TILES_ARRAY_SIZE)
-				updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @solidTiles, SOLID_TILES_ARRAY_SIZE)
+				updateState(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
@@ -123,26 +123,30 @@ end function
 
 sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
-		if getNewSpriteStateLin(PROTA_SPRITE) > MAX_LINE + 2
+		if getSpriteLin(PROTA_SPRITE) > MAX_LINE + 2
 			moveScreen = 2
 		else
-			updateState(PROTA_SPRITE, secureYIncrement(getNewSpriteStateLin(PROTA_SPRITE), yStepSize), getNewSpriteStateCol(PROTA_SPRITE), getNewSpriteStateTile(PROTA_SPRITE), getNewSpriteStateDirection(PROTA_SPRITE))
+			updateState(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		end if
 	end if
 end sub
 
 function getNextFrameRunning() as UBYTE
-	if getNewSpriteStateDirection(PROTA_SPRITE) = 1
-		if getNewSpriteStateTile(PROTA_SPRITE) = 0
+	if getSpriteDirection(PROTA_SPRITE) = 1
+		if getSpriteTile(PROTA_SPRITE) = 0
 			return 1
-        else
+        elseif getSpriteTile(PROTA_SPRITE) = 1
+			return 2
+		else
 			return 0
 		end if
 	else
-        if getNewSpriteStateTile(PROTA_SPRITE) = 2
-            return 3
-        else
-            return 2
+        if getSpriteTile(PROTA_SPRITE) = 5
+            return 6
+        elseif getSpriteTile(PROTA_SPRITE) = 6
+            return 7
+		else
+			return 5
         end if
 	end if
 end function
@@ -152,20 +156,20 @@ sub keyboardListen()
 		if onFirstColumn(PROTA_SPRITE)
 			moveScreen = 4
 		elseif canMoveLeft()
-			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), secureXIncrement(getNewSpriteStateCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
+			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
 		end if
     END IF
     if MultiKeys(KEYP)<>0
 		if onLastColumn(PROTA_SPRITE)
 			moveScreen = 6
 		elseif canMoveRight()
-			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE), secureXIncrement(getNewSpriteStateCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
+			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
 		end if
     END IF
     if MultiKeys(KEYQ)<>0
 		' if canMoveUp()
-		' 	updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) - 1, getNewSpriteStateCol(PROTA_SPRITE), getNextFrameRunning(), 1)
-		' 	if getNewSpriteStateLin(PROTA_SPRITE) < 2
+		' 	updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+		' 	if getSpriteLin(PROTA_SPRITE) < 2
 		' 		moveScreen = 8
 		' 	end if
 		' end if
@@ -176,13 +180,13 @@ sub keyboardListen()
     END IF
     if MultiKeys(KEYA)<>0
 		if canMoveDown()
-			updateState(PROTA_SPRITE, getNewSpriteStateLin(PROTA_SPRITE) + 1, getNewSpriteStateCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
 		end if
     END IF
 end sub
 
 function getNextFrameJumpingFalling() as UBYTE
-	if (getNewSpriteStateDirection(PROTA_SPRITE))
+	if (getSpriteDirection(PROTA_SPRITE))
 		return 58
 	else
 		return 59
@@ -190,7 +194,7 @@ function getNextFrameJumpingFalling() as UBYTE
 end function
 
 sub checkItemContact()
-	dim sprite as UBYTE = isAnItem(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
+	dim sprite as UBYTE = isAnItem(getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE))
 
 	if sprite <> 0
 		incrementItems()
@@ -200,7 +204,7 @@ sub checkItemContact()
 end sub
 
 sub checkKeyContact()
-	dim sprite as UBYTE = isAKey(getNewSpriteStateLin(PROTA_SPRITE), getNewSpriteStateCol(PROTA_SPRITE))
+	dim sprite as UBYTE = isAKey(getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE))
 
 	if sprite <> 0
 		incrementKeys()

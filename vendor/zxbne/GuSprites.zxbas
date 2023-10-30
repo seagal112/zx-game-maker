@@ -22,11 +22,11 @@
 #define ENABLE_2x2_SPRITES
 
 'Total number of 1x1 defined sprites
-#define TOTAL_1x1_SPRITES 4
+#define TOTAL_1x1_SPRITES 0
 'Total number of 1x2 defined sprites
-#define TOTAL_1x2_SPRITES 8
+#define TOTAL_1x2_SPRITES 0
 'Total number of 2x2 defined sprites
-#define TOTAL_2x2_SPRITES 4
+#define TOTAL_2x2_SPRITES 32
 
 'Maximum on-screen 1x1 sprites
 #define ONSCREEN_1x1_SPRITES 4

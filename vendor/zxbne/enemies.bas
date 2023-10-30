@@ -18,8 +18,8 @@ CONST OBJECT_TYPE_ITEM = 3
 function isAnEnemy(lin as UBYTE, col as UBYTE) as UBYTE
     for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
         dim isAlive as ubyte = enemies(currentScreen, key, ENEMY_ALIVE)
-        dim enemyLin as ubyte = getNewSpriteStateLin(key)/2
-        dim enemyCol as ubyte = getNewSpriteStateCol(key)/2
+        dim enemyLin as ubyte = getSpriteLin(key)/2
+        dim enemyCol as ubyte = getSpriteCol(key)/2
         if isAlive = 1 and enemyLin = lin and enemyCol = col 
             return key 'enemies(currentScreen, key, ENEMY_SPRITE)
         end if
@@ -67,6 +67,7 @@ sub moveEnemies()
     end if
 
     dim counter as ubyte = 0
+    dim frame as ubyte = 0
     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
             continue for
@@ -76,7 +77,7 @@ sub moveEnemies()
         end if
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
             if counter < 8
-                dim tile as UBYTE = enemies(currentScreen, enemyId, ENEMY_TILE)
+                dim tile as UBYTE
                 dim enemyCol as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
                 dim enemyLin as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) 
 
@@ -90,14 +91,23 @@ sub moveEnemies()
                     if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
                     end if
+                    tile = enemies(currentScreen, enemyId, ENEMY_TILE)
                 else
                     if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
                         enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
                     end if
+                    tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
                 end if
 
-                protaLin = getNewSpriteStateLin(PROTA_SPRITE)
-                protaCol = getNewSpriteStateCol(PROTA_SPRITE)
+                if frame = 1
+                    tile = tile + 1
+                    frame = 0
+                else
+                    frame = 1
+                end if
+
+                protaLin = getSpriteLin(PROTA_SPRITE)
+                protaCol = getSpriteCol(PROTA_SPRITE)
                 if protaLin = enemyLin and protaCol = enemyCol
                     protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
                     decrementLife()
@@ -148,7 +158,7 @@ end sub
 '         dim col as UBYTE = PEEK SPRITECOL(i)
 '         dim lin as UBYTE = PEEK SPRITELIN(i)
 
-'         updateState(i, 0, 0, getNewSpriteStateTile(i), 0)
+'         updateState(i, 0, 0, getSpriteTile(i), 0)
 '         ' NIRVANAspriteT(i, 29, 0, 0)
 '         restoreScr(lin, col)
 ' 	next i

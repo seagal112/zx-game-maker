@@ -23,7 +23,7 @@ InitGFXLib()
 
 SetTileset(@tileSet)
 
-#include "../../assets/sprites.bas"
+#include "../../output/sprites.bas"
 
 #include "const.bas"
 #include "functions.bas"
@@ -60,8 +60,8 @@ playGame:
         drawSprites()
         checkMoveScreen()
         checkRemainLife()
-        ' debugA(getNewSpriteStateCol(PROTA_SPRITE))
-        ' debugB(getNewSpriteStateLin(PROTA_SPRITE))
+        ' debugA(getSpriteCol(PROTA_SPRITE))
+        ' debugB(getSpriteLin(PROTA_SPRITE))
     loop
 
 ending:

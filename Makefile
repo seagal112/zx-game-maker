@@ -13,7 +13,8 @@ screens-build:
 	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
 	rm assets/screens/ending.png.scr
 	#python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.png
-	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/tiles.png -p /share/assets/paperValues.txt -o /share/output/tiles.bas
+	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/tiles.png -p /share/assets/paperValues.txt -t tiles > output/tiles.bas
+	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/sprites.png -p /share/assets/paperValues.txt -t sprites > output/sprites.bas
 
 build:
 	$(MAKE) tiled-build
