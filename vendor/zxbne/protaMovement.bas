@@ -103,7 +103,7 @@ sub checkIsJumping()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
 			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @solidTiles, SOLID_TILES_ARRAY_SIZE)
-				updateState(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
@@ -126,7 +126,7 @@ sub gravity()
 		if getSpriteLin(PROTA_SPRITE) > MAX_LINE + 2
 			moveScreen = 2
 		else
-			updateState(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		end if
 	end if
 end sub
@@ -156,19 +156,19 @@ sub keyboardListen()
 		if onFirstColumn(PROTA_SPRITE)
 			moveScreen = 4
 		elseif canMoveLeft()
-			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
+			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
 		end if
     END IF
     if MultiKeys(KEYP)<>0
 		if onLastColumn(PROTA_SPRITE)
 			moveScreen = 6
 		elseif canMoveRight()
-			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
+			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
 		end if
     END IF
     if MultiKeys(KEYQ)<>0
 		' if canMoveUp()
-		' 	updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+		' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
 		' 	if getSpriteLin(PROTA_SPRITE) < 2
 		' 		moveScreen = 8
 		' 	end if
@@ -180,7 +180,7 @@ sub keyboardListen()
     END IF
     if MultiKeys(KEYA)<>0
 		if canMoveDown()
-			updateState(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
 		end if
     END IF
 end sub

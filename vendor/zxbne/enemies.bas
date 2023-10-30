@@ -99,12 +99,7 @@ sub moveEnemies()
                     tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
                 end if
 
-                if frame = 1
-                    tile = tile + 1
-                    frame = 0
-                else
-                    frame = 1
-                end if
+                tile = tile + getSpriteFrame(enemyId)
 
                 protaLin = getSpriteLin(PROTA_SPRITE)
                 protaCol = getSpriteCol(PROTA_SPRITE)
@@ -113,7 +108,7 @@ sub moveEnemies()
                     decrementLife()
                     damageSound()
                 end if
-                updateState(enemyId, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_RIGHT))
+                saveSprite(enemyId, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_RIGHT))
             end if
             counter = counter + 1
         end if
@@ -125,7 +120,7 @@ sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
     ' dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
     enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
 
-    updateState(enemyToKill, 0, 0, 0, 0)
+    saveSprite(enemyToKill, 0, 0, 0, 0)
     ' if burst
     '     NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
     ' else
@@ -158,7 +153,7 @@ end sub
 '         dim col as UBYTE = PEEK SPRITECOL(i)
 '         dim lin as UBYTE = PEEK SPRITELIN(i)
 
-'         updateState(i, 0, 0, getSpriteTile(i), 0)
+'         saveSprite(i, 0, 0, getSpriteTile(i), 0)
 '         ' NIRVANAspriteT(i, 29, 0, 0)
 '         restoreScr(lin, col)
 ' 	next i
