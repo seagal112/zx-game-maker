@@ -39,6 +39,7 @@ SetTileset(@tileSet)
 #include <zx0.bas>
 
 menu:
+    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     ' stopMusicAndNirvana()
     dzx0Standard(@titleScreen, $4000)
     pauseUntilPressKey()
