@@ -96,11 +96,11 @@ sub protaBounce(toRight as ubyte)
     if not isEven(y)
         y = y - 1
     end if
-     
+    
     if toRight = 1
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getSpriteCol(PROTA_SPRITE) + PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) + PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
     else
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - PROTA_BOUNCE_Y_SIZE, getSpriteCol(PROTA_SPRITE) - PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) - PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
     end if
 end sub
 
