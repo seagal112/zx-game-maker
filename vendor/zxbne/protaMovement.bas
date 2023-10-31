@@ -193,20 +193,29 @@ function getNextFrameJumpingFalling() as UBYTE
     end if
 end function
 
-sub checkItemContact()
-	dim sprite as UBYTE = isAnItem(getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE))
+sub checkObjectContact()
+	Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
+    Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
 
-	if sprite <> 0
+	dim tile as UBYTE = getTile(col, lin + 1)
+
+	if tile = itemTile
 		incrementItems()
-		resetItems()
-		killEnemy(sprite, 1)
+		eraseTile(col, lin + 1)
+		itemSound()
+		redrawScreen()
+	elseif tile = keyTile
+		incrementKeys()
+		eraseTile(col, lin + 1)
+		keySound()
+		redrawScreen()
 	end if
 end sub
 
 sub checkKeyContact()
 	dim sprite as UBYTE = isAKey(getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE))
 
-	if sprite <> 0
+	if sprite <> 10
 		incrementKeys()
 		resetKeys()
 		killEnemy(sprite, 1)
@@ -215,8 +224,7 @@ end sub
 
 sub protaMovement()
 	keyboardListen()
-	' checkItemContact()
-	' checkKeyContact()
+	checkObjectContact()
 	checkIsJumping()
 	gravity()
 end sub

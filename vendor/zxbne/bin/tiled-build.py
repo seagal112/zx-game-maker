@@ -23,12 +23,21 @@ screenPixelsHeight = screenHeight * tileHeight
 spriteTileOffset = 0
 
 solidTiles = []
+keyTile = 0
+itemTile = 0
+doorTile = 0
 
 for tileset in data['tilesets']:
     if tileset['name'] == 'tiles':
         for tile in tileset['tiles']:
             if tile['type'] == 'solid':
                 solidTiles.append(str(tile['id']))
+            if tile['type'] == 'key':
+                keyTile = str(tile['id'])
+            if tile['type'] == 'item':
+                itemTile = str(tile['id'])
+            if tile['type'] == 'door':
+                doorTile = str(tile['id'])
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
@@ -37,6 +46,8 @@ if spriteTileOffset == 0:
     exit
 
 mapStr = "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
+mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
 mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
 
 for layer in data['layers']:
@@ -47,9 +58,14 @@ for layer in data['layers']:
         mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = defaultdict(dict)
+        screenObjects = defaultdict(dict)
 
         for idx, screen in enumerate(layer['chunks']):
             screens[idx] = defaultdict(dict)
+
+            screenObjects[idx]['key'] = -1
+            screenObjects[idx]['item'] = -1
+            screenObjects[idx]['door'] = -1
 
             if screen['x'] == 0:
                 screensPerRow += 1
@@ -58,7 +74,16 @@ for layer in data['layers']:
                 mapX = jdx % screen['width']
                 mapY = jdx // screen['width']
 
-                screens[idx][mapY][mapX % screenWidth] = cell - 1
+                tile = str(cell - 1)
+
+                screens[idx][mapY][mapX % screenWidth] = tile
+
+                if tile == keyTile:
+                    screenObjects[idx]['key'] = 1
+                elif tile == itemTile:
+                    screenObjects[idx]['item'] = 1
+                elif tile == doorTile:
+                    screenObjects[idx]['door'] = 1
 
         for screen in screens:
             mapStr += '\t{ _\n'
@@ -75,6 +100,11 @@ for layer in data['layers']:
 
 mapStr += "const MAP_SCREENS_WIDTH_COUNT as UBYTE = " + str(screensPerRow) + "\n\n"
 
+mapStr += "DIM screenObjects(" + str(screensCount - 1) + ", 2) as ubyte = { _\n";
+for screen in screenObjects:
+    mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + '}, _\n'
+mapStr = mapStr[:-4]
+mapStr += " _\n}\n\n"
 with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
@@ -98,6 +128,8 @@ for layer in data['layers']:
                     type = '2'
                 elif object['type'] == 'item':
                     type = '3'
+                elif object['type'] == 'door':
+                    type = '4'
                 objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,

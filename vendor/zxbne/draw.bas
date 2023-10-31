@@ -10,6 +10,10 @@ function getTile(x as UBYTE, y as UBYTE) AS UBYTE
 	return screens(currentScreen, y, x)
 end function
 
+function eraseTile(x as UBYTE, y as UBYTE) AS UBYTE
+	screens(currentScreen, y, x) = 0
+end function
+
 sub mapDraw()
 	asm
 		di

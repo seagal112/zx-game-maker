@@ -61,7 +61,7 @@ playGame:
         drawSprites()
         checkMoveScreen()
         checkRemainLife()
-        ' debugA(getSpriteCol(PROTA_SPRITE))
+        ' debugA(getTiles())
         ' debugB(getSpriteLin(PROTA_SPRITE))
     loop
 

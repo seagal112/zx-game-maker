@@ -31,7 +31,7 @@ function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
     if lin = key_lin and col = key_col
         return key_sprite
 	else
-        return 0
+        return 10
     end if
 end function
 
@@ -39,7 +39,7 @@ function isAnItem(lin as UBYTE, col as UBYTE) as UBYTE
     if lin = item_lin and col = item_col
         return item_sprite
     else
-        return 0
+        return 10
     end if
 end function
 
@@ -48,19 +48,21 @@ sub setScreenElements()
         if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_KEY and enemies(currentScreen, key, ENEMY_ALIVE) = 1
             key_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
             key_col = enemies(currentScreen, key, ENEMY_COL_INI)
-            key_sprite = enemies(currentScreen, key, ENEMY_SPRITE)
-        else if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ITEM and enemies(currentScreen, key, ENEMY_ALIVE) = 1
+            key_sprite = key
+            saveSprite(key, enemies(currentScreen, key, ENEMY_LIN_INI), enemies(currentScreen, key, ENEMY_COL_INI), enemies(currentScreen, key, ENEMY_TILE), 1)
+        elseif enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ITEM and enemies(currentScreen, key, ENEMY_ALIVE) = 1
             item_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
             item_col = enemies(currentScreen, key, ENEMY_COL_INI)
-            item_sprite = enemies(currentScreen, key, ENEMY_SPRITE)
+            item_sprite = key
+            saveSprite(key, enemies(currentScreen, key, ENEMY_LIN_INI), enemies(currentScreen, key, ENEMY_COL_INI), enemies(currentScreen, key, ENEMY_TILE), 1)
         end if
     next
 end sub
 
 sub moveEnemies()
-    if framec bAND %10
-        return
-    end if
+    ' if framec bAND %10
+    '     return
+    ' end if
 
     if animateEnemies <> 1
         return
@@ -99,7 +101,9 @@ sub moveEnemies()
                     tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
                 end if
 
-                tile = tile + getSpriteFrame(enemyId)
+                if getSpriteFrame(enemyId) = 0
+                    tile = tile + 1
+                end if
 
                 protaLin = getSpriteLin(PROTA_SPRITE)
                 protaCol = getSpriteCol(PROTA_SPRITE)

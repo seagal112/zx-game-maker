@@ -42,10 +42,10 @@ sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, direc
     spritesLinColTileAndFrame(sprite, 1) = col
     spritesLinColTileAndFrame(sprite, 2) = tile
     spritesLinColTileAndFrame(sprite, 3) = directionRight
-    if spritesLinColTileAndFrame(sprite, 4) = 0
-        spritesLinColTileAndFrame(sprite, 4) = 1
-    else
+    if spritesLinColTileAndFrame(sprite, 4) = 6
         spritesLinColTileAndFrame(sprite, 4) = 0
+    else
+        spritesLinColTileAndFrame(sprite, 4) = spritesLinColTileAndFrame(sprite, 4) + 1
     end if
 end sub
 
