@@ -10,8 +10,8 @@ function getTile(x as UBYTE, y as UBYTE) AS UBYTE
 	return screens(currentScreen, y, x)
 end function
 
-function eraseTile(x as UBYTE, y as UBYTE) AS UBYTE
-	screens(currentScreen, y, x) = 0
+function removeScreenObject(type as ubyte) AS UBYTE
+	screenObjects(currentScreen, type) = 0
 end function
 
 sub mapDraw()
@@ -28,7 +28,21 @@ sub mapDraw()
 	for index=0 to count
 		tile = peek (@screens + offset + index)
 		if tile <> 0
-			SetTile(tile, attrSet(tile), x, y)
+			if tile = itemTile
+				if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 1
+					SetTileChecked(tile, attrSet(tile), x, y)
+				end if
+			elseif tile = keyTile
+				if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX) = 1
+					SetTileChecked(tile, attrSet(tile), x, y)
+				end if
+			elseif tile = doorTile
+				if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX) = 1
+					SetTileChecked(tile, attrSet(tile), x, y)
+				end if
+			else
+				SetTile(tile, attrSet(tile), x, y)
+			end if
 		end if
 		x = x + 1
 		if x = screenWidth
@@ -132,6 +146,43 @@ function CheckCollision(x as uByte, y as uByte, colidableTilesArray as uInteger,
     end if
 end function
 
+function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
+	if GetTile(col, lin) = doorTile
+		if currentKeys <> 0
+			decrementKeys()
+			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
+			doorSound()
+			redrawScreen()
+		end if
+		return 1
+	else
+		return 0
+	end if
+end function
+
+function CheckDoor(x as uByte, y as uByte) as uByte
+    Dim xIsEven as uByte = (x bAnd 1) = 0
+    Dim yIsEven as uByte = (y bAnd 1) = 0
+    Dim col as uByte = x >> 1
+    Dim lin as uByte = y >> 1
+
+    if xIsEven and yIsEven
+        return checkTileIsDoor(col, lin) or checkTileIsDoor(col + 1, lin) _
+            or checkTileIsDoor(col, lin + 1) or checkTileIsDoor(col + 1, lin + 1)
+    elseif xIsEven and not yIsEven
+        return checkTileIsDoor(col, lin) or checkTileIsDoor(col + 1, lin) _
+            or checkTileIsDoor(col, lin + 1) or checkTileIsDoor(col + 1, lin + 1) _
+            or checkTileIsDoor(col, lin + 2) or checkTileIsDoor(col + 1, lin + 2)
+	elseif not xIsEven and yIsEven
+		return checkTileIsDoor(col, lin) or checkTileIsDoor(col + 1, lin) or checkTileIsDoor(col + 2, lin) _
+			or checkTileIsDoor(col, lin + 1) or checkTileIsDoor(col + 1, lin + 1) or checkTileIsDoor(col + 2, lin + 1)
+    elseif not xIsEven and not yIsEven
+        return checkTileIsDoor(col, lin) or checkTileIsDoor(col + 1, lin) or checkTileIsDoor(col + 2, lin) _
+            or checkTileIsDoor(col, lin + 1) or checkTileIsDoor(col + 1, lin + 1) or checkTileIsDoor(col + 2, lin + 1) _
+            or checkTileIsDoor(col, lin + 2) or checkTileIsDoor(col + 1, lin + 2) or checkTileIsDoor(col + 2, lin + 2)
+    end if
+end function
+
 sub decrementLife()
 	if (currentLife = 0)
 		return
@@ -147,6 +198,11 @@ end sub
 
 sub incrementKeys()
 	currentKeys = currentKeys + 1
+	printLife()
+end sub
+
+sub decrementKeys()
+	currentKeys = currentKeys - 1
 	printLife()
 end sub
 
@@ -197,7 +253,6 @@ sub moveToScreen(direction as Ubyte)
 	removeScreenObjectFromBuffer()
 	redrawScreen()
 	resetItemsAndKeys()
-    setScreenElements()
 end sub
 
 sub drawSprites()

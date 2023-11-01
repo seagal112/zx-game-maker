@@ -74,12 +74,18 @@ end function
 function canMoveLeft() as ubyte
 	x = getSpriteCol(PROTA_SPRITE)
 	y = getSpriteLin(PROTA_SPRITE)
+	if CheckDoor(x - 1, y)
+		return 0
+	end if
 	return not CheckCollision(x - 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
 function canMoveRight() as ubyte
 	x = getSpriteCol(PROTA_SPRITE)
 	y = getSpriteLin(PROTA_SPRITE)
+	if CheckDoor(x + 1, y)
+		return 0
+	end if
 	return not CheckCollision(x + 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
 end function
 
@@ -193,22 +199,36 @@ function getNextFrameJumpingFalling() as UBYTE
     end if
 end function
 
+function checkTileObject(tile as ubyte) as ubyte
+	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
+		incrementItems()
+		removeScreenObject(SCREEN_OBJECT_ITEM_INDEX)
+		itemSound()
+		return 1
+	elseif tile = keyTile and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
+		incrementKeys()
+		removeScreenObject(SCREEN_OBJECT_KEY_INDEX)
+		keySound()
+		return 1
+	end if
+	return 0
+end function
+
 sub checkObjectContact()
 	Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
     Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
 
 	dim tile as UBYTE = getTile(col, lin + 1)
+	dim tileRight as UBYTE = getTile(col + 1, lin + 1)
 
-	if tile = itemTile
-		incrementItems()
-		eraseTile(col, lin + 1)
-		itemSound()
+	if checkTileObject(tile)
 		redrawScreen()
-	elseif tile = keyTile
-		incrementKeys()
-		eraseTile(col, lin + 1)
-		keySound()
+		'SetTileColor(col, lin + 1, 0)
+		return
+	elseif checkTileObject(tileRight)
 		redrawScreen()
+		'SetTileColor(col + 1, lin + 1, 0)
+		return
 	end if
 end sub
 

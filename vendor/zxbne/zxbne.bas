@@ -51,10 +51,10 @@ playGame:
     currentLife = INITIAL_LIFE
     currentKeys = 0
     initProta()
+    setScreenElements()
     mapDraw()
     printLife()
     drawSprites()
-    setScreenElements()
     do
         protaMovement()
         moveEnemies()

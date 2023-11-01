@@ -48,6 +48,7 @@ if spriteTileOffset == 0:
 mapStr = "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
+mapStr += "dim doorTile as ubyte = " + doorTile + "\n"
 mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
 
 for layer in data['layers']:
@@ -63,9 +64,9 @@ for layer in data['layers']:
         for idx, screen in enumerate(layer['chunks']):
             screens[idx] = defaultdict(dict)
 
-            screenObjects[idx]['key'] = -1
-            screenObjects[idx]['item'] = -1
-            screenObjects[idx]['door'] = -1
+            screenObjects[idx]['key'] = 0
+            screenObjects[idx]['item'] = 0
+            screenObjects[idx]['door'] = 0
 
             if screen['x'] == 0:
                 screensPerRow += 1
@@ -98,9 +99,13 @@ for layer in data['layers']:
         mapStr = mapStr[:-4]
         mapStr += " _\n}\n\n"
 
-mapStr += "const MAP_SCREENS_WIDTH_COUNT as UBYTE = " + str(screensPerRow) + "\n\n"
+mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(screensPerRow) + "\n"
+mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
+mapStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
+mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n\n"
 
-mapStr += "DIM screenObjects(" + str(screensCount - 1) + ", 2) as ubyte = { _\n";
+mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 2) as ubyte\n";
+mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 2) as ubyte = { _\n";
 for screen in screenObjects:
     mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + '}, _\n'
 mapStr = mapStr[:-4]

@@ -44,19 +44,7 @@ function isAnItem(lin as UBYTE, col as UBYTE) as UBYTE
 end function
 
 sub setScreenElements()
-    for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_KEY and enemies(currentScreen, key, ENEMY_ALIVE) = 1
-            key_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
-            key_col = enemies(currentScreen, key, ENEMY_COL_INI)
-            key_sprite = key
-            saveSprite(key, enemies(currentScreen, key, ENEMY_LIN_INI), enemies(currentScreen, key, ENEMY_COL_INI), enemies(currentScreen, key, ENEMY_TILE), 1)
-        elseif enemies(currentScreen, key, OBJECT_TYPE) = OBJECT_TYPE_ITEM and enemies(currentScreen, key, ENEMY_ALIVE) = 1
-            item_lin = enemies(currentScreen, key, ENEMY_LIN_INI)
-            item_col = enemies(currentScreen, key, ENEMY_COL_INI)
-            item_sprite = key
-            saveSprite(key, enemies(currentScreen, key, ENEMY_LIN_INI), enemies(currentScreen, key, ENEMY_COL_INI), enemies(currentScreen, key, ENEMY_TILE), 1)
-        end if
-    next
+    screenObjects = screenObjectsInitial
 end sub
 
 sub moveEnemies()

@@ -21,3 +21,7 @@ end sub
 sub keySound()
     BEEP .25, 7: BEEP .25, 8
 end sub
+
+sub doorSound()
+    BEEP .25, 7: BEEP .25, 8
+end sub
