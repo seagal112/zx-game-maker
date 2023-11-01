@@ -48,13 +48,11 @@ playGame:
     currentScreen = INITIAL_SCREEN
     currentLife = INITIAL_LIFE
     currentKeys = 0
+    currentItems = 0
     initProta()
     setScreenElements()
     dzx0Standard(@hudScreen, $4000)
     redrawScreen()
-    debugA(screenWidth)
-    debugB(screenHeight)
-    pauseUntilPressKey()
     drawSprites()
     do
         protaMovement()
@@ -73,6 +71,15 @@ ending:
     loop while inkey$ = ""
     go to menu
 
+gameOver:
+    ' stopMusicAndNirvana()
+    ClearScreen(7, 0, 0)
+    removeScreenObjectFromBuffer()
+    dzx0Standard(@gameOverScreen, $4000)
+    do
+    loop while inkey$ = ""
+    go to menu
+
 
 sub stopMusicAndNirvana()
     musicStop()
@@ -82,7 +89,7 @@ end sub
 sub checkRemainLife()
     if currentLife = 0
         ' enemiesDraw(1)
-        go to ending
+        go to gameOver
     end if
 end sub
 
@@ -111,6 +118,11 @@ hudScreen:
 endingScreen:
     asm
         incbin "output/ending.png.scr.zx0"
+    end asm
+
+gameOverScreen:
+    asm
+        incbin "output/game-over.png.scr.zx0"
     end asm
 
 sub debugA(value as UBYTE)

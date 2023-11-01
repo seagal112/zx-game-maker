@@ -45,9 +45,15 @@ if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
     exit
 
+goalItems = 10
+for property in data['properties']:
+    if property['name'] == 'goalItems':
+        goalItems = property['value']
+
 mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
+mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 mapStr += "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
