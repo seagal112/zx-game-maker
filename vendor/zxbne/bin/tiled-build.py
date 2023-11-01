@@ -45,7 +45,10 @@ if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
     exit
 
-mapStr = "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
+mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
+mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
+mapStr += "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
 mapStr += "dim doorTile as ubyte = " + doorTile + "\n"

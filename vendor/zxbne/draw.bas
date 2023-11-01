@@ -1,8 +1,5 @@
 #include <memcopy.bas>
 
-CONST screenHeight AS UBYTE = 16
-CONST screenWidth AS UBYTE = 32
-CONST screenCount AS UBYTE = 2
 dim cell as ubyte = 0
 dim drawing as ubyte = 0
 
@@ -41,7 +38,7 @@ sub mapDraw()
 					SetTileChecked(tile, attrSet(tile), x, y)
 				end if
 			else
-				SetTile(tile, attrSet(tile), x, y)
+				SetTileChecked(tile, attrSet(tile), x, y)
 			end if
 		end if
 		x = x + 1
@@ -66,8 +63,9 @@ sub mapDraw()
 end sub
 
 sub redrawScreen()
-	memset(22527,0,768)
-	ClearScreen(7, 0, 0)
+	' memset(22527,0,768)
+	' ClearScreen(7, 0, 0)
+	FillWithTile(0, 32, 22, 7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
 	printLife()
@@ -79,34 +77,15 @@ function getAttr(x as ubyte, y as ubyte) as ubyte
 end function
 
 function isSolidTile(tile as ubyte) as ubyte
-	if tile <> 0
+	if tile > 0 and tile < 64
 		return 1
 	else
 		return 0
-	end if 
-	' if tile > 30
-	' 	debugA(tile)
-	' 	pauseUntilPressKey()
-	' end if
-	if tile > 3
-		return 1
 	end if
-
-	if (tile > 3 and tile < 8) or (tile > 19 and tile < 24)
-		return 1
-    end if
-	    
-	return 0
 end function
 
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile = GetTile(col, lin)
-	' if currentScreen = 3
-	' 	debugA(col)
-	' 	debugB(lin)
-	' 	debugC(tile)
-	' 	pauseUntilPressKey()
-	' end if
 
 	return isSolidTile(tile)
 end function
@@ -130,19 +109,19 @@ function CheckCollision(x as uByte, y as uByte, colidableTilesArray as uInteger,
     Dim lin as uByte = y >> 1
 
     if xIsEven and yIsEven
-        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) _
-            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize)
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1)
     elseif xIsEven and not yIsEven
-        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) _
-            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) _
-            or InArray(GetTile(col, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 2), colidableTilesArray, collidableTilesArraySize)
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) _
+            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2)
 	elseif not xIsEven and yIsEven
-		return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin), colidableTilesArray, collidableTilesArraySize) _
-			or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 1), colidableTilesArray, collidableTilesArraySize)
+		return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
+			or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1)
     elseif not xIsEven and not yIsEven
-        return InArray(GetTile(col, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin), colidableTilesArray, collidableTilesArraySize) _
-            or InArray(GetTile(col, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 1), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 1), colidableTilesArray, collidableTilesArraySize) _
-            or InArray(GetTile(col, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 1, lin + 2), colidableTilesArray, collidableTilesArraySize) or InArray(GetTile(col + 2, lin + 2), colidableTilesArray, collidableTilesArraySize)
+        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
+            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1) _
+            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2) or isSolidTileByColLin(col + 2, lin + 2)
     end if
 end function
 
@@ -152,7 +131,8 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 			decrementKeys()
 			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
 			doorSound()
-			redrawScreen()
+			FillWithTileChecked(0, 1, 1, 7, col, lin)
+			FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		end if
 		return 1
 	else
@@ -212,15 +192,9 @@ sub incrementItems()
 end sub
 
 sub printLife()
-	PRINT AT 20, 0; "Life:"
-	PRINT AT 20, 5; "   "
-	PRINT AT 20, 5; currentLife
-	PRINT AT 20, 10; "Keys:"
-	PRINT AT 20, 15; " "
-	PRINT AT 20, 15; currentKeys
-	PRINT AT 20, 20; "Items:"
-	PRINT AT 20, 26; " "
-	PRINT AT 20, 26; currentItems
+	PRINT AT 22, 5; currentLife
+	PRINT AT 22, 16; currentKeys
+	PRINT AT 22, 30; currentItems
 end sub
 
 sub drawMenu()

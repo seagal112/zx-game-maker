@@ -1,5 +1,3 @@
-const MAX_LINE as UBYTE = 24
-
 dim currentLife as UBYTE = 100
 dim currentKeys as UBYTE = 0
 dim currentItems as UBYTE = 0
@@ -24,12 +22,12 @@ InitGFXLib()
 SetTileset(@tileSet)
 
 #include "../../output/sprites.bas"
+#include "../../output/maps.bas"
+#include "../../output/enemies.bas"
 
 #include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
-#include "../../output/maps.bas"
-#include "../../output/enemies.bas"
 #include "screenRender.bas"
 #include "enemies.bas"
 #include "draw.bas"
@@ -52,8 +50,11 @@ playGame:
     currentKeys = 0
     initProta()
     setScreenElements()
-    mapDraw()
-    printLife()
+    dzx0Standard(@hudScreen, $4000)
+    redrawScreen()
+    debugA(screenWidth)
+    debugB(screenHeight)
+    pauseUntilPressKey()
     drawSprites()
     do
         protaMovement()
@@ -61,8 +62,6 @@ playGame:
         drawSprites()
         checkMoveScreen()
         checkRemainLife()
-        ' debugA(getTiles())
-        ' debugB(getSpriteLin(PROTA_SPRITE))
     loop
 
 ending:
@@ -102,6 +101,11 @@ end sub
 titleScreen:
     asm
         incbin "output/title.png.scr.zx0"
+    end asm
+
+hudScreen:
+    asm
+        incbin "output/hud.png.scr.zx0"
     end asm
 
 endingScreen:

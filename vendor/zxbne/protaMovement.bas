@@ -129,7 +129,7 @@ end function
 
 sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
-		if getSpriteLin(PROTA_SPRITE) > MAX_LINE + 2
+		if getSpriteLin(PROTA_SPRITE) > MAX_LINE
 			moveScreen = 2
 		else
 			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
@@ -222,12 +222,14 @@ sub checkObjectContact()
 	dim tileRight as UBYTE = getTile(col + 1, lin + 1)
 
 	if checkTileObject(tile)
-		redrawScreen()
+		' redrawScreen()
 		'SetTileColor(col, lin + 1, 0)
+		FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		return
 	elseif checkTileObject(tileRight)
-		redrawScreen()
+		' redrawScreen()
 		'SetTileColor(col + 1, lin + 1, 0)
+		FillWithTileChecked(0, 1, 1, 7, col + 1, lin + 1)
 		return
 	end if
 end sub
