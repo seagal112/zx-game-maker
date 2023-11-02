@@ -136,20 +136,3 @@ sub debugD(value as UBYTE)
     PRINT AT 18, 25; "  "
     PRINT AT 18, 25; value
 end sub
-
-sub resetItems()
-    item_lin = 0
-    item_col = 0
-    item_sprite = 0
-end sub
-
-sub resetKeys()
-    key_lin = 0
-    key_col = 0
-    key_sprite = 0
-end sub
-
-sub resetItemsAndKeys()
-    resetItems()
-    resetKeys()
-end sub

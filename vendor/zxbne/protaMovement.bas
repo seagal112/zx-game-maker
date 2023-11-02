@@ -222,13 +222,9 @@ sub checkObjectContact()
 	dim tileRight as UBYTE = getTile(col + 1, lin + 1)
 
 	if checkTileObject(tile)
-		' redrawScreen()
-		'SetTileColor(col, lin + 1, 0)
 		FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		return
 	elseif checkTileObject(tileRight)
-		' redrawScreen()
-		'SetTileColor(col + 1, lin + 1, 0)
 		FillWithTileChecked(0, 1, 1, 7, col + 1, lin + 1)
 		return
 	end if
@@ -239,8 +235,6 @@ sub checkKeyContact()
 
 	if sprite <> 10
 		incrementKeys()
-		resetKeys()
-		killEnemy(sprite, 1)
 	end if
 end sub
 

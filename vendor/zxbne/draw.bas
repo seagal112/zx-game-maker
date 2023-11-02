@@ -230,7 +230,6 @@ sub moveToScreen(direction as Ubyte)
 
 	removeScreenObjectFromBuffer()
 	redrawScreen()
-	resetItemsAndKeys()
 end sub
 
 sub drawSprites()
