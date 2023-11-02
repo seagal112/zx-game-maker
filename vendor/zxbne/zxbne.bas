@@ -49,6 +49,7 @@ playGame:
     currentLife = INITIAL_LIFE
     currentKeys = 0
     currentItems = 0
+    removeScreenObjectFromBuffer()
     initProta()
     setScreenElements()
     dzx0Standard(@hudScreen, $4000)
@@ -64,20 +65,16 @@ playGame:
 
 ending:
     ' stopMusicAndNirvana()
-    ClearScreen(7, 0, 0)
-    removeScreenObjectFromBuffer()
     dzx0Standard(@endingScreen, $4000)
-    do
-    loop while inkey$ = ""
+    pause 300
+    pauseUntilPressKey()
     go to menu
 
 gameOver:
     ' stopMusicAndNirvana()
-    ClearScreen(7, 0, 0)
-    removeScreenObjectFromBuffer()
-    dzx0Standard(@gameOverScreen, $4000)
-    do
-    loop while inkey$ = ""
+    PrintString("GAME OVER", 7, 12, 10)
+    pause 300
+    pauseUntilPressKey()
     go to menu
 
 
@@ -118,11 +115,6 @@ hudScreen:
 endingScreen:
     asm
         incbin "output/ending.png.scr.zx0"
-    end asm
-
-gameOverScreen:
-    asm
-        incbin "output/game-over.png.scr.zx0"
     end asm
 
 sub debugA(value as UBYTE)
