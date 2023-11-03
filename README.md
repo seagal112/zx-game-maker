@@ -96,3 +96,9 @@ For add en position:
 * Add custom object property and select the enemy related.
 
 ![](./doc/enemy_movement.png)
+
+## Credits
+
+* [Juan J. Martínez](https://github.com/reidrac) png2src
+* [Michal Jurica](https://sourceforge.net/u/mikezt/) [ub880d](https://sourceforge.net/u/ub880d) bin2tap
+* [Andy Balaam](https://github.com/andybalaam) bas2tap

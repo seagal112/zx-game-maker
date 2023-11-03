@@ -35,22 +35,14 @@ function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
     end if
 end function
 
-function isAnItem(lin as UBYTE, col as UBYTE) as UBYTE
-    if lin = item_lin and col = item_col
-        return item_sprite
-    else
-        return 10
-    end if
-end function
-
 sub setScreenElements()
     screenObjects = screenObjectsInitial
 end sub
 
 sub moveEnemies()
-    ' if framec bAND %10
-    '     return
-    ' end if
+    if framec bAND %10
+        return
+    end if
 
     if animateEnemies <> 1
         return

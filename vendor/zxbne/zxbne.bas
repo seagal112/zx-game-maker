@@ -9,9 +9,7 @@ dim key_lin as ubyte = 0
 dim key_col as ubyte = 0
 dim key_sprite as ubyte = 0
 
-dim item_lin as ubyte = 0
-dim item_col as ubyte = 0
-dim item_sprite as ubyte = 0
+dim framec AS ubyte AT 23672
 
 ' #include "nirvana+.bas"
 #include "GuSprites.zxbas"
@@ -28,13 +26,13 @@ SetTileset(@tileSet)
 #include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
-#include "screenRender.bas"
 #include "enemies.bas"
 #include "draw.bas"
 #include "protaMovement.bas"
 #include "sound.bas"
 #include "music.bas"
 #include <zx0.bas>
+#include <retrace.bas>
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
@@ -56,9 +54,11 @@ playGame:
     redrawScreen()
     drawSprites()
     do
+        waitretrace
         protaMovement()
         moveEnemies()
         drawSprites()
+        animateAnimatedTiles()
         checkMoveScreen()
         checkRemainLife()
     loop
@@ -77,6 +77,19 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
+
+sub animateAnimatedTiles()
+    if framec bAND %10
+        return
+    end if
+    for i=0 to 2:
+        if screenAnimatedTiles(currentScreen, i, 0) <> 0
+            dim tile as ubyte = screenAnimatedTiles(currentScreen, i, 0) + screenAnimatedTiles(currentScreen, i, 3) + 1
+            SetTileChecked(tile, attrSet(tile), screenAnimatedTiles(currentScreen, i, 1), screenAnimatedTiles(currentScreen, i, 2))
+            let screenAnimatedTiles(currentScreen, i, 3) = not screenAnimatedTiles(currentScreen, i, 3)
+        end if
+    next i
+end sub
 
 sub stopMusicAndNirvana()
     musicStop()

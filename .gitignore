@@ -1,2 +1,4 @@
-output
+output/*
 *.zx0
+*.bin
+*.tap

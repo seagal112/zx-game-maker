@@ -23,6 +23,8 @@ screenPixelsHeight = screenHeight * tileHeight
 spriteTileOffset = 0
 
 solidTiles = []
+animatedTilesIds = []
+screenAnimatedTiles = defaultdict(dict)
 keyTile = 0
 itemTile = 0
 doorTile = 0
@@ -38,6 +40,8 @@ for tileset in data['tilesets']:
                 itemTile = str(tile['id'])
             if tile['type'] == 'door':
                 doorTile = str(tile['id'])
+            if tile['type'] == 'animated':
+                animatedTilesIds.append(str(tile['id']))
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
@@ -72,6 +76,7 @@ for layer in data['layers']:
 
         for idx, screen in enumerate(layer['chunks']):
             screens[idx] = defaultdict(dict)
+            screenAnimatedTiles[idx] = []
 
             screenObjects[idx]['key'] = 0
             screenObjects[idx]['item'] = 0
@@ -94,6 +99,9 @@ for layer in data['layers']:
                     screenObjects[idx]['item'] = 1
                 elif tile == doorTile:
                     screenObjects[idx]['door'] = 1
+                
+                if tile in animatedTilesIds:
+                    screenAnimatedTiles[idx].append([str(tile), str(mapX), str(mapY)])
 
         for screen in screens:
             mapStr += '\t{ _\n'
@@ -113,12 +121,28 @@ mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 mapStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
 mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n\n"
 
-mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 2) as ubyte\n";
-mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 2) as ubyte = { _\n";
+mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 2) as ubyte\n"
+mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 2) as ubyte = { _\n"
 for screen in screenObjects:
     mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + '}, _\n'
 mapStr = mapStr[:-4]
 mapStr += " _\n}\n\n"
+
+mapStr += "dim screenAnimatedTiles(" + str(screensCount - 1) + ", 2, 3) as ubyte = { _\n"
+for screen in screenAnimatedTiles:
+    mapStr += "\t{ _\n"
+    for i in range(len(screenAnimatedTiles[screen])):
+        mapStr += '\t\t{' + screenAnimatedTiles[screen][i][0] + ', ' + screenAnimatedTiles[screen][i][1] + ', ' + screenAnimatedTiles[screen][i][2] + ', 0}, _\n'
+    for i in range(3 - len(screenAnimatedTiles[screen])):
+        mapStr += '\t\t{0, 0, 0, 0}, _\n'
+    mapStr = mapStr[:-4]
+    mapStr += " _\n"
+    mapStr += '\t}, _\n'
+mapStr = mapStr[:-4]
+mapStr += "\t} _\n"
+mapStr = mapStr[:-4]
+mapStr += " _\n}\n\n"
+
 with open("output/maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
