@@ -102,7 +102,7 @@ function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte)
 	return 0
 end function
 
-function CheckCollision(x as uByte, y as uByte, colidableTilesArray as uInteger, collidableTilesArraySize as ubyte) as uByte
+function CheckCollision(x as uByte, y as uByte) as uByte
     Dim xIsEven as uByte = (x bAnd 1) = 0
     Dim yIsEven as uByte = (y bAnd 1) = 0
     Dim col as uByte = x >> 1

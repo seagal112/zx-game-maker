@@ -77,7 +77,7 @@ function canMoveLeft() as ubyte
 	if CheckDoor(x - 1, y)
 		return 0
 	end if
-	return not CheckCollision(x - 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
+	return not CheckCollision(x - 1, y)
 end function
 
 function canMoveRight() as ubyte
@@ -86,19 +86,19 @@ function canMoveRight() as ubyte
 	if CheckDoor(x + 1, y)
 		return 0
 	end if
-	return not CheckCollision(x + 1, y, @solidTiles, SOLID_TILES_ARRAY_SIZE)
+	return not CheckCollision(x + 1, y)
 end function
 
 function canMoveUp() as ubyte
 	x = getSpriteCol(PROTA_SPRITE)
 	y = getSpriteLin(PROTA_SPRITE)
-	return not CheckCollision(x, y - 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
+	return not CheckCollision(x, y - 1)
 end function
 
 function canMoveDown() as ubyte
 	x = getSpriteCol(PROTA_SPRITE)
 	y = getSpriteLin(PROTA_SPRITE)
-	return not CheckCollision(x, y + 1, @solidTiles, SOLID_TILES_ARRAY_SIZE)
+	return not CheckCollision(x, y + 1)
 end function
 
 sub checkIsJumping()
@@ -108,7 +108,7 @@ sub checkIsJumping()
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
-			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), @solidTiles, SOLID_TILES_ARRAY_SIZE)
+			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
 				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
