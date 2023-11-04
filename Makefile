@@ -27,7 +27,7 @@ screens-build:
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
-	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic /app/main.bas
+	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -D HIDE_LOAD_MSG /app/main.bas
 
 	${BIN_FOLDER}bas2tap -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
@@ -35,6 +35,6 @@ build:
 
 	cat output/loader.tap output/loading.tap output/main.tap > ${PROJECT_NAME}.tap
 
-	rm *.bin output/*
+	rm -f *.bin output/*.bin
 run:
 	fuse --machine=plus2a ${PROJECT_NAME}.tap
