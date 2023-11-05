@@ -24,6 +24,10 @@ screens-build:
 	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/tiles.png -p /share/assets/paperValues.txt -t tiles > output/tiles.bas
 	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/sprites.png -p /share/assets/paperValues.txt -t sprites > output/sprites.bas
 
+compile:
+	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -taB /app/main.bas
+	mv -f main.tap ${PROJECT_NAME}.tap
+
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build

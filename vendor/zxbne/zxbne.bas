@@ -5,10 +5,6 @@ dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
 dim animateEnemies as ubyte = 1
 
-dim key_lin as ubyte = 0
-dim key_col as ubyte = 0
-dim key_sprite as ubyte = 0
-
 dim framec AS ubyte AT 23672
 
 ' #include "nirvana+.bas"
@@ -27,6 +23,7 @@ SetTileset(@tileSet)
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
 #include "enemies.bas"
+#include "bullet.bas"
 #include "draw.bas"
 #include "protaMovement.bas"
 #include "sound.bas"
@@ -57,6 +54,7 @@ playGame:
         waitretrace
         protaMovement()
         moveEnemies()
+        moveBullet()
         drawSprites()
         animateAnimatedTiles()
         checkMoveScreen()

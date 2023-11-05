@@ -101,6 +101,14 @@ function canMoveDown() as ubyte
 	return not CheckCollision(x, y + 1)
 end function
 
+function getNextFrameJumpingFalling() as UBYTE
+	if (getSpriteDirection(PROTA_SPRITE))
+		return 3
+	else
+		return 7
+    end if
+end function
+
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getSpriteLin(PROTA_SPRITE) < 2
@@ -109,7 +117,7 @@ sub checkIsJumping()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
 			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
-				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
@@ -122,7 +130,10 @@ function isFalling() as UBYTE
 	if canMoveDown()
 		return 1
 	else
-		landed = 1
+		if landed = 0
+			landed = 1
+			resetProtaSpriteToRunning()
+		end if
 		return 0
 	end if
 end function
@@ -132,8 +143,9 @@ sub gravity()
 		if getSpriteLin(PROTA_SPRITE) > MAX_LINE
 			moveScreen = 2
 		else
-			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 		end if
+		landed = 0
 	end if
 end sub
 
@@ -147,12 +159,12 @@ function getNextFrameRunning() as UBYTE
 			return 0
 		end if
 	else
-        if getSpriteTile(PROTA_SPRITE) = 5
+        if getSpriteTile(PROTA_SPRITE) = 4
+            return 5
+        elseif getSpriteTile(PROTA_SPRITE) = 5
             return 6
-        elseif getSpriteTile(PROTA_SPRITE) = 6
-            return 7
 		else
-			return 5
+			return 4
         end if
 	end if
 end function
@@ -189,15 +201,12 @@ sub keyboardListen()
 			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
 		end if
     END IF
+	if MultiKeys(KEYSPACE)<>0
+		bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+	END IF
 end sub
-
-function getNextFrameJumpingFalling() as UBYTE
-	if (getSpriteDirection(PROTA_SPRITE))
-		return 58
-	else
-		return 59
-    end if
-end function
 
 function checkTileObject(tile as ubyte) as ubyte
 	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)

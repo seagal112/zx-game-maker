@@ -1,5 +1,7 @@
 const screenSpritesCount as ubyte = 8
 const spritesDataCount as ubyte = 5
+const FIRST_RUNNING_PROTA_SPRITE_RIGHT = 0
+const FIRST_RUNNING_PROTA_SPRITE_LEFT = 4
 
 DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as ubyte => { _
     {0, 0, 0, 0, 0}, _
@@ -68,6 +70,14 @@ end function
 function getSpriteFrame(sprite as ubyte) as ubyte
     return spritesLinColTileAndFrame(sprite, 4)
 end function
+
+sub resetProtaSpriteToRunning()
+    if getSpriteDirection(PROTA_SPRITE)
+        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
+    else
+        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
+    end if
+end sub
 
 function onLastColumn(sprite) as ubyte
     if getSpriteCol(sprite) = 60

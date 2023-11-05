@@ -76,20 +76,6 @@ function getAttr(x as ubyte, y as ubyte) as ubyte
 	return PEEK $5800+32*lin+col
 end function
 
-function isSolidTile(tile as ubyte) as ubyte
-	if tile > 0 and tile < 64
-		return 1
-	else
-		return 0
-	end if
-end function
-
-function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
-	dim tile = GetTile(col, lin)
-
-	return isSolidTile(tile)
-end function
-
 function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte)
 	dim value as uByte
 	for i = 0 to arraySize
@@ -240,5 +226,10 @@ sub drawSprites()
 			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
 		end if
 	next i
+
+	if bulletPositionX <> 0
+		Draw1x1Sprite(spritesSet(BULLET_SPRITE_ID), bulletPositionX, bulletPositionY)
+	end if
+
 	RenderFrame()
 END SUB
