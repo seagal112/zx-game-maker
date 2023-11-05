@@ -32,7 +32,7 @@ sub moveBullet()
                 bulletPositionX = bulletPositionX + BULLET_SPEED
             end if
         else
-            if bulletPositionX < 1
+            if bulletPositionX < 2
                 bulletPositionX = 0
             else
                 bulletPositionX = bulletPositionX - BULLET_SPEED
