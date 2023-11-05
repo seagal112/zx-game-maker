@@ -47,6 +47,7 @@ playGame:
     removeScreenObjectFromBuffer()
     initProta()
     setScreenElements()
+    setEnemies()
     dzx0Standard(@hudScreen, $4000)
     redrawScreen()
     drawSprites()

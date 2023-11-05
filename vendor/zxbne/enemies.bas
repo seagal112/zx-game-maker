@@ -39,6 +39,10 @@ sub setScreenElements()
     screenObjects = screenObjectsInitial
 end sub
 
+sub setEnemies()
+    enemies = enemiesInitial
+end sub
+
 sub moveEnemies()
     if framec bAND %10
         return
@@ -97,21 +101,6 @@ sub moveEnemies()
             counter = counter + 1
         end if
     next enemyId
-end sub
-
-sub killEnemy(enemyToKill as Ubyte, burst as Ubyte)
-    ' dim col as UBYTE = PEEK SPRITECOL(enemyToKill)
-    ' dim lin as UBYTE = PEEK SPRITELIN(enemyToKill)
-    enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
-
-    saveSprite(enemyToKill, 0, 0, 0, 0)
-    ' if burst
-    '     NIRVANAspriteT(enemyToKill, ENEMY_BURST_CELL, lin, col)
-    ' else
-    '     NIRVANAspriteT(enemyToKill, 29, 0, 0)
-    '     restoreScr(lin, col)
-    ' end if
-    killEnemySound()
 end sub
 
 ' sub enemiesDraw(delete as ubyte)

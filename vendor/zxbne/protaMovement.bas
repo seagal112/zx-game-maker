@@ -4,17 +4,6 @@ dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2
 
-function checkIfDestroyEnemy(col as ubyte, lin as ubyte) as ubyte
-	sprite = isAnEnemy(lin, col)	
-	if sprite <> 10
-		killEnemy(sprite, 1)
-		startJumping()
-		burnToClean = sprite
-		return 1
-	end if
-	return 0
-end function
-
 function canMoveHorizontal(xOffset as integer) as UBYTE
 	dim col, lin0, lin1, x, y, prevY, nextY, module as integer
 
@@ -54,11 +43,11 @@ function canMoveVertical(yOffset as integer) as UBYTE
 
 	col0 = x/2
 
-	if yOffset > 0
-		if checkIfDestroyEnemy(col0, lin) or checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
-			return 0
-		end if
-	end if
+	' if yOffset > 0
+	' 	if checkIfDestroyEnemy(col0, lin) or checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
+	' 		return 0
+	' 	end if
+	' end if
 
 	if isEven(x)
 		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col0 + 1, lin)
@@ -202,9 +191,11 @@ sub keyboardListen()
 		end if
     END IF
 	if MultiKeys(KEYSPACE)<>0
-		bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+		if not bulletInMovement()
+			bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+			bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+			bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+		end if
 	END IF
 end sub
 

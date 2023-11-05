@@ -194,7 +194,8 @@ for enemyId in objects:
         screenEnemies[enemy['screenId']] = []
     screenEnemies[enemy['screenId']].append(enemy)
 
-enemStr = "DIM enemies(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
+enemStr = "dim enemies(" + str(screensCount - 1) + ",2,10) as ubyte\n"
+enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':

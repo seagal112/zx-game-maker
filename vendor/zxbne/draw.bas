@@ -233,3 +233,7 @@ sub drawSprites()
 
 	RenderFrame()
 END SUB
+
+sub drawBurst(x as ubyte, y as ubyte)
+	Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)
+end sub
