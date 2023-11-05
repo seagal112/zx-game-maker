@@ -194,6 +194,8 @@ for enemyId in objects:
         screenEnemies[enemy['screenId']] = []
     screenEnemies[enemy['screenId']].append(enemy)
 
+enemiesPerScreen = []
+
 enemStr = "dim enemies(" + str(screensCount - 1) + ",2,10) as ubyte\n"
 enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
 
@@ -203,6 +205,7 @@ for layer in data['layers']:
             enemStr += "\n\t{ _\n"
             if idx in screenEnemies:
                 screen = screenEnemies[idx]
+                enemiesPerScreen.append(0)
                 for i in range(3):
                     if i <= len(screen) - 1:
                         enemy = screen[i]
@@ -210,6 +213,7 @@ for layer in data['layers']:
                             right = '1'
                         else:
                             right = '0'
+                        enemiesPerScreen[idx] = enemiesPerScreen[idx] + 1
                         enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + ', ' + enemy['type'] + '}, _\n'
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
@@ -217,11 +221,20 @@ for layer in data['layers']:
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                enemiesPerScreen.append(0)
             enemStr = enemStr[:-4]
             enemStr += " _\n\t}, _"
 
 enemStr = enemStr[:-3]
-enemStr += " _\n}"
+enemStr += " _\n}\n\n"
+
+enemStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
+enemStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
+
+for i in enemiesPerScreen:
+    enemStr += str(i) + ', '
+enemStr = enemStr[:-2]
+enemStr += "}\n\n"
 
 with open("output/enemies.bas", "w") as text_file:
     print(enemStr, file=text_file)

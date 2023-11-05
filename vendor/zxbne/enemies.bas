@@ -41,6 +41,7 @@ end sub
 
 sub setEnemies()
     enemies = enemiesInitial
+    enemiesPerScreen = enemiesPerScreenInitial
 end sub
 
 sub moveEnemies()
@@ -54,7 +55,10 @@ sub moveEnemies()
 
     dim counter as ubyte = 0
     dim frame as ubyte = 0
-    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+    dim maxEnemiesCount = 0
+
+    if enemiesPerScreen(currentScreen) > 0 then maxEnemiesCount = enemiesPerScreen(currentScreen) - 1
+    for enemyId=0 TO maxEnemiesCount
         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY
             continue for
         end if
@@ -125,33 +129,3 @@ sub protaTouch(enemyDirection as ubyte)
     decrementLife()
     damageSound()
 end sub
-
-' sub enemiesDraw(delete as ubyte)
-'     dim tile as Ubyte = 29
-' 	for key=0 TO MAX_OBJECTS_PER_SCREEN - 1
-'         if enemies(currentScreen, key, ENEMY_TILE) = 0
-'             continue for
-'         end if
-' 		if enemies(currentScreen, key, ENEMY_ALIVE) = 1 'In the screen and still live
-'             if delete = 1
-'                 tile = 29
-'             else
-'                 tile = enemies(currentScreen, key, ENEMY_TILE)
-'             end if
-'             NIRVANAspriteT(enemies(currentScreen, key, ENEMY_SPRITE), tile, enemies(currentScreen, key, ENEMY_CURRENT_LIN), enemies(currentScreen, key, ENEMY_CURRENT_COL))
-' 		end if
-' 	next key
-' end sub
-
-' sub removeAllObjects()
-'     animateEnemies = 0
-'     for i = 0 to 5
-'         dim col as UBYTE = PEEK SPRITECOL(i)
-'         dim lin as UBYTE = PEEK SPRITELIN(i)
-
-'         saveSprite(i, 0, 0, getSpriteTile(i), 0)
-'         ' NIRVANAspriteT(i, 29, 0, 0)
-'         restoreScr(lin, col)
-' 	next i
-'     animateEnemies = 1
-' end sub
