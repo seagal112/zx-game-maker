@@ -58,7 +58,7 @@ sub checkBulletCollision()
 
         dim enemyX = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL)
 
-        if enemyX = bulletPositionX or enemyX + 1 = bulletPositionX or enemyX + 1 = bulletPositionX
+        if enemyX = bulletPositionX or enemyX - 1 = bulletPositionX or enemyX + 1 = bulletPositionX
             killEnemy(enemyId)
             resetBullet()
         end if
