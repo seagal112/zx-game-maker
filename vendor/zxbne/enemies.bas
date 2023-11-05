@@ -89,18 +89,41 @@ sub moveEnemies()
                     tile = tile + 1
                 end if
 
-                protaLin = getSpriteLin(PROTA_SPRITE)
-                protaCol = getSpriteCol(PROTA_SPRITE)
-                if protaLin = enemyLin and protaCol = enemyCol
-                    protaBounce(enemies(currentScreen, enemyId, ENEMY_RIGHT))
-                    decrementLife()
-                    damageSound()
-                end if
                 saveSprite(enemyId, enemyLin, enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_RIGHT))
+
+                checkProtaCollision(enemyCol, enemyLin, enemies(currentScreen, enemyId, ENEMY_RIGHT))
             end if
             counter = counter + 1
         end if
     next enemyId
+end sub
+
+sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte, enemyDirection as ubyte)
+    protaLin = getSpriteLin(PROTA_SPRITE)
+    protaCol = getSpriteCol(PROTA_SPRITE)    
+
+    if protaLin <> enemyLin then return
+
+    if protaCol = enemyCol
+        protaTouch(enemyDirection)
+        return
+    end if
+
+    if protaCol < enemyCol
+        if protaCol + 1 = enemyCol
+            protaTouch(enemyDirection)
+        end if
+    else
+        if protaCol = enemyCol + 1
+            protaTouch(enemyDirection)
+        end if
+    end if
+end sub
+
+sub protaTouch(enemyDirection as ubyte)
+    protaBounce(enemyDirection)
+    decrementLife()
+    damageSound()
 end sub
 
 ' sub enemiesDraw(delete as ubyte)
