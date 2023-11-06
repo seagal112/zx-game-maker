@@ -20,10 +20,10 @@ You can read about how to use in following documentation
 
 ## Special Thanks
 
-[Jose Rodriguez](https://github.com/boriel)
-[Agustín Gimenez Bernad](https://github.com/gusmanb)
-[Duefectu](https://twitter.com/Duefectu)
-[cmgonzalez](https://github.com/cmgonzalez)
-[Augusto Ruiz](https://github.com/AugustoRuiz)
+* [Jose Rodriguez](https://github.com/boriel)
+* [Agustín Gimenez Bernad](https://github.com/gusmanb)
+* [Duefectu](https://twitter.com/Duefectu)
+* [cmgonzalez](https://github.com/cmgonzalez)
+* [Augusto Ruiz](https://github.com/AugustoRuiz)
 
 And all of ZX Basic Boriel's Telegram Group
