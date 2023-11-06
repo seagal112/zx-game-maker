@@ -1,6 +1,6 @@
 # Designing
 
-To create your ZX Spectrum games you need to create/edit some images. Screens like title, loading, hud... and tileset that you will use to design your map and spriteset with your main character, enemies...
+To create your ZX Spectrum games you need to create/edit some images. **Screens** like title, loading, hud... and **tileset** that you will use to design your map and **spriteset** with your main character, enemies...
 
 ## Screens
 
@@ -50,9 +50,9 @@ The 8 first sprites (1 - 8) are reserved for game main character (0-2 for right 
 
 The following 6 sprites (9 - 14) will be used for movement platforms, 2 tiles for each platform for animation.
 
-The follow sprite can't be used (No effect if you design anything)
+The next sprite can't be used (No effect if you design anything)
 
-The follow sprite will be use for burst when you kill the enemies
+The next sprite will be use for burst when you kill the enemies
 
 The rest 16 tiles are reserved for enemies, 4 for each enemy, 2 frames for direction
 
