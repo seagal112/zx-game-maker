@@ -19,6 +19,7 @@
   <tile id="96" type="animated"/>
   <tile id="98" type="animated"/>
   <tile id="188" type="door"/>
+  <tile id="189" type="life"/>
   <tile id="190" type="item"/>
   <tile id="191" type="key"/>
  </tileset>
