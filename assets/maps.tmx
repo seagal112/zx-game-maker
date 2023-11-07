@@ -6,6 +6,7 @@
  <properties>
   <property name="damageAmount" type="int" value="10"/>
   <property name="goalItems" type="int" value="2"/>
+  <property name="initialLife" type="int" value="50"/>
   <property name="lifeAmount" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="8" tileheight="8" tilecount="192" columns="32">
