@@ -36,7 +36,7 @@ function startJumping()
 end function
 
 sub initProta()
-    saveSprite(PROTA_SPRITE, 24, 10, 0, 1)
+    saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
 end sub
 
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
