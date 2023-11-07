@@ -210,6 +210,11 @@ function checkTileObject(tile as ubyte) as ubyte
 		removeScreenObject(SCREEN_OBJECT_KEY_INDEX)
 		keySound()
 		return 1
+	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
+		incrementLife()
+		removeScreenObject(SCREEN_OBJECT_LIFE_INDEX)
+		keySound()
+		return 1
 	end if
 	return 0
 end function

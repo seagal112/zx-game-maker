@@ -28,6 +28,7 @@ screenAnimatedTiles = defaultdict(dict)
 keyTile = 0
 itemTile = 0
 doorTile = 0
+lifeTile = 0
 
 for tileset in data['tilesets']:
     if tileset['name'] == 'tiles':
@@ -40,6 +41,8 @@ for tileset in data['tilesets']:
                 itemTile = str(tile['id'])
             if tile['type'] == 'door':
                 doorTile = str(tile['id'])
+            if tile['type'] == 'life':
+                lifeTile = str(tile['id'])
             if tile['type'] == 'animated':
                 animatedTilesIds.append(str(tile['id']))
     elif tileset['name'] == 'sprites':
@@ -49,19 +52,38 @@ if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
     exit
 
+# Global properties
+
+initialLife = 40
 goalItems = 10
+damageAmount = 5
+lifeAmount = 5
+initialScreen = 2
+initialMainCharacterX = 8
+initialMainCharactery = 8
+
 for property in data['properties']:
     if property['name'] == 'goalItems':
         goalItems = property['value']
+    elif property['name'] == 'damageAmount':
+        damageAmount = property['value']
+    elif property['name'] == 'lifeAmount':
+        lifeAmount = property['value']
+    elif property['name'] == 'initialLife':
+        initialLife = property['value']
 
 mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
+mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
 mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
 mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
+mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
+mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 mapStr += "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
 mapStr += "dim doorTile as ubyte = " + doorTile + "\n"
+mapStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
 mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
 
 for layer in data['layers']:
@@ -81,6 +103,7 @@ for layer in data['layers']:
             screenObjects[idx]['key'] = 0
             screenObjects[idx]['item'] = 0
             screenObjects[idx]['door'] = 0
+            screenObjects[idx]['life'] = 0
 
             if screen['x'] == 0:
                 screensPerRow += 1
@@ -99,6 +122,8 @@ for layer in data['layers']:
                     screenObjects[idx]['item'] = 1
                 elif tile == doorTile:
                     screenObjects[idx]['door'] = 1
+                elif tile == lifeTile:
+                    screenObjects[idx]['life'] = 1
                 
                 if tile in animatedTilesIds:
                     screenAnimatedTiles[idx].append([str(tile), str(mapX), str(mapY)])
@@ -119,12 +144,13 @@ for layer in data['layers']:
 mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(screensPerRow) + "\n"
 mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 mapStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
-mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n\n"
+mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
+mapStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n\n"
 
-mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 2) as ubyte\n"
-mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 2) as ubyte = { _\n"
+mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
+mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
 for screen in screenObjects:
-    mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + '}, _\n'
+    mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
 mapStr = mapStr[:-4]
 mapStr += " _\n}\n\n"
 
@@ -183,8 +209,14 @@ for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if 'point' in object and object['point'] == True:
-                objects[str(object['properties'][0]['value'])]['linEnd'] = str((object['y'] % (tileHeight * screenHeight)) // 4)
-                objects[str(object['properties'][0]['value'])]['colEnd'] = str((object['x'] % (tileWidth * screenWidth)) // 4)
+                if 'properties' in object:
+                    objects[str(object['properties'][0]['value'])]['linEnd'] = str((object['y'] % (tileHeight * screenHeight)) // 4)
+                    objects[str(object['properties'][0]['value'])]['colEnd'] = str((object['x'] % (tileWidth * screenWidth)) // 4)
+                if object['type'] == 'mainCharacter':
+                    initialScreen = str(math.ceil(object['x'] / screenPixelsWidth) - 1 + ((math.ceil(object['y'] / screenPixelsHeight) - 1) * screensPerRow))
+                    initialMainCharacterX = str(int((object['x'] % (tileWidth * screenWidth))) // 4)
+                    initialMainCharacterY = str(int((object['y'] % (tileHeight * screenHeight))) // 4)
+                    
 
 screenEnemies = defaultdict(dict)
 
@@ -196,7 +228,10 @@ for enemyId in objects:
 
 enemiesPerScreen = []
 
-enemStr = "dim enemies(" + str(screensCount - 1) + ",2,10) as ubyte\n"
+enemStr = "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
+enemStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
+enemStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
+enemStr += "dim enemies(" + str(screensCount - 1) + ",2,10) as ubyte\n"
 enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
 
 for layer in data['layers']:

@@ -149,13 +149,18 @@ function CheckDoor(x as uByte, y as uByte) as uByte
     end if
 end function
 
+sub incrementLife()
+	currentLife = currentLife + LIFE_AMOUNT
+	printLife()
+end sub
+
 sub decrementLife()
 	if (currentLife = 0)
 		return
 	end if
 
-	if currentLife > 5 then
-		currentLife = currentLife - 5
+	if currentLife > DAMAGE_AMOUNT then
+		currentLife = currentLife - DAMAGE_AMOUNT
 	else
 		currentLife = 0
 	end if
