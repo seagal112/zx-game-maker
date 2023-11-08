@@ -4,19 +4,19 @@ PNG2SCR=docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /shar
 
 tiled-build:
 	tiled --export-map json assets/maps.tmx output/maps.json
-	python3 ${BIN_FOLDER}tiled-build.py
+	docker run -u $(id -u):$(id -g) -v ${PWD}/output:/share rtorralba/tiled2zxbasic
 
 screens-build:
 	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/title.png
-	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
+	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
 	rm -f assets/screens/title.png.scr
 
 	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/ending.png
-	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
+	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
 	rm -f assets/screens/ending.png.scr
 
 	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/hud.png
-	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.png.scr output/hud.png.scr.zx0
+	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/hud.png.scr output/hud.png.scr.zx0
 	rm -f assets/screens/hud.png.scr
 
 	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/loading.png
