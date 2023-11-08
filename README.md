@@ -22,6 +22,7 @@ You can read about how to use in following documentation
 
 * [Jose Rodriguez](https://github.com/boriel)
 * [Agustín Gimenez Bernad](https://github.com/gusmanb)
+* [Tiled](https://www.mapeditor.org/) specially to **eishiya**
 * [Duefectu](https://twitter.com/Duefectu)
 * [cmgonzalez](https://github.com/cmgonzalez)
 * [Augusto Ruiz](https://github.com/AugustoRuiz)
