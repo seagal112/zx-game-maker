@@ -3,7 +3,9 @@ import math
 from collections import defaultdict
 from pprint import pprint
 
-f = open('output/maps.json')
+outputDir = 'output/'
+
+f = open(outputDir + 'maps.json')
 
 data = json.load(f)
 
@@ -58,6 +60,9 @@ initialLife = 40
 goalItems = 10
 damageAmount = 5
 lifeAmount = 5
+bulletDistance = 0
+enemiesRespawn = 0
+
 initialScreen = 2
 initialMainCharacterX = 8
 initialMainCharactery = 8
@@ -71,6 +76,10 @@ for property in data['properties']:
         lifeAmount = property['value']
     elif property['name'] == 'initialLife':
         initialLife = property['value']
+    elif property['name'] == 'bulletDistance':
+        bulletDistance = property['value']
+    elif property['name'] == 'enemiesRespawn':
+        enemiesRespawn = 1 if property['value'] else 0
 
 mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
@@ -79,6 +88,8 @@ mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
 mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
+mapStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
+mapStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 mapStr += "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
@@ -169,7 +180,7 @@ mapStr += "\t} _\n"
 mapStr = mapStr[:-4]
 mapStr += " _\n}\n\n"
 
-with open("output/maps.bas", "w") as text_file:
+with open(outputDir + "maps.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
 # Construct enemies
@@ -271,7 +282,7 @@ for i in enemiesPerScreen:
 enemStr = enemStr[:-2]
 enemStr += "}\n\n"
 
-with open("output/enemies.bas", "w") as text_file:
+with open(outputDir + "enemies.bas", "w") as text_file:
     print(enemStr, file=text_file)
 
 screenKeys = defaultdict(dict)
@@ -304,5 +315,5 @@ for screenId in screenKeys:
 keyStr = keyStr[:-1]
 keyStr += " _\n}"
 
-with open("output/keys.bas", "w") as text_file:
+with open(outputDir + "keys.bas", "w") as text_file:
     print(keyStr, file=text_file)
