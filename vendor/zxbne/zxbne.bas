@@ -106,6 +106,9 @@ sub checkMoveScreen()
     if moveScreen <> 0
         moveToScreen(moveScreen)
         moveScreen = 0
+        if ENEMIES_RESPAWN
+            setEnemies()
+        end if
     end if
 end sub
 
