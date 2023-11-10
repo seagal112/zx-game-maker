@@ -26,15 +26,19 @@ sub mapDraw()
 		tile = peek (@screens + offset + index)
 		if tile <> 0
 			if tile = itemTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 1
+				if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 					SetTileChecked(tile, attrSet(tile), x, y)
 				end if
 			elseif tile = keyTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX) = 1
+				if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 					SetTileChecked(tile, attrSet(tile), x, y)
 				end if
 			elseif tile = doorTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX) = 1
+				if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
+					SetTileChecked(tile, attrSet(tile), x, y)
+				end if
+			elseif tile = lifeTile
+				if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 					SetTileChecked(tile, attrSet(tile), x, y)
 				end if
 			else
