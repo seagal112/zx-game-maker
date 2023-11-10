@@ -1,44 +1,42 @@
 BIN_FOLDER=vendor/zxbne/bin/
-PROJECT_NAME=z-lee
-PNG2SCR=docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/
+PROJECT_NAME=game
 
 tiled-build:
-	tiled --export-map json assets/maps.tmx output/maps.json
-	docker run -u $(id -u):$(id -g) -v ${PWD}/output:/share rtorralba/tiled2zxbasic
+	python3 ${BIN_FOLDER}tiled-build.py
 
 screens-build:
-	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/title.png
-	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
-	rm -f assets/screens/title.png.scr
+	python3 ${BIN_FOLDER}png2scr.py assets/screens/title.png
+	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
+	rm assets/screens/title.png.scr
 
-	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/ending.png
-	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
-	rm -f assets/screens/ending.png.scr
+	python3 ${BIN_FOLDER}png2scr.py assets/screens/ending.png
+	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
+	rm assets/screens/ending.png.scr
 
-	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/hud.png
-	docker run --rm -v ${PWD}:/app -w /app openjdk:11 java -jar vendor/zxbne/bin/zx0.jar -f assets/screens/hud.png.scr output/hud.png.scr.zx0
-	rm -f assets/screens/hud.png.scr
+	python3 ${BIN_FOLDER}png2scr.py assets/screens/hud.png
+	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.png.scr output/hud.png.scr.zx0
+	rm assets/screens/hud.png.scr
 
-	docker run -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/png2scr /share/assets/screens/loading.png
-	mv -f assets/screens/loading.png.scr output/loading.bin
+	python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.png
+	mv assets/screens/loading.png.scr output/loading.bin
 
-	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/tiles.png -p /share/assets/paperValues.txt -t tiles > output/tiles.bas
-	docker run -it -u $(id -u):$(id -g) -v ${PWD}:/share rtorralba/img2zxbasic -i /share/assets/sprites.png -p /share/assets/paperValues.txt -t sprites > output/sprites.bas
+	python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/tiles.png -p assets/paperValues.txt -t tiles > output/tiles.bas
+	python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/sprites.png -p assets/paperValues.txt -t sprites > output/sprites.bas
 
 compile:
-	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -taB /app/main.bas
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -taB main.bas
 	mv -f main.tap ${PROJECT_NAME}.tap
 
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
-	docker run --user $(id -u):$(id -g) -v ${PWD}:/app rtorralba/zxbasic -D HIDE_LOAD_MSG /app/main.bas
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -D HIDE_LOAD_MSG main.bas
 
-	${BIN_FOLDER}bas2tap -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
+	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
 	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 32768 main.bin
 
-	cat output/loader.tap output/loading.tap output/main.tap > ${PROJECT_NAME}.tap
+	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
 	rm -f *.bin output/*.bin
 run:
