@@ -24,20 +24,52 @@ function bulletInMovement() as ubyte
 end function
 
 sub moveBullet()
+    dim maxXScreenRight as ubyte = 60
+    dim maxXScreenLeft as ubyte = 2
+    dim limit as ubyte = 0
+
     if bulletPositionX <> 0
-        if bulletDirectionIsRight = 1
-            if bulletPositionX > 60
-                bulletPositionX = 0
+        if BULLET_DISTANCE <> 0
+            dim protaX = getSpriteCol(PROTA_SPRITE)
+            if bulletDirectionIsRight = 1
+                if protaX + BULLET_DISTANCE > maxXScreenRight
+                    limit = maxXScreenRight
+                else
+                    limit = protaX + BULLET_DISTANCE
+                end if
+                if bulletPositionX > limit
+                    bulletPositionX = 0
+                else
+                    bulletPositionX = bulletPositionX + BULLET_SPEED
+                end if
             else
-                bulletPositionX = bulletPositionX + BULLET_SPEED
+                if protaX - BULLET_DISTANCE < maxXScreenLeft
+                    limit = maxXScreenLeft
+                else
+                    limit = protaX - BULLET_DISTANCE + 1
+                end if
+                if bulletPositionX < limit
+                    bulletPositionX = 0
+                else
+                    bulletPositionX = bulletPositionX - BULLET_SPEED
+                end if
             end if
         else
-            if bulletPositionX < 2
-                bulletPositionX = 0
+            if bulletDirectionIsRight = 1
+                if bulletPositionX > maxXScreenRight
+                    bulletPositionX = 0
+                else
+                    bulletPositionX = bulletPositionX + BULLET_SPEED
+                end if
             else
-                bulletPositionX = bulletPositionX - BULLET_SPEED
+                if bulletPositionX < maxXScreenLeft
+                    bulletPositionX = 0
+                else
+                    bulletPositionX = bulletPositionX - BULLET_SPEED
+                end if
             end if
         end if
+
         checkBulletCollision()
     end if
 end sub

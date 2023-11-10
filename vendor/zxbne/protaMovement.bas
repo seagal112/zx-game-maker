@@ -192,7 +192,12 @@ sub keyboardListen()
     END IF
 	if MultiKeys(KEYSPACE)<>0
 		if not bulletInMovement()
-			bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+			if getSpriteDirection(PROTA_SPRITE)
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+			else
+				bulletPositionX = getSpriteCol(PROTA_SPRITE)
+			end if
+			
 			bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 			bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
 		end if
