@@ -1,6 +1,9 @@
 BIN_FOLDER=vendor/zxsgm/bin/
 PROJECT_NAME=game
 
+tiled-export:
+	tiled --export-map json assets/maps.tmx output/maps.json
+
 tiled-build:
 	python3 ${BIN_FOLDER}tiled-build.py
 
@@ -39,5 +42,10 @@ build:
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
 	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
+
+build-dev:
+	$(MAKE) tiled-export
+	$(MAKE)	build
+
 run:
 	fuse --machine=plus2a output/${PROJECT_NAME}.tap
