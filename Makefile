@@ -40,4 +40,4 @@ build:
 
 	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
 run:
-	fuse --machine=plus2a ${PROJECT_NAME}.tap
+	fuse --machine=plus2a output/${PROJECT_NAME}.tap
