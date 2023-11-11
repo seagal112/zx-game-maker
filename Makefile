@@ -30,14 +30,14 @@ compile:
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -D HIDE_LOAD_MSG main.bas
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -D HIDE_LOAD_MSG main.bas -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
-	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 32768 main.bin
+	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 32768 output/main.bin
 
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
-	rm -f *.bin output/*.bin
+	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
 run:
 	fuse --machine=plus2a ${PROJECT_NAME}.tap
