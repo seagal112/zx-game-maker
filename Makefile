@@ -1,4 +1,4 @@
-BIN_FOLDER=vendor/zxbne/bin/
+BIN_FOLDER=vendor/zxsgm/bin/
 PROJECT_NAME=game
 
 tiled-build:

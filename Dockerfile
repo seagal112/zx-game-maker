@@ -11,7 +11,7 @@ WORKDIR /app
 
 RUN pip install numpy opencv-python Pillow
 
-COPY --from=rtorralba/zxbasic:latest /zxbasic /app/vendor/zxbne/bin/zxbasic
+COPY --from=rtorralba/zxbasic:latest /zxbasic /app/vendor/zxsgm/bin/zxbasic
 COPY vendor /app/vendor
 COPY Makefile /app/Makefile
 COPY main.bas /app/main.bas

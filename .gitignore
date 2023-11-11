@@ -3,3 +3,4 @@ output/*
 *.bin
 *.tap
 *.pdf
+vendor/zxsgm/bin/zxbasic/*
