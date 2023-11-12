@@ -1,5 +1,6 @@
 BIN_FOLDER=vendor/zxsgm/bin/
 PROJECT_NAME=game
+DOCKER_VERSION=latest
 
 tiled-export:
 	tiled --export-map json assets/maps.tmx output/maps.json
@@ -33,11 +34,11 @@ compile:
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -D HIDE_LOAD_MSG main.bas -o output/main.bin
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 4768 -S 24576 main.bas -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
-	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 32768 output/main.bin
+	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin
 
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
@@ -46,6 +47,12 @@ build:
 build-dev:
 	$(MAKE) tiled-export
 	$(MAKE)	build
+
+docker-build:
+	docker build -t rtorralba/zx-game-maker:${DOCKER_VERSION} .
+
+docker-push:
+	docker push rtorralba/zx-game-maker:${DOCKER_VERSION}
 
 run:
 	fuse --machine=plus2a output/${PROJECT_NAME}.tap
