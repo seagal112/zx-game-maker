@@ -4,62 +4,6 @@ dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2
 
-function canMoveHorizontal(xOffset as integer) as UBYTE
-	dim col, lin0, lin1, x, y, prevY, nextY, module as integer
-
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
-
-	if isEven(x)
-		col = x / 2 + xOffset
-	else
-		return 1
-	end if
-
-	if isEven(y)
-		lin0 = y/2
-		debugC(lin0)
-		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin0 + 1)
-	else
-		prevY = y - 1
-
-		lin0 = prevY / 2
-
-		return not isSolidTileByColLin(col, lin0) and not isSolidTileByColLin(col, lin0 + 1) and not isSolidTileByColLin(col, lin0 + 2)
-	end if
-end function
-
-function canMoveVertical(yOffset as integer) as UBYTE
-	dim lin, col0, col1, x, y, prevX, nextX, module as integer
-
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
-
-	if isEven(y)
-		lin = y / 2 + yOffset
-	else
-		return 1
-	end if
-
-	col0 = x/2
-
-	' if yOffset > 0
-	' 	if checkIfDestroyEnemy(col0, lin) or checkIfDestroyEnemy(col0 + 2, lin) or checkIfDestroyEnemy(col0 - 2, lin)
-	' 		return 0
-	' 	end if
-	' end if
-
-	if isEven(x)
-		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col0 + 1, lin)
-	else
-		prevX = x - 1
-
-		col0 = prevX / 2
-
-		return not isSolidTileByColLin(col0, lin) and not isSolidTileByColLin(col + 1, lin) and not isSolidTileByColLin(col + 2, lin)
-	end if
-end function
-
 function canMoveLeft() as ubyte
 	x = getSpriteCol(PROTA_SPRITE)
 	y = getSpriteLin(PROTA_SPRITE)
