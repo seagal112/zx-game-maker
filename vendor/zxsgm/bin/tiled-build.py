@@ -10,8 +10,6 @@ f = open(outputDir + 'maps.json')
 data = json.load(f)
 
 # Screens count per row
-screensPerRow = 0
-
 screenWidth = data['editorsettings']['chunksize']['width']
 screenHeight = data['editorsettings']['chunksize']['height']
 cellsPerScreen = screenWidth * screenHeight
@@ -114,8 +112,8 @@ mapStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
         screensCount = len(layer['chunks'])
-        mapRows = layer['chunks'][0]['height']//screenHeight
-        mapCols = layer['chunks'][0]['width']//screenWidth
+        mapRows = layer['height']//screenHeight
+        mapCols = layer['width']//screenWidth
         mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = defaultdict(dict)
@@ -129,9 +127,6 @@ for layer in data['layers']:
             screenObjects[idx]['item'] = 0
             screenObjects[idx]['door'] = 0
             screenObjects[idx]['life'] = 0
-
-            if screen['x'] == 0:
-                screensPerRow += 1
 
             for jdx, cell in enumerate(screen['data']):
                 mapX = jdx % screen['width']
@@ -166,7 +161,7 @@ for layer in data['layers']:
         mapStr = mapStr[:-4]
         mapStr += " _\n}\n\n"
 
-mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(screensPerRow) + "\n"
+mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 mapStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
 mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
@@ -209,7 +204,7 @@ for layer in data['layers']:
             if 'gid' in object:
                 xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
                 yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
-                screenId = xScreenPosition + (yScreenPosition * screensPerRow)
+                screenId = xScreenPosition + (yScreenPosition * mapCols)
                 type = 0
                 if object['type'] == 'enemy':
                     type = '1'
@@ -239,7 +234,10 @@ for layer in data['layers']:
                     objects[str(object['properties'][0]['value'])]['linEnd'] = str((object['y'] % (tileHeight * screenHeight)) // 4)
                     objects[str(object['properties'][0]['value'])]['colEnd'] = str((object['x'] % (tileWidth * screenWidth)) // 4)
                 if object['type'] == 'mainCharacter':
-                    initialScreen = str(math.ceil(object['x'] / screenPixelsWidth) - 1 + ((math.ceil(object['y'] / screenPixelsHeight) - 1) * screensPerRow))
+                    xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
+                    yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
+                    screenId = xScreenPosition + (yScreenPosition * mapCols)
+                    initialScreen = screenId
                     initialMainCharacterX = str(int((object['x'] % (tileWidth * screenWidth))) // 4)
                     initialMainCharacterY = str(int((object['y'] % (tileHeight * screenHeight))) // 4)
                     
