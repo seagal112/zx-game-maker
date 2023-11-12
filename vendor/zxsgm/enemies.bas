@@ -65,7 +65,7 @@ sub moveEnemies()
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0
             continue for
         end if
-        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 1 'In the screen and still live
+        if enemies(currentScreen, enemyId, ENEMY_ALIVE) > 0 'In the screen and still live
             if counter < 8
                 dim tile as UBYTE
                 dim enemyCol as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
