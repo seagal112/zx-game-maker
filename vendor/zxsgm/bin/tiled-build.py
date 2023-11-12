@@ -25,6 +25,7 @@ screenPixelsHeight = screenHeight * tileHeight
 spriteTileOffset = 0
 
 solidTiles = []
+damageTiles = []
 animatedTilesIds = []
 screenAnimatedTiles = defaultdict(dict)
 keyTile = 0
@@ -47,6 +48,8 @@ for tileset in data['tilesets']:
                 lifeTile = str(tile['id'])
             if tile['type'] == 'animated':
                 animatedTilesIds.append(str(tile['id']))
+            if tile['type'] == 'damage':
+                damageTiles.append(str(tile['id']))
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
@@ -81,6 +84,15 @@ for property in data['properties']:
     elif property['name'] == 'enemiesRespawn':
         enemiesRespawn = 1 if property['value'] else 0
 
+if len(solidTiles) == 0:
+    solidTiles.append('0')
+
+if len(damageTiles) == 0:
+    damageTiles.append('0')
+
+solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0
+damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
+
 mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
@@ -90,12 +102,14 @@ mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 mapStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 mapStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
-mapStr += "dim solidTiles(" + str(len(solidTiles) - 1) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+mapStr += "dim solidTiles(" + str(solidTilesCount) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+mapStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
 mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
 mapStr += "dim doorTile as ubyte = " + doorTile + "\n"
 mapStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
 mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
+mapStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -213,6 +227,7 @@ for layer in data['layers']:
                     'colIni': str((object['x'] % (tileWidth * screenWidth)) // 4),
                     'colEnd': str((object['x'] % (tileWidth * screenWidth)) // 4),
                     'tile': str(object['gid'] - spriteTileOffset),
+                    'life': str(object['properties'][0]['value']) if ('properties' in object and len(object['properties']) > 0 and object['properties'][0]['name'] == 'life') else '1',
                     'type': type
                 }
 
@@ -260,7 +275,7 @@ for layer in data['layers']:
                         else:
                             right = '0'
                         enemiesPerScreen[idx] = enemiesPerScreen[idx] + 1
-                        enemStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + ', ' + enemy['type'] + '}, _\n'
+                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + str(right + ', ') + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + str(enemy['type']) + '}, _\n'
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:
