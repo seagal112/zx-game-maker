@@ -4,10 +4,10 @@ dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
 dim animateEnemies as ubyte = 1
+dim damagedByCollision as ubyte
 
 dim framec AS ubyte AT 23672
 
-' #include "nirvana+.bas"
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"
 
@@ -53,6 +53,9 @@ playGame:
     drawSprites()
     do
         waitretrace
+        if not isJumping and landed
+            damagedByCollision = 0
+        end if
         protaMovement()
         moveEnemies()
         moveBullet()

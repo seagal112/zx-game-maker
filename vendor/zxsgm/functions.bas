@@ -43,15 +43,62 @@ function isSolidTile(tile as ubyte) as ubyte
 	end if
 end function
 
+function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte) as ubyte
+	dim value as uByte
+	for i = 0 to arraySize
+		value = peek(Haystack + i)
+		if value = Needle
+			return value
+		end if
+	next i
+
+	return 0
+end function
+
+function isADamageTile(tile as ubyte) as UBYTE
+	for i = 0 to DAMAGE_TILES_ARRAY_SIZE
+		if InArray(tile, @damageTiles, DAMAGE_TILES_ARRAY_SIZE)
+			return 1
+		end if
+	next i
+	return 0
+end function
+
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile = GetTile(col, lin)
 
-	return isSolidTile(tile)
+    if isSolidTile(tile)
+        if not damagedByCollision
+            if lin mod 4 = 0
+                if isADamageTile(tile)
+                    damagedByCollision = 1
+                    decrementLife()
+                    damageSound()
+                    startJumping()
+                end if
+            end if
+        end if
+        return 1
+    end if
+	return 0
+    ' return isSolidTile(tile)
 end function
 
 function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     dim col as uByte = x >> 1
     dim lin as uByte = y >> 1
     
-	return isSolidTileByColLin(col, lin)
+    dim tile = GetTile(col, lin)
+
+	return isSolidTile(tile)
 end function
+
+function flipSpriteHorizontally(sprite as ubyte) as ubyte
+    return 1 'sprite bXOR 0b10000000
+end function
+
+sub flipSpriteArrayHorizontally(ByRef sprite() as ubyte)
+    for i = 0 to 31
+        sprite(i) = flipSpriteHorizontally(sprite(i))
+    next i
+end sub

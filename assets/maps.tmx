@@ -15,6 +15,7 @@
   <image source="tiles.png" width="256" height="48"/>
   <tile id="2" type="solid"/>
   <tile id="3" type="solid"/>
+  <tile id="8" type="damage"/>
   <tile id="12" type="solid"/>
   <tile id="13" type="solid"/>
   <tile id="34" type="solid"/>
@@ -102,7 +103,7 @@
 3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,123,124,1,1,1,1,1,3,
 3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,155,156,1,1,1,1,1,189,
 3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,187,188,1,1,1,1,1,189,
-4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,9,9,9,9,9,4,4,4,4,4,4,4,4,4,4,4,4,4,
 36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36
 </chunk>
    <chunk x="32" y="22" width="32" height="22">
@@ -132,14 +133,22 @@
   </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="1" name="enemy_1" type="enemy" gid="209" x="272" y="320" width="16" height="16"/>
+  <object id="1" name="enemy_1" type="enemy" gid="209" x="272" y="320" width="16" height="16">
+   <properties>
+    <property name="life" type="int" value="2"/>
+   </properties>
+  </object>
   <object id="2" name="enemy_1_end" x="336" y="320">
    <properties>
     <property name="enemy" type="object" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="12" name="enemy_2" type="enemy" gid="209" x="376" y="320" width="16" height="16"/>
+  <object id="12" name="enemy_2" type="enemy" gid="209" x="376" y="320" width="16" height="16">
+   <properties>
+    <property name="life" type="int" value="3"/>
+   </properties>
+  </object>
   <object id="13" name="enemy_2_end" x="424" y="320">
    <properties>
     <property name="enemy" type="object" value="12"/>
