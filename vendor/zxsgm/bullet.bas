@@ -82,7 +82,7 @@ sub checkBulletCollision()
     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
         if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY then continue for
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
-        if enemies(currentScreen, enemyId, ENEMY_ALIVE) <> 1 then continue for
+        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 
         dim enemyY = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
 
@@ -91,7 +91,7 @@ sub checkBulletCollision()
         dim enemyX = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL)
 
         if enemyX = bulletPositionX or enemyX - 1 = bulletPositionX or enemyX + 1 = bulletPositionX
-            killEnemy(enemyId)
+            damageEnemy(enemyId)
             resetBullet()
         end if
     next enemyId
@@ -103,9 +103,12 @@ sub resetBullet()
     bulletDirectionIsRight = 0
 end sub
 
-sub killEnemy(enemyToKill as Ubyte)
-    enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
-    saveSprite(enemyToKill, 0, 0, 0, 0)
-    drawBurst(enemies(currentScreen, enemyToKill, ENEMY_CURRENT_COL), enemies(currentScreen, enemyToKill, ENEMY_CURRENT_LIN))
+sub damageEnemy(enemyToKill as Ubyte)
+    enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = enemies(currentScreen, enemyToKill, ENEMY_ALIVE) - 1
+
+    if enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
+        saveSprite(enemyToKill, 0, 0, 0, 0)
+        drawBurst(enemies(currentScreen, enemyToKill, ENEMY_CURRENT_COL), enemies(currentScreen, enemyToKill, ENEMY_CURRENT_LIN))
+    end if
     killEnemySound()
 end sub
