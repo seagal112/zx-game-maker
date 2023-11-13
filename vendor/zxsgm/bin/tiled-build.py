@@ -48,6 +48,9 @@ for tileset in data['tilesets']:
                 animatedTilesIds.append(str(tile['id']))
             if tile['type'] == 'damage':
                 damageTiles.append(str(tile['id']))
+            if tile['type'] == 'animated-damage':
+                animatedTilesIds.append(str(tile['id']))
+                damageTiles.append(str(tile['id']))
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
