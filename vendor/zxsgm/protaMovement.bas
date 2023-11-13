@@ -102,6 +102,28 @@ function getNextFrameRunning() as UBYTE
 	end if
 end function
 
+sub jump()
+	if isJumping() = 0 and landed
+		landed = 0
+		startJumping()
+	end if
+end sub
+
+sub shoot()
+	if not bulletInMovement()
+		if getSpriteDirection(PROTA_SPRITE)
+			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+		else
+			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
+			bulletPositionX = getSpriteCol(PROTA_SPRITE)
+		end if
+
+		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+	end if
+end sub
+
 sub keyboardListen()
     if MultiKeys(KEYO)<>0
 		if onFirstColumn(PROTA_SPRITE)
@@ -124,10 +146,7 @@ sub keyboardListen()
 		' 		moveScreen = 8
 		' 	end if
 		' end if
-        if isJumping() = 0 and landed
-			landed = 0
-			startJumping()
-        end if
+		jump()
     END IF
     if MultiKeys(KEYA)<>0
 		if canMoveDown()
@@ -135,17 +154,10 @@ sub keyboardListen()
 		end if
     END IF
 	if MultiKeys(KEYSPACE)<>0
-		if not bulletInMovement()
-			if getSpriteDirection(PROTA_SPRITE)
-				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-			else
-				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE)
-			end if
-			
-			bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-			bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+		if SHOOTING
+			shoot()
+		else
+			jump()
 		end if
 	END IF
 end sub
