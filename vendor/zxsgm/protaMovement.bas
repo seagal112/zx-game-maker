@@ -137,8 +137,10 @@ sub keyboardListen()
 	if MultiKeys(KEYSPACE)<>0
 		if not bulletInMovement()
 			if getSpriteDirection(PROTA_SPRITE)
+				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
 			else
+				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE)
 			end if
 			

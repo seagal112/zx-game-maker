@@ -28,8 +28,8 @@ screens-build:
 	python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/sprites.png -p assets/paperValues.txt -t sprites > output/sprites.bas
 
 compile:
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -taB main.bas
-	mv -f main.tap ${PROJECT_NAME}.tap
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -W 500 -taB main.bas
+	mv -f main.tap output/${PROJECT_NAME}.tap
 
 build:
 	$(MAKE) tiled-build
@@ -42,7 +42,7 @@ build:
 
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
-	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
+	#rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
 
 build-dev:
 	$(MAKE) tiled-export

@@ -93,12 +93,24 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
 	return isSolidTile(tile)
 end function
 
-function flipSpriteHorizontally(sprite as ubyte) as ubyte
-    return 1 'sprite bXOR 0b10000000
+Function fastcall hMirror (number as uByte) as uByte
+asm
+;17 bytes and 66 clock cycles
+Reverse:
+    ld b,a       ;b=ABCDEFGH
+    rrca         ;a=HABCDEFG
+    rrca         ;a=GHABCDEF
+    xor b
+    and %10101010
+    xor b        ;a=GBADCFEH
+    ld b,a       ;b=GBADCFEH
+    rrca         ;a=HGBADCFE
+    rrca         ;a=EHGBADCF
+    rrca         ;a=FEHGBADC
+    rrca         ;a=CFEHGBAD
+    xor b
+    and %01100110
+    xor b        ;a=GFEDCBAH
+    rrca         ;a=HGFEDCBA
+end asm
 end function
-
-sub flipSpriteArrayHorizontally(ByRef sprite() as ubyte)
-    for i = 0 to 31
-        sprite(i) = flipSpriteHorizontally(sprite(i))
-    next i
-end sub

@@ -225,7 +225,7 @@ sub drawSprites()
 	next i
 
 	if bulletPositionX <> 0
-		Draw1x1Sprite(spritesSet(BULLET_SPRITE_ID), bulletPositionX, bulletPositionY)
+		Draw1x1Sprite(spritesSet(currentBulletSpriteId), bulletPositionX, bulletPositionY)
 	end if
 
 	RenderFrame()

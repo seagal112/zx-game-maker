@@ -1,3 +1,6 @@
+const BULLET_SPRITE_RIGHT_ID as ubyte = 32
+const BULLET_SPRITE_LEFT_ID as ubyte = 33
+
 dim currentLife as UBYTE = 100
 dim currentKeys as UBYTE = 0
 dim currentItems as UBYTE = 0
@@ -5,6 +8,7 @@ dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
 dim animateEnemies as ubyte = 1
 dim damagedByCollision as ubyte
+dim currentBulletSpriteId as ubyte
 
 dim framec AS ubyte AT 23672
 
