@@ -15,9 +15,9 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
 }
 
 const jumpStopValue as ubyte = 255
-const jumpStepsCount as ubyte = 6
+const jumpStepsCount as ubyte = 5
 dim jumpCurrentKey as ubyte = jumpStopValue
-dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -4, -2, -2}
+dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
 
 function isJumping() as ubyte
     if jumpCurrentKey <> jumpStopValue
