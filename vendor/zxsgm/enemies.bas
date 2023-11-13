@@ -125,7 +125,8 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte, enemyDirection as 
 end sub
 
 sub protaTouch(enemyDirection as ubyte)
-    protaBounce(enemyDirection)
+    ' protaBounce(enemyDirection)
+    startJumping()
     decrementLife()
     damageSound()
 end sub
