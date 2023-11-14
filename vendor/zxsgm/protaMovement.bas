@@ -1,5 +1,3 @@
-#include <keys.bas>
-
 dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2
@@ -124,42 +122,60 @@ sub shoot()
 	end if
 end sub
 
-sub keyboardListen()
-    if MultiKeys(KEYO)<>0
-		if onFirstColumn(PROTA_SPRITE)
-			moveScreen = 4
-		elseif canMoveLeft()
-			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
-		end if
-    END IF
-    if MultiKeys(KEYP)<>0
-		if onLastColumn(PROTA_SPRITE)
-			moveScreen = 6
-		elseif canMoveRight()
-			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
-		end if
-    END IF
-    if MultiKeys(KEYQ)<>0
-		' if canMoveUp()
-		' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
-		' 	if getSpriteLin(PROTA_SPRITE) < 2
-		' 		moveScreen = 8
-		' 	end if
-		' end if
+sub leftKey()
+	if onFirstColumn(PROTA_SPRITE)
+		moveScreen = 4
+	elseif canMoveLeft()
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
+	end if
+end sub
+
+sub rightKey()
+	if onLastColumn(PROTA_SPRITE)
+		moveScreen = 6
+	elseif canMoveRight()
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
+	end if
+end sub
+
+sub upKey()
+	' if canMoveUp()
+	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+	' 	if getSpriteLin(PROTA_SPRITE) < 2
+	' 		moveScreen = 8
+	' 	end if
+	' end if
+	jump()
+end sub
+
+sub downKey()
+	if canMoveDown()
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+	end if
+end sub
+
+sub fireKey()
+	if SHOOTING
+		shoot()
+	else
 		jump()
-    END IF
-    if MultiKeys(KEYA)<>0
-		if canMoveDown()
-			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
-		end if
-    END IF
-	if MultiKeys(KEYSPACE)<>0
-		if SHOOTING
-			shoot()
-		else
-			jump()
-		end if
-	END IF
+	end if
+end sub
+
+sub keyboardListen()
+	if kempston
+		if IN(31) bAND %00010 AND x>0  then leftKey()
+		if IN(31) bAND %00001 AND x<31 then rightKey()
+		if IN(31) bAND %01000 AND y>0  then upKey()
+		if IN(31) bAND %00100 AND y<23 then downKey()
+		if IN(31) bAND %10000 then fireKey() 
+	else
+		if MultiKeys(keyArray(LEFT))<>0 then leftKey()
+		if MultiKeys(keyArray(RIGHT))<>0 then rightKey()
+		if MultiKeys(keyArray(UP))<>0 then upKey()
+		if MultiKeys(keyArray(DOWN))<>0 then downKey()
+		if MultiKeys(keyArray(FIRE))<>0 then fireKey()
+	end if
 end sub
 
 function checkTileObject(tile as ubyte) as ubyte

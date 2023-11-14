@@ -1,5 +1,10 @@
 const BULLET_SPRITE_RIGHT_ID as ubyte = 32
 const BULLET_SPRITE_LEFT_ID as ubyte = 33
+CONST LEFT as uByte = 0
+CONST RIGHT as uByte = 1
+CONST UP as uByte = 2
+CONST DOWN as uByte = 3
+CONST FIRE as uByte = 4
 
 dim currentLife as UBYTE = 100
 dim currentKeys as UBYTE = 0
@@ -9,6 +14,10 @@ dim currentScreen as UBYTE = 0
 dim animateEnemies as ubyte = 1
 dim damagedByCollision as ubyte
 dim currentBulletSpriteId as ubyte
+
+dim kempston as uByte
+dim keyOption as String
+dim keyArray(4) as uInteger
 
 dim framec AS ubyte AT 23672
 
@@ -23,6 +32,9 @@ SetTileset(@tileSet)
 #include "../../output/maps.bas"
 #include "../../output/enemies.bas"
 
+#include <zx0.bas>
+#include <retrace.bas>
+#include <keys.bas>
 #include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
@@ -32,14 +44,32 @@ SetTileset(@tileSet)
 #include "protaMovement.bas"
 #include "sound.bas"
 #include "music.bas"
-#include <zx0.bas>
-#include <retrace.bas>
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     ' stopMusicAndNirvana()
     dzx0Standard(@titleScreen, $4000)
-    pauseUntilPressKey()
+
+    do
+        let keyOption = Inkey$
+    loop until keyOption = "1" OR keyOption = "2" OR keyOption = "3" 
+
+    if keyOption = "1"
+        let keyArray(LEFT) = KEYO
+        let keyArray(RIGHT) = KEYP
+        let keyArray(UP) = KEYQ
+        let keyArray(DOWN) = KEYA
+        let keyArray(FIRE) = KEYSPACE
+    elseif keyOption = "2"
+        kempston = 1
+    elseif keyOption = "3"
+        let keyArray(LEFT)=KEY6
+        let keyArray(RIGHT)=KEY7
+        let keyArray(UP)=KEY9
+        let keyArray(DOWN)=KEY8
+        let keyArray(FIRE)=KEY0
+    end if
+    
     currentScreen = INITIAL_SCREEN
 
 playGame:
