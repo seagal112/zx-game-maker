@@ -88,6 +88,8 @@ def main(argv):
 
     tiles = ioUser.getTiles(argVals["ifile"], tw, th)
     paperValues = ioUser.getPaperValues(argVals["pfile"])
+    paperValuesSprites = ioUser.getPaperValuesSprites(argVals["pfile"])
+    
     type = argVals["type"]
 
     xChars = int(tw / 8)
@@ -99,12 +101,12 @@ def main(argv):
     tileIdx = 0
     for tileY in range(len(tiles)):
         for tileX in range(len(tiles[tileY])):
-            inkColors, tileHeight, tileWidth, pValues = getValues(tiles[tileY][tileX], paperValues[tileY*yChars:(tileY+1)*yChars, tileX*xChars:(tileX+1)*xChars])
-
             if type == "tiles":
+                inkColors, tileHeight, tileWidth, pValues = getValues(tiles[tileY][tileX], paperValues[tileY*yChars:(tileY+1)*yChars, tileX*xChars:(tileX+1)*xChars])
                 codedTiles.append(generateCodedTiles(tiles[tileY][tileX], inkColors, tileHeight, tileWidth, pValues))
                 codedAttrs.append(generateCodedAttrs(inkColors, pValues))
             else:
+                inkColors, tileHeight, tileWidth, pValues = getValues(tiles[tileY][tileX], paperValuesSprites[tileY*yChars:(tileY+1)*yChars, tileX*xChars:(tileX+1)*xChars])
                 codedTiles.append(generateCodedSprites(tiles[tileY][tileX], inkColors, tileHeight, tileWidth, pValues))
             
             tileIdx = tileIdx + 1

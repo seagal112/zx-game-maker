@@ -100,3 +100,8 @@ def getPaperValues(pFile):
     with open(pFile) as f:
         result = numpy.array([[int(x) for x in line.split()] for line in f])
     return result
+
+def getPaperValuesSprites(pFile):
+    with open(pFile) as f:
+        result = numpy.array([[int(0) for x in line.split()] for line in f])
+    return result
