@@ -5,36 +5,35 @@ dim bulletPositionX as ubyte = 0
 dim bulletPositionY as ubyte = 0
 dim bulletDirectionIsRight as ubyte = 0
 
-dim bulletRight(7) as ubyte
+dim bullet(7) as ubyte
 
-bulletRight(0) = tileSet(1, 0)
-bulletRight(1) = tileSet(1, 1)
-bulletRight(2) = tileSet(1, 2)
-bulletRight(3) = tileSet(1, 3)
-bulletRight(4) = tileSet(1, 4)
-bulletRight(5) = tileSet(1, 5)
-bulletRight(6) = tileSet(1, 6)
-bulletRight(7) = tileSet(1, 7)
+bullet(0) = tileSet(1, 0)
+bullet(1) = tileSet(1, 1)
+bullet(2) = tileSet(1, 2)
+bullet(3) = tileSet(1, 3)
+bullet(4) = tileSet(1, 4)
+bullet(5) = tileSet(1, 5)
+bullet(6) = tileSet(1, 6)
+bullet(7) = tileSet(1, 7)
 
-dim bulletLeft(7) as ubyte
+spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bullet)
 
-bulletLeft(0) = hMirror(tileSet(1, 0))
-bulletLeft(1) = hMirror(tileSet(1, 1))
-bulletLeft(2) = hMirror(tileSet(1, 2))
-bulletLeft(3) = hMirror(tileSet(1, 3))
-bulletLeft(4) = hMirror(tileSet(1, 4))
-bulletLeft(5) = hMirror(tileSet(1, 5))
-bulletLeft(6) = hMirror(tileSet(1, 6))
-bulletLeft(7) = hMirror(tileSet(1, 7))
+bullet(0) = hMirror(tileSet(1, 0))
+bullet(1) = hMirror(tileSet(1, 1))
+bullet(2) = hMirror(tileSet(1, 2))
+bullet(3) = hMirror(tileSet(1, 3))
+bullet(4) = hMirror(tileSet(1, 4))
+bullet(5) = hMirror(tileSet(1, 5))
+bullet(6) = hMirror(tileSet(1, 6))
+bullet(7) = hMirror(tileSet(1, 7))
 
-spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bulletRight)
-spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bulletLeft)
+spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bullet)
 
 ' sub createBullet(directionRight as ubyte)
 '     if directionRight
-'         spritesSet(BULLET_SPRITE_ID) = Create1x1Sprite(@bulletRight)
+'         spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bulletRight)
 '     else
-'         spritesSet(BULLET_SPRITE_ID) = Create1x1Sprite(@bulletLeft)
+'         spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bulletLeft)
 '     end if
 ' end sub
 
