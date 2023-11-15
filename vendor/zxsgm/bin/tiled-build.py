@@ -212,15 +212,6 @@ for layer in data['layers']:
                 xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
                 yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
                 screenId = xScreenPosition + (yScreenPosition * mapCols)
-                type = 0
-                if object['type'] == 'enemy':
-                    type = '1'
-                elif object['type'] == 'key':
-                    type = '2'
-                elif object['type'] == 'item':
-                    type = '3'
-                elif object['type'] == 'door':
-                    type = '4'
                 objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,
@@ -230,7 +221,6 @@ for layer in data['layers']:
                     'colEnd': str((object['x'] % (tileWidth * screenWidth)) // 4),
                     'tile': str(object['gid'] - spriteTileOffset),
                     'life': str(object['properties'][0]['value']) if ('properties' in object and len(object['properties']) > 0 and object['properties'][0]['name'] == 'life') else '1',
-                    'type': type
                 }
 
 for layer in data['layers']:
@@ -279,8 +269,14 @@ for layer in data['layers']:
                             right = '1'
                         else:
                             right = '0'
+
+                        if (enemy['linIni'] > enemy['linEnd']):
+                            up = '1'
+                        else:
+                            up = '0'
+
                         enemiesPerScreen[idx] = enemiesPerScreen[idx] + 1
-                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + str(right + ', ') + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + str(enemy['type']) + '}, _\n'
+                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + str(right) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + str(up) + '}, _\n'
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:

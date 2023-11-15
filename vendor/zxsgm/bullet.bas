@@ -98,7 +98,6 @@ sub checkBulletCollision()
     end if
 
     for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
-        if enemies(currentScreen, enemyId, OBJECT_TYPE) <> OBJECT_TYPE_ENEMY then continue for
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 
