@@ -215,10 +215,10 @@ for layer in data['layers']:
                 objects[str(object['id'])] = {
                     'name': object['name'],
                     'screenId': screenId,
-                    'linIni': str((object['y'] % (tileHeight * screenHeight)) // 4),
-                    'linEnd': str((object['y'] % (tileHeight * screenHeight)) // 4),
-                    'colIni': str((object['x'] % (tileWidth * screenWidth)) // 4),
-                    'colEnd': str((object['x'] % (tileWidth * screenWidth)) // 4),
+                    'linIni': str(int((object['y'] % (tileHeight * screenHeight))) // 4),
+                    'linEnd': str(int((object['y'] % (tileHeight * screenHeight))) // 4),
+                    'colIni': str(int((object['x'] % (tileWidth * screenWidth))) // 4),
+                    'colEnd': str(int((object['x'] % (tileWidth * screenWidth))) // 4),
                     'tile': str(object['gid'] - spriteTileOffset),
                     'life': str(object['properties'][0]['value']) if ('properties' in object and len(object['properties']) > 0 and object['properties'][0]['name'] == 'life') else '1',
                 }
@@ -228,8 +228,8 @@ for layer in data['layers']:
         for object in layer['objects']:
             if 'point' in object and object['point'] == True:
                 if 'properties' in object:
-                    objects[str(object['properties'][0]['value'])]['linEnd'] = str((object['y'] % (tileHeight * screenHeight)) // 4)
-                    objects[str(object['properties'][0]['value'])]['colEnd'] = str((object['x'] % (tileWidth * screenWidth)) // 4)
+                    objects[str(object['properties'][0]['value'])]['linEnd'] = str(int((object['y'] % (tileHeight * screenHeight))) // 4)
+                    objects[str(object['properties'][0]['value'])]['colEnd'] = str(int((object['x'] % (tileWidth * screenWidth))) // 4)
                 if object['type'] == 'mainCharacter':
                     xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
                     yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
