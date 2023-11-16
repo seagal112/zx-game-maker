@@ -9,18 +9,22 @@ tiled-build:
 	python3 ${BIN_FOLDER}tiled-build.py
 
 screens-build:
+	python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png assets/screens/title.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/title.png
 	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.png.scr output/title.png.scr.zx0
 	rm assets/screens/title.png.scr
 
+	python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png assets/screens/ending.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/ending.png
 	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.png.scr output/ending.png.scr.zx0
 	rm assets/screens/ending.png.scr
 
+	python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png assets/screens/hud.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/hud.png
 	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.png.scr output/hud.png.scr.zx0
 	rm assets/screens/hud.png.scr
 
+	python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png assets/screens/loading.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.png
 	mv assets/screens/loading.png.scr output/loading.bin
 
