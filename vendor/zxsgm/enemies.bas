@@ -3,12 +3,12 @@ CONST ENEMY_LIN_INI as UBYTE = 1
 CONST ENEMY_COL_INI as UBYTE = 2
 CONST ENEMY_LIN_END as UBYTE = 3
 CONST ENEMY_COL_END as UBYTE = 4
-CONST ENEMY_DIRECTION_RIGHT as UBYTE = 5
+CONST ENEMY_HORIZONTAL_DIRECTION as UBYTE = 5
 CONST ENEMY_CURRENT_LIN as UBYTE = 6
 CONST ENEMY_CURRENT_COL as UBYTE = 7
 CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_SPRITE as UBYTE = 9
-CONST ENEMY_DIRECTION_UP as UBYTE = 10
+CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
 
 function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
     if lin = key_lin and col = key_col
@@ -39,6 +39,7 @@ sub moveEnemies()
     dim counter as ubyte = 0
     dim frame as ubyte = 0
     dim maxEnemiesCount = 0
+    dim firstXExecuted as ubyte = 0
 
     if enemiesPerScreen(currentScreen) > 0 then maxEnemiesCount = enemiesPerScreen(currentScreen) - 1
     for enemyId=0 TO maxEnemiesCount
@@ -46,54 +47,44 @@ sub moveEnemies()
             continue for
         end if
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) > 0 'In the screen and still live
-            if counter < 8
-                dim tile as UBYTE
-                dim enemyCol as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
-                dim enemyLin as UBYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) 
+            dim tile as BYTE
+            dim enemyCol as BYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
+            dim enemyLin as BYTE = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
 
-                if (enemies(currentScreen, enemyId, ENEMY_COL_INI) <> enemies(currentScreen, enemyId, ENEMY_COL_END))
-                    if enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT) = 1 and enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
-                        enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT) = 0
-                    elseif enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT) <> 1 and enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol
-                        enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT) = 1
-                    end if
+            tile = enemies(currentScreen, enemyId, ENEMY_TILE)
+
+            if enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemies(currentScreen, enemyId, ENEMY_COL_END) then enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 0
+            if enemies(currentScreen, enemyId, ENEMY_LIN_INI) = enemies(currentScreen, enemyId, ENEMY_LIN_END) then enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION) = 0
+
+            if enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION)
+                if enemies(currentScreen, enemyId, ENEMY_COL_INI) = enemyCol or enemies(currentScreen, enemyId, ENEMY_COL_END) = enemyCol
+                    enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) * -1
                 end if
-                    
-                if enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT) = 1
-                    if enemyCol < enemies(currentScreen, enemyId, ENEMY_COL_END)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 1
-                    end if
-                    tile = enemies(currentScreen, enemyId, ENEMY_TILE)
-                else
-                    if enemyCol > enemies(currentScreen, enemyId, ENEMY_COL_INI)
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) - 1
-                    end if
-                    tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
-                end if
-
-                if (enemies(currentScreen, enemyId, ENEMY_LIN_INI) <> enemies(currentScreen, enemyId, ENEMY_LIN_END))
-                    if enemies(currentScreen, enemyId, ENEMY_LIN_END) = enemyLin
-                        enemies(currentScreen, enemyId, ENEMY_DIRECTION_UP) = 0
-                    elseif enemies(currentScreen, enemyId, ENEMY_LIN_INI) = enemyLin
-                        enemies(currentScreen, enemyId, ENEMY_DIRECTION_UP) = 1
-                    end if
-                    
-                    if enemies(currentScreen, enemyId, ENEMY_DIRECTION_UP) = 1
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) - 1
-                    else
-                        enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + 1
-                    end if
-                end if
-
-                if getSpriteFrame(enemyId) = 0
-                    tile = tile + 1
-                end if
-
-                saveSprite(enemyId, enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT))
-
-                checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_DIRECTION_RIGHT))
             end if
-            counter = counter + 1
+            
+            enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION)
+
+            if enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
+                tile = enemies(currentScreen, enemyId, ENEMY_TILE)
+            elseif enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
+                tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
+            end if
+
+            if enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION)
+                if enemies(currentScreen, enemyId, ENEMY_LIN_INI) = enemyLin or enemies(currentScreen, enemyId, ENEMY_LIN_END) = enemyLin
+                    enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION) = enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION) * -1
+                end if
+            end if
+            
+            enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION)
+
+            if getSpriteFrame(enemyId) = 0
+                tile = tile + 1
+            end if
+
+            saveSprite(enemyId, enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+
+            checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
         end if
     next enemyId
 end sub

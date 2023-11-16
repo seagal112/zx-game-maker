@@ -252,8 +252,8 @@ enemiesPerScreen = []
 enemStr = "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
-enemStr += "dim enemies(" + str(screensCount - 1) + ",2,10) as ubyte\n"
-enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as ubyte = { _"
+enemStr += "dim enemies(" + str(screensCount - 1) + ",2,10) as byte\n"
+enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as byte = { _"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -265,18 +265,18 @@ for layer in data['layers']:
                 for i in range(3):
                     if i <= len(screen) - 1:
                         enemy = screen[i]
-                        if (enemy['colIni'] < enemy['colEnd']):
-                            right = '1'
+                        if (int(enemy['colIni']) < int(enemy['colEnd'])):
+                            horizontalDirection = '-1'
                         else:
-                            right = '0'
+                            horizontalDirection = '1'
 
-                        if (enemy['linIni'] > enemy['linEnd']):
-                            up = '1'
+                        if (int(enemy['linIni']) > int(enemy['linEnd'])):
+                            verticalDirection = '1'
                         else:
-                            up = '0'
+                            verticalDirection = '-1'
 
                         enemiesPerScreen[idx] = enemiesPerScreen[idx] + 1
-                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + str(right) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + str(up) + '}, _\n'
+                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + horizontalDirection + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + verticalDirection + '}, _\n'
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:
