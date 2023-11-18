@@ -73,15 +73,9 @@ menu:
 
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    currentScreen = 2
-    memcopy(@map + screensOffsets(currentScreen), @swapMap, screensOffsets(currentScreen + 1))
-    dzx0Standard(@swapMap, @decompressedMap)
-    ' dzx0Standard(@map, @decompressedMap)
+    currentScreen = INITIAL_SCREEN
 
-    for i=0 to 10
-        PRINT decompressedMap(i)
-    next i
-    pauseUntilPressKey()
+    swapScreen()
 
     currentLife = INITIAL_LIFE
     currentKeys = 0
@@ -121,6 +115,10 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
+sub swapScreen()
+    memcopy(@map + screensOffsets(currentScreen), @swapMap, screensOffsets(currentScreen + 1) - screensOffsets(currentScreen))
+    dzx0Standard(@swapMap, @decompressedMap)
+end sub
 
 sub animateAnimatedTiles()
     if framec bAND %10
@@ -178,10 +176,6 @@ sub debugD(value as UBYTE)
 end sub
 
 stop
-' btiles:
-'     asm
-'         incbin "assets/tiles.btile"
-'     end asm
 
 titleScreen:
     asm
@@ -202,8 +196,3 @@ map:
     asm
         incbin "output/map.bin.zx0"
     end asm
-
-' map:
-'     asm
-'         incbin "output/screen002.bin.zx0"
-'     end asm

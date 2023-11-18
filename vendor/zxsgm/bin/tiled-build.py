@@ -211,14 +211,16 @@ mapStr += "dim swapMap(SCREEN_LENGTH) as ubyte\n"
 #     label = 'screen' + str(idx)
 #     mapStr += "screensLabels(" + str(idx) + ") = @" + label + "\n"
 
+currentOffset = 0
 mapStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
-mapStr += "screensOffsets(0) = 0\n"
+mapStr += "screensOffsets(0) = " + str(currentOffset) + "\n"
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         screen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
-    mapStr += "screensOffsets(" + str(idx + 1) + ") = " + str(os.path.getsize(outputDir + label + '.bin.zx0')) + "\n"
+    currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
+    mapStr += "screensOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
 #     mapStr += label + ":\n"
 #     mapStr += "\tasm\n"
 #     mapStr += "\t\tincbin \"output/" + label + ".bin.zx0\"\n"
