@@ -71,6 +71,7 @@ lifeAmount = 5
 bulletDistance = 0
 enemiesRespawn = 0
 shooting = 1
+shouldKillEnemies = 0
 
 initialScreen = 2
 initialMainCharacterX = 8
@@ -91,6 +92,8 @@ for property in data['properties']:
         enemiesRespawn = 1 if property['value'] else 0
     elif property['name'] == 'shooting':
         shooting = 1 if property['value'] else 0
+    elif property['name'] == 'shouldKillEnemies':
+        shouldKillEnemies = 1 if property['value'] else 0
 
 if len(solidTiles) == 0:
     solidTiles.append('0')
@@ -98,7 +101,7 @@ if len(solidTiles) == 0:
 if len(damageTiles) == 0:
     damageTiles.append('0')
 
-solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0
+solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0 
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
 
 maxEnemiesPerScreen = 3
@@ -114,6 +117,7 @@ mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 mapStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 mapStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 mapStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
+mapStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 mapStr += "dim solidTiles(" + str(solidTilesCount) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 mapStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
 mapStr += "dim keyTile as ubyte = " + keyTile + "\n"

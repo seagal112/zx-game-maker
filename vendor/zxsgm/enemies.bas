@@ -115,3 +115,18 @@ sub protaTouch(enemyDirection as ubyte)
     decrementLife()
     damageSound()
 end sub
+
+function allEnemiesKilled() as ubyte
+    dim maxEnemiesCount = 0
+    dim enemiesKilled as ubyte = 1
+
+    if enemiesPerScreen(currentScreen) = 0 then return 1
+
+    for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
+        if enemies(currentScreen, enemyId, ENEMY_ALIVE) > 0 'In the screen and still live
+            return 0
+        end if
+    next enemyId
+
+    return 1
+end function

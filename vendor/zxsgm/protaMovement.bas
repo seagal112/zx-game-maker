@@ -43,7 +43,16 @@ end function
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getSpriteLin(PROTA_SPRITE) < 2
-			moveScreen = 8
+			if SHOULD_KILL_ENEMIES
+				if allEnemiesKilled()
+					moveScreen = 8
+				else
+					stopJumping()
+					damageSound()
+				end if
+			else
+				moveScreen = 8
+			end if
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			stopJumping()
 		elseif jumpCurrentKey < jumpStepsCount
@@ -72,7 +81,16 @@ end function
 sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
 		if getSpriteLin(PROTA_SPRITE) > MAX_LINE
-			moveScreen = 2
+			if SHOULD_KILL_ENEMIES
+				if allEnemiesKilled()
+					moveScreen = 2
+				else
+					startJumping()
+					damageSound()
+				end if
+			else
+				moveScreen = 2
+			end if
 		else
 			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 		end if
@@ -125,7 +143,15 @@ end sub
 
 sub leftKey()
 	if onFirstColumn(PROTA_SPRITE)
-		moveScreen = 4
+		if SHOULD_KILL_ENEMIES
+			if allEnemiesKilled()
+				moveScreen = 4
+			else
+				damageSound()
+			end if
+		else
+			moveScreen = 4
+		end if
 	elseif canMoveLeft()
 		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), protaFrame, 0)
 	end if
@@ -133,7 +159,15 @@ end sub
 
 sub rightKey()
 	if onLastColumn(PROTA_SPRITE)
-		moveScreen = 6
+		if SHOULD_KILL_ENEMIES
+			if allEnemiesKilled()
+				moveScreen = 6
+			else
+				damageSound()
+			end if
+		else
+			moveScreen = 6
+		end if
 	elseif canMoveRight()
 		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), protaFrame, 1)
 	end if
