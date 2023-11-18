@@ -69,13 +69,11 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 
     if isSolidTile(tile)
         if not damagedByCollision
-            if lin mod 4 = 0
-                if isADamageTile(tile)
-                    damagedByCollision = 1
-                    decrementLife()
-                    damageSound()
-                    startJumping()
-                end if
+            if isADamageTile(tile)
+                damagedByCollision = 1
+                decrementLife()
+                damageSound()
+                startJumping()
             end if
         end if
         return 1
