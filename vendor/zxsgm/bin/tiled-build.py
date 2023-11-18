@@ -203,16 +203,16 @@ mapStr += " _\n}\n\n"
 mapStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
 mapStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
 mapStr += "dim screensLabels(" + str(screensCount - 1) + ") as ulong\n"
-for screen in screens:
-    label = 'screen' + str(screens.index(screen))
-    mapStr += "screensLabels(" + str(screens.index(screen)) + ") = @" + label + "\n"
+for idx, screen in enumerate(screens):
+    label = 'screen' + str(idx)
+    mapStr += "screensLabels(" + str(idx) + ") = @" + label + "\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
 mapStr = ""
-for screen in screens:
-    label = 'screen' + str(screens.index(screen))
+for idx, screen in enumerate(screens):
+    label = 'screen' + str(idx)
     with open(outputDir + label + '.bin', 'wb') as f:
         screen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
