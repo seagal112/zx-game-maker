@@ -1,11 +1,5 @@
-#include <memcopy.bas>
-
 dim cell as ubyte = 0
 dim drawing as ubyte = 0
-
-function getTile(x as UBYTE, y as UBYTE) AS UBYTE
-	return screens(currentScreen, y, x)
-end function
 
 function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
@@ -15,15 +9,14 @@ sub mapDraw()
 	asm
 		di
 	end asm
-	dim tile, index, y, x, count, offset as integer
+	dim tile, index, y, x, count as integer
 
 	count = screenHeight * screenWidth - 1
 	x = 0
 	y = 0
 	
-	offset = screenHeight * screenWidth * currentScreen
-	for index=0 to count
-		tile = peek (@screens + offset + index)
+	for index=0 to SCREEN_LENGTH
+		tile = decompressedMap(index) - 1
 		if tile <> 0
 			if tile = itemTile
 				if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
@@ -51,16 +44,6 @@ sub mapDraw()
 			y = y + 1
 		end if
 	next index
-
-	' for y=0 to screenHeight - 1
-	' 	for x=0 to screenWidth - 1
-	' 	    tile = getTile(x, y)
-	' 		' tile = 2
-	' 		if tile <> 0
-	' 			SetTile(tile, attrSet(tile), x, y)
-	' 		end if
-	' 	next x
-	' next y
 	asm
 		ei
 	end asm
@@ -211,6 +194,7 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 
+	dzx0Standard(screensLabels(currentScreen), @decompressedMap)
 	removeScreenObjectFromBuffer()
 	redrawScreen()
 end sub

@@ -1,7 +1,11 @@
+import array
 import json
 import math
 from collections import defaultdict
+import os
 from pprint import pprint
+import subprocess
+import numpy as np
 
 outputDir = 'output/'
 
@@ -121,13 +125,13 @@ for layer in data['layers']:
         screensCount = len(layer['chunks'])
         mapRows = layer['height']//screenHeight
         mapCols = layer['width']//screenWidth
-        mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
+        # mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
-        screens = defaultdict(dict)
+        screens = []
         screenObjects = defaultdict(dict)
 
         for idx, screen in enumerate(layer['chunks']):
-            screens[idx] = defaultdict(dict)
+            screens.append(array.array('B', screen['data']))
             screenAnimatedTiles[idx] = []
 
             screenObjects[idx]['key'] = 0
@@ -141,7 +145,7 @@ for layer in data['layers']:
 
                 tile = str(cell - 1)
 
-                screens[idx][mapY][mapX % screenWidth] = tile
+                # screens[idx][mapY][mapX % screenWidth] = tile
 
                 if tile == keyTile:
                     screenObjects[idx]['key'] = 1
@@ -155,18 +159,18 @@ for layer in data['layers']:
                 if tile in animatedTilesIds:
                     screenAnimatedTiles[idx].append([str(tile), str(mapX), str(mapY)])
 
-        for screen in screens:
-            mapStr += '\t{ _\n'
-            for row in screens[screen]:
-                mapStr += '\t\t{'
-                for cell in screens[screen][row]:
-                    mapStr += "\t" + str(screens[screen][row][cell]) + ","
-                mapStr = mapStr[:-1]
-                mapStr += "}, _\n"
-            mapStr = mapStr[:-4]
-            mapStr += " _\n\t}, _\n"
-        mapStr = mapStr[:-4]
-        mapStr += " _\n}\n\n"
+        # for screen in screens:
+        #     mapStr += '\t{ _\n'
+        #     for row in screens[screen]:
+        #         mapStr += '\t\t{'
+        #         for cell in screens[screen][row]:
+        #             mapStr += "\t" + str(screens[screen][row][cell]) + ","
+        #         mapStr = mapStr[:-1]
+        #         mapStr += "}, _\n"
+        #     mapStr = mapStr[:-4]
+        #     mapStr += " _\n\t}, _\n"
+        # mapStr = mapStr[:-4]
+        # mapStr += " _\n}\n\n"
 
 mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
@@ -195,6 +199,29 @@ mapStr = mapStr[:-4]
 mapStr += "\t} _\n"
 mapStr = mapStr[:-4]
 mapStr += " _\n}\n\n"
+
+mapStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
+mapStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
+mapStr += "dim screensLabels(" + str(screensCount - 1) + ") as ulong\n"
+for screen in screens:
+    label = 'screen' + str(screens.index(screen))
+    mapStr += "screensLabels(" + str(screens.index(screen)) + ") = @" + label + "\n"
+
+with open(outputDir + "config.bas", "w") as text_file:
+    print(mapStr, file=text_file)
+
+mapStr = ""
+for screen in screens:
+    label = 'screen' + str(screens.index(screen))
+    with open(outputDir + label + '.bin', 'wb') as f:
+        screen.tofile(f)
+    subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
+    mapStr += label + ":\n"
+    mapStr += "\tasm\n"
+    mapStr += "\t\tincbin \"output/" + label + ".bin.zx0\"\n"
+    mapStr += "\tend asm\n\n"
+
+    os.remove(outputDir + label + '.bin')
 
 with open(outputDir + "maps.bas", "w") as text_file:
     print(mapStr, file=text_file)

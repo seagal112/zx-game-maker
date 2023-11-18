@@ -29,12 +29,13 @@ InitGFXLib()
 SetTileset(@tileSet)
 
 #include "../../output/sprites.bas"
-#include "../../output/maps.bas"
+#include "../../output/config.bas"
 #include "../../output/enemies.bas"
 
 #include <zx0.bas>
 #include <retrace.bas>
 #include <keys.bas>
+#include <memcopy.bas>
 #include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
@@ -75,6 +76,7 @@ menu:
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN
+    dzx0Standard(screensLabels(currentScreen), @decompressedMap)
     currentLife = INITIAL_LIFE
     currentKeys = 0
     currentItems = 0
@@ -149,6 +151,27 @@ sub checkMoveScreen()
     end if
 end sub
 
+sub debugA(value as UBYTE)
+    PRINT AT 18, 10; "----"
+    PRINT AT 18, 10; value
+end sub
+
+sub debugB(value as UBYTE)
+    PRINT AT 18, 15; "  "
+    PRINT AT 18, 15; value
+end sub
+
+sub debugC(value as UBYTE)
+    PRINT AT 18, 20; "  "
+    PRINT AT 18, 20; value
+end sub
+
+sub debugD(value as UBYTE)
+    PRINT AT 18, 25; "  "
+    PRINT AT 18, 25; value
+end sub
+
+stop
 ' btiles:
 '     asm
 '         incbin "assets/tiles.btile"
@@ -169,22 +192,4 @@ endingScreen:
         incbin "output/ending.png.scr.zx0"
     end asm
 
-sub debugA(value as UBYTE)
-    PRINT AT 18, 10; "----"
-    PRINT AT 18, 10; value
-end sub
-
-sub debugB(value as UBYTE)
-    PRINT AT 18, 15; "  "
-    PRINT AT 18, 15; value
-end sub
-
-sub debugC(value as UBYTE)
-    PRINT AT 18, 20; "  "
-    PRINT AT 18, 20; value
-end sub
-
-sub debugD(value as UBYTE)
-    PRINT AT 18, 25; "  "
-    PRINT AT 18, 25; value
-end sub
+#include "../../output/maps.bas"

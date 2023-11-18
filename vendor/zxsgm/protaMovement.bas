@@ -202,8 +202,8 @@ sub checkObjectContact()
 	Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
     Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
 
-	dim tile as UBYTE = getTile(col, lin + 1)
-	dim tileRight as UBYTE = getTile(col + 1, lin + 1)
+	dim tile as UBYTE = GetTile(col, lin + 1)
+	dim tileRight as UBYTE = GetTile(col + 1, lin + 1)
 
 	if checkTileObject(tile)
 		FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
