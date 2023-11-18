@@ -97,7 +97,7 @@ sub checkBulletCollision()
         resetBullet()
     end if
 
-    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+    for enemyId=0 TO MAX_ENEMIES_PER_SCREEN - 1
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 

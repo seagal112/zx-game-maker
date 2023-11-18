@@ -201,12 +201,14 @@ end sub
 
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
-	for i = 0 to 2
-		if getSpriteLin(i)
-			dim tile as ubyte = getSpriteTile(i)
-			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
-		end if
-	next i
+	if enemiesPerScreen(currentScreen) > 0
+		for i = 0 to enemiesPerScreen(currentScreen) - 1
+			if getSpriteLin(i)
+				dim tile as ubyte = getSpriteTile(i)
+				Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
+			end if
+		next i
+	end if
 
 	if bulletPositionX <> 0
 		Draw1x1Sprite(spritesSet(currentBulletSpriteId), bulletPositionX, bulletPositionY)

@@ -28,9 +28,9 @@ sub setEnemies()
 end sub
 
 sub moveEnemies()
-    if framec bAND %10
-        return
-    end if
+    ' if framec bAND %10
+    '     return
+    ' end if
 
     if animateEnemies <> 1
         return

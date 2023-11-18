@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="28">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="32">
  <editorsettings>
   <chunksize width="32" height="22"/>
  </editorsettings>
@@ -180,6 +180,20 @@
    <point/>
   </object>
   <object id="26" name="mainCharacter" type="mainCharacter" x="63.5" y="320">
+   <point/>
+  </object>
+  <object id="28" gid="217" x="432" y="296" width="16" height="16"/>
+  <object id="29" x="456" y="296">
+   <properties>
+    <property name="enemy" type="object" value="28"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="30" gid="217" x="408" y="256" width="16" height="16"/>
+  <object id="31" x="392" y="256">
+   <properties>
+    <property name="enemy" type="object" value="30"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
