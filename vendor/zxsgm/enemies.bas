@@ -78,7 +78,7 @@ sub moveEnemies()
             
             enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION)
 
-            if getSpriteFrame(enemyId) = 0
+            if enemFrame
                 tile = tile + 1
             end if
 

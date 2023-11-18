@@ -127,7 +127,7 @@ sub leftKey()
 	if onFirstColumn(PROTA_SPRITE)
 		moveScreen = 4
 	elseif canMoveLeft()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), getNextFrameRunning(), 0)
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), protaFrame, 0)
 	end if
 end sub
 
@@ -135,13 +135,13 @@ sub rightKey()
 	if onLastColumn(PROTA_SPRITE)
 		moveScreen = 6
 	elseif canMoveRight()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), getNextFrameRunning(), 1)
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), protaFrame, 1)
 	end if
 end sub
 
 sub upKey()
 	' if canMoveUp()
-	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
 	' 	if getSpriteLin(PROTA_SPRITE) < 2
 	' 		moveScreen = 8
 	' 	end if
@@ -151,7 +151,7 @@ end sub
 
 sub downKey()
 	if canMoveDown()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), getNextFrameRunning(), 1)
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
 	end if
 end sub
 

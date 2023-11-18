@@ -15,6 +15,10 @@ dim animateEnemies as ubyte = 1
 dim damagedByCollision as ubyte
 dim currentBulletSpriteId as ubyte
 
+dim protaFrame as ubyte = 0 
+dim enemFrame as ubyte = 0 
+dim animatedTilesFrame as ubyte = 0 
+
 dim kempston as uByte
 dim keyOption as String
 dim keyArray(4) as uInteger
@@ -88,8 +92,17 @@ playGame:
     dzx0Standard(@hudScreen, $4000)
     redrawScreen()
     drawSprites()
+
+    let lastFrame = framec
     do
         waitretrace
+
+        if framec - lastFrame >= 5
+            animateSprites()
+            animateAnimatedTiles()
+            let lastFrame = framec
+        end if
+
         if not isJumping and landed
             damagedByCollision = 0
         end if
@@ -97,7 +110,6 @@ playGame:
         moveEnemies()
         moveBullet()
         drawSprites()
-        animateAnimatedTiles()
         checkMoveScreen()
         checkRemainLife()
     loop
@@ -116,14 +128,16 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
+sub animateSprites()
+    protaFrame = getNextFrameRunning()
+    enemFrame = not enemFrame
+end sub
+
 sub swapScreen()
     dzx0Standard(@map + screensOffsets(currentScreen), @decompressedMap)
 end sub
 
 sub animateAnimatedTiles()
-    if framec bAND %10
-        return
-    end if
     for i=0 to 2:
         if screenAnimatedTiles(currentScreen, i, 0) <> 0
             dim tile as ubyte = screenAnimatedTiles(currentScreen, i, 0) + screenAnimatedTiles(currentScreen, i, 3) + 1
