@@ -101,7 +101,7 @@ if len(damageTiles) == 0:
 solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
 
-maxEnemiesPerScreen = 5
+maxEnemiesPerScreen = 3
 
 mapStr = "const MAX_ENEMIES_PER_SCREEN = " + str(maxEnemiesPerScreen) + "\n"
 mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
@@ -313,11 +313,8 @@ for layer in data['layers']:
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
-                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                for i in range(maxEnemiesPerScreen):
+                    enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemiesPerScreen.append(0)
             enemStr = enemStr[:-4]
             enemStr += " _\n\t}, _"
