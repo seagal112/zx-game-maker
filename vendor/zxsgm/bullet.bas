@@ -97,17 +97,24 @@ sub checkBulletCollision()
         resetBullet()
     end if
 
-    for enemyId=0 TO MAX_OBJECTS_PER_SCREEN - 1
+    for enemyId=0 TO MAX_ENEMIES_PER_SCREEN - 1
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 
         dim enemyY = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
 
-        if enemyY <> bulletPositionY - 1 and enemyY <> bulletPositionY and enemyY <> bulletPositionY + 1 and enemyY <> bulletPositionY + 2 then continue for
+        dim bulletX0, bulletX1, bulletY0, bulletY1, enemyX0, enemyX1, enemyY0, enemyY1 as ubyte
 
-        dim enemyX = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL)
+        bulletX0 = bulletPositionX
+        bulletX1 = bulletPositionX + 1
+        bulletY0 = bulletPositionY
+        bulletY1 = bulletPositionY + 1
+        enemyX0 = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL)
+        enemyX1 = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 2
+        enemyY0 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
+        enemyY1 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + 2
 
-        if enemyX = bulletPositionX or enemyX - 1 = bulletPositionX or enemyX + 1 = bulletPositionX
+        if bulletX0 >= enemyX0 and bulletX0 <= enemyX1 and bulletY0 >= enemyY0 and bulletY0 <= enemyY1 then
             damageEnemy(enemyId)
             resetBullet()
         end if

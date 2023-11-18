@@ -101,7 +101,10 @@ if len(damageTiles) == 0:
 solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
 
-mapStr = "const screenWidth as ubyte = " + str(screenWidth) + "\n"
+maxEnemiesPerScreen = 5
+
+mapStr = "const MAX_ENEMIES_PER_SCREEN = " + str(maxEnemiesPerScreen) + "\n"
+mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
 mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
@@ -280,8 +283,8 @@ enemiesPerScreen = []
 enemStr = "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
-enemStr += "dim enemies(" + str(screensCount - 1) + ",2,10) as byte\n"
-enemStr += "dim enemiesInitial(" + str(screensCount - 1) + ",2,10) as byte = { _"
+enemStr += "dim enemies(" + str(screensCount - 1) + "," + str(maxEnemiesPerScreen - 1) + ",10) as byte\n"
+enemStr += "dim enemiesInitial(" + str(screensCount - 1) + "," + str(maxEnemiesPerScreen - 1) + ",10) as byte = { _"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -290,7 +293,7 @@ for layer in data['layers']:
             if idx in screenEnemies:
                 screen = screenEnemies[idx]
                 enemiesPerScreen.append(0)
-                for i in range(3):
+                for i in range(maxEnemiesPerScreen):
                     if i <= len(screen) - 1:
                         enemy = screen[i]
                         if (int(enemy['colIni']) < int(enemy['colEnd'])):
@@ -308,6 +311,8 @@ for layer in data['layers']:
                     else:
                         enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
             else:
+                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
                 enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
