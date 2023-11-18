@@ -53,7 +53,7 @@ build:
 
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
-	rm -f *.bin output/*.bin #output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
+	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
 
 build-dev:
 	$(MAKE) tiled-export
