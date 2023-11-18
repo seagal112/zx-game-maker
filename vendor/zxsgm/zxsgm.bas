@@ -25,6 +25,9 @@ dim keyArray(4) as uInteger
 
 dim framec AS ubyte AT 23672
 
+dim lastFrameProta as ubyte = 0
+dim lastFrameOthers as ubyte = 0
+
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"
 
@@ -93,14 +96,19 @@ playGame:
     redrawScreen()
     drawSprites()
 
-    let lastFrame = framec
+    let lastFrameProta = framec
+    let lastFrameOthers = framec
     do
         waitretrace
 
-        if framec - lastFrame >= 5
-            animateSprites()
-            animateAnimatedTiles()
-            let lastFrame = framec
+        if framec - lastFrameProta >= 3
+            animateProta()
+            let lastFrameProta = framec
+        end if
+
+        if framec - lastFrameOthers >= 10
+            animateOthers()
+            let lastFrameOthers = framec
         end if
 
         if not isJumping and landed
@@ -128,9 +136,13 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
-sub animateSprites()
+sub animateProta()
     protaFrame = getNextFrameRunning()
+end sub
+
+sub animateOthers()
     enemFrame = not enemFrame
+    animateAnimatedTiles()
 end sub
 
 sub swapScreen()
