@@ -194,7 +194,7 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 
-	dzx0Standard(screensLabels(currentScreen), @decompressedMap)
+	dzx0Standard(@map + (SCREEN_LENGTH * currentScreen), @decompressedMap)
 	removeScreenObjectFromBuffer()
 	redrawScreen()
 end sub

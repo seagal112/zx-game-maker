@@ -202,28 +202,29 @@ mapStr += " _\n}\n\n"
 
 mapStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
 mapStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
-mapStr += "dim screensLabels(" + str(screensCount - 1) + ") as ulong\n"
-for idx, screen in enumerate(screens):
-    label = 'screen' + str(idx)
-    mapStr += "screensLabels(" + str(idx) + ") = @" + label + "\n"
+mapStr += "dim swapMap(SCREEN_LENGTH) as ubyte\n"
+# mapStr += "dim screensLabels(" + str(screensCount - 1) + ") as ulong\n"
+# for idx, screen in enumerate(screens):
+#     label = 'screen' + str(idx)
+#     mapStr += "screensLabels(" + str(idx) + ") = @" + label + "\n"
 
-with open(outputDir + "config.bas", "w") as text_file:
-    print(mapStr, file=text_file)
-
-mapStr = ""
+mapStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
+mapStr += "screensOffsets(0) = 0\n"
 for idx, screen in enumerate(screens):
-    label = 'screen' + str(idx)
+    label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         screen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
-    mapStr += label + ":\n"
-    mapStr += "\tasm\n"
-    mapStr += "\t\tincbin \"output/" + label + ".bin.zx0\"\n"
-    mapStr += "\tend asm\n\n"
+    mapStr += "screensOffsets(" + str(idx + 1) + ") = " + str(os.path.getsize(outputDir + label + '.bin.zx0')) + "\n"
+#     mapStr += label + ":\n"
+#     mapStr += "\tasm\n"
+#     mapStr += "\t\tincbin \"output/" + label + ".bin.zx0\"\n"
+#     mapStr += "\tend asm\n\n"
 
-    os.remove(outputDir + label + '.bin')
+# with open(outputDir + "maps.bas", "w") as text_file:
+#     print(mapStr, file=text_file)
 
-with open(outputDir + "maps.bas", "w") as text_file:
+with open(outputDir + "config.bas", "w") as text_file:
     print(mapStr, file=text_file)
 
 # Construct enemies

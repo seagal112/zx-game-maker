@@ -70,13 +70,19 @@ menu:
         let keyArray(DOWN)=KEY8
         let keyArray(FIRE)=KEY0
     end if
-    
-    currentScreen = INITIAL_SCREEN
 
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    currentScreen = INITIAL_SCREEN
-    dzx0Standard(screensLabels(currentScreen), @decompressedMap)
+    currentScreen = 2
+    memcopy(@map + screensOffsets(currentScreen), @swapMap, screensOffsets(currentScreen + 1))
+    dzx0Standard(@swapMap, @decompressedMap)
+    ' dzx0Standard(@map, @decompressedMap)
+
+    for i=0 to 10
+        PRINT decompressedMap(i)
+    next i
+    pauseUntilPressKey()
+
     currentLife = INITIAL_LIFE
     currentKeys = 0
     currentItems = 0
@@ -192,4 +198,12 @@ endingScreen:
         incbin "output/ending.png.scr.zx0"
     end asm
 
-#include "../../output/maps.bas"
+map:
+    asm
+        incbin "output/map.bin.zx0"
+    end asm
+
+' map:
+'     asm
+'         incbin "output/screen002.bin.zx0"
+'     end asm
