@@ -1,27 +1,27 @@
-sub damageSound()
-    BEEP 0,16
-end sub
-
-sub jumpSound()
-    BEEP 0,6
-    BEEP 0,14
-end sub
-
 sub killEnemySound()
-    BEEP 0,6
-    BEEP 0,14
-    BEEP 0,8
-    BEEP 0,16
+    BeepFX_Play(0)
 end sub
 
-sub itemSound()
-    BEEP .25, 7: BEEP .25, 8
+sub damageSound()
+    BeepFX_Play(1)
+end sub
+
+sub fireSound()
+    BeepFX_Play(2)
 end sub
 
 sub keySound()
-    BEEP .25, 7: BEEP .25, 8
+    BeepFX_Play(3)
 end sub
 
 sub doorSound()
-    BEEP .25, 7: BEEP .25, 8
+    BeepFX_Play(4)
+end sub
+
+sub itemSound()
+    BeepFX_Play(5)
+end sub
+
+sub lifeSound()
+    BeepFX_Play(6)
 end sub

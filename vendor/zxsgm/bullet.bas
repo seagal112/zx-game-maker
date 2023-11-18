@@ -133,6 +133,8 @@ sub damageEnemy(enemyToKill as Ubyte)
     if enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(enemies(currentScreen, enemyToKill, ENEMY_CURRENT_COL), enemies(currentScreen, enemyToKill, ENEMY_CURRENT_LIN))
+        killEnemySound()
+    else
+        damageSound()
     end if
-    killEnemySound()
 end sub

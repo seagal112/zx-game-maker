@@ -11,6 +11,9 @@ tiled-build:
 	#find output -name "screen*.bin.zx0" -maxdepth 0 -print0 | sort -z | xargs -0 cat > output/map.bin.zx0
 	rm -f output/screen*.bin.zx0
 
+fx-to-bas:
+	cat assets/soundEffects.asm | sed "s/	org 60000/sub fastcall BeepFX_Play\(sonido AS UByte\)\nasm/" | sed "s/ld a\,19/\n/" | { cat; echo "end asm"; echo "end sub"; } > output/soundEffects.bas
+
 screens-build:
 	python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png assets/screens/title.tmp.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/title.tmp.png
@@ -45,6 +48,7 @@ compile:
 build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
+	$(MAKE) fx-to-bas
 	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 4768 -S 24576 main.bas -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
@@ -53,7 +57,7 @@ build:
 
 	cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap
 
-	rm -f *.bin output/*.bin output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
+	rm -f *.bin output/*.bin #output/*.bas output/loading.tap output/main.tap output/*.json output/*.zx0 output/loader.tap
 
 build-dev:
 	$(MAKE) tiled-export

@@ -31,6 +31,7 @@ SetTileset(@tileSet)
 #include "../../output/sprites.bas"
 #include "../../output/config.bas"
 #include "../../output/enemies.bas"
+#include "../../output/soundEffects.bas"
 
 #include <zx0.bas>
 #include <retrace.bas>

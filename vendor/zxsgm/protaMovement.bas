@@ -119,6 +119,7 @@ sub shoot()
 
 		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+		fireSound()
 	end if
 end sub
 
@@ -192,7 +193,7 @@ function checkTileObject(tile as ubyte) as ubyte
 	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 		incrementLife()
 		removeScreenObject(SCREEN_OBJECT_LIFE_INDEX)
-		keySound()
+		lifeSound()
 		return 1
 	end if
 	return 0
