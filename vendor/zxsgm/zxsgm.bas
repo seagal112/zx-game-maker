@@ -117,8 +117,7 @@ gameOver:
     go to menu
 
 sub swapScreen()
-    memcopy(@map + screensOffsets(currentScreen), @swapMap, screensOffsets(currentScreen + 1) - screensOffsets(currentScreen))
-    dzx0Standard(@swapMap, @decompressedMap)
+    dzx0Standard(@map + screensOffsets(currentScreen), @decompressedMap)
 end sub
 
 sub animateAnimatedTiles()
