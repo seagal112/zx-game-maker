@@ -5,7 +5,12 @@ from collections import defaultdict
 import os
 from pprint import pprint
 import subprocess
+import sys
 import numpy as np
+
+def exitWithErrorMessage(message):
+    print('\n\n=====================================================================================')
+    sys.exit('ERROR: ' + message + '\n=====================================================================================\n\n')
 
 outputDir = 'output/'
 
@@ -25,6 +30,9 @@ screenPixelsWidth = screenWidth * tileWidth
 screenPixelsHeight = screenHeight * tileHeight
 
 spriteTileOffset = 0
+
+maxEnemiesPerScreen = 3
+maxAnimatedTilesPerScreen = 3
 
 solidTiles = []
 damageTiles = []
@@ -57,6 +65,9 @@ for tileset in data['tilesets']:
                 damageTiles.append(str(tile['id']))
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
+
+if len(animatedTilesIds) > maxAnimatedTilesPerScreen:
+    exitWithErrorMessage('Max animated tiles per screen is ' + str(maxAnimatedTilesPerScreen))
 
 if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
@@ -103,8 +114,6 @@ if len(damageTiles) == 0:
 
 solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0 
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
-
-maxEnemiesPerScreen = 3
 
 mapStr = "const MAX_ENEMIES_PER_SCREEN = " + str(maxEnemiesPerScreen) + "\n"
 mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
