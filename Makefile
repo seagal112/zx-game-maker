@@ -31,6 +31,7 @@ screens-build:
 
 	python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png assets/screens/loading.tmp.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.tmp.png
+	mv assets/screens/loading.tmp.png.scr output/loading.bin
 
 	python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/tiles.png -p assets/paperValues.txt -t tiles > output/tiles.bas
 	python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/sprites.png -p assets/paperValues.txt -t sprites > output/sprites.bas
