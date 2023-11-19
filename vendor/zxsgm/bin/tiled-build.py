@@ -66,9 +66,6 @@ for tileset in data['tilesets']:
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
-if len(animatedTilesIds) > maxAnimatedTilesPerScreen:
-    exitWithErrorMessage('Max animated tiles per screen is ' + str(maxAnimatedTilesPerScreen))
-
 if spriteTileOffset == 0:
     print('ERROR: Sprite tileset should be called "sprites"')
     exit
@@ -175,18 +172,8 @@ for layer in data['layers']:
                 if tile in animatedTilesIds:
                     screenAnimatedTiles[idx].append([str(tile), str(mapX), str(mapY)])
 
-        # for screen in screens:
-        #     mapStr += '\t{ _\n'
-        #     for row in screens[screen]:
-        #         mapStr += '\t\t{'
-        #         for cell in screens[screen][row]:
-        #             mapStr += "\t" + str(screens[screen][row][cell]) + ","
-        #         mapStr = mapStr[:-1]
-        #         mapStr += "}, _\n"
-        #     mapStr = mapStr[:-4]
-        #     mapStr += " _\n\t}, _\n"
-        # mapStr = mapStr[:-4]
-        # mapStr += " _\n}\n\n"
+                if len(screenAnimatedTiles[idx]) > maxAnimatedTilesPerScreen:
+                    exitWithErrorMessage('Max animated tiles per screen is ' + str(maxAnimatedTilesPerScreen))
 
 mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
