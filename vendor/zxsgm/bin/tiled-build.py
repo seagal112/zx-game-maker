@@ -83,7 +83,7 @@ shouldKillEnemies = 0
 
 initialScreen = 2
 initialMainCharacterX = 8
-initialMainCharactery = 8
+initialMainCharacterY = 8
 
 for property in data['properties']:
     if property['name'] == 'goalItems':
@@ -260,16 +260,21 @@ for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
             if 'point' in object and object['point'] == True:
-                if 'properties' in object:
+                if object['type'] == 'enemy' and 'properties' in object:
                     objects[str(object['properties'][0]['value'])]['linEnd'] = str(int((object['y'] % (tileHeight * screenHeight))) // 4)
                     objects[str(object['properties'][0]['value'])]['colEnd'] = str(int((object['x'] % (tileWidth * screenWidth))) // 4)
-                if object['type'] == 'mainCharacter':
+                elif object['type'] == 'mainCharacter':
                     xScreenPosition = math.ceil(object['x'] / screenPixelsWidth) - 1
                     yScreenPosition = math.ceil(object['y'] / screenPixelsHeight) - 1
                     screenId = xScreenPosition + (yScreenPosition * mapCols)
                     initialScreen = screenId
                     initialMainCharacterX = str(int((object['x'] % (tileWidth * screenWidth))) // 4)
                     initialMainCharacterY = str(int((object['y'] % (tileHeight * screenHeight))) // 4)
+
+                    if initialMainCharacterX < '2' or initialMainCharacterX > '60' or initialMainCharacterY < '0' or initialMainCharacterY > '38':
+                        exitWithErrorMessage('Main character initial position is out of bounds. It should be between 2 and 60 for X and 0 and 38 for Y')
+                else:
+                    exitWithErrorMessage('Unknown object type. Only "enemy" and "mainCharacter" are allowed')   
                     
 
 screenEnemies = defaultdict(dict)
