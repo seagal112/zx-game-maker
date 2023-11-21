@@ -28,6 +28,12 @@ dim framec AS ubyte AT 23672
 dim lastFrameProta as ubyte = 0
 dim lastFrameOthers as ubyte = 0
 
+#include "im2.bas"
+#include "vortexTracker.bas"
+
+load "" CODE ' Load vtplayer
+load "" CODE ' Load music
+
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"
 
@@ -56,7 +62,7 @@ SetTileset(@tileSet)
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    ' stopMusicAndNirvana()
+    VortexTracker_Stop()
     dzx0Standard(@titleScreen, $4000)
 
     do
@@ -82,6 +88,8 @@ menu:
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN
+
+    VortexTracker_Inicializar(1)
 
     swapScreen()
 
@@ -123,14 +131,14 @@ playGame:
     loop
 
 ending:
-    ' stopMusicAndNirvana()
+    VortexTracker_Stop()
     dzx0Standard(@endingScreen, $4000)
     pause 300
     pauseUntilPressKey()
     go to menu
 
 gameOver:
-    ' stopMusicAndNirvana()
+    VortexTracker_Stop()
     PrintString("GAME OVER", 7, 12, 10)
     pause 300
     pauseUntilPressKey()
