@@ -1,5 +1,4 @@
 dim landed as UBYTE = 1
-dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2 
 
 function canMoveLeft() as ubyte

@@ -8,7 +8,7 @@ sub pauseUntilPressKey()
 end sub
 
 function secureXIncrement(x as integer, increment as integer) as integer
-    dim result = x + increment
+    dim result as integer = x + increment
 
     if result < 0 or result > 60
         return x
@@ -18,7 +18,7 @@ function secureXIncrement(x as integer, increment as integer) as integer
 end function
 
 function secureYIncrement(y as integer, increment as integer) as integer
-    dim result = y + increment
+    dim result as integer = y + increment
 
     if result < 0 or result > MAX_LINE + 4
         return y
@@ -57,7 +57,7 @@ function isADamageTile(tile as ubyte) as UBYTE
 end function
 
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
-	dim tile = GetTile(col, lin)
+	dim tile as ubyte = GetTile(col, lin)
 
     if isSolidTile(tile)
         if not damagedByCollision
@@ -78,7 +78,7 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     dim col as uByte = x >> 1
     dim lin as uByte = y >> 1
     
-    dim tile = GetTile(col, lin)
+    dim tile as ubyte = GetTile(col, lin)
 
 	return isSolidTile(tile)
 end function
