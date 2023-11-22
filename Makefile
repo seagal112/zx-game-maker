@@ -50,7 +50,12 @@ build:
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
 	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin
 
-	cat output/loader.tap output/loading.tap output/main.tap assets/music/music.tap > output/${PROJECT_NAME}.tap
+	@if [ -f assets/music/music.tap ]; then\
+		cat output/loader.tap output/loading.tap output/main.tap assets/music/music.tap > output/${PROJECT_NAME}.tap;\
+	else\
+		cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap;\
+	fi
+	
 
 build-dev:
 	$(MAKE) tiled-export
