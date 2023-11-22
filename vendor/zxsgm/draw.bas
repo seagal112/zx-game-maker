@@ -59,10 +59,6 @@ sub redrawScreen()
 	' enemiesDraw(currentScreen)
 end sub
 
-function getAttr(x as ubyte, y as ubyte) as ubyte
-	return PEEK $5800+32*lin+col
-end function
-
 function CheckCollision(x as uByte, y as uByte) as uByte
     Dim xIsEven as uByte = (x bAnd 1) = 0
     Dim yIsEven as uByte = (y bAnd 1) = 0

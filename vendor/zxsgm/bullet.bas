@@ -48,7 +48,7 @@ sub moveBullet()
 
     if bulletPositionX <> 0
         if BULLET_DISTANCE <> 0
-            dim protaX = getSpriteCol(PROTA_SPRITE)
+            dim protaX as ubyte = getSpriteCol(PROTA_SPRITE)
             if bulletDirectionIsRight = 1
                 if protaX + BULLET_DISTANCE > maxXScreenRight
                     limit = maxXScreenRight
@@ -101,7 +101,7 @@ sub checkBulletCollision()
         if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 
-        dim enemyY = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
+        dim enemyY as ubyte = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
 
         dim bulletX0, bulletX1, bulletY0, bulletY1, enemyX0, enemyX1, enemyY0, enemyY1 as ubyte
 
