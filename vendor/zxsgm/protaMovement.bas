@@ -1,10 +1,10 @@
 dim landed as UBYTE = 1
 dim burnToClean as UBYTE = 0
-dim yStepSize as ubyte = 2
+dim yStepSize as ubyte = 2 
 
 function canMoveLeft() as ubyte
-	x as ubyte = getSpriteCol(PROTA_SPRITE)
-	y as ubyte = getSpriteLin(PROTA_SPRITE)
+	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
+	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckDoor(x - 1, y)
 		return 0
 	end if
@@ -12,8 +12,8 @@ function canMoveLeft() as ubyte
 end function
 
 function canMoveRight() as ubyte
-	x as ubyte = getSpriteCol(PROTA_SPRITE)
-	y as ubyte = getSpriteLin(PROTA_SPRITE)
+	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
+	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckDoor(x + 1, y)
 		return 0
 	end if
@@ -21,14 +21,14 @@ function canMoveRight() as ubyte
 end function
 
 function canMoveUp() as ubyte
-	x as ubyte = getSpriteCol(PROTA_SPRITE)
-	y as ubyte = getSpriteLin(PROTA_SPRITE)
+	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
+	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y - 1)
 end function
 
 function canMoveDown() as ubyte
-	x as ubyte = getSpriteCol(PROTA_SPRITE)
-	y as ubyte = getSpriteLin(PROTA_SPRITE)
+	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
+	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y + 1)
 end function
 
