@@ -11,7 +11,6 @@ sub mapDraw()
 	end asm
 	dim tile, index, y, x as integer
 
-	count = screenHeight * screenWidth - 1
 	x = 0
 	y = 0
 	
