@@ -1,10 +1,11 @@
+const PROTA_SPRITE as ubyte = 6
 const BULLET_SPRITE_RIGHT_ID as ubyte = 32
 const BULLET_SPRITE_LEFT_ID as ubyte = 33
-CONST LEFT as uByte = 0
-CONST RIGHT as uByte = 1
-CONST UP as uByte = 2
-CONST DOWN as uByte = 3
-CONST FIRE as uByte = 4
+const LEFT as uByte = 0
+const RIGHT as uByte = 1
+const UP as uByte = 2
+const DOWN as uByte = 3
+const FIRE as uByte = 4
 
 dim currentLife as UBYTE = 100
 dim currentKeys as UBYTE = 0
@@ -28,12 +29,6 @@ dim framec AS ubyte AT 23672
 dim lastFrameProta as ubyte = 0
 dim lastFrameOthers as ubyte = 0
 
-#include "im2.bas"
-#include "vortexTracker.bas"
-
-load "" CODE ' Load vtplayer
-load "" CODE ' Load music
-
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"
 
@@ -46,11 +41,18 @@ SetTileset(@tileSet)
 #include "../../output/enemies.bas"
 #include "../../output/soundEffects.bas"
 
+if MUSIC_ENABLED
+    #include "im2.bas"
+    #include "vortexTracker.bas"
+
+    load "" CODE ' Load vtplayer
+    load "" CODE ' Load music
+end if
+
 #include <zx0.bas>
 #include <retrace.bas>
 #include <keys.bas>
 #include <memcopy.bas>
-#include "const.bas"
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
 #include "enemies.bas"
@@ -58,11 +60,10 @@ SetTileset(@tileSet)
 #include "draw.bas"
 #include "protaMovement.bas"
 #include "sound.bas"
-#include "music.bas"
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    VortexTracker_Stop()
+    if MUSIC_ENABLED then VortexTracker_Stop()
     dzx0Standard(@titleScreen, $4000)
 
     do
@@ -89,7 +90,7 @@ playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN
 
-    VortexTracker_Inicializar(1)
+    if MUSIC_ENABLED then VortexTracker_Inicializar(1)
 
     swapScreen()
 
@@ -131,14 +132,14 @@ playGame:
     loop
 
 ending:
-    VortexTracker_Stop()
+    if MUSIC_ENABLED then VortexTracker_Stop()
     dzx0Standard(@endingScreen, $4000)
     pause 300
     pauseUntilPressKey()
     go to menu
 
 gameOver:
-    VortexTracker_Stop()
+    if MUSIC_ENABLED then VortexTracker_Stop()
     PrintString("GAME OVER", 7, 12, 10)
     pause 300
     pauseUntilPressKey()
@@ -165,11 +166,6 @@ sub animateAnimatedTiles()
             let screenAnimatedTiles(currentScreen, i, 3) = not screenAnimatedTiles(currentScreen, i, 3)
         end if
     next i
-end sub
-
-sub stopMusicAndNirvana()
-    musicStop()
-    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
 end sub
 
 sub checkRemainLife()
