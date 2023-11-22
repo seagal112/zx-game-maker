@@ -97,11 +97,11 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
     if protaY0 > enemyY1 then return
     if protaY1 < enemyY0 then return
 
-    protaTouch(enemyDirection)
+    protaTouch()
 
 end sub
 
-sub protaTouch(enemyDirection as ubyte)
+sub protaTouch()
     startJumping()
     decrementLife()
     damageSound()

@@ -7,14 +7,6 @@ sub pauseUntilPressKey()
     WHILE INKEY$="":WEND
 end sub
 
-function xToCol(x as ubyte) as ubyte
-    return x / 2
-end function
-
-function yToLin(y as ubyte) as ubyte
-    return y / 4
-end function
-
 function secureXIncrement(x as integer, increment as integer) as integer
     dim result = x + increment
 
