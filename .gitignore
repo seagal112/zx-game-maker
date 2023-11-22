@@ -4,3 +4,5 @@ output/*
 *.tap
 *.pdf
 vendor/zxsgm/bin/zxbasic/*
+*.tmp.png
+*.tmp.png.scr
