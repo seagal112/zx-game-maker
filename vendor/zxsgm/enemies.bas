@@ -92,10 +92,10 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
     dim enemyX1 as ubyte = enemyX0 + 2
     dim enemyY1 as ubyte = enemyY0 + 2
 
-    if protaX0 > enemyX1 then return
     if protaX1 < enemyX0 then return
-    if protaY0 > enemyY1 then return
+    if protaX0 > enemyX1 then return
     if protaY1 < enemyY0 then return
+    if protaY0 > enemyY1 then return
 
     protaTouch()
 

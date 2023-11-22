@@ -112,9 +112,9 @@ sub checkBulletCollision()
         enemyY0 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
         enemyY1 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + 2
 
-        if bulletX0 < enemyX0 then continue for
+        if bulletX1 < enemyX0 then continue for
         if bulletX0 > enemyX1 then continue for
-        if bulletY0 < enemyY0 then continue for
+        if bulletY1 < enemyY0 then continue for
         if bulletY0 > enemyY1 then continue for
 
         damageEnemy(enemyId)
