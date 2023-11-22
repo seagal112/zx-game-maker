@@ -9,7 +9,7 @@ sub mapDraw()
 	asm
 		di
 	end asm
-	dim tile, index, y, x, count as integer
+	dim tile, index, y, x as integer
 
 	count = screenHeight * screenWidth - 1
 	x = 0
@@ -161,16 +161,6 @@ sub printLife()
 	PRINT AT 22, 5; currentLife
 	PRINT AT 22, 16; currentKeys
 	PRINT AT 22, 30; currentItems
-end sub
-
-sub drawMenu()
-	PRINT AT 0, 5; "ZX BASIC NIRVANA ENGINE"
-	PRINT AT 5, 5; "PRESS ANY KEY TO START"
-end sub
-
-sub debug(message as string)
-	PRINT AT 0, 10; "                         "
-	PRINT AT 0, 10; message
 end sub
 
 sub moveToScreen(direction as Ubyte)
