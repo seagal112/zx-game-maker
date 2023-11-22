@@ -10,14 +10,6 @@ CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_SPRITE as UBYTE = 9
 CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
 
-function isAKey(lin as UBYTE, col as UBYTE) as UBYTE
-    if lin = key_lin and col = key_col
-        return key_sprite
-	else
-        return 10
-    end if
-end function
-
 sub setScreenElements()
     screenObjects = screenObjectsInitial
 end sub
@@ -38,7 +30,7 @@ sub moveEnemies()
 
     dim counter as ubyte = 0
     dim frame as ubyte = 0
-    dim maxEnemiesCount = 0
+    dim maxEnemiesCount as ubyte = 0
     dim firstXExecuted as ubyte = 0
 
     if enemiesPerScreen(currentScreen) > 0 then maxEnemiesCount = enemiesPerScreen(currentScreen) - 1
@@ -84,12 +76,12 @@ sub moveEnemies()
 
             saveSprite(enemyId, enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
 
-            checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+            checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN))
         end if
     next enemyId
 end sub
 
-sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte, enemyDirection as ubyte)
+sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
     dim protaX0 as ubyte = getSpriteLin(PROTA_SPRITE)
     dim protaY0 as ubyte = getSpriteCol(PROTA_SPRITE)
     dim protaX1 as ubyte = protaX0 + 2
@@ -110,14 +102,13 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte, enemyDirection as 
 end sub
 
 sub protaTouch(enemyDirection as ubyte)
-    ' protaBounce(enemyDirection)
     startJumping()
     decrementLife()
     damageSound()
 end sub
 
 function allEnemiesKilled() as ubyte
-    dim maxEnemiesCount = 0
+    dim maxEnemiesCount as ubyte = 0
     dim enemiesKilled as ubyte = 1
 
     if enemiesPerScreen(currentScreen) = 0 then return 1

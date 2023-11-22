@@ -79,7 +79,7 @@ sub resetProtaSpriteToRunning()
     end if
 end sub
 
-function onLastColumn(sprite) as ubyte
+function onLastColumn(sprite as ubyte) as ubyte
     if getSpriteCol(sprite) = 60
         return 1
     else
@@ -87,32 +87,13 @@ function onLastColumn(sprite) as ubyte
     end if
 end function
 
-function onFirstColumn(sprite) as ubyte
+function onFirstColumn(sprite as ubyte) as ubyte
     if getSpriteCol(sprite) = 0
         return 1
     else
         return 0
     end if
 end function
-
-sub protaBounce(toRight as ubyte)
-    dim x as integer = getSpriteCol(PROTA_SPRITE)
-    dim y as integer = getSpriteLin(PROTA_SPRITE)
-
-    if not isEven(x)
-        x = x - 1
-    end if
-
-    if not isEven(y)
-        y = y - 1
-    end if
-    
-    if toRight = 1
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) + PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
-    else
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) - PROTA_BOUNCE_X_SIZE, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
-    end if
-end sub
 
 sub removeScreenObjectFromBuffer()
     for i = 0 to 4

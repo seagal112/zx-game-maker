@@ -249,14 +249,6 @@ sub checkObjectContact()
 	end if
 end sub
 
-sub checkKeyContact()
-	dim sprite as UBYTE = isAKey(getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE))
-
-	if sprite <> 10
-		incrementKeys()
-	end if
-end sub
-
 sub protaMovement()
 	keyboardListen()
 	checkObjectContact()
