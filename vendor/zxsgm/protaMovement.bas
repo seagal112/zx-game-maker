@@ -3,8 +3,8 @@ dim burnToClean as UBYTE = 0
 dim yStepSize as ubyte = 2
 
 function canMoveLeft() as ubyte
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
+	x as ubyte = getSpriteCol(PROTA_SPRITE)
+	y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckDoor(x - 1, y)
 		return 0
 	end if
@@ -12,8 +12,8 @@ function canMoveLeft() as ubyte
 end function
 
 function canMoveRight() as ubyte
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
+	x as ubyte = getSpriteCol(PROTA_SPRITE)
+	y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckDoor(x + 1, y)
 		return 0
 	end if
@@ -21,18 +21,18 @@ function canMoveRight() as ubyte
 end function
 
 function canMoveUp() as ubyte
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
+	x as ubyte = getSpriteCol(PROTA_SPRITE)
+	y as ubyte = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y - 1)
 end function
 
 function canMoveDown() as ubyte
-	x = getSpriteCol(PROTA_SPRITE)
-	y = getSpriteLin(PROTA_SPRITE)
+	x as ubyte = getSpriteCol(PROTA_SPRITE)
+	y as ubyte = getSpriteLin(PROTA_SPRITE)
 	return not CheckCollision(x, y + 1)
 end function
 
-function getNextFrameJumpingFalling() as UBYTE
+function getNextFrameJumpingFalling() as ubyte
 	if (getSpriteDirection(PROTA_SPRITE))
 		return 3
 	else
@@ -199,10 +199,10 @@ end sub
 
 sub keyboardListen()
 	if kempston
-		if IN(31) bAND %00010 AND x>0  then leftKey()
-		if IN(31) bAND %00001 AND x<31 then rightKey()
-		if IN(31) bAND %01000 AND y>0  then upKey()
-		if IN(31) bAND %00100 AND y<23 then downKey()
+		if IN(31) bAND %00010 then leftKey()
+		if IN(31) bAND %00001 then rightKey()
+		if IN(31) bAND %01000 then upKey()
+		if IN(31) bAND %00100 then downKey()
 		if IN(31) bAND %10000 then fireKey() 
 	else
 		if MultiKeys(keyArray(LEFT))<>0 then leftKey()

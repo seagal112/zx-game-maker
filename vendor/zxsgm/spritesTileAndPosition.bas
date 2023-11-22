@@ -1,7 +1,7 @@
 const screenSpritesCount as ubyte = 8
 const spritesDataCount as ubyte = 5
-const FIRST_RUNNING_PROTA_SPRITE_RIGHT = 0
-const FIRST_RUNNING_PROTA_SPRITE_LEFT = 4
+const FIRST_RUNNING_PROTA_SPRITE_RIGHT as ubyte = 0
+const FIRST_RUNNING_PROTA_SPRITE_LEFT as ubyte = 4
 
 DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as ubyte => { _
     {0, 0, 0, 0, 0}, _
@@ -27,13 +27,13 @@ function isJumping() as ubyte
     end if
 end function
 
-function stopJumping()
+sub stopJumping()
     jumpCurrentKey = jumpStopValue
-end function
+end sub
 
-function startJumping()
+sub startJumping()
     jumpCurrentKey = 0
-end function
+end sub
 
 sub initProta()
     saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
