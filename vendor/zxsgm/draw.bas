@@ -65,20 +65,36 @@ function CheckCollision(x as uByte, y as uByte) as uByte
     Dim lin as uByte = y >> 1
 
     if xIsEven and yIsEven
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1)
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+    	if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
     elseif xIsEven and not yIsEven
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) _
-            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2)
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+        if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+    	if isSolidTileByColLin(col, lin + 2) then return 1
+		if isSolidTileByColLin(col + 1, lin + 2) then return 1
 	elseif not xIsEven and yIsEven
-		return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
-			or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1)
+		if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+		if isSolidTileByColLin(col + 2, lin) then return 1
+		if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+		if isSolidTileByColLin(col + 2, lin + 1) then return 1
     elseif not xIsEven and not yIsEven
-        return isSolidTileByColLin(col, lin) or isSolidTileByColLin(col + 1, lin) or isSolidTileByColLin(col + 2, lin) _
-            or isSolidTileByColLin(col, lin + 1) or isSolidTileByColLin(col + 1, lin + 1) or isSolidTileByColLin(col + 2, lin + 1) _
-            or isSolidTileByColLin(col, lin + 2) or isSolidTileByColLin(col + 1, lin + 2) or isSolidTileByColLin(col + 2, lin + 2)
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+		if isSolidTileByColLin(col + 2, lin) then return 1
+    	if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+		if isSolidTileByColLin(col + 2, lin + 1) then return 1
+        if isSolidTileByColLin(col, lin + 2) then return 1
+		if isSolidTileByColLin(col + 1, lin + 2) then return 1
+		if isSolidTileByColLin(col + 2, lin + 2) then return 1
     end if
+	return 0
 end function
 
 function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
