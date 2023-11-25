@@ -12,7 +12,6 @@ dim currentKeys as UBYTE = 0
 dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
-dim animateEnemies as ubyte = 1
 dim damagedByCollision as ubyte
 dim currentBulletSpriteId as ubyte
 
