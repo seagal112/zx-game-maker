@@ -1,5 +1,5 @@
 dim landed as UBYTE = 1
-dim yStepSize as ubyte = 2 
+dim yStepSize as ubyte = 2
 
 function canMoveLeft() as ubyte
 	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
@@ -28,7 +28,9 @@ end function
 function canMoveDown() as ubyte
 	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
 	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-	return not CheckCollision(x, y + 1)
+	if CheckCollision(x, y + 1) return 0
+	if checkPlatformByXY(x, y + 4) return 0
+	return 1
 end function
 
 function getNextFrameJumpingFalling() as ubyte
@@ -141,6 +143,7 @@ sub shoot()
 end sub
 
 sub leftKey()
+	saveSpriteDirection(PROTA_SPRITE, 0)
 	if onFirstColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
 			if allEnemiesKilled()
@@ -157,6 +160,7 @@ sub leftKey()
 end sub
 
 sub rightKey()
+	saveSpriteDirection(PROTA_SPRITE, 1)
 	if onLastColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
 			if allEnemiesKilled()

@@ -98,7 +98,7 @@ sub checkBulletCollision()
     end if
 
     for enemyId=0 TO MAX_ENEMIES_PER_SCREEN - 1
-        if enemies(currentScreen, enemyId, ENEMY_TILE) = 0 then continue for
+        if enemies(currentScreen, enemyId, ENEMY_TILE) < 16 then continue for ' not enemy
         if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
 
         dim bulletX0, bulletX1, bulletY0, bulletY1, enemyX0, enemyX1, enemyY0, enemyY1 as ubyte

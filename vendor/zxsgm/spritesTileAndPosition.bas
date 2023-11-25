@@ -71,6 +71,18 @@ function getSpriteFrame(sprite as ubyte) as ubyte
     return spritesLinColTileAndFrame(sprite, 4)
 end function
 
+sub saveSpriteLin(sprite as ubyte, lin as ubyte)
+    spritesLinColTileAndFrame(sprite, 0) = lin
+end sub
+
+sub saveSpriteCol(sprite as ubyte, col as ubyte)
+    spritesLinColTileAndFrame(sprite, 1) = col
+end sub
+
+sub saveSpriteDirection(sprite as ubyte, directionIsRight as ubyte)
+    spritesLinColTileAndFrame(sprite, 3) = directionIsRight
+end sub
+
 sub resetProtaSpriteToRunning()
     if getSpriteDirection(PROTA_SPRITE)
         saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))

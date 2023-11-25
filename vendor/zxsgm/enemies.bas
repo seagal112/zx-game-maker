@@ -19,6 +19,18 @@ sub setEnemies()
     enemiesPerScreen = enemiesPerScreenInitial
 end sub
 
+function checkPlatformHasProtaOnTop(x as ubyte, y as ubyte) as ubyte
+    dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
+    dim protaX1 as ubyte = protaX0 + 2
+    dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
+
+    if protaX1 < x then return 0
+    if protaX0 > x + 4 then return 0
+    if protaY0 <> y - 4 then return 0
+
+    return 1
+end function
+
 sub moveEnemies()
     dim counter as ubyte = 0
     dim frame as ubyte = 0
@@ -48,7 +60,12 @@ sub moveEnemies()
             
             enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION)
 
-            if enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
+            if enemies(currentScreen, enemyId, ENEMY_TILE) < 16 ' Is a platform not an enemy, only 2 frames, 1 direction
+                if checkPlatformHasProtaOnTop(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN))
+                    saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                end if
+                tile = enemies(currentScreen, enemyId, ENEMY_TILE)
+            elseif enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
                 tile = enemies(currentScreen, enemyId, ENEMY_TILE)
             elseif enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
                 tile = enemies(currentScreen, enemyId, ENEMY_TILE) + 2
@@ -62,13 +79,19 @@ sub moveEnemies()
             
             enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION)
 
+            ' if enemies(currentScreen, enemyId, ENEMY_TILE) < 16
+            '     saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + enemies(currentScreen, enemyId, ENEMY_VERTICAL_DIRECTION))
+            ' end if
+
             if enemFrame
                 tile = tile + 1
             end if
 
             saveSprite(enemyId, enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN), enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), tile, enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
 
-            checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN))
+            if enemies(currentScreen, enemyId, ENEMY_TILE) > 15
+                checkProtaCollision(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN))
+            end if
         end if
     next enemyId
 end sub
@@ -112,4 +135,26 @@ function allEnemiesKilled() as ubyte
     next enemyId
 
     return 1
+end function
+
+function checkPlatformByXY(x as ubyte, y as ubyte) as ubyte
+    dim maxEnemiesCount as ubyte = 0
+    dim enemiesKilled as ubyte = 1
+
+    if enemiesPerScreen(currentScreen) = 0 then return 0
+
+    for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
+        if enemies(currentScreen, enemyId, ENEMY_TILE) < 16 then
+            dim enemyCol as ubyte = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
+            dim enemyLin as ubyte = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
+
+            if x < enemyCol - 2 then return 0
+            if x > enemyCol + 4 then return 0
+            if y <> enemyLin then return 0
+            
+            return 1
+        end if
+    next enemyId
+
+    return 0
 end function
