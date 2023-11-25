@@ -20,14 +20,6 @@ sub setEnemies()
 end sub
 
 sub moveEnemies()
-    ' if framec bAND %10
-    '     return
-    ' end if
-
-    if animateEnemies <> 1
-        return
-    end if
-
     dim counter as ubyte = 0
     dim frame as ubyte = 0
     dim maxEnemiesCount as ubyte = 0
