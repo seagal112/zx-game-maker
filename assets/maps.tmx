@@ -4,12 +4,16 @@
   <chunksize width="32" height="22"/>
  </editorsettings>
  <properties>
+  <property name="VTPLAYER_INIT" value="EFAD"/>
+  <property name="VTPLAYER_MUTE" value="EFB5"/>
+  <property name="VTPLAYER_NEXTNOTE" value="EFB2"/>
   <property name="bulletDistance" type="int" value="0"/>
   <property name="damageAmount" type="int" value="10"/>
   <property name="enemiesRespawn" type="bool" value="false"/>
   <property name="goalItems" type="int" value="2"/>
   <property name="initialLife" type="int" value="50"/>
   <property name="lifeAmount" type="int" value="5"/>
+  <property name="musicEnabled" type="bool" value="true"/>
   <property name="shooting" type="bool" value="true"/>
   <property name="shouldKillEnemies" type="bool" value="false"/>
  </properties>
