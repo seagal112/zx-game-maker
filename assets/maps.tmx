@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="36">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="34">
  <editorsettings>
   <chunksize width="32" height="22"/>
  </editorsettings>
@@ -13,7 +13,7 @@
   <property name="goalItems" type="int" value="2"/>
   <property name="initialLife" type="int" value="50"/>
   <property name="lifeAmount" type="int" value="5"/>
-  <property name="musicEnabled" type="bool" value="true"/>
+  <property name="musicEnabled" type="bool" value="false"/>
   <property name="shooting" type="bool" value="true"/>
   <property name="shouldKillEnemies" type="bool" value="false"/>
  </properties>
@@ -119,7 +119,7 @@
 3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
 3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
 3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
-3,1,1,87,88,89,90,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
+3,1,1,87,88,89,90,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,1,1,1,3,0,
 3,1,1,119,120,121,122,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
 3,1,1,151,152,153,154,1,1,1,1,1,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,3,3,
 3,1,1,183,184,185,186,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,
@@ -141,6 +141,17 @@
   </data>
  </layer>
  <objectgroup id="2" name="objects">
+  <object id="12" name="enemy_2" type="enemy" gid="209" x="376" y="320" width="16" height="16">
+   <properties>
+    <property name="life" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="13" name="enemy_2_end" x="448" y="272">
+   <properties>
+    <property name="enemy" type="object" value="12"/>
+   </properties>
+   <point/>
+  </object>
   <object id="17" name="enemy_4" type="enemy" gid="209" x="264" y="152" width="16" height="16"/>
   <object id="18" name="enemy_4_end" x="336" y="152">
    <properties>
@@ -158,10 +169,17 @@
   <object id="26" name="mainCharacter" type="mainCharacter" x="63.5" y="320">
    <point/>
   </object>
-  <object id="32" type="platform" gid="201" x="280" y="312" width="16" height="16"/>
-  <object id="33" x="328" y="312">
+  <object id="30" gid="217" x="408" y="256" width="16" height="16"/>
+  <object id="31" x="376" y="256">
    <properties>
-    <property name="platform" type="object" value="32"/>
+    <property name="enemy" type="object" value="30"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" name="platform_1" type="platform" gid="201" x="280" y="304" width="16" height="16"/>
+  <object id="33" name="platform_1_end" x="336" y="304">
+   <properties>
+    <property name="platform_1" type="object" value="32"/>
    </properties>
    <point/>
   </object>
