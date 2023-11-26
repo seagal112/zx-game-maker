@@ -1,8 +1,9 @@
 ' - Módulo de reproducción de Vortex Tracker --------------
 ' - Defines -----------------------------------------------
-#DEFINE VTPLAYER_INIT $EFAD
-#DEFINE VTPLAYER_NEXTNOTE $EFB2
-#DEFINE VTPLAYER_MUTE $EFB5
+' Generated from tiled
+' #DEFINE VTPLAYER_INIT $EFAD
+' #DEFINE VTPLAYER_NEXTNOTE $EFB2
+' #DEFINE VTPLAYER_MUTE $EFB5
 ' - Variables ---------------------------------------------
 ' Estado del reproductor, 0=parado, 1=sonando
 DIM VortexTracker_Status AS UByte = 0

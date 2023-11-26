@@ -82,6 +82,10 @@ shooting = 1
 shouldKillEnemies = 0
 musicEnabled = 0
 
+vtplayerInit = '0'
+vtplayerMute = '0'
+vtplayerNextNote = '0'
+
 initialScreen = 2
 initialMainCharacterX = 8
 initialMainCharacterY = 8
@@ -105,6 +109,12 @@ for property in data['properties']:
         shouldKillEnemies = 1 if property['value'] else 0
     elif property['name'] == 'musicEnabled':
         musicEnabled = 1 if property['value'] else 0
+    elif property['name'] == 'VTPLAYER_INIT':
+        vtplayerInit = property['value']
+    elif property['name'] == 'VTPLAYER_MUTE':
+        vtplayerMute = property['value']
+    elif property['name'] == 'VTPLAYER_NEXTNOTE':
+        vtplayerNextNote = property['value']
 
 if len(solidTiles) == 0:
     solidTiles.append('0')
@@ -136,6 +146,10 @@ mapStr += "dim doorTile as ubyte = " + doorTile + "\n"
 mapStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
 mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
 mapStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n\n"
+
+mapStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
+mapStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
+mapStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
