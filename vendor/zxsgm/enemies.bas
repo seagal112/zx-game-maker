@@ -148,9 +148,9 @@ function checkPlatformByXY(x as ubyte, y as ubyte) as ubyte
             dim enemyCol as ubyte = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) 
             dim enemyLin as ubyte = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
 
-            if x < enemyCol - 2 then return 0
-            if x > enemyCol + 4 then return 0
-            if y <> enemyLin then return 0
+            if x < enemyCol - 2 then continue for
+            if x > enemyCol + 4 then continue for
+            if y <> enemyLin then continue for
             
             return 1
         end if
