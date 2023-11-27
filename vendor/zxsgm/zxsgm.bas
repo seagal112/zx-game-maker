@@ -54,9 +54,9 @@ end if
 #include <memcopy.bas>
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
+#include "draw.bas"
 #include "enemies.bas"
 #include "bullet.bas"
-#include "draw.bas"
 #include "protaMovement.bas"
 #include "sound.bas"
 

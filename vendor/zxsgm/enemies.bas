@@ -62,7 +62,15 @@ sub moveEnemies()
 
             if enemies(currentScreen, enemyId, ENEMY_TILE) < 16 ' Is a platform not an enemy, only 2 frames, 1 direction
                 if checkPlatformHasProtaOnTop(enemies(currentScreen, enemyId, ENEMY_CURRENT_COL), enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN))
-                    saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                    if enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
+                        if not CheckCollision(getSpriteCol(PROTA_SPRITE) + 1, getSpriteLin(PROTA_SPRITE))
+                            saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                        end if
+                    elseif enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
+                        if not CheckCollision(getSpriteCol(PROTA_SPRITE) - 1, getSpriteLin(PROTA_SPRITE))
+                            saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                        end if
+                    end if
                 end if
                 tile = enemies(currentScreen, enemyId, ENEMY_TILE)
             elseif enemies(currentScreen, enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
