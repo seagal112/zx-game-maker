@@ -74,6 +74,45 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
     ' return isSolidTile(tile)
 end function
 
+function CheckCollision(x as uByte, y as uByte) as uByte
+    Dim xIsEven as uByte = (x bAnd 1) = 0
+    Dim yIsEven as uByte = (y bAnd 1) = 0
+    Dim col as uByte = x >> 1
+    Dim lin as uByte = y >> 1
+
+    if xIsEven and yIsEven
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+    	if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+    elseif xIsEven and not yIsEven
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+        if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+    	if isSolidTileByColLin(col, lin + 2) then return 1
+		if isSolidTileByColLin(col + 1, lin + 2) then return 1
+	elseif not xIsEven and yIsEven
+		if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+		if isSolidTileByColLin(col + 2, lin) then return 1
+		if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+		if isSolidTileByColLin(col + 2, lin + 1) then return 1
+    elseif not xIsEven and not yIsEven
+        if isSolidTileByColLin(col, lin) then return 1
+		if isSolidTileByColLin(col + 1, lin) then return 1
+		if isSolidTileByColLin(col + 2, lin) then return 1
+    	if isSolidTileByColLin(col, lin + 1) then return 1
+		if isSolidTileByColLin(col + 1, lin + 1) then return 1
+		if isSolidTileByColLin(col + 2, lin + 1) then return 1
+        if isSolidTileByColLin(col, lin + 2) then return 1
+		if isSolidTileByColLin(col + 1, lin + 2) then return 1
+		if isSolidTileByColLin(col + 2, lin + 2) then return 1
+    end if
+	return 0
+end function
+
 function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     dim col as uByte = x >> 1
     dim lin as uByte = y >> 1
