@@ -31,7 +31,7 @@ screenPixelsHeight = screenHeight * tileHeight
 
 spriteTileOffset = 0
 
-maxEnemiesPerScreen = 5
+maxEnemiesPerScreen = 3
 maxAnimatedTilesPerScreen = 3
 
 solidTiles = []
@@ -115,6 +115,8 @@ for property in data['properties']:
         vtplayerMute = property['value']
     elif property['name'] == 'VTPLAYER_NEXTNOTE':
         vtplayerNextNote = property['value']
+    elif property['name'] == 'maxEnemiesPerScreen':
+        maxEnemiesPerScreen = property['value']
 
 if len(solidTiles) == 0:
     solidTiles.append('0')
