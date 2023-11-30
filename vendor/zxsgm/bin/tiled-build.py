@@ -31,7 +31,7 @@ screenPixelsHeight = screenHeight * tileHeight
 
 spriteTileOffset = 0
 
-maxEnemiesPerScreen = 3
+maxEnemiesPerScreen = 5
 maxAnimatedTilesPerScreen = 3
 
 solidTiles = []
