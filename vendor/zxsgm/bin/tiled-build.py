@@ -129,7 +129,7 @@ mapStr = "const MAX_ENEMIES_PER_SCREEN as ubyte = " + str(maxEnemiesPerScreen) +
 mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
-mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
+mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 4) + "\n"
 mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
@@ -246,6 +246,14 @@ for idx, screen in enumerate(screens):
 
 # with open(outputDir + "maps.bas", "w") as text_file:
 #     print(mapStr, file=text_file)
+
+# mapStr += "dim spritesLinColTileAndFrame(" + str(maxEnemiesPerScreen) + ", 4) as ubyte = { _\n"
+# for i in range(maxEnemiesPerScreen + 1):
+#     mapStr += "\t{0, 0, 0, 0, 0}, _\n"
+# mapStr = mapStr[:-4]
+# mapStr += " _\n}\n\n"
+
+# mapStr += "const PROTA_SPRITE as ubyte = " + str(maxEnemiesPerScreen) + "\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(mapStr, file=text_file)
