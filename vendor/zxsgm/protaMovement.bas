@@ -73,6 +73,9 @@ function isFalling() as UBYTE
 	else
 		if landed = 0
 			landed = 1
+			if not isEven(getSpriteLin(PROTA_SPRITE))
+				saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1)
+			end if
 			resetProtaSpriteToRunning()
 		end if
 		return 0
