@@ -48,7 +48,7 @@ sub moveBullet()
 
     if bulletPositionX <> 0
         if BULLET_DISTANCE <> 0
-            dim protaX as ubyte = getSpriteCol(PROTA_SPRITE)
+            dim protaX as byte = getSpriteCol(PROTA_SPRITE)
             if bulletDirectionIsRight = 1
                 if protaX + BULLET_DISTANCE > maxXScreenRight
                     limit = maxXScreenRight
