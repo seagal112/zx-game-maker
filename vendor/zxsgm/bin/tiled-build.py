@@ -115,7 +115,7 @@ for property in data['properties']:
         vtplayerMute = property['value']
     elif property['name'] == 'VTPLAYER_NEXTNOTE':
         vtplayerNextNote = property['value']
-    elif property['name'] == 'maxEnemiesPerScreen':
+    elif property['name'] == 'maxEnemiesPerScreen' and property['value'] < 6:
         maxEnemiesPerScreen = property['value']
 
 if len(solidTiles) == 0:
