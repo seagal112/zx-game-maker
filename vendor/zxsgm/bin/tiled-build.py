@@ -131,7 +131,7 @@ mapStr = "const MAX_ENEMIES_PER_SCREEN as ubyte = " + str(maxEnemiesPerScreen) +
 mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
-mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 6) + "\n"
+mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 4) + "\n"
 mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"

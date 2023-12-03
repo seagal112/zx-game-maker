@@ -84,7 +84,7 @@ end function
 
 sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
-		if getSpriteLin(PROTA_SPRITE) > MAX_LINE
+		if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
 			if SHOULD_KILL_ENEMIES
 				if allEnemiesKilled()
 					moveScreen = 2

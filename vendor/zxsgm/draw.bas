@@ -50,7 +50,8 @@ end sub
 
 sub redrawScreen()
 	' memset(22527,0,768)
-	' ClearScreen(7, 0, 0)
+	ClearScreen(7, 0, 0)
+	dzx0Standard(@hudScreen, $4000)
 	FillWithTile(0, 32, 22, 7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
@@ -142,7 +143,7 @@ end sub
 sub moveToScreen(direction as Ubyte)
 	' removeAllObjects()
 	if direction = 6
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 2, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 0, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + 1
 	elseif direction = 4
 		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 60, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
