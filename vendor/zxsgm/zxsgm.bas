@@ -37,7 +37,6 @@ SetTileset(@tileSet)
 
 #include "../../output/sprites.bas"
 #include "../../output/config.bas"
-#include "../../output/enemies.bas"
 #include "../../output/soundEffects.bas"
 
 if MUSIC_ENABLED

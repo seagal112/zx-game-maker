@@ -127,31 +127,31 @@ if len(damageTiles) == 0:
 solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0 
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
 
-mapStr = "const MAX_ENEMIES_PER_SCREEN as ubyte = " + str(maxEnemiesPerScreen) + "\n"
-mapStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
-mapStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
-mapStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
-mapStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 4) + "\n"
-mapStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
-mapStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
-mapStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
-mapStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
-mapStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
-mapStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
-mapStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
-mapStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
-mapStr += "dim solidTiles(" + str(solidTilesCount) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
-mapStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
-mapStr += "dim keyTile as ubyte = " + keyTile + "\n"
-mapStr += "dim itemTile as ubyte = " + itemTile + "\n"
-mapStr += "dim doorTile as ubyte = " + doorTile + "\n"
-mapStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
-mapStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
-mapStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n\n"
+configStr = "const MAX_ENEMIES_PER_SCREEN as ubyte = " + str(maxEnemiesPerScreen) + "\n"
+configStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
+configStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
+configStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
+configStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 4) + "\n"
+configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
+configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
+configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
+configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
+configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
+configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
+configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
+configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
+configStr += "dim solidTiles(" + str(solidTilesCount) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
+configStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
+configStr += "dim keyTile as ubyte = " + keyTile + "\n"
+configStr += "dim itemTile as ubyte = " + itemTile + "\n"
+configStr += "dim doorTile as ubyte = " + doorTile + "\n"
+configStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
+configStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
+configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n\n"
 
-mapStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
-mapStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
-mapStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
+configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
+configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
+configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
@@ -194,50 +194,47 @@ for layer in data['layers']:
                 if len(screenAnimatedTiles[idx]) > maxAnimatedTilesPerScreen:
                     exitWithErrorMessage('Max animated tiles per screen is ' + str(maxAnimatedTilesPerScreen))
 
-mapStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
-mapStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
-mapStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
-mapStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
-mapStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n\n"
+configStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
+configStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
+configStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
+configStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
+configStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n\n"
 
-mapStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
-mapStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
+configStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
+configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
 for screen in screenObjects:
-    mapStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
-mapStr = mapStr[:-4]
-mapStr += " _\n}\n\n"
+    configStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
+configStr = configStr[:-4]
+configStr += " _\n}\n\n"
 
-mapStr += "dim screenAnimatedTiles(" + str(screensCount - 1) + ", 2, 3) as ubyte = { _\n"
+configStr += "dim screenAnimatedTiles(" + str(screensCount - 1) + ", 2, 3) as ubyte = { _\n"
 for screen in screenAnimatedTiles:
-    mapStr += "\t{ _\n"
+    configStr += "\t{ _\n"
     for i in range(len(screenAnimatedTiles[screen])):
-        mapStr += '\t\t{' + screenAnimatedTiles[screen][i][0] + ', ' + screenAnimatedTiles[screen][i][1] + ', ' + screenAnimatedTiles[screen][i][2] + ', 0}, _\n'
+        configStr += '\t\t{' + screenAnimatedTiles[screen][i][0] + ', ' + screenAnimatedTiles[screen][i][1] + ', ' + screenAnimatedTiles[screen][i][2] + ', 0}, _\n'
     for i in range(3 - len(screenAnimatedTiles[screen])):
-        mapStr += '\t\t{0, 0, 0, 0}, _\n'
-    mapStr = mapStr[:-4]
-    mapStr += " _\n"
-    mapStr += '\t}, _\n'
-mapStr = mapStr[:-4]
-mapStr += "\t} _\n"
-mapStr = mapStr[:-4]
-mapStr += " _\n}\n\n"
+        configStr += '\t\t{0, 0, 0, 0}, _\n'
+    configStr = configStr[:-4]
+    configStr += " _\n"
+    configStr += '\t}, _\n'
+configStr = configStr[:-4]
+configStr += "\t} _\n"
+configStr = configStr[:-4]
+configStr += " _\n}\n\n"
 
-mapStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
-mapStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
+configStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
+configStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
 
 currentOffset = 0
-mapStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
-mapStr += "screensOffsets(0) = " + str(currentOffset) + "\n"
+configStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
+configStr += "screensOffsets(0) = " + str(currentOffset) + "\n"
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         screen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
     currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
-    mapStr += "screensOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
-
-with open(outputDir + "config.bas", "w") as text_file:
-    print(mapStr, file=text_file)
+    configStr += "screensOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
 
 # Construct enemies
 
@@ -294,9 +291,9 @@ for enemyId in objects:
 
 enemiesPerScreen = []
 
-enemStr = "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
-enemStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
-enemStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
+configStr += "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
+configStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
+configStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
 
 enemiesArray = []
 
@@ -361,58 +358,25 @@ for layer in data['layers']:
             enemiesArray.append(array.array('b', arrayBuffer))
 
 currentOffset = 0
-enemStr += "dim enemiesInScreenOffsets(" + str(screensCount) + ") as uinteger\n"
-enemStr += "enemiesInScreenOffsets(0) = " + str(currentOffset) + "\n"
+configStr += "dim enemiesInScreenOffsets(" + str(screensCount) + ") as uinteger\n"
+configStr += "enemiesInScreenOffsets(0) = " + str(currentOffset) + "\n"
 for idx, enemiesScreen in enumerate(enemiesArray):
     label = 'enemiesInScreen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         enemiesScreen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
     currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
-    enemStr += "enemiesInScreenOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
+    configStr += "enemiesInScreenOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
 
-enemStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
-enemStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
+configStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
+configStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
 
 for i in enemiesPerScreen:
-    enemStr += str(i) + ', '
-enemStr = enemStr[:-2]
-enemStr += "}\n\n"
+    configStr += str(i) + ', '
+configStr = configStr[:-2]
+configStr += "}\n\n"
 
-enemStr += "dim decompressedEnemiesScreen(2, 10) as byte\n"
+configStr += "dim decompressedEnemiesScreen(2, 10) as byte\n"
 
-with open(outputDir + "enemies.bas", "w") as text_file:
-    print(enemStr, file=text_file)
-
-screenKeys = defaultdict(dict)
-
-for keyId in keys:
-    key = keys[keyId]
-    if len(screenEnemies[key['screenId']]) == 0:
-        screenEnemies[key['screenId']] = []
-    screenEnemies[key['screenId']].append(key)
-
-keyStr = "DIM keys(" + str(len(screenEnemies)) + ",2,9) as ubyte = { _\n"
-
-keyStr += '\t{ _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, _\n\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1} _\n\t}, _\n'
-
-for screenId in screenKeys:
-    keyStr += "\t{ _\n"
-    screen = screenKeys[screenId]
-    for i in range(3):
-        if i <= len(screen) - 1:
-            enemy = screen[i]
-            if (enemy['colIni'] < enemy['colEnd']):
-                right = '1'
-            else:
-                right = '0'
-            keyStr += '\t\t{' + enemy['tile'] + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', ' + enemy['linEnd'] + ', ' + enemy['colEnd'] + ', ' + right + ', ' + enemy['linIni'] + ', ' + enemy['colIni'] + ', 1, ' + str(i + 1) + '}, _\n'
-        else:
-            keyStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + '}, _\n'
-    keyStr = keyStr[:-4]
-    keyStr += " _\n\t},"
-keyStr = keyStr[:-1]
-keyStr += " _\n}"
-
-with open(outputDir + "keys.bas", "w") as text_file:
-    print(keyStr, file=text_file)
+with open(outputDir + "config.bas", "w") as text_file:
+    print(configStr, file=text_file)
