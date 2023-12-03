@@ -98,8 +98,8 @@ sub checkBulletCollision()
     end if
 
     for enemyId=0 TO MAX_ENEMIES_PER_SCREEN - 1
-        if enemies(currentScreen, enemyId, ENEMY_TILE) < 16 then continue for ' not enemy
-        if enemies(currentScreen, enemyId, ENEMY_ALIVE) = 0 then continue for
+        if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16 then continue for ' not enemy
+        if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) = 0 then continue for
 
         dim bulletX0, bulletX1, bulletY0, bulletY1, enemyX0, enemyX1, enemyY0, enemyY1 as ubyte
 
@@ -107,10 +107,10 @@ sub checkBulletCollision()
         bulletX1 = bulletPositionX + 1
         bulletY0 = bulletPositionY
         bulletY1 = bulletPositionY + 1
-        enemyX0 = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL)
-        enemyX1 = enemies(currentScreen, enemyId, ENEMY_CURRENT_COL) + 2
-        enemyY0 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN)
-        enemyY1 = enemies(currentScreen, enemyId, ENEMY_CURRENT_LIN) + 2
+        enemyX0 = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL)
+        enemyX1 = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) + 2
+        enemyY0 = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
+        enemyY1 = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN) + 2
 
         if bulletX1 < enemyX0 then continue for
         if bulletX0 > enemyX1 then continue for
@@ -129,11 +129,11 @@ sub resetBullet()
 end sub
 
 sub damageEnemy(enemyToKill as Ubyte)
-    enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = enemies(currentScreen, enemyToKill, ENEMY_ALIVE) - 1
+    decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) - 1
 
-    if enemies(currentScreen, enemyToKill, ENEMY_ALIVE) = 0
+    if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 0
         saveSprite(enemyToKill, 0, 0, 0, 0)
-        drawBurst(enemies(currentScreen, enemyToKill, ENEMY_CURRENT_COL), enemies(currentScreen, enemyToKill, ENEMY_CURRENT_LIN))
+        drawBurst(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN))
         killEnemySound()
     else
         damageSound()

@@ -8,6 +8,11 @@ tiled-export:
 tiled-build:
 	python3 ${BIN_FOLDER}tiled-build.py
 	cat output/screen*.bin.zx0 > output/map.bin.zx0
+	cat output/enemiesInScreen*.bin.zx0 > output/enemies.bin.zx0
+	rm -f output/screen*.bin.zx0
+	rm -f output/screen*.bin
+	rm -f output/enemiesInScreen*.bin.zx0
+	rm -f output/enemiesInScreen*.bin
 
 fx-to-bas:
 	@if [ -f assets/soundEffects.asm ]; then\

@@ -155,6 +155,7 @@ end sub
 
 sub swapScreen()
     dzx0Standard(@map + screensOffsets(currentScreen), @decompressedMap)
+    dzx0Standard(@enemiesInScreen + enemiesInScreenOffsets(currentScreen), @decompressedEnemiesScreen)
 end sub
 
 sub animateAnimatedTiles()
@@ -224,4 +225,9 @@ endingScreen:
 map:
     asm
         incbin "output/map.bin.zx0"
+    end asm
+
+enemiesInScreen:
+    asm
+        incbin "output/enemies.bin.zx0"
     end asm

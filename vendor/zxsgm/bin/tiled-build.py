@@ -158,7 +158,6 @@ for layer in data['layers']:
         screensCount = len(layer['chunks'])
         mapRows = layer['height']//screenHeight
         mapCols = layer['width']//screenWidth
-        # mapStr += "DIM screens(" + str(screensCount - 1) + ", " + str(screenHeight - 1) + ", " + str(screenWidth - 1) + ") AS UBYTE = { _\n";
 
         screens = []
         screenObjects = defaultdict(dict)
@@ -225,11 +224,6 @@ mapStr += " _\n}\n\n"
 
 mapStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
 mapStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
-mapStr += "dim swapMap(SCREEN_LENGTH) as ubyte\n"
-# mapStr += "dim screensLabels(" + str(screensCount - 1) + ") as ulong\n"
-# for idx, screen in enumerate(screens):
-#     label = 'screen' + str(idx)
-#     mapStr += "screensLabels(" + str(idx) + ") = @" + label + "\n"
 
 currentOffset = 0
 mapStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
@@ -241,21 +235,6 @@ for idx, screen in enumerate(screens):
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
     currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
     mapStr += "screensOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
-#     mapStr += label + ":\n"
-#     mapStr += "\tasm\n"
-#     mapStr += "\t\tincbin \"output/" + label + ".bin.zx0\"\n"
-#     mapStr += "\tend asm\n\n"
-
-# with open(outputDir + "maps.bas", "w") as text_file:
-#     print(mapStr, file=text_file)
-
-# mapStr += "dim spritesLinColTileAndFrame(" + str(maxEnemiesPerScreen) + ", 4) as ubyte = { _\n"
-# for i in range(maxEnemiesPerScreen + 1):
-#     mapStr += "\t{0, 0, 0, 0, 0}, _\n"
-# mapStr = mapStr[:-4]
-# mapStr += " _\n}\n\n"
-
-# mapStr += "const PROTA_SPRITE as ubyte = " + str(maxEnemiesPerScreen) + "\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(mapStr, file=text_file)
@@ -318,13 +297,13 @@ enemiesPerScreen = []
 enemStr = "const INITIAL_SCREEN as ubyte = " + str(initialScreen) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_X as ubyte = " + str(initialMainCharacterX) + "\n"
 enemStr += "const INITIAL_MAIN_CHARACTER_Y as ubyte = " + str(initialMainCharacterY) + "\n"
-enemStr += "dim enemies(" + str(screensCount - 1) + "," + str(maxEnemiesPerScreen - 1) + ",10) as byte\n"
-enemStr += "dim enemiesInitial(" + str(screensCount - 1) + "," + str(maxEnemiesPerScreen - 1) + ",10) as byte = { _"
+
+enemiesArray = []
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
         for idx, screen in enumerate(layer['chunks']):
-            enemStr += "\n\t{ _\n"
+            arrayBuffer = []
             if idx in screenEnemies:
                 screen = screenEnemies[idx]
                 enemiesPerScreen.append(0)
@@ -342,18 +321,55 @@ for layer in data['layers']:
                             verticalDirection = '-1'
 
                         enemiesPerScreen[idx] = enemiesPerScreen[idx] + 1
-                        enemStr += '\t\t{' + str(enemy['tile']) + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['linEnd']) + ', ' + str(enemy['colEnd']) + ', ' + horizontalDirection + ', ' + str(enemy['linIni']) + ', ' + str(enemy['colIni']) + ', ' + str(enemy['life']) + ', ' + str(i + 1) + ', ' + verticalDirection + '}, _\n'
+                        arrayBuffer.append(int(enemy['tile']))
+                        arrayBuffer.append(int(enemy['linIni']))
+                        arrayBuffer.append(int(enemy['colIni']))
+                        arrayBuffer.append(int(enemy['linEnd']))
+                        arrayBuffer.append(int(enemy['colEnd']))
+                        arrayBuffer.append(int(horizontalDirection))
+                        arrayBuffer.append(int(enemy['linIni']))
+                        arrayBuffer.append(int(enemy['colIni']))
+                        arrayBuffer.append(int(enemy['life']))
+                        arrayBuffer.append(i + 1)
+                        arrayBuffer.append(int(verticalDirection))                  
                     else:
-                        enemStr += '\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, ' + str(i + 1) + ', 0}, _\n'
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(0)
+                        arrayBuffer.append(i + 1)
+                        arrayBuffer.append(0) 
             else:
                 for i in range(maxEnemiesPerScreen):
-                    enemStr += "\t\t{0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, _\n"
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(1)
+                    arrayBuffer.append(0) 
                 enemiesPerScreen.append(0)
-            enemStr = enemStr[:-4]
-            enemStr += " _\n\t}, _"
+            enemiesArray.append(array.array('b', arrayBuffer))
 
-enemStr = enemStr[:-3]
-enemStr += " _\n}\n\n"
+currentOffset = 0
+enemStr += "dim enemiesInScreenOffsets(" + str(screensCount) + ") as uinteger\n"
+enemStr += "enemiesInScreenOffsets(0) = " + str(currentOffset) + "\n"
+for idx, enemiesScreen in enumerate(enemiesArray):
+    label = 'enemiesInScreen' + str(idx).zfill(3)
+    with open(outputDir + label + '.bin', 'wb') as f:
+        enemiesScreen.tofile(f)
+    subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
+    currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
+    enemStr += "enemiesInScreenOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
 
 enemStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
 enemStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
@@ -362,6 +378,8 @@ for i in enemiesPerScreen:
     enemStr += str(i) + ', '
 enemStr = enemStr[:-2]
 enemStr += "}\n\n"
+
+enemStr += "dim decompressedEnemiesScreen(2, 10) as byte\n"
 
 with open(outputDir + "enemies.bas", "w") as text_file:
     print(enemStr, file=text_file)
