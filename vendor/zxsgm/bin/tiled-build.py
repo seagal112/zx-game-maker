@@ -376,7 +376,7 @@ for i in enemiesPerScreen:
 configStr = configStr[:-2]
 configStr += "}\n\n"
 
-configStr += "dim decompressedEnemiesScreen(2, 10) as byte\n"
+configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 10) as byte\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(configStr, file=text_file)
