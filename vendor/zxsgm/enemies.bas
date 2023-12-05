@@ -9,6 +9,7 @@ CONST ENEMY_CURRENT_COL as UBYTE = 7
 CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_SPRITE as UBYTE = 9
 CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
+CONST ENEMY_COLOR as UBYTE = 11
 
 sub setScreenElements()
     screenObjects = screenObjectsInitial
@@ -76,7 +77,7 @@ sub moveEnemies()
             elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
                 tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE)
             elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
-                tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE) + 2
+                tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE) + 16
             end if
 
             if decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION)

@@ -1,6 +1,6 @@
 const PROTA_SPRITE as ubyte = 6
-const BULLET_SPRITE_RIGHT_ID as ubyte = 32
-const BULLET_SPRITE_LEFT_ID as ubyte = 33
+const BULLET_SPRITE_RIGHT_ID as ubyte = 48
+const BULLET_SPRITE_LEFT_ID as ubyte = 49
 const LEFT as uByte = 0
 const RIGHT as uByte = 1
 const UP as uByte = 2

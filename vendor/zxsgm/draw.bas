@@ -165,10 +165,24 @@ end sub
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 	if enemiesPerScreen(currentScreen) > 0
+		dim xToPaint, yToPaint as float
 		for i = 0 to enemiesPerScreen(currentScreen) - 1
 			if getSpriteLin(i)
 				dim tile as ubyte = getSpriteTile(i)
 				Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
+				if tile < 16 then continue for
+				if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
+				paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 4, 2, 7)
+				if getSpriteDirection(i) then
+					xToPaint = getSpriteCol(i) / 2 - 1
+					yToPaint = getSpriteLin(i) / 2
+				else
+					xToPaint = getSpriteCol(i) / 2 + 1
+					yToPaint = getSpriteLin(i) / 2
+				end if
+				paint(xToPaint, yToPaint, 4, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
+				unpaintEnemiesArray(i, 0) = xToPaint
+				unpaintEnemiesArray(i, 1) = yToPaint
 			end if
 		next i
 	end if
@@ -176,7 +190,6 @@ sub drawSprites()
 	if bulletPositionX <> 0
 		Draw1x1Sprite(spritesSet(currentBulletSpriteId), bulletPositionX, bulletPositionY)
 	end if
-
 	RenderFrame()
 END SUB
 

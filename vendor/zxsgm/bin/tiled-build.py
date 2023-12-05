@@ -257,9 +257,16 @@ for layer in data['layers']:
                     'colIni': str(int((object['x'] % (tileWidth * screenWidth))) // 4),
                     'colEnd': str(int((object['x'] % (tileWidth * screenWidth))) // 4),
                     'tile': str(object['gid'] - spriteTileOffset),
-                    'life': str(object['properties'][0]['value']) if ('properties' in object and len(object['properties']) > 0 and object['properties'][0]['name'] == 'life') else '1',
+                    'life': '1',
+                    'color': '0',
                 }
 
+                if 'properties' in object and len(object['properties']) > 0:
+                    for property in object['properties']:
+                        if property['name'] == 'life':
+                            objects[str(object['id'])]['life'] = str(property['value'])
+                        elif property['name'] == 'color':
+                            objects[str(object['id'])]['color'] = str(property['value'])
 for layer in data['layers']:
     if layer['type'] == 'objectgroup':
         for object in layer['objects']:
@@ -329,6 +336,7 @@ for layer in data['layers']:
                         arrayBuffer.append(int(enemy['life']))
                         arrayBuffer.append(i + 1)
                         arrayBuffer.append(int(verticalDirection))                  
+                        arrayBuffer.append(int(enemy['color']))                  
                     else:
                         arrayBuffer.append(0)
                         arrayBuffer.append(0)
@@ -341,6 +349,7 @@ for layer in data['layers']:
                         arrayBuffer.append(0)
                         arrayBuffer.append(i + 1)
                         arrayBuffer.append(0) 
+                        arrayBuffer.append(0)
             else:
                 for i in range(maxEnemiesPerScreen):
                     arrayBuffer.append(0)
@@ -353,7 +362,8 @@ for layer in data['layers']:
                     arrayBuffer.append(0)
                     arrayBuffer.append(0)
                     arrayBuffer.append(1)
-                    arrayBuffer.append(0) 
+                    arrayBuffer.append(0)
+                    arrayBuffer.append(0)
                 enemiesPerScreen.append(0)
             enemiesArray.append(array.array('b', arrayBuffer))
 
@@ -376,7 +386,8 @@ for i in enemiesPerScreen:
 configStr = configStr[:-2]
 configStr += "}\n\n"
 
-configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 10) as byte\n"
+configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 11) as byte\n"
+configStr += "dim unpaintEnemiesArray(" + str(maxEnemiesPerScreen - 1) + ", 1) as byte\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(configStr, file=text_file)

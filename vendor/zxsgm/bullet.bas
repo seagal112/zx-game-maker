@@ -134,6 +134,12 @@ sub damageEnemy(enemyToKill as Ubyte)
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 0
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN))
+        if decompressedEnemiesScreen(enemyToKill, ENEMY_HORIZONTAL_DIRECTION)
+            paint(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL) / 2 - 1, decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN) / 2, 4, 2, 7)
+        else
+            paint(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL) / 2 + 1, decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN) / 2, 4, 2, 7)
+        end if
+        
         killEnemySound()
     else
         damageSound()
