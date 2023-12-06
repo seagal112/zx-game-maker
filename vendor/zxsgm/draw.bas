@@ -1,5 +1,4 @@
-dim cell as ubyte = 0
-dim drawing as ubyte = 0
+const UNPAINT_WIDTH = 1
 
 function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
@@ -166,32 +165,62 @@ sub drawSprites()
 	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 	if enemiesPerScreen(currentScreen) > 0
 		dim xToPaint, yToPaint as float
+		dim paintWidth as ubyte
+		dim tile as ubyte
 		for i = 0 to enemiesPerScreen(currentScreen) - 1
-			if getSpriteLin(i)
-				dim tile as ubyte = getSpriteTile(i)
-				Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
-				if tile < 16 then continue for
-				if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
-				paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 4, 2, 7)
-				if getSpriteDirection(i) then
-					xToPaint = getSpriteCol(i) / 2 - 1
-					yToPaint = getSpriteLin(i) / 2
-				else
-					xToPaint = getSpriteCol(i) / 2 + 1
-					yToPaint = getSpriteLin(i) / 2
-				end if
-				paint(xToPaint, yToPaint, 4, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
-				unpaintEnemiesArray(i, 0) = xToPaint
-				unpaintEnemiesArray(i, 1) = yToPaint
+			if not getSpriteLin(i) then continue for
+			
+			tile = getSpriteTile(i)
+			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
+			if tile < 16 then continue for
+			if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
+			if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
+
+			if getSpriteCol(i) mod 2 = 0
+				paintWidth = 2
+			else
+				paintWidth = 3
 			end if
+
+			if decompressedEnemiesScreen(i, ENEMY_HORIZONTAL_DIRECTION) = 1
+				xToPaint = getSpriteCol(i) / 2
+				unpaintEnemiesArray(i, 0) = xToPaint - UNPAINT_WIDTH
+			else
+				xToPaint = getSpriteCol(i) / 2
+				unpaintEnemiesArray(i, 0) = xToPaint + paintWidth
+			end if
+
+			yToPaint = getSpriteLin(i) / 2
+
+			unpaintEnemiesArray(i, 1) = yToPaint
+
+			paint(xToPaint, yToPaint, paintWidth, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
 		next i
 	end if
 
 	if bulletPositionX <> 0
 		Draw1x1Sprite(spritesSet(currentBulletSpriteId), bulletPositionX, bulletPositionY)
 	end if
+
 	RenderFrame()
+
+	unpaintEnemiesBack()
 END SUB
+
+sub unpaintEnemiesBack()
+	if enemiesPerScreen(currentScreen) <= 0 then return
+
+	for i = 0 to enemiesPerScreen(currentScreen) - 1
+		if not getSpriteLin(i) then continue for
+
+		tile = getSpriteTile(i)
+		if tile < 16 then continue for
+		if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
+		if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
+
+		paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), UNPAINT_WIDTH, 2, 7)				
+	next i
+end sub
 
 sub drawBurst(x as ubyte, y as ubyte)
 	Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)
