@@ -161,11 +161,15 @@ sub moveToScreen(direction as Ubyte)
 	redrawScreen()
 end sub
 
+dim unpaintWidth as byte
+dim unpaintHeight as byte
+
 sub drawSprites()
 	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 	if enemiesPerScreen(currentScreen) > 0
 		dim xToPaint, yToPaint as float
-		dim paintWidth as ubyte
+		dim paintWidth as byte
+		dim paintHeight as byte
 		dim tile as ubyte
 		for i = 0 to enemiesPerScreen(currentScreen) - 1
 			if not getSpriteLin(i) then continue for
@@ -182,19 +186,35 @@ sub drawSprites()
 				paintWidth = 3
 			end if
 
-			if decompressedEnemiesScreen(i, ENEMY_HORIZONTAL_DIRECTION) = 1
-				xToPaint = getSpriteCol(i) / 2
-				unpaintEnemiesArray(i, 0) = xToPaint - UNPAINT_WIDTH
+			if getSpriteLin(i) mod 2 = 0
+				paintHeight = 2
 			else
-				xToPaint = getSpriteCol(i) / 2
-				unpaintEnemiesArray(i, 0) = xToPaint + paintWidth
+				paintHeight = 3
 			end if
 
+			xToPaint = getSpriteCol(i) / 2
 			yToPaint = getSpriteLin(i) / 2
 
+			unpaintEnemiesArray(i, 0) = xToPaint
 			unpaintEnemiesArray(i, 1) = yToPaint
 
-			paint(xToPaint, yToPaint, paintWidth, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
+			if spriteHadHorizontalMovement(i)
+				if decompressedEnemiesScreen(i, ENEMY_HORIZONTAL_DIRECTION) = 1
+					unpaintEnemiesArray(i, 0) = xToPaint - 1
+				else
+					unpaintEnemiesArray(i, 0) = xToPaint + paintWidth
+				end if
+				paint(xToPaint, yToPaint, paintWidth, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
+			end if
+
+			if spriteHadVerticalMovement(i)
+				if decompressedEnemiesScreen(i, ENEMY_VERTICAL_DIRECTION) = 1
+					unpaintEnemiesArray(i, 1) = yToPaint - 1
+				else
+					unpaintEnemiesArray(i, 1) = yToPaint + paintHeight
+				end if
+				paint(xToPaint, yToPaint, 2, paintHeight, decompressedEnemiesScreen(i, ENEMY_COLOR))
+			end if
 		next i
 	end if
 
@@ -218,7 +238,14 @@ sub unpaintEnemiesBack()
 		if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
 		if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
 
-		paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), UNPAINT_WIDTH, 2, 7)				
+		if spriteHadHorizontalMovement(i)
+			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 1, 2, 7)	
+		end if
+
+		if spriteHadVerticalMovement(i) and not getSwitchVerticalMovement(i)
+			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 2, 1, 7)
+		end if
+					
 	next i
 end sub
 

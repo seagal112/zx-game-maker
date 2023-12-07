@@ -159,21 +159,10 @@
   <object id="26" name="mainCharacter" type="mainCharacter" x="304" y="320">
    <point/>
   </object>
-  <object id="30" gid="217" x="408" y="256" width="16" height="16">
-   <properties>
-    <property name="color" type="int" value="1"/>
-   </properties>
-  </object>
+  <object id="30" gid="217" x="408" y="256" width="16" height="16"/>
   <object id="31" x="376" y="256">
    <properties>
     <property name="enemy" type="object" value="30"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="32" name="platform_1" type="platform" gid="201" x="280" y="304" width="16" height="16"/>
-  <object id="33" name="platform_1_end" x="336" y="304">
-   <properties>
-    <property name="platform_1" type="object" value="32"/>
    </properties>
    <point/>
   </object>
@@ -184,23 +173,15 @@
    </properties>
    <point/>
   </object>
-  <object id="39" name="enemy_4" type="enemy" gid="219" x="336" y="240" width="16" height="16">
-   <properties>
-    <property name="color" type="int" value="6"/>
-   </properties>
-  </object>
+  <object id="39" name="enemy_4" type="enemy" gid="219" x="336" y="240" width="16" height="16"/>
   <object id="40" name="enemy_end_4" x="344" y="240">
    <properties>
     <property name="enemy" type="object" value="39"/>
    </properties>
    <point/>
   </object>
-  <object id="41" name="enemy_2" type="enemy" gid="221" x="360" y="320" width="16" height="16">
-   <properties>
-    <property name="color" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="42" name="enemy_end_2" x="416" y="320">
+  <object id="41" name="enemy_2" type="enemy" gid="221" x="272" y="320" width="16" height="16"/>
+  <object id="42" name="enemy_end_2" x="272" y="248">
    <properties>
     <property name="enemy" type="object" value="41"/>
    </properties>

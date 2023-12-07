@@ -50,12 +50,16 @@ sub moveEnemies()
 
             tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE)
 
+            unmarkSwitchHorizontalMovement(enemyId)
+            unmarkSwitchVerticalMovement(enemyId)
+
             if decompressedEnemiesScreen(enemyId, ENEMY_COL_INI) = decompressedEnemiesScreen(enemyId, ENEMY_COL_END) then decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 0
             if decompressedEnemiesScreen(enemyId, ENEMY_LIN_INI) = decompressedEnemiesScreen(enemyId, ENEMY_LIN_END) then decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION) = 0
 
             if decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
                 if decompressedEnemiesScreen(enemyId, ENEMY_COL_INI) = enemyCol or decompressedEnemiesScreen(enemyId, ENEMY_COL_END) = enemyCol
                     decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) * -1
+                    markSwitchHorizontalMovement(enemyId)
                 end if
             end if
             
@@ -83,6 +87,7 @@ sub moveEnemies()
             if decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION)
                 if decompressedEnemiesScreen(enemyId, ENEMY_LIN_INI) = enemyLin or decompressedEnemiesScreen(enemyId, ENEMY_LIN_END) = enemyLin
                     decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION) = decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION) * -1
+                    markSwitchVerticalMovement(enemyId)
                 end if
             end if
             
