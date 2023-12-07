@@ -49,7 +49,7 @@ build:
 	$(MAKE) tiled-build
 	$(MAKE) screens-build
 	$(MAKE) fx-to-bas
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 4096 -S 24576 -O 4 main.bas -o output/main.bin
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 2048 -S 24576 -O 4 main.bas -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
