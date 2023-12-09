@@ -188,12 +188,12 @@
    </properties>
    <point/>
   </object>
-  <object id="41" name="enemy_2" type="enemy" gid="221" x="272" y="320" width="16" height="16">
+  <object id="41" name="enemy_2" type="enemy" gid="221" x="304" y="320" width="16" height="16">
    <properties>
     <property name="color" type="int" value="2"/>
    </properties>
   </object>
-  <object id="42" name="enemy_end_2" x="272" y="248">
+  <object id="42" name="enemy_end_2" x="304" y="272">
    <properties>
     <property name="enemy" type="object" value="41"/>
    </properties>
