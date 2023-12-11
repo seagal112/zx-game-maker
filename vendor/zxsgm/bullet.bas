@@ -132,13 +132,27 @@ sub damageEnemy(enemyToKill as Ubyte)
     decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) - 1
 
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 0
+        dim attr, tile, x, y, col, lin, tmpX, tmpY as ubyte
+
+        x = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL)
+        y = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN)
         saveSprite(enemyToKill, 0, 0, 0, 0)
-        drawBurst(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN))
-        if decompressedEnemiesScreen(enemyToKill, ENEMY_HORIZONTAL_DIRECTION)
-            paint(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL) / 2 - 1, decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN) / 2, 5, 2, 7)
-        else
-            paint(decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL) / 2 + 1, decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN) / 2, 5, 2, 7)
-        end if
+        drawBurst(x, y)
+
+        col = x / 2
+        lin = y / 2
+    
+        for tmpX = col - 1 to col + 4 - 1
+            for tmpY = lin - 1 to lin + 4 - 1
+                tile = GetTile(tmpX, tmpY)
+                if tile = 0
+                    attr = 7
+                else
+                    attr = attrSet(tile)
+                end if
+                SetTileColor(tmpX, tmpY, attr)
+            next tmpY
+        next tmpX
         
         killEnemySound()
     else

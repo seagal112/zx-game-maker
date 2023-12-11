@@ -5,9 +5,6 @@ function removeScreenObject(type as ubyte) AS UBYTE
 end function
 
 sub mapDraw()
-	asm
-		di
-	end asm
 	dim tile, index, y, x as integer
 
 	x = 0
@@ -15,36 +12,37 @@ sub mapDraw()
 	
 	for index=0 to SCREEN_LENGTH
 		tile = decompressedMap(index) - 1
-		if tile <> 0
-			if tile = itemTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
-					SetTileChecked(tile, attrSet(tile), x, y)
-				end if
-			elseif tile = keyTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
-					SetTileChecked(tile, attrSet(tile), x, y)
-				end if
-			elseif tile = doorTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
-					SetTileChecked(tile, attrSet(tile), x, y)
-				end if
-			elseif tile = lifeTile
-				if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
-					SetTileChecked(tile, attrSet(tile), x, y)
-				end if
-			else
-				SetTileChecked(tile, attrSet(tile), x, y)
-			end if
-		end if
+		drawTile(tile, x, y)
 		x = x + 1
 		if x = screenWidth
 			x = 0
 			y = y + 1
 		end if
 	next index
-	asm
-		ei
-	end asm
+end sub
+
+sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
+	if tile <> 0
+		if tile = itemTile
+			if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
+				SetTileChecked(tile, attrSet(tile), x, y)
+			end if
+		elseif tile = keyTile
+			if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
+				SetTileChecked(tile, attrSet(tile), x, y)
+			end if
+		elseif tile = doorTile
+			if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
+				SetTileChecked(tile, attrSet(tile), x, y)
+			end if
+		elseif tile = lifeTile
+			if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
+				SetTileChecked(tile, attrSet(tile), x, y)
+			end if
+		else
+			SetTile(tile, attrSet(tile), x, y)
+		end if
+	end if
 end sub
 
 sub redrawScreen()
@@ -230,20 +228,26 @@ END SUB
 sub unpaintEnemiesBack()
 	if enemiesPerScreen(currentScreen) <= 0 then return
 
+	dim tile, attr as ubyte
 	for i = 0 to enemiesPerScreen(currentScreen) - 1
-		if not getSpriteLin(i) then continue for
-
-		tile = getSpriteTile(i)
-		if tile < 16 then continue for
+		if getSpriteLin(i) = 0 then continue for
+		if getSpriteTile(i) < 16 then continue for
 		if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
 		if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
 
+		tile = GetTile(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1))
+
+		if tile = 0
+			attr = 7
+		else
+			attr = attrSet(tile)
+		end if
 		if spriteHadHorizontalMovement(i)
-			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 1, 2, 7)	
+			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 1, 2, attr)	
 		end if
 
 		if spriteHadVerticalMovement(i) and not getSwitchVerticalMovement(i)
-			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 2, 1, 7)
+			paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 2, 1, attr)
 		end if
 					
 	next i
