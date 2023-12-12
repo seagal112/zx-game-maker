@@ -12,7 +12,7 @@
 '#define PRECOMPUTED_SPRITES
 
 'Enabling this define changes the merge of the sprites and tiles to be a XOR instead of an OR
-#define MERGE_WITH_XOR
+'#define MERGE_WITH_XOR
 
 'Enabling this define activates the fast print routines
 #define ENABLE_PRINT
