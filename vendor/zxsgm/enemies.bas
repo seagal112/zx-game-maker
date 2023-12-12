@@ -111,6 +111,8 @@ sub moveEnemies()
 end sub
 
 sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
+    if invincible = 1 then return
+
     dim protaX0 as ubyte = getSpriteLin(PROTA_SPRITE)
     dim protaY0 as ubyte = getSpriteCol(PROTA_SPRITE)
     dim protaX1 as ubyte = protaX0 + 2
@@ -131,7 +133,8 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
 end sub
 
 sub protaTouch()
-    startJumping()
+    invincible = 1
+    invincibleFrame = framec
     decrementLife()
     damageSound()
 end sub

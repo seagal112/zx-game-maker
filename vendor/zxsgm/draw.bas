@@ -163,7 +163,13 @@ dim unpaintWidth as byte
 dim unpaintHeight as byte
 
 sub drawSprites()
-	Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+	if not invincible
+		Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+	else
+		if isEven(framec)
+			Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+		end if
+	end if
 	if enemiesPerScreen(currentScreen) > 0
 		dim xToPaint, yToPaint as float
 		dim paintWidth as byte

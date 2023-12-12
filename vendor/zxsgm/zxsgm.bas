@@ -28,6 +28,10 @@ dim framec AS ubyte AT 23672
 dim lastFrameProta as ubyte = 0
 dim lastFrameOthers as ubyte = 0
 
+const INVINCIBLE_FRAMES as ubyte = 100
+dim invincible as ubyte = 0
+dim invincibleFrame as ubyte = 0
+
 #include "../../output/config.bas"
 
 #include "GuSprites.zxbas"
@@ -128,6 +132,7 @@ playGame:
         drawSprites()
         checkMoveScreen()
         checkRemainLife()
+        checkInvincible()
     loop
 
 ending:
@@ -143,6 +148,15 @@ gameOver:
     pause 300
     pauseUntilPressKey()
     go to menu
+
+sub checkInvincible()
+    if invincible = 1
+        if framec - invincibleFrame >= INVINCIBLE_FRAMES
+            invincible = 0
+            invincibleFrame = 0
+        end if
+    end if
+end sub
 
 sub animateProta()
     protaFrame = getNextFrameRunning()
