@@ -28,6 +28,8 @@ dim framec AS ubyte AT 23672
 dim lastFrameProta as ubyte = 0
 dim lastFrameOthers as ubyte = 0
 
+#include "../../output/config.bas"
+
 #include "GuSprites.zxbas"
 #include "../../output/tiles.bas"
 
@@ -36,7 +38,6 @@ InitGFXLib()
 SetTileset(@tileSet)
 
 #include "../../output/sprites.bas"
-#include "../../output/config.bas"
 #include "../../output/soundEffects.bas"
 
 if MUSIC_ENABLED

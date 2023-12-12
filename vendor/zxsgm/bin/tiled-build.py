@@ -90,6 +90,8 @@ initialScreen = 2
 initialMainCharacterX = 8
 initialMainCharacterY = 8
 
+spritesMergeModeXor = 0
+
 for property in data['properties']:
     if property['name'] == 'goalItems':
         goalItems = property['value']
@@ -117,6 +119,8 @@ for property in data['properties']:
         vtplayerNextNote = property['value']
     elif property['name'] == 'maxEnemiesPerScreen' and property['value'] < 6:
         maxEnemiesPerScreen = property['value']
+    elif property['name'] == 'spritesMergeModeXor':
+        spritesMergeModeXor = 1 if property['value'] else 0
 
 if len(solidTiles) == 0:
     solidTiles.append('0')
@@ -152,6 +156,9 @@ configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) 
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
+
+if spritesMergeModeXor == 1:
+    configStr += "#DEFINE MERGE_WITH_XOR\n\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
