@@ -243,13 +243,21 @@ sub checkObjectContact()
 	Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
     Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
 
-	dim tile as UBYTE = GetTile(col, lin + 1)
-	dim tileRight as UBYTE = GetTile(col + 1, lin + 1)
+	dim tile00 as UBYTE = GetTile(col, lin)
+	dim tile01 as UBYTE = GetTile(col + 1, lin)
+	dim tile10 as UBYTE = GetTile(col, lin + 1)
+	dim tile11 as UBYTE = GetTile(col + 1, lin + 1)
 
-	if checkTileObject(tile)
+	if checkTileObject(tile00)
+		FillWithTileChecked(0, 1, 1, 7, col, lin)
+		return
+	elseif checkTileObject(tile01)
+		FillWithTileChecked(0, 1, 1, 7, col + 1, lin)
+		return
+	elseif checkTileObject(tile10)
 		FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		return
-	elseif checkTileObject(tileRight)
+	elseif checkTileObject(tile11)
 		FillWithTileChecked(0, 1, 1, 7, col + 1, lin + 1)
 		return
 	end if
