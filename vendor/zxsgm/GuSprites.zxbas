@@ -39,7 +39,7 @@
 #define ENABLE_TILES
 'If defined tiles are merged with OR instead of erased
 'Requires ENABLE_TILES
-'#define MERGE_TILES
+#define MERGE_TILES
 
 'The lib by default disables interrupts, enabling this option
 'will reactivate them after each call to the lib
