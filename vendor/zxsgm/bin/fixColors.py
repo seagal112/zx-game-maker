@@ -18,6 +18,14 @@ def adjust_colors(img):
         (0, 255, 255),   # Cian
         (255, 255, 0),   # Amarillo
         (255, 255, 255), # Blanco
+        (0, 0, 205),     # Negro mate
+        (0, 0, 205),     # Azul mate
+        (205, 0, 0),     # Rojo mate
+        (205, 0, 205),   # Magenta mate
+        (0, 205, 0),     # Verde mate
+        (0, 205, 205),   # Cian mate
+        (205, 205, 0),   # Amarillo mate
+        (205, 205, 205), # Blanco mate
     ]
 
     # Convierte la imagen a RGB si no lo es ya
