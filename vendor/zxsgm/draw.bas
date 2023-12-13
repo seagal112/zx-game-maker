@@ -1,4 +1,4 @@
-const UNPAINT_WIDTH = 1
+const UNPAINT_WIDTH as ubyte = 1
 
 function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
