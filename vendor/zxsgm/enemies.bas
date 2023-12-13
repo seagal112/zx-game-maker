@@ -16,7 +16,6 @@ sub setScreenElements()
 end sub
 
 sub setEnemies()
-    enemies = enemiesInitial
     enemiesPerScreen = enemiesPerScreenInitial
 end sub
 
