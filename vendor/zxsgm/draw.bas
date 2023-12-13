@@ -18,6 +18,13 @@ sub mapDraw()
 	x = 0
 	y = 0
 	animatedTilesCount = 0
+
+	for index = 0 to MAX_ANIMATED_TILES - 1
+		animatedTilesInScreen(index, 0) = 0
+		animatedTilesInScreen(index, 1) = 0
+		animatedTilesInScreen(index, 2) = 0
+		animatedTilesInScreen(index, 3) = 0
+	next index
 	
 	for index=0 to SCREEN_LENGTH
 		tile = decompressedMap(index) - 1
