@@ -34,10 +34,8 @@ spriteTileOffset = 0
 maxEnemiesPerScreen = 3
 maxAnimatedTilesPerScreen = 3
 
-solidTiles = []
 damageTiles = []
 animatedTilesIds = []
-screenAnimatedTiles = defaultdict(dict)
 keyTile = 0
 itemTile = 0
 doorTile = 0
@@ -46,8 +44,6 @@ lifeTile = 0
 for tileset in data['tilesets']:
     if tileset['name'] == 'tiles':
         for tile in tileset['tiles']:
-            if tile['type'] == 'solid':
-                solidTiles.append(str(tile['id']))
             if tile['type'] == 'key':
                 keyTile = str(tile['id'])
             if tile['type'] == 'item':
@@ -122,14 +118,11 @@ for property in data['properties']:
     elif property['name'] == 'spritesMergeModeXor':
         spritesMergeModeXor = 1 if property['value'] else 0
 
-if len(solidTiles) == 0:
-    solidTiles.append('0')
-
 if len(damageTiles) == 0:
     damageTiles.append('0')
-
-solidTilesCount = len(solidTiles) - 1 if len(solidTiles) > 0 else 0 
+ 
 damageTilesCount = len(damageTiles) - 1 if len(damageTiles) > 0 else 0
+animatedTilesIdsCount = len(animatedTilesIds) - 1 if len(animatedTilesIds) > 0 else 0
 
 configStr = "const MAX_ENEMIES_PER_SCREEN as ubyte = " + str(maxEnemiesPerScreen) + "\n"
 configStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
@@ -144,14 +137,14 @@ configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
-configStr += "dim solidTiles(" + str(solidTilesCount) + ") as ubyte = {" + ",".join(solidTiles) + "}\n"
 configStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
+configStr += "dim animatedTiles(" + str(animatedTilesIdsCount) + ") as ubyte = {" + ",".join(animatedTilesIds) + "}\n"
 configStr += "dim keyTile as ubyte = " + keyTile + "\n"
 configStr += "dim itemTile as ubyte = " + itemTile + "\n"
 configStr += "dim doorTile as ubyte = " + doorTile + "\n"
 configStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
-configStr += "const SOLID_TILES_ARRAY_SIZE as ubyte = " + str(len(solidTiles) - 1) + "\n\n"
-configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n\n"
+configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n"
+configStr += "const ANIMATED_TILES_ARRAY_SIZE as ubyte = " + str(len(animatedTilesIds) - 1) + "\n\n"
 
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
@@ -171,7 +164,6 @@ for layer in data['layers']:
 
         for idx, screen in enumerate(layer['chunks']):
             screens.append(array.array('B', screen['data']))
-            screenAnimatedTiles[idx] = []
 
             screenObjects[idx]['key'] = 0
             screenObjects[idx]['item'] = 0
@@ -195,12 +187,6 @@ for layer in data['layers']:
                 elif tile == lifeTile:
                     screenObjects[idx]['life'] = 1
                 
-                if tile in animatedTilesIds:
-                    screenAnimatedTiles[idx].append([str(tile), str(mapX), str(mapY)])
-
-                if len(screenAnimatedTiles[idx]) > maxAnimatedTilesPerScreen:
-                    exitWithErrorMessage('Max animated tiles per screen is ' + str(maxAnimatedTilesPerScreen))
-
 configStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 configStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 configStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
@@ -211,21 +197,6 @@ configStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
 configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
 for screen in screenObjects:
     configStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
-configStr = configStr[:-4]
-configStr += " _\n}\n\n"
-
-configStr += "dim screenAnimatedTiles(" + str(screensCount - 1) + ", 2, 3) as ubyte = { _\n"
-for screen in screenAnimatedTiles:
-    configStr += "\t{ _\n"
-    for i in range(len(screenAnimatedTiles[screen])):
-        configStr += '\t\t{' + screenAnimatedTiles[screen][i][0] + ', ' + screenAnimatedTiles[screen][i][1] + ', ' + screenAnimatedTiles[screen][i][2] + ', 0}, _\n'
-    for i in range(3 - len(screenAnimatedTiles[screen])):
-        configStr += '\t\t{0, 0, 0, 0}, _\n'
-    configStr = configStr[:-4]
-    configStr += " _\n"
-    configStr += '\t}, _\n'
-configStr = configStr[:-4]
-configStr += "\t} _\n"
 configStr = configStr[:-4]
 configStr += " _\n}\n\n"
 

@@ -1,18 +1,38 @@
 const UNPAINT_WIDTH as ubyte = 1
+const MAX_ANIMATED_TILES as ubyte = 3
 
 function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
 end function
 
+dim animatedTilesInScreen(2, 3) as ubyte = { _
+	{0, 0, 0, 0}, _
+	{0, 0, 0, 0}, _
+	{0, 0, 0, 0} _
+}
+
 sub mapDraw()
 	dim tile, index, y, x as integer
+	dim animatedTilesCount as ubyte
 
 	x = 0
 	y = 0
+	animatedTilesCount = 0
 	
 	for index=0 to SCREEN_LENGTH
 		tile = decompressedMap(index) - 1
 		drawTile(tile, x, y)
+
+		if animatedTilesCount < MAX_ANIMATED_TILES
+			if InArray(tile, @animatedTiles, ANIMATED_TILES_ARRAY_SIZE)
+				animatedTilesInScreen(animatedTilesCount, 0) = tile
+				animatedTilesInScreen(animatedTilesCount, 1) = x
+				animatedTilesInScreen(animatedTilesCount, 2) = y
+				animatedTilesInScreen(animatedTilesCount, 3) = 0
+				animatedTilesCount = animatedTilesCount + 1
+			end if
+		end if
+
 		x = x + 1
 		if x = screenWidth
 			x = 0

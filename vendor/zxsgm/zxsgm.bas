@@ -174,10 +174,10 @@ end sub
 
 sub animateAnimatedTiles()
     for i=0 to 2:
-        if screenAnimatedTiles(currentScreen, i, 0) <> 0
-            dim tile as ubyte = screenAnimatedTiles(currentScreen, i, 0) + screenAnimatedTiles(currentScreen, i, 3) + 1
-            SetTileChecked(tile, attrSet(tile), screenAnimatedTiles(currentScreen, i, 1), screenAnimatedTiles(currentScreen, i, 2))
-            let screenAnimatedTiles(currentScreen, i, 3) = not screenAnimatedTiles(currentScreen, i, 3)
+        if animatedTilesInScreen(i, 0) <> 0
+            dim tile as ubyte = animatedTilesInScreen(i, 0) + animatedTilesInScreen(i, 3) + 1
+            SetTileChecked(tile, attrSet(tile), animatedTilesInScreen(i, 1), animatedTilesInScreen(i, 2))
+            let animatedTilesInScreen(i, 3) = not animatedTilesInScreen(i, 3)
         end if
     next i
 end sub
