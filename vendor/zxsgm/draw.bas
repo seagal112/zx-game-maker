@@ -30,13 +30,15 @@ sub mapDraw()
 		tile = decompressedMap(index) - 1
 		drawTile(tile, x, y)
 
-		if animatedTilesCount < MAX_ANIMATED_TILES
-			if InArray(tile, @animatedTiles, ANIMATED_TILES_ARRAY_SIZE)
-				animatedTilesInScreen(animatedTilesCount, 0) = tile
-				animatedTilesInScreen(animatedTilesCount, 1) = x
-				animatedTilesInScreen(animatedTilesCount, 2) = y
-				animatedTilesInScreen(animatedTilesCount, 3) = 0
-				animatedTilesCount = animatedTilesCount + 1
+		if tile > 1
+			if animatedTilesCount < MAX_ANIMATED_TILES
+				if InArray(tile, @animatedTiles, ANIMATED_TILES_ARRAY_SIZE)
+					animatedTilesInScreen(animatedTilesCount, 0) = tile
+					animatedTilesInScreen(animatedTilesCount, 1) = x
+					animatedTilesInScreen(animatedTilesCount, 2) = y
+					animatedTilesInScreen(animatedTilesCount, 3) = 0
+					animatedTilesCount = animatedTilesCount + 1
+				end if
 			end if
 		end if
 
