@@ -147,6 +147,7 @@ end sub
 
 sub leftKey()
 	saveSpriteDirection(PROTA_SPRITE, 0)
+	animateProta()
 	if onFirstColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
 			if allEnemiesKilled()
@@ -164,6 +165,7 @@ end sub
 
 sub rightKey()
 	saveSpriteDirection(PROTA_SPRITE, 1)
+	animateProta()
 	if onLastColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
 			if allEnemiesKilled()
