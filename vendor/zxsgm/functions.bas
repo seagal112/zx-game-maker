@@ -63,9 +63,8 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
         if not damagedByCollision
             if isADamageTile(tile)
                 damagedByCollision = 1
-                decrementLife()
-                damageSound()
                 startJumping()
+                protaTouch()
             end if
         end if
         return 1
@@ -73,6 +72,13 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	return 0
     ' return isSolidTile(tile)
 end function
+
+sub protaTouch()
+    invincible = 1
+    invincibleFrame = framec
+    decrementLife()
+    damageSound()
+end sub
 
 function CheckCollision(x as uByte, y as uByte) as uByte
     Dim xIsEven as uByte = (x bAnd 1) = 0

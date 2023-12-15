@@ -131,13 +131,6 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
 
 end sub
 
-sub protaTouch()
-    invincible = 1
-    invincibleFrame = framec
-    decrementLife()
-    damageSound()
-end sub
-
 function allEnemiesKilled() as ubyte
     dim maxEnemiesCount as ubyte = 0
     dim enemiesKilled as ubyte = 1
