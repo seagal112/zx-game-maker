@@ -44,13 +44,13 @@ SetTileset(@tileSet)
 #include "../../output/sprites.bas"
 #include "../../output/soundEffects.bas"
 
-if MUSIC_ENABLED
+#ifdef MUSIC_ENABLED
     #include "im2.bas"
     #include "vortexTracker.bas"
 
     load "" CODE ' Load vtplayer
     load "" CODE ' Load music
-end if
+#endif
 
 #include <zx0.bas>
 #include <retrace.bas>
@@ -66,7 +66,10 @@ end if
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    if MUSIC_ENABLED then VortexTracker_Stop()
+    #ifdef MUSIC_ENABLED
+        VortexTracker_Stop()
+    #endif
+
     dzx0Standard(@titleScreen, $4000)
 
     do
@@ -93,7 +96,9 @@ playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN
 
-    if MUSIC_ENABLED then VortexTracker_Inicializar(1)
+    #ifdef MUSIC_ENABLED
+        VortexTracker_Inicializar(1)
+    #endif
 
     swapScreen()
 
@@ -136,14 +141,20 @@ playGame:
     loop
 
 ending:
-    if MUSIC_ENABLED then VortexTracker_Stop()
+    #ifdef MUSIC_ENABLED
+        VortexTracker_Stop()
+    #endif
+
     dzx0Standard(@endingScreen, $4000)
     pause 300
     pauseUntilPressKey()
     go to menu
 
 gameOver:
-    if MUSIC_ENABLED then VortexTracker_Stop()
+    #ifdef MUSIC_ENABLED
+        VortexTracker_Stop()
+    #endif
+
     PrintString("GAME OVER", 7, 12, 10)
     pause 300
     pauseUntilPressKey()

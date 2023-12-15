@@ -153,6 +153,9 @@ configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
 
+if musicEnabled == 1:
+    configStr += "#DEFINE MUSIC_ENABLED\n"
+
 if spritesMergeModeXor == 1:
     configStr += "#DEFINE MERGE_WITH_XOR\n"
 
