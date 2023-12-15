@@ -5,11 +5,7 @@ function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
 end function
 
-dim animatedTilesInScreen(2, 3) as ubyte = { _
-	{0, 0, 0, 0}, _
-	{0, 0, 0, 0}, _
-	{0, 0, 0, 0} _
-}
+dim animatedTilesInScreen(2, 3) as ubyte
 
 sub mapDraw()
 	dim tile, index, y, x as integer
