@@ -139,23 +139,30 @@ sub damageEnemy(enemyToKill as Ubyte)
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(x, y)
 
-        col = x / 2
-        lin = y / 2
-    
-        for tmpX = col - 1 to col + 4 - 1
-            for tmpY = lin - 1 to lin + 4 - 1
-                tile = GetTile(tmpX, tmpY)
-                if tile = 0
-                    attr = 7
-                else
-                    attr = attrSet(tile)
-                end if
-                SetTileColor(tmpX, tmpY, attr)
-            next tmpY
-        next tmpX
+        if not decompressedEnemiesScreen(i, ENEMY_COLOR) then return
+        if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then return
+
+        unpaintEnemy(tile, x, y)
         
         killEnemySound()
     else
         damageSound()
     end if
+end sub
+
+sub unpaintEnemy(tile as ubyte, x as ubyte, y as ubyte)
+    col = x / 2
+    lin = y / 2
+
+    for tmpX = col - 1 to col + 2 - 1
+        for tmpY = lin - 1 to lin + 2 - 1
+            tile = GetTile(tmpX, tmpY)
+            if tile = 0
+                attr = 7
+            else
+                attr = attrSet(tile)
+            end if
+            SetTileColor(tmpX, tmpY, attr)
+        next tmpY
+    next tmpX
 end sub
