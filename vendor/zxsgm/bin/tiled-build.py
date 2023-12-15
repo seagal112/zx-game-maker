@@ -87,6 +87,7 @@ initialMainCharacterX = 8
 initialMainCharacterY = 8
 
 spritesMergeModeXor = 0
+spritesWithColors = 0
 
 for property in data['properties']:
     if property['name'] == 'goalItems':
@@ -117,6 +118,8 @@ for property in data['properties']:
         maxEnemiesPerScreen = property['value']
     elif property['name'] == 'spritesMergeModeXor':
         spritesMergeModeXor = 1 if property['value'] else 0
+    elif property['name'] == 'spritesWithColors':
+        spritesWithColors = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -151,7 +154,10 @@ configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
 
 if spritesMergeModeXor == 1:
-    configStr += "#DEFINE MERGE_WITH_XOR\n\n"
+    configStr += "#DEFINE MERGE_WITH_XOR\n"
+
+if spritesWithColors == 1:
+    configStr += "#DEFINE SPRITES_WITH_COLORS\n\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
