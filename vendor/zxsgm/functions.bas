@@ -60,11 +60,12 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile as ubyte = GetTile(col, lin)
 
     if isSolidTile(tile)
-        if not damagedByCollision
-            if isADamageTile(tile)
-                damagedByCollision = 1
-                startJumping()
-                protaTouch()
+        if not invincible then
+            if not damagedByCollision
+                if isADamageTile(tile)
+                    damagedByCollision = 1
+                    protaTouch()
+                end if
             end if
         end if
         return 1
