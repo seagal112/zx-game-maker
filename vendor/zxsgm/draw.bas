@@ -191,7 +191,7 @@ sub drawSprites()
 	if not invincible
 		Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 	else
-		if isEven(framec)
+		if framec bAND 1 = 0
 			Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 		end if
 	end if
