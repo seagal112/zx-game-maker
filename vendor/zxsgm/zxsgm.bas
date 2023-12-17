@@ -101,18 +101,7 @@ playGame:
         VortexTracker_Inicializar(1)
     #endif
 
-    swapScreen()
-
-    currentLife = INITIAL_LIFE
-    currentKeys = 0
-    currentItems = 0
-    removeScreenObjectFromBuffer()
-    initProta()
-    setScreenElements()
-    setEnemies()
-    dzx0Standard(@hudScreen, $4000)
-    redrawScreen()
-    drawSprites()
+    resetValues()
 
     let lastFrameProta = framec
     let lastFrameOthers = framec
@@ -160,6 +149,24 @@ gameOver:
     pause 300
     pauseUntilPressKey()
     go to menu
+
+sub resetValues()
+    swapScreen()
+
+    bulletPositionX = 0
+    jumpCurrentKey = jumpStopValue
+
+    currentLife = INITIAL_LIFE
+    currentKeys = 0
+    currentItems = 0
+    removeScreenObjectFromBuffer()
+    initProta()
+    setScreenElements()
+    setEnemies()
+    dzx0Standard(@hudScreen, $4000)
+    redrawScreen()
+    drawSprites()
+end sub
 
 sub checkInvincible()
     if invincible = 1
