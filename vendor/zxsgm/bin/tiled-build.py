@@ -89,6 +89,8 @@ initialMainCharacterY = 8
 spritesMergeModeXor = 0
 spritesWithColors = 0
 
+initTexts = ""
+
 for property in data['properties']:
     if property['name'] == 'goalItems':
         goalItems = property['value']
@@ -120,6 +122,8 @@ for property in data['properties']:
         spritesMergeModeXor = 1 if property['value'] else 0
     elif property['name'] == 'spritesWithColors':
         spritesWithColors = 1 if property['value'] else 0
+    elif property['name'] == 'initTexts':
+        initTexts = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -152,6 +156,15 @@ configStr += "const ANIMATED_TILES_ARRAY_SIZE as ubyte = " + str(len(animatedTil
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
+
+if len(initTexts) > 0:
+    configStr += "#DEFINE INIT_TEXTS\n"
+    initTexts = initTexts.split("\n")
+    configStr += "dim initTexts(" + str(len(initTexts) - 1) + ") as string\n"
+    for idx, text in enumerate(initTexts):
+        configStr += "initTexts(" + str(idx) + ") = \"" + text + "\"\n"
+
+configStr += "\n"
 
 if musicEnabled == 1:
     configStr += "#DEFINE MUSIC_ENABLED\n"

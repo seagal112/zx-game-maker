@@ -97,6 +97,12 @@ playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN
 
+    #ifdef INIT_TEXTS
+        for i=0 to 2
+            showInitTexts(initTexts(i))
+        next i
+    #endif
+
     #ifdef MUSIC_ENABLED
         VortexTracker_Inicializar(1)
     #endif
@@ -150,11 +156,28 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
+#ifdef INIT_TEXTS
+    sub showInitTexts(Text as String)
+        dim n as uByte
+        cls
+        for n=0 to len(Text)-1
+            print at int(n/32)+1,n mod 32;Text(n to n);
+            beep .01,0
+        next n
+        while INKEY$<>"":wend
+        while INKEY$="":wend
+    end sub
+#endif
+
 sub resetValues()
     swapScreen()
 
     bulletPositionX = 0
     jumpCurrentKey = jumpStopValue
+
+    invincible = 0
+    invincibleFrame = 0
+    invincibleBlink = 0
 
     currentLife = INITIAL_LIFE
     currentKeys = 0
