@@ -156,19 +156,6 @@ gameOver:
     pauseUntilPressKey()
     go to menu
 
-#ifdef INIT_TEXTS
-    sub showInitTexts(Text as String)
-        dim n as uByte
-        cls
-        for n=0 to len(Text)-1
-            print at int(n/32)+1,n mod 32;Text(n to n);
-            beep .01,0
-        next n
-        while INKEY$<>"":wend
-        while INKEY$="":wend
-    end sub
-#endif
-
 sub resetValues()
     swapScreen()
 
