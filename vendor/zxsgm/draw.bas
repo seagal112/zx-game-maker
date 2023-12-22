@@ -1,4 +1,3 @@
-const UNPAINT_WIDTH as ubyte = 1
 const MAX_ANIMATED_TILES as ubyte = 3
 
 function removeScreenObject(type as ubyte) AS UBYTE

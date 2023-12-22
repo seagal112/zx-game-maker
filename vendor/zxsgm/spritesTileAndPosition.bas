@@ -14,16 +14,18 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
     {0, 0, 0, 0, 0} _
 }
 
-dim spritesPreviousLinCol(screenSpritesCount - 1, 3) as ubyte => { _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0}, _
-    {0, 0, 0, 0} _
-}
+#ifdef SPRITES_WITH_COLORS
+    dim spritesPreviousLinCol(screenSpritesCount - 1, 3) as ubyte => { _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0}, _
+        {0, 0, 0, 0} _
+    }
+#endif
 
 const jumpStopValue as ubyte = 255
 const jumpStepsCount as ubyte = 5
@@ -31,11 +33,7 @@ dim jumpCurrentKey as ubyte = jumpStopValue
 dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
 
 function isJumping() as ubyte
-    if jumpCurrentKey <> jumpStopValue
-        return 1
-    else
-        return 0
-    end if
+    return jumpCurrentKey <> jumpStopValue
 end function
 
 sub stopJumping()
@@ -83,12 +81,16 @@ function getSpriteFrame(sprite as ubyte) as ubyte
 end function
 
 sub saveSpriteLin(sprite as ubyte, lin as ubyte)
-    spritesPreviousLinCol(sprite, 0) = getSpriteLin(sprite)
+    #ifdef SPRITES_WITH_COLORS
+        spritesPreviousLinCol(sprite, 0) = getSpriteLin(sprite)
+    #endif
     spritesLinColTileAndFrame(sprite, 0) = lin
 end sub
 
 sub saveSpriteCol(sprite as ubyte, col as ubyte)
-    spritesPreviousLinCol(sprite, 1) = getSpriteCol(sprite)
+    #ifdef SPRITES_WITH_COLORS
+        spritesPreviousLinCol(sprite, 1) = getSpriteCol(sprite)
+    #endif
     spritesLinColTileAndFrame(sprite, 1) = col
 end sub
 
@@ -96,37 +98,39 @@ sub saveSpriteDirection(sprite as ubyte, directionIsRight as ubyte)
     spritesLinColTileAndFrame(sprite, 3) = directionIsRight
 end sub
 
-function spriteHadHorizontalMovement(sprite as ubyte) as ubyte
-    return spritesPreviousLinCol(sprite, 1) and spritesPreviousLinCol(sprite, 1) <> getSpriteCol(sprite)
-end function
+#ifdef SPRITES_WITH_COLORS
+    function spriteHadHorizontalMovement(sprite as ubyte) as ubyte
+        return spritesPreviousLinCol(sprite, 1) and spritesPreviousLinCol(sprite, 1) <> getSpriteCol(sprite)
+    end function
 
-function spriteHadVerticalMovement(sprite as ubyte) as ubyte
-    return spritesPreviousLinCol(sprite, 0) and spritesPreviousLinCol(sprite, 0) <> getSpriteLin(sprite)
-end function
+    function spriteHadVerticalMovement(sprite as ubyte) as ubyte
+        return spritesPreviousLinCol(sprite, 0) and spritesPreviousLinCol(sprite, 0) <> getSpriteLin(sprite)
+    end function
 
-sub markSwitchHorizontalMovement(sprite as ubyte)
-    spritesPreviousLinCol(sprite, 2) = 1
-end sub
+    sub markSwitchHorizontalMovement(sprite as ubyte)
+        spritesPreviousLinCol(sprite, 2) = 1
+    end sub
 
-sub unmarkSwitchHorizontalMovement(sprite as ubyte)
-    spritesPreviousLinCol(sprite, 2) = 0
-end sub
+    sub unmarkSwitchHorizontalMovement(sprite as ubyte)
+        spritesPreviousLinCol(sprite, 2) = 0
+    end sub
 
-sub markSwitchVerticalMovement(sprite as ubyte)
-    spritesPreviousLinCol(sprite, 3) = 1
-end sub
+    sub markSwitchVerticalMovement(sprite as ubyte)
+        spritesPreviousLinCol(sprite, 3) = 1
+    end sub
 
-sub unmarkSwitchVerticalMovement(sprite as ubyte)
-    spritesPreviousLinCol(sprite, 3) = 0
-end sub
+    sub unmarkSwitchVerticalMovement(sprite as ubyte)
+        spritesPreviousLinCol(sprite, 3) = 0
+    end sub
 
-function getSwitchHorizontalMovement(sprite as ubyte) as ubyte
-    return spritesPreviousLinCol(sprite, 2)
-end function
+    function getSwitchHorizontalMovement(sprite as ubyte) as ubyte
+        return spritesPreviousLinCol(sprite, 2)
+    end function
 
-function getSwitchVerticalMovement(sprite as ubyte) as ubyte
-    return spritesPreviousLinCol(sprite, 3)
-end function
+    function getSwitchVerticalMovement(sprite as ubyte) as ubyte
+        return spritesPreviousLinCol(sprite, 3)
+    end function
+#endif
 
 sub resetProtaSpriteToRunning()
     if getSpriteDirection(PROTA_SPRITE)

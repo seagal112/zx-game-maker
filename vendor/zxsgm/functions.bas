@@ -71,7 +71,6 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
         return 1
     end if
 	return 0
-    ' return isSolidTile(tile)
 end function
 
 sub protaTouch()
@@ -151,50 +150,52 @@ Reverse:
 end asm
 end function
 
-SUB paint (x as uByte,y as uByte, width as uByte, height as uByte, attribute as ubyte)
-REM Copyleft Britlion. Feel free to use as you will. Please attribute me if you use this, however!
+#ifdef SPRITES_WITH_COLORS
+    SUB paint (x as uByte,y as uByte, width as uByte, height as uByte, attribute as ubyte)
+    REM Copyleft Britlion. Feel free to use as you will. Please attribute me if you use this, however!
 
-Asm
-    ld      a,(IX+7)   ;ypos
-    rrca
-    rrca
-    rrca               ; Multiply by 32
-    ld      l,a        ; Pass to L
-    and     3          ; Mask with 00000011
-    add     a,88       ; 88 * 256 = 22528 - start of attributes. Change this if you are working with a buffer or somesuch.
-    ld      h,a        ; Put it in the High Byte
-    ld      a,l        ; We get y value *32
-    and     224        ; Mask with 11100000
-    ld      l,a        ; Put it in L
-    ld      a,(IX+5)   ; xpos
-    add     a,l        ; Add it to the Low byte
-    ld      l,a        ; Put it back in L, and we're done. HL=Address.
+    Asm
+        ld      a,(IX+7)   ;ypos
+        rrca
+        rrca
+        rrca               ; Multiply by 32
+        ld      l,a        ; Pass to L
+        and     3          ; Mask with 00000011
+        add     a,88       ; 88 * 256 = 22528 - start of attributes. Change this if you are working with a buffer or somesuch.
+        ld      h,a        ; Put it in the High Byte
+        ld      a,l        ; We get y value *32
+        and     224        ; Mask with 11100000
+        ld      l,a        ; Put it in L
+        ld      a,(IX+5)   ; xpos
+        add     a,l        ; Add it to the Low byte
+        ld      l,a        ; Put it back in L, and we're done. HL=Address.
 
-    push HL            ; save address
-    LD A, (IX+13)      ; attribute
-    LD DE,32
-    LD c,(IX+11)       ; height
+        push HL            ; save address
+        LD A, (IX+13)      ; attribute
+        LD DE,32
+        LD c,(IX+11)       ; height
 
-    BLPaintHeightLoop:
-    LD b,(IX+9)        ; width
+        BLPaintHeightLoop:
+        LD b,(IX+9)        ; width
 
-    BLPaintWidthLoop:
-    LD (HL),a          ; paint a character
-    INC L              ; Move to the right (Note that we only would have to inc H if we are crossing from the right edge to the left, and we shouldn't be needing to do that)
-    DJNZ BLPaintWidthLoop
+        BLPaintWidthLoop:
+        LD (HL),a          ; paint a character
+        INC L              ; Move to the right (Note that we only would have to inc H if we are crossing from the right edge to the left, and we shouldn't be needing to do that)
+        DJNZ BLPaintWidthLoop
 
-    BLPaintWidthExitLoop:
-    POP HL             ; recover our left edge
-    DEC C
-    JR Z, BLPaintHeightExitLoop
+        BLPaintWidthExitLoop:
+        POP HL             ; recover our left edge
+        DEC C
+        JR Z, BLPaintHeightExitLoop
 
-    ADD HL,DE          ; move 32 down
-    PUSH HL            ; save it again
-    JP BLPaintHeightLoop
+        ADD HL,DE          ; move 32 down
+        PUSH HL            ; save it again
+        JP BLPaintHeightLoop
 
-    BLPaintHeightExitLoop:
-end asm
-END SUB
+        BLPaintHeightExitLoop:
+    end asm
+    END SUB
+#endif
 
 #ifdef INIT_TEXTS
     sub showInitTexts(Text as String)
