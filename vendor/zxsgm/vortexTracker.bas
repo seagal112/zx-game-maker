@@ -45,7 +45,7 @@ SUB FASTCALL VortexTracker_NextNote()
       pop ix ; Recuperamos ix
     END ASM
   end if
-  framec = framec + 1
+  ' framec = framec + 1
 END SUB
 ' - Detiene la reproducción de la música ------------------
 SUB VortexTracker_Stop()
