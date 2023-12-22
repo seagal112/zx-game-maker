@@ -140,7 +140,7 @@ configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
-configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
+# configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
@@ -387,7 +387,9 @@ configStr = configStr[:-2]
 configStr += "}\n\n"
 
 configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 11) as byte\n"
-configStr += "dim unpaintEnemiesArray(" + str(maxEnemiesPerScreen - 1) + ", 1) as byte\n"
+
+if spritesWithColors == 1:
+    configStr += "dim unpaintEnemiesArray(" + str(maxEnemiesPerScreen - 1) + ", 1) as byte\n"
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(configStr, file=text_file)
