@@ -1,10 +1,29 @@
-function isEven(number as ubyte) as ubyte
-    return number bAND 1 = 0
-end function
+sub decrementLife()
+	if (currentLife = 0)
+		return
+	end if
 
-sub pauseUntilPressKey()
-    WHILE INKEY$<>"":WEND
-    WHILE INKEY$="":WEND
+	if currentLife > DAMAGE_AMOUNT then
+		currentLife = currentLife - DAMAGE_AMOUNT
+	else
+		currentLife = 0
+	end if
+	printLife()
+end sub
+
+sub incrementItems()
+	currentItems = currentItems + 1
+	printLife()
+	if currentItems >= GOAL_ITEMS
+		go to ending
+	end if
+end sub
+
+sub printLife()
+	PRINT AT 22, 5; "  "  
+	PRINT AT 22, 5; currentLife
+	PRINT AT 22, 16; currentKeys
+	PRINT AT 22, 30; currentItems
 end sub
 
 function secureXIncrement(x as integer, increment as integer) as integer
@@ -25,14 +44,6 @@ function secureYIncrement(y as integer, increment as integer) as integer
     end if
     
     return result
-end function
-
-function isSolidTile(tile as ubyte) as ubyte
-	if tile > 0 and tile < 64
-		return 1
-	else
-		return 0
-	end if
 end function
 
 function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte) as ubyte
@@ -59,13 +70,10 @@ end function
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile as ubyte = GetTile(col, lin)
 
-    if isSolidTile(tile)
+    if tile > 0 and tile < 64 'is solid tile
         if not invincible then
-            if not damagedByCollision
-                if isADamageTile(tile)
-                    damagedByCollision = 1
-                    protaTouch()
-                end if
+            if isADamageTile(tile)
+                protaTouch()
             end if
         end if
         return 1
@@ -125,7 +133,7 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     
     dim tile as ubyte = GetTile(col, lin)
 
-	return isSolidTile(tile)
+	return tile > 0 and tile < 64 ' is solid tile
 end function
 
 Function fastcall hMirror (number as uByte) as uByte

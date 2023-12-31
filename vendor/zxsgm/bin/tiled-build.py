@@ -213,14 +213,21 @@ configStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 configStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 configStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
 configStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
-configStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n\n"
+configStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n"
+configStr += "const SCREENS_COUNT as ubyte = " + str(screensCount - 1) + "\n\n"
 
 configStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
-configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
-for screen in screenObjects:
-    configStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
-configStr = configStr[:-4]
-configStr += " _\n}\n\n"
+
+with open("output/objectsInScreen.bin", "wb") as f:
+    for screen in screenObjects:
+        print(screenObjects[screen])
+        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life']]))
+
+# configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
+# for screen in screenObjects:
+#     configStr += '\t{' + str(screenObjects[screen]['item']) + ', ' + str(screenObjects[screen]['key']) + ', ' + str(screenObjects[screen]['door']) + ', ' + str(screenObjects[screen]['life']) + '}, _\n'
+# configStr = configStr[:-4]
+# configStr += " _\n}\n\n"
 
 configStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "\n"
 configStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"

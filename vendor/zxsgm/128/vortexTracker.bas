@@ -14,6 +14,7 @@ DIM VortexTracker_Status AS UByte = 0
 '
 '' solo inicializa el motor de Vortex
 SUB VortexTracker_Inicializar(usarIM2 AS UByte)
+  PaginarMemoria(4)
     ASM
         push ix
         ; Guardamos ix
@@ -30,6 +31,7 @@ SUB VortexTracker_Inicializar(usarIM2 AS UByte)
     END IF
     ' Estado: 1 (sonando)
     VortexTracker_Status = 1
+  PaginarMemoria(0)
 END SUB
 
 ' - Toca la próxima nota de la canción --------------------
@@ -37,6 +39,7 @@ END SUB
 ' interrupciones. Si no usamos el gestor, se debe llamar a
 ' este método cada 20ms.
 SUB FASTCALL VortexTracker_NextNote()
+  PaginarMemoria(4)
   ' Solo toca si el estado es 1 (sonando)
   if VortexTracker_Status = 1 THEN
     ASM
@@ -46,9 +49,11 @@ SUB FASTCALL VortexTracker_NextNote()
     END ASM
   end if
   ' framec = framec + 1
+  PaginarMemoria(0)
 END SUB
 ' - Detiene la reproducción de la música ------------------
 SUB VortexTracker_Stop()
+  PaginarMemoria(4)
     ' Estado igual a 0 (detenido)
     VortexTracker_Status = 0
     ASM
@@ -58,4 +63,5 @@ SUB VortexTracker_Stop()
         pop ix
         ; Recuperamos ix
     END ASM
+  PaginarMemoria(0)
 END SUB

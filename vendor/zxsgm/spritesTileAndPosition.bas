@@ -32,25 +32,12 @@ const jumpStepsCount as ubyte = 5
 dim jumpCurrentKey as ubyte = jumpStopValue
 dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
 
-function isJumping() as ubyte
-    return jumpCurrentKey <> jumpStopValue
-end function
-
-sub stopJumping()
-    jumpCurrentKey = jumpStopValue
-end sub
-
-sub startJumping()
-    jumpCurrentKey = 0
-end sub
-
-sub initProta()
-    saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
-end sub
-
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     saveSpriteLin(sprite, lin)
-    saveSpriteCol(sprite, col)
+    #ifdef SPRITES_WITH_COLORS
+        spritesPreviousLinCol(sprite, 1) = getSpriteCol(sprite)
+    #endif
+    spritesLinColTileAndFrame(sprite, 1) = col
     spritesLinColTileAndFrame(sprite, 2) = tile
     spritesLinColTileAndFrame(sprite, 3) = directionRight
     if spritesLinColTileAndFrame(sprite, 4) = 6
@@ -76,26 +63,11 @@ function getSpriteDirection(sprite as ubyte) as ubyte
     return spritesLinColTileAndFrame(sprite, 3)
 end function
 
-function getSpriteFrame(sprite as ubyte) as ubyte
-    return spritesLinColTileAndFrame(sprite, 4)
-end function
-
 sub saveSpriteLin(sprite as ubyte, lin as ubyte)
     #ifdef SPRITES_WITH_COLORS
         spritesPreviousLinCol(sprite, 0) = getSpriteLin(sprite)
     #endif
     spritesLinColTileAndFrame(sprite, 0) = lin
-end sub
-
-sub saveSpriteCol(sprite as ubyte, col as ubyte)
-    #ifdef SPRITES_WITH_COLORS
-        spritesPreviousLinCol(sprite, 1) = getSpriteCol(sprite)
-    #endif
-    spritesLinColTileAndFrame(sprite, 1) = col
-end sub
-
-sub saveSpriteDirection(sprite as ubyte, directionIsRight as ubyte)
-    spritesLinColTileAndFrame(sprite, 3) = directionIsRight
 end sub
 
 #ifdef SPRITES_WITH_COLORS
@@ -141,25 +113,17 @@ sub resetProtaSpriteToRunning()
 end sub
 
 function onLastColumn(sprite as ubyte) as ubyte
-    if getSpriteCol(sprite) = 60
-        return 1
-    else
-        return 0
-    end if
+    return getSpriteCol(sprite) = 60
 end function
 
 function onFirstColumn(sprite as ubyte) as ubyte
-    if getSpriteCol(sprite) = 0
-        return 1
-    else
-        return 0
-    end if
+    return getSpriteCol(sprite) = 0
 end function
 
-sub removeScreenObjectFromBuffer()
-    for i = 0 to 4
-        for j = 0 to spritesDataCount - 1
-            spritesLinColTileAndFrame(i, j) = 0
-        next j
-    next i
-end sub
+' sub removeScreenObjectFromBuffer()
+'     for i = 0 to 4
+'         for j = 0 to spritesDataCount - 1
+'             spritesLinColTileAndFrame(i, j) = 0
+'         next j
+'     next i
+' end sub

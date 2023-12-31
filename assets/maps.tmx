@@ -11,9 +11,7 @@
   <property name="damageAmount" type="int" value="10"/>
   <property name="enemiesRespawn" type="bool" value="false"/>
   <property name="goalItems" type="int" value="2"/>
-  <property name="initTexts">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus ipsum nunc, a vestibulum mauris pellentesque id. Pellentesque sed convallis mi, at maximus turpis.
-Nullam est dui, fermentum tincidunt varius venenatis, commodo non mi. Phasellus gravida sit amet nulla id tincidunt. Morbi vel aliquet velit, eget tristique metus.
-Cras scelerisque enim sit amet lectus eleifend venenatis. Mauris at diam in augue consectetur pretium malesuada vel erat. Aliquam egestas ipsum ullamcorper dapibus volutpat.</property>
+  <property name="initTexts" value=""/>
   <property name="initialLife" type="int" value="50"/>
   <property name="lifeAmount" type="int" value="5"/>
   <property name="maxEnemiesPerScreen" type="int" value="5"/>

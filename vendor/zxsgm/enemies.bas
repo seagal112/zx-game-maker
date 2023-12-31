@@ -72,11 +72,17 @@ sub moveEnemies()
                 if checkPlatformHasProtaOnTop(decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN))
                     if decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
                         if not CheckCollision(getSpriteCol(PROTA_SPRITE) + 1, getSpriteLin(PROTA_SPRITE))
-                            saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                            #ifdef SPRITES_WITH_COLORS
+                                spritesPreviousLinCol(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE)
+                            #endif
+                            spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
                         end if
                     elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
                         if not CheckCollision(getSpriteCol(PROTA_SPRITE) - 1, getSpriteLin(PROTA_SPRITE))
-                            saveSpriteCol(PROTA_SPRITE, getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION))
+                            #ifdef SPRITES_WITH_COLORS
+                                spritesPreviousLinCol(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE)
+                            #endif
+                            spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)                       
                         end if
                     end if
                 end if

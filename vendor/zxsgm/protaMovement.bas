@@ -1,5 +1,4 @@
 dim landed as UBYTE = 1
-dim yStepSize as ubyte = 2
 
 function canMoveLeft() as ubyte
 	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
@@ -48,21 +47,21 @@ sub checkIsJumping()
 				if allEnemiesKilled()
 					moveScreen = 8
 				else
-					stopJumping()
+					jumpCurrentKey = jumpStopValue ' stop jumping
 					damageSound()
 				end if
 			else
 				moveScreen = 8
 			end if
 		elseif jumpCurrentKey > 0 and not canMoveDown()
-			stopJumping()
+			jumpCurrentKey = jumpStopValue ' stop jumping
 		elseif jumpCurrentKey < jumpStepsCount
 			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
 				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
-			stopJumping()
+			jumpCurrentKey = jumpStopValue ' stop jumping
         end if
 	end if
 end sub
@@ -73,7 +72,7 @@ function isFalling() as UBYTE
 	else
 		if landed = 0
 			landed = 1
-			if not isEven(getSpriteLin(PROTA_SPRITE))
+			if getSpriteLin(PROTA_SPRITE) bAND 1 <> 0
 				saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1)
 			end if
 			resetProtaSpriteToRunning()
@@ -89,14 +88,14 @@ sub gravity()
 				if allEnemiesKilled()
 					moveScreen = 2
 				else
-					startJumping()
+					jumpCurrentKey = 0
 					damageSound()
 				end if
 			else
 				moveScreen = 2
 			end if
 		else
-			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), yStepSize), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), 2), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 		end if
 		landed = 0
 	end if
@@ -123,9 +122,9 @@ function getNextFrameRunning() as UBYTE
 end function
 
 sub jump()
-	if isJumping() = 0 and landed
+	if jumpCurrentKey = jumpStopValue and landed
 		landed = 0
-		startJumping()
+		jumpCurrentKey = 0
 	end if
 end sub
 
@@ -141,12 +140,12 @@ sub shoot()
 
 		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
-		fireSound()
+		'BeepFX_Play(2)
 	end if
 end sub
 
 sub leftKey()
-	saveSpriteDirection(PROTA_SPRITE, 0)
+	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
 	animateProta()
 	if onFirstColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
@@ -164,7 +163,7 @@ sub leftKey()
 end sub
 
 sub rightKey()
-	saveSpriteDirection(PROTA_SPRITE, 1)
+	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
 	animateProta()
 	if onLastColumn(PROTA_SPRITE)
 		if SHOULD_KILL_ENEMIES
@@ -225,17 +224,19 @@ function checkTileObject(tile as ubyte) as ubyte
 	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 		incrementItems()
 		removeScreenObject(SCREEN_OBJECT_ITEM_INDEX)
-		itemSound()
+		'BeepFX_Play(5)
 		return 1
 	elseif tile = keyTile and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
-		incrementKeys()
+		currentKeys = currentKeys + 1
+		printLife()
 		removeScreenObject(SCREEN_OBJECT_KEY_INDEX)
-		keySound()
+		'BeepFX_Play(3)
 		return 1
 	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
-		incrementLife()
+		currentLife = currentLife + LIFE_AMOUNT
+		printLife()
 		removeScreenObject(SCREEN_OBJECT_LIFE_INDEX)
-		lifeSound()
+		'BeepFX_Play(6)
 		return 1
 	end if
 	return 0

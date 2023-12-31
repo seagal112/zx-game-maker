@@ -12,7 +12,6 @@ dim currentKeys as UBYTE = 0
 dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
-dim damagedByCollision as ubyte
 dim currentBulletSpriteId as ubyte
 
 dim protaFrame as ubyte = 0 
@@ -35,28 +34,41 @@ dim invincibleBlink as ubyte = 0
 
 #include "../../output/config.bas"
 
-#include "GuSprites.zxbas"
-#include "../../output/tiles.bas"
-
-InitGFXLib()
-
-SetTileset(@tileSet)
-
-#include "../../output/sprites.bas"
-#include "../../output/soundEffects.bas"
+load "" CODE ' Load files
 
 #ifdef MUSIC_ENABLED
-    #include "im2.bas"
-    #include "vortexTracker.bas"
-
+    #include "128/im2.bas"
+    #include "128/vortexTracker.bas"
+    #include "128/functions.bas"
+    PaginarMemoria(4)
     load "" CODE ' Load vtplayer
     load "" CODE ' Load music
+    PaginarMemoria(0)
 #endif
+
+#include "GuSprites.zxbas"
+
+dim tileSet(191, 7) as ubyte at TILESET_DATA_ADDRESS
+dim attrSet(191) as ubyte at ATTR_DATA_ADDRESS
+dim sprites(47, 31) as ubyte at SPRITES_DATA_ADDRESS
+dim screenObjectsInitial(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_DATA_ADDRESS
+
+InitGFXLib()
+SetTileset(@tileSet)
+
+dim spritesSet(49) as ubyte
+dim spriteAddressIndex as uInteger = 0
+for i = 0 to 47
+    spritesSet(i) = Create2x2Sprite(@sprites + (32 * spriteAddressIndex))
+    Draw2x2Sprite(spritesSet(i), 20, 20)
+    spriteAddressIndex = spriteAddressIndex + 1
+next i
+
+' #include "../../output/soundEffects.bas"
 
 #include <zx0.bas>
 #include <retrace.bas>
 #include <keys.bas>
-#include <memcopy.bas>
 #include "functions.bas"
 #include "spritesTileAndPosition.bas"
 #include "enemies.bas"
@@ -71,7 +83,7 @@ menu:
         VortexTracker_Stop()
     #endif
 
-    dzx0Standard(@titleScreen, $4000)
+    dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
 
     do
         let keyOption = Inkey$
@@ -124,9 +136,6 @@ playGame:
             let lastFrameOthers = framec
         end if
 
-        if not isJumping and landed
-            damagedByCollision = 0
-        end if
         protaMovement()
         moveEnemies()
         moveBullet()
@@ -141,9 +150,10 @@ ending:
         VortexTracker_Stop()
     #endif
 
-    dzx0Standard(@endingScreen, $4000)
+    dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
     pause 300
-    pauseUntilPressKey()
+    WHILE INKEY$<>"":WEND
+    WHILE INKEY$="":WEND
     go to menu
 
 gameOver:
@@ -151,9 +161,10 @@ gameOver:
         VortexTracker_Stop()
     #endif
 
-    PrintString("GAME OVER", 7, 12, 10)
+    print at 7, 12; "GAME OVER"
     pause 300
-    pauseUntilPressKey()
+    WHILE INKEY$<>"":WEND
+    WHILE INKEY$="":WEND
     go to menu
 
 sub resetValues()
@@ -169,11 +180,11 @@ sub resetValues()
     currentLife = INITIAL_LIFE
     currentKeys = 0
     currentItems = 0
-    removeScreenObjectFromBuffer()
-    initProta()
+    ' removeScreenObjectFromBuffer()
+    saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
     setScreenElements()
     setEnemies()
-    dzx0Standard(@hudScreen, $4000)
+    dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     redrawScreen()
     drawSprites()
 end sub
@@ -197,8 +208,8 @@ sub animateOthers()
 end sub
 
 sub swapScreen()
-    dzx0Standard(@map + screensOffsets(currentScreen), @decompressedMap)
-    dzx0Standard(@enemiesInScreen + enemiesInScreenOffsets(currentScreen), @decompressedEnemiesScreen)
+    dzx0Standard(MAPS_DATA_ADDRESS + screensOffsets(currentScreen), @decompressedMap)
+    dzx0Standard(ENEMIES_DATA_ADDRESS + enemiesInScreenOffsets(currentScreen), @decompressedEnemiesScreen)
 end sub
 
 sub animateAnimatedTiles()
@@ -228,49 +239,22 @@ sub checkMoveScreen()
     end if
 end sub
 
-sub debugA(value as UBYTE)
-    PRINT AT 18, 10; "----"
-    PRINT AT 18, 10; value
-end sub
+' sub debugA(value as UBYTE)
+'     PRINT AT 18, 10; "----"
+'     PRINT AT 18, 10; value
+' end sub
 
-sub debugB(value as UBYTE)
-    PRINT AT 18, 15; "  "
-    PRINT AT 18, 15; value
-end sub
+' sub debugB(value as UBYTE)
+'     PRINT AT 18, 15; "  "
+'     PRINT AT 18, 15; value
+' end sub
 
-sub debugC(value as UBYTE)
-    PRINT AT 18, 20; "  "
-    PRINT AT 18, 20; value
-end sub
+' sub debugC(value as UBYTE)
+'     PRINT AT 18, 20; "  "
+'     PRINT AT 18, 20; value
+' end sub
 
-sub debugD(value as UBYTE)
-    PRINT AT 18, 25; "  "
-    PRINT AT 18, 25; value
-end sub
-
-stop
-
-titleScreen:
-    asm
-        incbin "output/title.png.scr.zx0"
-    end asm
-
-hudScreen:
-    asm
-        incbin "output/hud.png.scr.zx0"
-    end asm
-
-endingScreen:
-    asm
-        incbin "output/ending.png.scr.zx0"
-    end asm
-
-map:
-    asm
-        incbin "output/map.bin.zx0"
-    end asm
-
-enemiesInScreen:
-    asm
-        incbin "output/enemies.bin.zx0"
-    end asm
+' sub debugD(value as UBYTE)
+'     PRINT AT 18, 25; "  "
+'     PRINT AT 18, 25; value
+' end sub

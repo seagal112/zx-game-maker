@@ -72,7 +72,7 @@ end sub
 sub redrawScreen()
 	' memset(22527,0,768)
 	ClearScreen(7, 0, 0)
-	dzx0Standard(@hudScreen, $4000)
+	dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
 	FillWithTile(0, 32, 22, 7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
@@ -83,9 +83,10 @@ end sub
 function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 	if GetTile(col, lin) = doorTile
 		if currentKeys <> 0
-			decrementKeys()
+			currentKeys = currentKeys - 1
+			printLife()
 			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
-			doorSound()
+			'BeepFX_Play(4)
 			FillWithTileChecked(0, 1, 1, 7, col, lin)
 			FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		end if
@@ -118,49 +119,6 @@ function CheckDoor(x as uByte, y as uByte) as uByte
     end if
 end function
 
-sub incrementLife()
-	currentLife = currentLife + LIFE_AMOUNT
-	printLife()
-end sub
-
-sub decrementLife()
-	if (currentLife = 0)
-		return
-	end if
-
-	if currentLife > DAMAGE_AMOUNT then
-		currentLife = currentLife - DAMAGE_AMOUNT
-	else
-		currentLife = 0
-	end if
-	printLife()
-end sub
-
-sub incrementKeys()
-	currentKeys = currentKeys + 1
-	printLife()
-end sub
-
-sub decrementKeys()
-	currentKeys = currentKeys - 1
-	printLife()
-end sub
-
-sub incrementItems()
-	currentItems = currentItems + 1
-	printLife()
-	if currentItems >= GOAL_ITEMS
-		go to ending
-	end if
-end sub
-
-sub printLife()
-	PRINT AT 22, 5; "  "  
-	PRINT AT 22, 5; currentLife
-	PRINT AT 22, 16; currentKeys
-	PRINT AT 22, 30; currentItems
-end sub
-
 sub moveToScreen(direction as Ubyte)
 	' removeAllObjects()
 	if direction = 6
@@ -174,17 +132,19 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
 		saveSprite(PROTA_SPRITE, MAX_LINE, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
-		startJumping()
+		jumpCurrentKey = 0
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 
 	swapScreen()
-	removeScreenObjectFromBuffer()
+	' removeScreenObjectFromBuffer()
 	redrawScreen()
 end sub
 
-dim unpaintWidth as byte
-dim unpaintHeight as byte
+#ifdef SPRITES_WITH_COLORS
+	dim unpaintWidth as byte
+	dim unpaintHeight as byte
+#endif
 
 sub drawSprites()
 	if not invincible
