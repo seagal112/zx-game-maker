@@ -220,7 +220,6 @@ configStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
 
 with open("output/objectsInScreen.bin", "wb") as f:
     for screen in screenObjects:
-        print(screenObjects[screen])
         f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life']]))
 
 # configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
