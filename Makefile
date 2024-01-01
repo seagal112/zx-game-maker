@@ -9,10 +9,6 @@ tiled-build:
 	python3 ${BIN_FOLDER}tiled-build.py
 	cat output/screen*.bin.zx0 > output/map.bin.zx0
 	cat output/enemiesInScreen*.bin.zx0 > output/enemies.bin.zx0
-	rm -f output/screen*.bin.zx0
-	rm -f output/screen*.bin
-	rm -f output/enemiesInScreen*.bin.zx0
-	rm -f output/enemiesInScreen*.bin
 
 fx-to-bas:
 	@if [ -f assets/soundEffects.asm ]; then\
@@ -71,6 +67,8 @@ screens-build:
 	$(eval SIZE6 = $(shell stat --printf="%s" output/tiles.bin))
 	$(eval SIZE7 = $(shell stat --printf="%s" output/attrs.bin))
 	$(eval SIZE8 = $(shell stat --printf="%s" output/sprites.bin))
+	$(eval SIZE9 = $(shell stat --printf="%s" output/objectsInScreen.bin))
+	$(eval SIZE10 = $(shell stat --printf="%s" output/screenOffsets.bin))
 
 	$(eval tilesetAddress = $(call sum, $(call sum, $(call sum, $(call sum, $(call sum, $(SIZE0), $(SIZE1)), $(SIZE2)), $(SIZE3)), $(SIZE4)), $(SIZE5)))
 	echo "const TILESET_DATA_ADDRESS as uinteger = $(tilesetAddress)" >> output/config.bas
@@ -84,12 +82,20 @@ screens-build:
 	$(eval screenObjectsAddress = $(call sum, $(spritesAddress), $(SIZE8)))
 	echo "const SCREEN_OBJECTS_DATA_ADDRESS as uinteger = $(screenObjectsAddress)" >> output/config.bas
 
-	cat output/title.png.scr.zx0 output/ending.png.scr.zx0 output/hud.png.scr.zx0 output/map.bin.zx0 output/enemies.bin.zx0 output/tiles.bin output/attrs.bin output/sprites.bin output/objectsInScreen.bin > output/files.bin.zx0
+	$(eval screenOffsetsAddress = $(call sum, $(screenObjectsAddress), $(SIZE9)))
+	echo "const SCREEN_OFFSETS_DATA_ADDRESS as uinteger = $(screenOffsetsAddress)" >> output/config.bas
 
+	$(eval enemiesInScreenOffsets = $(call sum, $(screenOffsetsAddress), $(SIZE10)))
+	echo "const ENEMIES_IN_SCREEN_OFFSETS_DATA_ADDRESS as uinteger = $(enemiesInScreenOffsets)" >> output/config.bas
+
+	cat output/title.png.scr.zx0 output/ending.png.scr.zx0 output/hud.png.scr.zx0 output/map.bin.zx0 output/enemies.bin.zx0 output/tiles.bin output/attrs.bin output/sprites.bin output/objectsInScreen.bin output/screenOffsets.bin output/enemiesInScreenOffsets.bin > output/files.bin.zx0
+
+	rm -f output/screen*.bin.zx0
+	rm -f output/screen*.bin
+	rm -f output/enemiesInScreen*.bin.zx0
+	rm -f output/enemiesInScreen*.bin
+	
 	wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $(SIZE0) output/files.bin.zx0
-
-	$(eval SIZE9 = $(shell stat --printf="%s" output/objectsInScreen.bin))
-	echo $(call sum, $(screenObjectsAddress), $(SIZE9)) > /tmp/heapAddress.txt
 
 compile:
 	python3 ${BIN_FOLDER}zxbasic/zxbc.py -W 500 -taB main.bas

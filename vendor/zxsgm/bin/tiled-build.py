@@ -232,15 +232,22 @@ configStr += "const SCREEN_LENGTH as uinteger = " + str(len(screens[0]) - 1) + "
 configStr += "dim decompressedMap(SCREEN_LENGTH) as ubyte\n"
 
 currentOffset = 0
-configStr += "dim screensOffsets(" + str(screensCount) + ") as uinteger\n"
-configStr += "screensOffsets(0) = " + str(currentOffset) + "\n"
+screenOffsets = []
+screenOffsets.append(currentOffset)
+
+configStr += "dim screensOffsets2(" + str(screensCount) + ") as uinteger\n"
+configStr += "screensOffsets2(0) = " + str(currentOffset) + "\n"
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         screen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
     currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
-    configStr += "screensOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
+    screenOffsets.append(currentOffset)
+
+with open(outputDir + "screenOffsets.bin", "wb") as f:
+    for offset in screenOffsets:
+        f.write(offset.to_bytes(2, byteorder='little'))
 
 # Construct enemies
 
@@ -373,16 +380,20 @@ for layer in data['layers']:
                 enemiesPerScreen.append(0)
             enemiesArray.append(array.array('b', arrayBuffer))
 
+enemiesInScreenOffsets = []
+enemiesInScreenOffsets.append(0)
 currentOffset = 0
-configStr += "dim enemiesInScreenOffsets(" + str(screensCount) + ") as uinteger\n"
-configStr += "enemiesInScreenOffsets(0) = " + str(currentOffset) + "\n"
 for idx, enemiesScreen in enumerate(enemiesArray):
     label = 'enemiesInScreen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
         enemiesScreen.tofile(f)
     subprocess.run(['java', '-jar', 'vendor/zxsgm/bin/zx0.jar', '-f', outputDir + label + '.bin', outputDir + label + '.bin.zx0'])
     currentOffset += os.path.getsize(outputDir + label + '.bin.zx0')
-    configStr += "enemiesInScreenOffsets(" + str(idx + 1) + ") = " + str(currentOffset) + "\n"
+    enemiesInScreenOffsets.append(currentOffset)
+
+with open(outputDir + "enemiesInScreenOffsets.bin", "wb") as f:
+    for offset in enemiesInScreenOffsets:
+        f.write(offset.to_bytes(2, byteorder='little'))
 
 configStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
 configStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
