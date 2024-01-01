@@ -86,7 +86,7 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 			currentKeys = currentKeys - 1
 			printLife()
 			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
-			'BeepFX_Play(4)
+			BeepFX_Play(4)
 			FillWithTileChecked(0, 1, 1, 7, col, lin)
 			FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
 		end if

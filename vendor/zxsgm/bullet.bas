@@ -146,7 +146,7 @@ sub damageEnemy(enemyToKill as Ubyte)
             unpaintEnemy(tile, x, y)
         #endif
         
-        'BeepFX_Play(0)
+        BeepFX_Play(0)
     else
         damageSound()
     end if

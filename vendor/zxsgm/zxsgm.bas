@@ -27,13 +27,14 @@ dim framec AS ubyte AT 23672
 dim lastFrameProta as ubyte = 0
 dim lastFrameOthers as ubyte = 0
 
-const INVINCIBLE_FRAMES as ubyte = 100
+const INVINCIBLE_FRAMES as ubyte = 50
 dim invincible as ubyte = 0
 dim invincibleFrame as ubyte = 0
 dim invincibleBlink as ubyte = 0
 
 #include "../../output/config.bas"
 
+load "" CODE ' Load fx
 load "" CODE ' Load files
 
 #ifdef MUSIC_ENABLED
@@ -64,7 +65,7 @@ for i = 0 to 47
     spriteAddressIndex = spriteAddressIndex + 1
 next i
 
-' #include "../../output/soundEffects.bas"
+#include "beepFx.bas"
 
 #include <zx0.bas>
 #include <retrace.bas>

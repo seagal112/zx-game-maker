@@ -140,7 +140,7 @@ sub shoot()
 
 		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
-		'BeepFX_Play(2)
+		BeepFX_Play(2)
 	end if
 end sub
 
@@ -224,19 +224,19 @@ function checkTileObject(tile as ubyte) as ubyte
 	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 		incrementItems()
 		removeScreenObject(SCREEN_OBJECT_ITEM_INDEX)
-		'BeepFX_Play(5)
+		BeepFX_Play(5)
 		return 1
 	elseif tile = keyTile and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 		currentKeys = currentKeys + 1
 		printLife()
 		removeScreenObject(SCREEN_OBJECT_KEY_INDEX)
-		'BeepFX_Play(3)
+		BeepFX_Play(3)
 		return 1
 	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 		currentLife = currentLife + LIFE_AMOUNT
 		printLife()
 		removeScreenObject(SCREEN_OBJECT_LIFE_INDEX)
-		'BeepFX_Play(6)
+		BeepFX_Play(6)
 		return 1
 	end if
 	return 0

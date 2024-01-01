@@ -31,6 +31,10 @@ SIZE3 = 0
 SIZE4 = 0
 SIZE5 = 0
 screens-build:
+	$(eval SIZEFX = $(shell stat --printf="%s" assets/music/soundEffects.tap))
+	echo "const BEEP_FX_ADDRESS as uinteger = $(SIZE0)" >> output/config.bas
+	$(eval SIZE0 = $(call sum, $(SIZEFX), $(SIZE0)))
+
 	python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png assets/screens/title.tmp.png
 	python3 ${BIN_FOLDER}png2scr.py assets/screens/title.tmp.png
 	java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.tmp.png.scr output/title.png.scr.zx0
@@ -107,7 +111,7 @@ build:
 
 	@if [ -f assets/music/music.tap ]; then\
 		echo "Music detected";\
-		cat output/loader.tap output/loading.tap output/main.tap output/files.tap assets/music/music.tap > output/${PROJECT_NAME}.tap;\
+		cat output/loader.tap output/loading.tap output/main.tap assets/music/soundEffects.tap output/files.tap assets/music/music.tap > output/${PROJECT_NAME}.tap;\
 		# cat output/loader.tap output/loading.tap output/main.tap output/files.tap > output/${PROJECT_NAME}.tap;\
 	else\
 		cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap;\
