@@ -10,11 +10,10 @@ tiled-build:
 	cat output/screen*.bin.zx0 > output/map.bin.zx0
 	cat output/enemiesInScreen*.bin.zx0 > output/enemies.bin.zx0
 
-fx-to-bas:
-	@if [ -f assets/soundEffects.asm ]; then\
-		cat assets/soundEffects.asm | sed "s/	org 60000/sub fastcall BeepFX_Play\(sonido AS UByte\)\nasm/" | sed "s/ld a\,19/\n/" | { cat; echo "end asm"; echo "end sub"; } > output/soundEffects.bas;\
-	else\
-		cp -f vendor/zxsgm/default/soundEffects.bas output/soundEffects.bas;\
+check-fx:
+	@if [ ! -f assets/fx/fx.tap ]; then\
+		echo "FX not detected";\
+		cp -f vendor/zxsgm/default/fx.tap assets/fx/fx.tap;\
 	fi
 
 sum = $(shell expr $(1) + $(2))
@@ -27,7 +26,7 @@ SIZE3 = 0
 SIZE4 = 0
 SIZE5 = 0
 screens-build:
-	$(eval SIZEFX = $(shell stat --printf="%s" assets/music/soundEffects.tap))
+	$(eval SIZEFX = $(shell stat --printf="%s" assets/fx/fx.tap))
 	echo "const BEEP_FX_ADDRESS as uinteger = $(SIZE0)" >> output/config.bas
 	$(eval SIZE0 = $(call sum, $(SIZEFX), $(SIZE0)))
 
@@ -105,11 +104,11 @@ HEAP_ADDRESS=$(shell cat /tmp/heapAddress.txt)
 
 build:
 	$(MAKE) tiled-build
+	$(MAKE) check-fx
 	$(MAKE) screens-build
-	$(MAKE) fx-to-bas
 
 	# python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 1024 --heap-address 63488 -S 24576 -O 4 main.bas --mmap output/map.txt --debug-memory -o output/main.bin
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 512 -S 24576 -O 4 main.bas --mmap output/map.txt --debug-memory -o output/main.bin
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 600 -S 24576 -O 4 main.bas --mmap output/map.txt --debug-memory -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
@@ -117,7 +116,7 @@ build:
 
 	@if [ -f assets/music/music.tap ]; then\
 		echo "Music detected";\
-		cat output/loader.tap output/loading.tap output/main.tap assets/music/soundEffects.tap output/files.tap assets/music/music.tap > output/${PROJECT_NAME}.tap;\
+		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap > output/${PROJECT_NAME}.tap;\
 		# cat output/loader.tap output/loading.tap output/main.tap output/files.tap > output/${PROJECT_NAME}.tap;\
 	else\
 		cat output/loader.tap output/loading.tap output/main.tap > output/${PROJECT_NAME}.tap;\
