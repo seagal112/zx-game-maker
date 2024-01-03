@@ -141,11 +141,6 @@ sub moveToScreen(direction as Ubyte)
 	redrawScreen()
 end sub
 
-#ifdef SPRITES_WITH_COLORS
-	dim unpaintWidth as byte
-	dim unpaintHeight as byte
-#endif
-
 sub drawSprites()
 	if not invincible
 		Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
@@ -167,48 +162,6 @@ sub drawSprites()
 			
 			tile = getSpriteTile(i)
 			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
-
-			#ifdef SPRITES_WITH_COLORS
-				if tile < 16 then continue for
-				if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
-				if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
-
-				if getSpriteCol(i) mod 2 = 0
-					paintWidth = 2
-				else
-					paintWidth = 3
-				end if
-
-				if getSpriteLin(i) mod 2 = 0
-					paintHeight = 2
-				else
-					paintHeight = 3
-				end if
-
-				xToPaint = getSpriteCol(i) / 2
-				yToPaint = getSpriteLin(i) / 2
-
-				unpaintEnemiesArray(i, 0) = xToPaint
-				unpaintEnemiesArray(i, 1) = yToPaint
-
-				if spriteHadHorizontalMovement(i)
-					if decompressedEnemiesScreen(i, ENEMY_HORIZONTAL_DIRECTION) = 1
-						unpaintEnemiesArray(i, 0) = xToPaint - 1
-					else
-						unpaintEnemiesArray(i, 0) = xToPaint + paintWidth
-					end if
-					paint(xToPaint, yToPaint, paintWidth, 2, decompressedEnemiesScreen(i, ENEMY_COLOR))
-				end if
-
-				if spriteHadVerticalMovement(i)
-					if decompressedEnemiesScreen(i, ENEMY_VERTICAL_DIRECTION) = 1
-						unpaintEnemiesArray(i, 1) = yToPaint - 1
-					else
-						unpaintEnemiesArray(i, 1) = yToPaint + paintHeight
-					end if
-					paint(xToPaint, yToPaint, 2, paintHeight, decompressedEnemiesScreen(i, ENEMY_COLOR))
-				end if
-			#endif
 		next i
 	end if
 
@@ -217,41 +170,7 @@ sub drawSprites()
 	end if
 
 	RenderFrame()
-
-	#ifdef SPRITES_WITH_COLORS
-		unpaintEnemiesBack()
-	#endif
 END SUB
-
-#ifdef SPRITES_WITH_COLORS
-	sub unpaintEnemiesBack()
-		if enemiesPerScreen(currentScreen) <= 0 then return
-
-		dim tile, attr as ubyte
-		for i = 0 to enemiesPerScreen(currentScreen) - 1
-			if getSpriteLin(i) = 0 then continue for
-			if getSpriteTile(i) < 16 then continue for
-			if not decompressedEnemiesScreen(i, ENEMY_COLOR) then continue for
-			if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then continue for
-
-			tile = GetTile(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1))
-
-			if tile = 0
-				attr = 7
-			else
-				attr = attrSet(tile)
-			end if
-			if spriteHadHorizontalMovement(i)
-				paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 1, 2, attr)	
-			end if
-
-			if spriteHadVerticalMovement(i) and not getSwitchVerticalMovement(i)
-				paint(unpaintEnemiesArray(i, 0), unpaintEnemiesArray(i, 1), 2, 1, attr)
-			end if
-						
-		next i
-	end sub
-#endif
 
 sub drawBurst(x as ubyte, y as ubyte)
 	Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)

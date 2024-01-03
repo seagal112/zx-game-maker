@@ -138,35 +138,9 @@ sub damageEnemy(enemyToKill as Ubyte)
         y = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN)
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(x, y)
-
-        #ifdef SPRITES_WITH_COLORS
-            if not decompressedEnemiesScreen(i, ENEMY_COLOR) then return
-            if decompressedEnemiesScreen(i, ENEMY_COLOR) = 7 then return
-
-            unpaintEnemy(tile, x, y)
-        #endif
         
         BeepFX_Play(0)
     else
         damageSound()
     end if
 end sub
-
-#ifdef SPRITES_WITH_COLORS
-    sub unpaintEnemy(tile as ubyte, x as ubyte, y as ubyte)
-        col = x / 2
-        lin = y / 2
-
-        for tmpX = col - 1 to col + 2 - 1
-            for tmpY = lin - 1 to lin + 2 - 1
-                tile = GetTile(tmpX, tmpY)
-                if tile = 0
-                    attr = 7
-                else
-                    attr = attrSet(tile)
-                end if
-                SetTileColor(tmpX, tmpY, attr)
-            next tmpY
-        next tmpX
-    end sub
-#endif

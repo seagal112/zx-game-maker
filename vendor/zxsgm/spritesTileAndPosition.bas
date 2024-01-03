@@ -14,19 +14,6 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
     {0, 0, 0, 0, 0} _
 }
 
-#ifdef SPRITES_WITH_COLORS
-    dim spritesPreviousLinCol(screenSpritesCount - 1, 3) as ubyte => { _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0}, _
-        {0, 0, 0, 0} _
-    }
-#endif
-
 const jumpStopValue as ubyte = 255
 const jumpStepsCount as ubyte = 5
 dim jumpCurrentKey as ubyte = jumpStopValue
@@ -34,9 +21,6 @@ dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
 
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     saveSpriteLin(sprite, lin)
-    #ifdef SPRITES_WITH_COLORS
-        spritesPreviousLinCol(sprite, 1) = getSpriteCol(sprite)
-    #endif
     spritesLinColTileAndFrame(sprite, 1) = col
     spritesLinColTileAndFrame(sprite, 2) = tile
     spritesLinColTileAndFrame(sprite, 3) = directionRight
@@ -64,45 +48,8 @@ function getSpriteDirection(sprite as ubyte) as ubyte
 end function
 
 sub saveSpriteLin(sprite as ubyte, lin as ubyte)
-    #ifdef SPRITES_WITH_COLORS
-        spritesPreviousLinCol(sprite, 0) = getSpriteLin(sprite)
-    #endif
     spritesLinColTileAndFrame(sprite, 0) = lin
 end sub
-
-#ifdef SPRITES_WITH_COLORS
-    function spriteHadHorizontalMovement(sprite as ubyte) as ubyte
-        return spritesPreviousLinCol(sprite, 1) and spritesPreviousLinCol(sprite, 1) <> getSpriteCol(sprite)
-    end function
-
-    function spriteHadVerticalMovement(sprite as ubyte) as ubyte
-        return spritesPreviousLinCol(sprite, 0) and spritesPreviousLinCol(sprite, 0) <> getSpriteLin(sprite)
-    end function
-
-    sub markSwitchHorizontalMovement(sprite as ubyte)
-        spritesPreviousLinCol(sprite, 2) = 1
-    end sub
-
-    sub unmarkSwitchHorizontalMovement(sprite as ubyte)
-        spritesPreviousLinCol(sprite, 2) = 0
-    end sub
-
-    sub markSwitchVerticalMovement(sprite as ubyte)
-        spritesPreviousLinCol(sprite, 3) = 1
-    end sub
-
-    sub unmarkSwitchVerticalMovement(sprite as ubyte)
-        spritesPreviousLinCol(sprite, 3) = 0
-    end sub
-
-    function getSwitchHorizontalMovement(sprite as ubyte) as ubyte
-        return spritesPreviousLinCol(sprite, 2)
-    end function
-
-    function getSwitchVerticalMovement(sprite as ubyte) as ubyte
-        return spritesPreviousLinCol(sprite, 3)
-    end function
-#endif
 
 sub resetProtaSpriteToRunning()
     if getSpriteDirection(PROTA_SPRITE)
