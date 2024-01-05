@@ -22,16 +22,16 @@ SUB VortexTracker_Inicializar(usarIM2 AS UByte)
         pop ix
         ; Recuperamos ix
     END ASM
-    ' Si usamos interrupciones...
-    IF usarIM2 = 1 THEN
-        ' Inicializamos el motor de interrupciones para
-        ' que se ejecute "VortexTracker_NextNote" en cada
-        ' interrupción
-        IM2_Inicializar(@VortexTracker_NextNote)
-    END IF
-    ' Estado: 1 (sonando)
-    VortexTracker_Status = 1
   PaginarMemoria(0)
+  ' Si usamos interrupciones...
+  IF usarIM2 = 1 THEN
+      ' Inicializamos el motor de interrupciones para
+      ' que se ejecute "VortexTracker_NextNote" en cada
+      ' interrupción
+      IM2_Inicializar(@VortexTracker_NextNote)
+  END IF
+  ' Estado: 1 (sonando)
+  VortexTracker_Status = 1
 END SUB
 
 ' - Toca la próxima nota de la canción --------------------
@@ -39,23 +39,23 @@ END SUB
 ' interrupciones. Si no usamos el gestor, se debe llamar a
 ' este método cada 20ms.
 SUB FASTCALL VortexTracker_NextNote()
-  PaginarMemoria(4)
   ' Solo toca si el estado es 1 (sonando)
   if VortexTracker_Status = 1 THEN
+    PaginarMemoria(4)
     ASM
       push ix ; Guardamos ix
       call VTPLAYER_NEXTNOTE ; Reproducimos una nota
       pop ix ; Recuperamos ix
     END ASM
+    PaginarMemoria(0)
   end if
   ' framec = framec + 1
-  PaginarMemoria(0)
 END SUB
 ' - Detiene la reproducción de la música ------------------
 SUB VortexTracker_Stop()
+  ' Estado igual a 0 (detenido)
+  VortexTracker_Status = 0
   PaginarMemoria(4)
-    ' Estado igual a 0 (detenido)
-    VortexTracker_Status = 0
     ASM
         push ix
         ; Guardamos ix
