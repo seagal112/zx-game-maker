@@ -29,14 +29,12 @@ compile:
 	python3 ${BIN_FOLDER}zxbasic/zxbc.py -W 500 -taB main.bas
 	mv -f main.tap output/${PROJECT_NAME}.tap
 
-HEAP_ADDRESS=$(shell cat /tmp/heapAddress.txt)
-
 build:
 	$(MAKE) tiled-build
 	$(MAKE) check-fx
 	$(MAKE) screens-build
 
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 512 -S 24576 -O 4 main.bas --mmap output/map.txt -D HIDE_LOAD_MSG --debug-memory -o output/main.bin
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 256 -S 24576 -O 4 main.bas --mmap output/map.txt -D HIDE_LOAD_MSG --debug-memory -o output/main.bin
 
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s${PROJECT_NAME} ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
