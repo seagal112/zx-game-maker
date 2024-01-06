@@ -206,11 +206,12 @@ end sub
 
 sub keyboardListen()
 	if kempston
-		if IN(31) bAND %00010 then leftKey()
-		if IN(31) bAND %00001 then rightKey()
-		if IN(31) bAND %01000 then upKey()
-		if IN(31) bAND %00100 then downKey()
-		if IN(31) bAND %10000 then fireKey() 
+		dim n as ubyte = IN(31)
+		if n bAND %10 then leftKey()
+		if n bAND %1 then rightKey()
+		if n bAND %1000 then upKey()
+		if n bAND %100 then downKey()
+		if n bAND %10000 then fireKey() 
 	else
 		if MultiKeys(keyArray(LEFT))<>0 then leftKey()
 		if MultiKeys(keyArray(RIGHT))<>0 then rightKey()
