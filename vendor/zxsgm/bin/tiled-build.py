@@ -68,6 +68,7 @@ if spriteTileOffset == 0:
 
 # Global properties
 
+gameName = 'game'
 initialLife = 40
 goalItems = 10
 damageAmount = 5
@@ -92,7 +93,9 @@ spritesWithColors = 0
 initTexts = ""
 
 for property in data['properties']:
-    if property['name'] == 'goalItems':
+    if property['name'] == 'gameName':
+        gameName = property['value']
+    elif property['name'] == 'goalItems':
         goalItems = property['value']
     elif property['name'] == 'damageAmount':
         damageAmount = property['value']
@@ -124,6 +127,10 @@ for property in data['properties']:
         spritesWithColors = 1 if property['value'] else 0
     elif property['name'] == 'initTexts':
         initTexts = property['value']
+
+# Export gameName to env bash
+with open(outputDir + "gameName.txt", "w") as f:
+    f.write(gameName)
 
 if len(damageTiles) == 0:
     damageTiles.append('0')

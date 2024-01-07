@@ -3,7 +3,7 @@ FROM python:3.10.0-slim-buster
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN dpkg --add-architecture i386
-RUN apt-get update; apt-get install -y libgl1 default-jre wine32 make wget bc
+RUN apt-get update; apt-get install -y libgl1 default-jre wine32 make wget bc jq
 
 RUN winecfg
 
