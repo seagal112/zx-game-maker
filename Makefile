@@ -59,7 +59,9 @@ docker-push:
 	docker push rtorralba/zx-game-maker:${DOCKER_VERSION}
 
 run:
-	fuse --machine=plus2a output/$(PROJECT_NAME).tap
+	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
+	fuse --machine=plus2a $(PROJECT_NAME).tap
 
 run-48:
-	fuse --machine=48 output/$(PROJECT_NAME).tap
+	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
+	fuse --machine=48 $(PROJECT_NAME).tap
