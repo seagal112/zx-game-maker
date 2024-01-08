@@ -9,7 +9,6 @@
   <property name="VTPLAYER_NEXTNOTE" value="EFB2"/>
   <property name="bulletDistance" type="int" value="0"/>
   <property name="damageAmount" type="int" value="10"/>
-  <property name="enemiesRespawn" type="bool" value="false"/>
   <property name="gameName" value="Game Name"/>
   <property name="goalItems" type="int" value="2"/>
   <property name="initTexts" value=""/>
@@ -19,7 +18,6 @@
   <property name="musicEnabled" type="bool" value="true"/>
   <property name="shooting" type="bool" value="true"/>
   <property name="shouldKillEnemies" type="bool" value="false"/>
-  <property name="spritesWithColors" type="bool" value="false"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="8" tileheight="8" tilecount="192" columns="32">
   <image source="tiles.png" width="256" height="48"/>
