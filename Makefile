@@ -30,6 +30,11 @@ build:
 	$(MAKE) tiled-build
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
 
+	@if [ -z "$(PROJECT_NAME)" ]; then\
+		echo "Project name not detected";\
+		$(eval PROJECT_NAME=game)\
+	fi
+
 	$(MAKE) check-fx
 	$(MAKE) screens-build
 
@@ -41,10 +46,10 @@ build:
 
 	@if [ -f assets/music/music.tap ]; then\
 		echo "Music detected";\
-		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap > $(PROJECT_NAME).tap;\
-		# cat output/loader.tap output/loading.tap output/main.tap output/files.tap > $(PROJECT_NAME).tap;\
+		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap > dist/$(PROJECT_NAME).tap;\
+		# cat output/loader.tap output/loading.tap output/main.tap output/files.tap > dist/$(PROJECT_NAME).tap;\
 	else\
-		cat output/loader.tap output/loading.tap output/main.tap > $(PROJECT_NAME).tap;\
+		cat output/loader.tap output/loading.tap output/main.tap > dist/$(PROJECT_NAME).tap;\
 	fi
 	
 
@@ -60,8 +65,16 @@ docker-push:
 
 run:
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
-	fuse --machine=plus2a $(PROJECT_NAME).tap
+	@if [ -z "$(PROJECT_NAME)" ]; then\
+		echo "Project name not detected";\
+		$(eval PROJECT_NAME=game)\
+	fi
+	fuse --machine=plus2a dist/$(PROJECT_NAME).tap
 
 run-48:
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
-	fuse --machine=48 $(PROJECT_NAME).tap
+	@if [ -z "$(PROJECT_NAME)" ]; then\
+		echo "Project name not detected";\
+		$(eval PROJECT_NAME=game)\
+	fi
+	fuse --machine=48 dist/$(PROJECT_NAME).tap
