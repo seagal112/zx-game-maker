@@ -42,6 +42,7 @@ SIZE7=$(stat --printf="%s" output/attrs.bin)
 SIZE8=$(stat --printf="%s" output/sprites.bin)
 SIZE9=$(stat --printf="%s" output/objectsInScreen.bin)
 SIZE10=$(stat --printf="%s" output/screenOffsets.bin)
+SIZE11=$(stat --printf="%s" output/enemiesInScreenOffsets.bin)
 tilesetAddress=$(echo "$SIZE0 + $SIZE1 + $SIZE2 + $SIZE3 + $SIZE4 + $SIZE5" | bc)
 attrAddress=$(echo "$tilesetAddress + $SIZE6" | bc)
 spritesAddress=$(echo "$attrAddress + $SIZE7" | bc)
@@ -66,3 +67,5 @@ echo "const SCREEN_OFFSETS_DATA_ADDRESS as uinteger=$screenOffsetsAddress" >> ou
 echo "const ENEMIES_IN_SCREEN_OFFSETS_DATA_ADDRESS as uinteger=$enemiesInScreenOffsets" >> output/config.bas
 
 wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0
+
+python3 vendor/zxsgm/bin/memoryImageGenerator.py $SIZEFX,$SIZE1,$SIZE2,$SIZE3,$SIZE4,$SIZE5,$SIZE6,$SIZE7,$SIZE8,$SIZE9,$SIZE10,$SIZE11

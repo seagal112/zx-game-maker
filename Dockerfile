@@ -9,7 +9,7 @@ RUN winecfg
 
 WORKDIR /app
 
-RUN pip install numpy opencv-python Pillow
+RUN pip install numpy opencv-python Pillow matplotlib
 
 COPY --from=rtorralba/zxbasic:latest /zxbasic /app/vendor/zxsgm/bin/zxbasic
 COPY vendor /app/vendor
