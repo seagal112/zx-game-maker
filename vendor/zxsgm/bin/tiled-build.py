@@ -206,7 +206,7 @@ for layer in data['layers']:
 
                 # screens[idx][mapY][mapX % screenWidth] = tile
 
-                if tile in animatedTilesIds:
+                if tile in animatedTilesIds and len(screenAnimatedTiles[idx]) < maxAnimatedTilesPerScreen:
                     screenAnimatedTiles[idx].append([int(tile), mapX, mapY, 0])
 
                 if tile == keyTile:
