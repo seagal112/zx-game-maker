@@ -1,41 +1,16 @@
-const MAX_ANIMATED_TILES as ubyte = 3
-
 function removeScreenObject(type as ubyte) AS UBYTE
 	screenObjects(currentScreen, type) = 0
 end function
 
-dim animatedTilesInScreen(2, 3) as ubyte
-
 sub mapDraw()
 	dim tile, index, y, x as integer
-	dim animatedTilesCount as ubyte
 
 	x = 0
 	y = 0
-	animatedTilesCount = 0
-
-	for index = 0 to MAX_ANIMATED_TILES - 1
-		animatedTilesInScreen(index, 0) = 0
-		animatedTilesInScreen(index, 1) = 0
-		animatedTilesInScreen(index, 2) = 0
-		animatedTilesInScreen(index, 3) = 0
-	next index
 	
 	for index=0 to SCREEN_LENGTH
-		tile = decompressedMap(index) - 1
+		tile = peek(@decompressedMap + index) - 1
 		drawTile(tile, x, y)
-
-		if tile > 1
-			if animatedTilesCount < MAX_ANIMATED_TILES
-				if InArray(tile, @animatedTiles, ANIMATED_TILES_ARRAY_SIZE)
-					animatedTilesInScreen(animatedTilesCount, 0) = tile
-					animatedTilesInScreen(animatedTilesCount, 1) = x
-					animatedTilesInScreen(animatedTilesCount, 2) = y
-					animatedTilesInScreen(animatedTilesCount, 3) = 0
-					animatedTilesCount = animatedTilesCount + 1
-				end if
-			end if
-		end if
 
 		x = x + 1
 		if x = screenWidth
@@ -46,25 +21,28 @@ sub mapDraw()
 end sub
 
 sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
-	if tile <> 0
-		if tile = itemTile
-			if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
-				SetTileChecked(tile, attrSet(tile), x, y)
-			end if
-		elseif tile = keyTile
-			if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
-				SetTileChecked(tile, attrSet(tile), x, y)
-			end if
-		elseif tile = doorTile
-			if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
-				SetTileChecked(tile, attrSet(tile), x, y)
-			end if
-		elseif tile = lifeTile
-			if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
-				SetTileChecked(tile, attrSet(tile), x, y)
-			end if
-		else
-			SetTile(tile, attrSet(tile), x, y)
+	if tile < 2 then return
+
+	if tile < 188
+		SetTile(tile, attrSet(tile), x, y)
+		return
+	end if
+	
+	if tile = itemTile
+		if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
+			SetTileChecked(tile, attrSet(tile), x, y)
+		end if
+	elseif tile = keyTile
+		if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
+			SetTileChecked(tile, attrSet(tile), x, y)
+		end if
+	elseif tile = doorTile
+		if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
+			SetTileChecked(tile, attrSet(tile), x, y)
+		end if
+	elseif tile = lifeTile
+		if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
+			SetTileChecked(tile, attrSet(tile), x, y)
 		end if
 	end if
 end sub

@@ -5,8 +5,6 @@ import os
 
 values = sys.argv[1].split(',')
 
-print(values)
-
 total = 0
 for value in values:
     total += int(value)
@@ -32,18 +30,19 @@ weight_counts = {
     "Objetos": np.array([int(values[9])]),
     "Offsets de pantalla": np.array([int(values[10])]),
     "Offsets de enemigos": np.array([int(values[11])]),
+    "Tiles animados": np.array([int(values[12])]),
     "Espacio libre": np.array([free]),
 }
 width = 2
 
-colors = ['#0000cd', '#cd0000','#cd00cd', '#00cd00','#00cdcd', '#cdcd00','#0000ff', '#ff0000','#ff00ff', '#00ff00','#00ffff', '#ffff00','#999999', '#ae24d1']
+colors = ['#0000cd', '#cd0000','#cd00cd', '#00cd00','#00cdcd', '#cdcd00','#0000ff', '#ff0000','#ff00ff', '#00ff00','#00ffff', '#ffff00','#ae24d1', '#999999']
 
 fig, ax = plt.subplots()
 bottom = np.zeros(3)
 
 counter = 0
 for label, weight_count in weight_counts.items():
-    p = ax.bar(species, weight_count, 0.5, label=label, bottom=bottom, color=colors[counter])
+    p = ax.bar(species, weight_count, width=0.3, label=label + " (" + str(weight_count[0]) + " bytes)", bottom=bottom, color=colors[counter])
     bottom += weight_count
     counter += 1
 
@@ -53,4 +52,4 @@ ax.legend(loc="upper right")
 if not os.path.exists("dist"):
     os.mkdir("dist")
 
-plt.savefig("dist/memory.png", dpi=300, bbox_inches="tight")
+plt.savefig("dist/memory.png", dpi=150, bbox_inches="tight", orientation = 'portrait')

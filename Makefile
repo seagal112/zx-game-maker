@@ -30,11 +30,6 @@ build:
 	$(MAKE) tiled-build
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
 
-	@if [ -z "$(PROJECT_NAME)" ]; then\
-		echo "Project name not detected";\
-		$(eval PROJECT_NAME=game)\
-	fi
-
 	$(MAKE) check-fx
 	$(MAKE) screens-build
 
@@ -65,16 +60,8 @@ docker-push:
 
 run:
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
-	@if [ -z "$(PROJECT_NAME)" ]; then\
-		echo "Project name not detected";\
-		$(eval PROJECT_NAME=game)\
-	fi
 	fuse --machine=plus2a dist/$(PROJECT_NAME).tap
 
 run-48:
 	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
-	@if [ -z "$(PROJECT_NAME)" ]; then\
-		echo "Project name not detected";\
-		$(eval PROJECT_NAME=game)\
-	fi
 	fuse --machine=48 dist/$(PROJECT_NAME).tap
