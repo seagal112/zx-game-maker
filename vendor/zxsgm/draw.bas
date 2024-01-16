@@ -24,7 +24,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 	if tile < 2 then return
 
 	if tile < 188
-		SetTileChecked(tile, attrSet(tile), x, y)
+		SetTile(tile, attrSet(tile), x, y)
 		return
 	end if
 	
@@ -51,6 +51,7 @@ sub redrawScreen()
 	' memset(22527,0,768)
 	' ClearScreen(7, 0, 0)
 	' dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
+	CancelOps()
 	FillWithTile(0, 32, 22, 7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
