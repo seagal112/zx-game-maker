@@ -188,9 +188,10 @@ sub resetValues()
     saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
     setScreenElements()
     setEnemies()
+    ClearScreen(7, 0, 0)
     dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     redrawScreen()
-    drawSprites()
+    ' drawSprites()
 end sub
 
 sub checkInvincible()

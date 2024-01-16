@@ -24,7 +24,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 	if tile < 2 then return
 
 	if tile < 188
-		SetTile(tile, attrSet(tile), x, y)
+		SetTileChecked(tile, attrSet(tile), x, y)
 		return
 	end if
 	
@@ -49,8 +49,8 @@ end sub
 
 sub redrawScreen()
 	' memset(22527,0,768)
-	ClearScreen(7, 0, 0)
-	dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
+	' ClearScreen(7, 0, 0)
+	' dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
 	FillWithTile(0, 32, 22, 7, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
@@ -131,9 +131,6 @@ sub drawSprites()
 		end if
 	end if
 	if enemiesPerScreen(currentScreen) > 0
-		dim xToPaint, yToPaint as float
-		dim paintWidth as byte
-		dim paintHeight as byte
 		dim tile as ubyte
 		for i = 0 to enemiesPerScreen(currentScreen) - 1
 			if not getSpriteLin(i) then continue for
