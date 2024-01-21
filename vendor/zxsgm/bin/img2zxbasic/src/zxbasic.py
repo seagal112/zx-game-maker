@@ -67,8 +67,8 @@ def getTilesBas(tiles, attrs = {}):
     #         strOut += "} _\n"
     # strOut += "}\n\n"
 
-    strOut = "dim attrSet2(" + str(len(attrs) - 1) + ") as ubyte = {"
-    iStr = [str(attr) for attr in attrs] 
-    strOut += ",".join(iStr)
-    strOut += "}"
-    return strOut
+    # strOut = "dim attrSet2(" + str(len(attrs) - 1) + ") as ubyte = {"
+    # iStr = [str(attr) for attr in attrs] 
+    # strOut += ",".join(iStr)
+    # strOut += "}"
+    # return strOut

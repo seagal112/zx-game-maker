@@ -52,7 +52,7 @@ sub redrawScreen()
 	' ClearScreen(7, 0, 0)
 	' dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
 	CancelOps()
-	FillWithTile(0, 32, 22, 7, 0, 0)
+	FillWithTile(0, 32, 22, BACKGROUND_ATTRIBUTE, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
 	printLife()
@@ -66,8 +66,8 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 			printLife()
 			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
 			BeepFX_Play(4)
-			FillWithTileChecked(0, 1, 1, 7, col, lin)
-			FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
+			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
+			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
 		end if
 		return 1
 	else

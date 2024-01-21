@@ -92,6 +92,8 @@ spritesWithColors = 0
 
 initTexts = ""
 
+backgroundAttribute = 7
+
 for property in data['properties']:
     if property['name'] == 'gameName':
         gameName = property['value']
@@ -127,6 +129,8 @@ for property in data['properties']:
         spritesWithColors = 1 if property['value'] else 0
     elif property['name'] == 'initTexts':
         initTexts = property['value']
+    elif property['name'] == 'backgroundAttribute':
+        backgroundAttribute = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -160,6 +164,8 @@ configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) 
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
+
+configStr += "const BACKGROUND_ATTRIBUTE = " + str(backgroundAttribute) + "\n\n"
 
 if len(initTexts) > 0:
     configStr += "#DEFINE INIT_TEXTS\n"

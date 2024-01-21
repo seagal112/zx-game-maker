@@ -105,16 +105,12 @@ function getNextFrameRunning() as UBYTE
 	if getSpriteDirection(PROTA_SPRITE) = 1
 		if getSpriteTile(PROTA_SPRITE) = 0
 			return 1
-        elseif getSpriteTile(PROTA_SPRITE) = 1
-			return 2
 		else
 			return 0
 		end if
 	else
         if getSpriteTile(PROTA_SPRITE) = 4
             return 5
-        elseif getSpriteTile(PROTA_SPRITE) = 5
-            return 6
 		else
 			return 4
         end if
@@ -253,16 +249,16 @@ sub checkObjectContact()
 	dim tile11 as UBYTE = GetTile(col + 1, lin + 1)
 
 	if checkTileObject(tile00)
-		FillWithTileChecked(0, 1, 1, 7, col, lin)
+		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
 		return
 	elseif checkTileObject(tile01)
-		FillWithTileChecked(0, 1, 1, 7, col + 1, lin)
+		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col + 1, lin)
 		return
 	elseif checkTileObject(tile10)
-		FillWithTileChecked(0, 1, 1, 7, col, lin + 1)
+		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
 		return
 	elseif checkTileObject(tile11)
-		FillWithTileChecked(0, 1, 1, 7, col + 1, lin + 1)
+		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col + 1, lin + 1)
 		return
 	end if
 end sub
