@@ -67,16 +67,40 @@ function isADamageTile(tile as ubyte) as UBYTE
 	return 0
 end function
 
+function allEnemiesKilled() as ubyte
+    if enemiesPerScreen(currentScreen) = 0 then return 1
+
+    for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
+        if decompressedEnemiesScreen(enemyId, 8) > 0 'In the screen and still live
+            return 0
+        end if
+    next enemyId
+
+    return 1
+end function
+
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile as ubyte = GetTile(col, lin)
 
-    if tile > 0 and tile < 64 'is solid tile
+    if tile > 0 and tile < 63 'is solid tile
         if not invincible then
             if isADamageTile(tile)
                 protaTouch()
             end if
         end if
         return 1
+    end if
+
+    if not SHOULD_KILL_ENEMIES then return 0
+    if screensWon(currentScreen) then return 0
+
+    if tile = 63 then
+        if allEnemiesKilled()
+            return 0
+        else
+            damageSound()
+            return 1
+        end if
     end if
 	return 0
 end function

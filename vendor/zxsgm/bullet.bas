@@ -138,6 +138,10 @@ sub damageEnemy(enemyToKill as Ubyte)
         y = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN)
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(x, y)
+
+        if allEnemiesKilled()
+            screensWon(currentScreen) = 1
+        end if
         
         BeepFX_Play(0)
     else

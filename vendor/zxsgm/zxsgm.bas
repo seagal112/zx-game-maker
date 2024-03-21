@@ -123,6 +123,8 @@ playGame:
         VortexTracker_Inicializar(1)
     #endif
 
+    swapScreen()
+    
     resetValues()
 
     let lastFrameProta = framec
@@ -214,6 +216,7 @@ end sub
 sub swapScreen()
     dzx0Standard(MAPS_DATA_ADDRESS + screensOffsets(currentScreen), @decompressedMap)
     dzx0Standard(ENEMIES_DATA_ADDRESS + enemiesInScreenOffsets(currentScreen), @decompressedEnemiesScreen)
+    bulletPositionX = 0
 end sub
 
 sub animateAnimatedTiles()

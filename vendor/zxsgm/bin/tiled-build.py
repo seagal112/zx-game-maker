@@ -259,8 +259,7 @@ currentOffset = 0
 screenOffsets = []
 screenOffsets.append(currentOffset)
 
-configStr += "dim screensOffsets2(" + str(screensCount) + ") as uinteger\n"
-configStr += "screensOffsets2(0) = " + str(currentOffset) + "\n"
+configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:

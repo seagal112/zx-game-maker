@@ -43,16 +43,7 @@ end function
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getSpriteLin(PROTA_SPRITE) < 2
-			if SHOULD_KILL_ENEMIES
-				if allEnemiesKilled()
-					moveScreen = 8
-				else
-					jumpCurrentKey = jumpStopValue ' stop jumping
-					damageSound()
-				end if
-			else
-				moveScreen = 8
-			end if
+			moveScreen = 8
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			jumpCurrentKey = jumpStopValue ' stop jumping
 		elseif jumpCurrentKey < jumpStepsCount
@@ -84,16 +75,7 @@ end function
 sub gravity()
 	if jumpCurrentKey = jumpStopValue and isFalling()
 		if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
-			if SHOULD_KILL_ENEMIES
-				if allEnemiesKilled()
-					moveScreen = 2
-				else
-					jumpCurrentKey = 0
-					damageSound()
-				end if
-			else
-				moveScreen = 2
-			end if
+			moveScreen = 2
 		else
 			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), 2), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 		end if
@@ -144,15 +126,7 @@ sub leftKey()
 	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
 	animateProta()
 	if onFirstColumn(PROTA_SPRITE)
-		if SHOULD_KILL_ENEMIES
-			if allEnemiesKilled()
-				moveScreen = 4
-			else
-				damageSound()
-			end if
-		else
-			moveScreen = 4
-		end if
+		moveScreen = 4
 	elseif canMoveLeft()
 		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), protaFrame, 0)
 	end if
@@ -162,15 +136,7 @@ sub rightKey()
 	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
 	animateProta()
 	if onLastColumn(PROTA_SPRITE)
-		if SHOULD_KILL_ENEMIES
-			if allEnemiesKilled()
-				moveScreen = 6
-			else
-				damageSound()
-			end if
-		else
-			moveScreen = 6
-		end if
+		moveScreen = 6
 	elseif canMoveRight()
 		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), protaFrame, 1)
 	end if
