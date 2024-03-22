@@ -111,6 +111,17 @@ sub protaTouch()
     damageSound()
 end sub
 
+function CheckStaticPlatform(x as uByte, y as uByte) as uByte
+    Dim col as uByte = x >> 1
+    Dim lin as uByte = y >> 1
+
+    dim tile as ubyte = GetTile(col, lin)
+
+    if tile > 63 and tile < 80 return 1
+
+    return 0
+end function
+
 function CheckCollision(x as uByte, y as uByte) as uByte
     Dim xIsEven as uByte = (x bAnd 1) = 0
     Dim yIsEven as uByte = (y bAnd 1) = 0

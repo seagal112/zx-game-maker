@@ -29,6 +29,9 @@ function canMoveDown() as ubyte
 	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckCollision(x, y + 1) return 0
 	if checkPlatformByXY(x, y + 4) return 0
+	if CheckStaticPlatform(x, y + 4) return 0
+	if CheckStaticPlatform(x + 1, y + 4) return 0
+	if CheckStaticPlatform(x + 2, y + 4) return 0
 	return 1
 end function
 
@@ -47,8 +50,12 @@ sub checkIsJumping()
 		elseif jumpCurrentKey > 0 and not canMoveDown()
 			jumpCurrentKey = jumpStopValue ' stop jumping
 		elseif jumpCurrentKey < jumpStepsCount
-			if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
+			if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
 				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+			else
+				if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
+					saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				end if
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
 		else
