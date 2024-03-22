@@ -46,9 +46,7 @@ end function
 sub checkIsJumping()
 	if jumpCurrentKey <> jumpStopValue
 		if getSpriteLin(PROTA_SPRITE) < 2
-			moveScreen = 8
-		elseif jumpCurrentKey > 0 and not canMoveDown()
-			jumpCurrentKey = jumpStopValue ' stop jumping
+			moveScreen = 8 ' stop jumping
 		elseif jumpCurrentKey < jumpStepsCount
 			if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
 				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
