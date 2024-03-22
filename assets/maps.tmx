@@ -143,12 +143,12 @@
   </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="12" name="enemy_2" type="enemy" gid="209" x="128" y="288" width="16" height="16">
+  <object id="12" name="enemy_2" type="enemy" gid="209" x="40" y="280" width="16" height="16">
    <properties>
     <property name="life" type="int" value="3"/>
    </properties>
   </object>
-  <object id="13" name="enemy_2_end" x="136" y="288">
+  <object id="13" name="enemy_2_end" x="56" y="280">
    <properties>
     <property name="enemy" type="object" value="12"/>
    </properties>

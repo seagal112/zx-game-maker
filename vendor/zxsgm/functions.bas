@@ -98,7 +98,6 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
         if allEnemiesKilled()
             return 0
         else
-            damageSound()
             return 1
         end if
     end if

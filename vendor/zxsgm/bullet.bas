@@ -128,6 +128,26 @@ sub resetBullet()
     bulletDirectionIsRight = 0
 end sub
 
+sub cleanEnemiesDoors()
+	dim tile, index, y, x as integer
+
+	x = 0
+	y = 0
+	
+	for index=0 to SCREEN_LENGTH
+		tile = peek(@decompressedMap + index) - 1
+		if tile = 63 ' if is background, bullet or enemy kill door dont draw
+			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
+		end if
+
+		x = x + 1
+		if x = screenWidth
+			x = 0
+			y = y + 1
+		end if
+	next index
+end sub
+
 sub damageEnemy(enemyToKill as Ubyte)
     decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) - 1
 
@@ -138,12 +158,15 @@ sub damageEnemy(enemyToKill as Ubyte)
         y = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN)
         saveSprite(enemyToKill, 0, 0, 0, 0)
         drawBurst(x, y)
-
-        if allEnemiesKilled()
-            screensWon(currentScreen) = 1
-        end if
         
         BeepFX_Play(0)
+
+        if not screensWon(currentScreen)
+            if allEnemiesKilled()
+                screensWon(currentScreen) = 1
+                cleanEnemiesDoors()
+            end if
+        end if
     else
         damageSound()
     end if
