@@ -191,6 +191,9 @@ sub resetValues()
     setScreenElements()
     setEnemies()
     dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
+    for i = 0 to SCREENS_COUNT
+        screensWon(i) = 0
+    next i
     redrawScreen()
     ' drawSprites()
 end sub
