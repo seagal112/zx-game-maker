@@ -71,6 +71,9 @@ function allEnemiesKilled() as ubyte
     if enemiesPerScreen(currentScreen) = 0 then return 1
 
     for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
+        if decompressedEnemiesScreen(enemyId, 0) < 16
+            continue for
+        end if
         if decompressedEnemiesScreen(enemyId, 8) > 0 'In the screen and still live
             return 0
         end if
