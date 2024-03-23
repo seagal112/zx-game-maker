@@ -161,7 +161,7 @@ sub damageEnemy(enemyToKill as Ubyte)
         
         BeepFX_Play(0)
 
-        if not screensWon(currentScreen)
+        if SHOULD_KILL_ENEMIES and not screensWon(currentScreen)
             if allEnemiesKilled()
                 screensWon(currentScreen) = 1
                 cleanEnemiesDoors()

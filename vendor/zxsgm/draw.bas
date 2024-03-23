@@ -24,7 +24,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 	if tile < 2 then return
 
 	if tile = 63 ' if is background, bullet or enemy kill door dont draw
-		if screensWon(currentScreen)
+		if not SHOULD_KILL_ENEMIES or screensWon(currentScreen)
 			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 		else
 			SetTile(tile, attrSet(tile), x, y)

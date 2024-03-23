@@ -259,7 +259,11 @@ currentOffset = 0
 screenOffsets = []
 screenOffsets.append(currentOffset)
 
-configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
+if shouldKillEnemies == 1:
+    configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
+else:
+    configStr += "dim screensWon(0) as ubyte\n"
+
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
     with open(outputDir + label + '.bin', 'wb') as f:
