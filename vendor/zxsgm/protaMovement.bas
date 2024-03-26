@@ -48,11 +48,11 @@ sub checkIsJumping()
 		if getSpriteLin(PROTA_SPRITE) < 2
 			moveScreen = 8 ' stop jumping
 		elseif jumpCurrentKey < jumpStepsCount
-			if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
-				saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+			if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
+				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 			else
-				if not CheckCollision(getSpriteCol(PROTA_SPRITE), secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)))
-					saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), jumpArray(jumpCurrentKey)), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				if not CheckCollision(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
+					saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 				end if
 			end if
 			jumpCurrentKey = jumpCurrentKey + 1
@@ -82,7 +82,7 @@ sub gravity()
 		if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
 			moveScreen = 2
 		else
-			saveSprite(PROTA_SPRITE, secureYIncrement(getSpriteLin(PROTA_SPRITE), 2), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 2, getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 		end if
 		landed = 0
 	end if
@@ -133,7 +133,7 @@ sub leftKey()
 	if onFirstColumn(PROTA_SPRITE)
 		moveScreen = 4
 	elseif canMoveLeft()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), -1), protaFrame, 0)
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) - 1, protaFrame, 0)
 	end if
 end sub
 
@@ -143,7 +143,7 @@ sub rightKey()
 	if onLastColumn(PROTA_SPRITE)
 		moveScreen = 6
 	elseif canMoveRight()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), secureXIncrement(getSpriteCol(PROTA_SPRITE), 1), protaFrame, 1)
+		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) + 1, protaFrame, 1)
 	end if
 end sub
 

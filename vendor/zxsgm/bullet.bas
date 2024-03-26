@@ -161,13 +161,15 @@ sub damageEnemy(enemyToKill as Ubyte)
         
         BeepFX_Play(0)
 
-        if SHOULD_KILL_ENEMIES and not screensWon(currentScreen)
-            if allEnemiesKilled()
-                screensWon(currentScreen) = 1
-                cleanEnemiesDoors()
+        #ifdef SHOULD_KILL_ENEMIES_ENABLED
+            if SHOULD_KILL_ENEMIES and not screensWon(currentScreen)
+                if allEnemiesKilled()
+                    screensWon(currentScreen) = 1
+                    cleanEnemiesDoors()
+                end if
             end if
-        end if
+        #endif
     else
-        damageSound()
+        BeepFX_Play(1)
     end if
 end sub

@@ -79,7 +79,6 @@ next i
 #include "bullet.bas"
 #include "draw.bas"
 #include "protaMovement.bas"
-#include "sound.bas"
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
@@ -184,6 +183,7 @@ sub resetValues()
     invincibleBlink = 0
 
     currentLife = INITIAL_LIFE
+    currentKeys = 2 mod 2
     currentKeys = 0
     currentItems = 0
     ' removeScreenObjectFromBuffer()

@@ -18,26 +18,6 @@ sub printLife()
 	PRINT AT 22, 30; currentItems
 end sub
 
-function secureXIncrement(x as integer, increment as integer) as integer
-    dim result as integer = x + increment
-
-    if result < 0 or result > 60
-        return x
-    end if
-
-    return result
-end function
-
-function secureYIncrement(y as integer, increment as integer) as integer
-    dim result as integer = y + increment
-
-    if result < 0 or result > MAX_LINE + 4
-        return y
-    end if
-    
-    return result
-end function
-
 function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte) as ubyte
 	dim value as uByte
 	for i = 0 to arraySize
@@ -86,8 +66,10 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
         return 1
     end if
 
-    if not SHOULD_KILL_ENEMIES then return 0
-    if screensWon(currentScreen) then return 0
+    #ifdef SHOULD_KILL_ENEMIES_ENABLED
+        if not SHOULD_KILL_ENEMIES then return 0
+        if screensWon(currentScreen) then return 0
+    #endif
 
     if tile = 63 then
         if allEnemiesKilled()
@@ -103,7 +85,7 @@ sub protaTouch()
     invincible = 1
     invincibleFrame = framec
     decrementLife()
-    damageSound()
+    BeepFX_Play(1)
 end sub
 
 function CheckStaticPlatform(x as uByte, y as uByte) as uByte

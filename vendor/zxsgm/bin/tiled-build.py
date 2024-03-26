@@ -260,6 +260,7 @@ screenOffsets = []
 screenOffsets.append(currentOffset)
 
 if shouldKillEnemies == 1:
+    configStr += "#DEFINE SHOULD_KILL_ENEMIES_ENABLED\n"
     configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
 else:
     configStr += "dim screensWon(0) as ubyte\n"
