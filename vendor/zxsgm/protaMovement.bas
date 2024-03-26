@@ -190,7 +190,11 @@ end sub
 
 function checkTileObject(tile as ubyte) as ubyte
 	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
-		incrementItems()
+		currentItems = currentItems + 1
+		printLife()
+		if currentItems >= GOAL_ITEMS
+			go to ending
+		end if
 		removeScreenObject(SCREEN_OBJECT_ITEM_INDEX)
 		BeepFX_Play(5)
 		return 1

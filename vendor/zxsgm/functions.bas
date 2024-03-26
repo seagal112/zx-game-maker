@@ -11,14 +11,6 @@ sub decrementLife()
 	printLife()
 end sub
 
-sub incrementItems()
-	currentItems = currentItems + 1
-	printLife()
-	if currentItems >= GOAL_ITEMS
-		go to ending
-	end if
-end sub
-
 sub printLife()
 	PRINT AT 22, 5; "  "  
 	PRINT AT 22, 5; currentLife
