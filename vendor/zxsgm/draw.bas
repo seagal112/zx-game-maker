@@ -47,7 +47,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 		end if
 	elseif tile = doorTile
 		if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
-			SetTileChecked(tile, attrSet(tile), x, y)
+			SetTile(tile, attrSet(tile), x, y)
 		end if
 	elseif tile = lifeTile
 		if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
