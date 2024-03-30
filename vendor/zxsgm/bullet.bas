@@ -149,6 +149,8 @@ sub cleanEnemiesDoors()
 end sub
 
 sub damageEnemy(enemyToKill as Ubyte)
+    if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 99 return 'invincible enemies
+
     decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) - 1
 
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 0
