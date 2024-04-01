@@ -25,11 +25,16 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 
 	#ifdef SHOULD_KILL_ENEMIES_ENABLED
 		if tile = 63 ' if is background, bullet or enemy kill door dont draw
-			if not SHOULD_KILL_ENEMIES or screensWon(currentScreen)
+			if screensWon(currentScreen)
 				SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 			else
 				SetTile(tile, attrSet(tile), x, y)
 			end if
+			return
+		end if
+	#else
+		if tile = 63 ' if is background, bullet or enemy kill door dont draw
+			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 			return
 		end if
 	#endif
