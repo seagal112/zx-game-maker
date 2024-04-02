@@ -25,11 +25,24 @@ def prepareTiles(tiles):
     
     result += mirroredTiles
     return result
+
+def prepareTilesWithOutMirror(tiles):
+    result = []
+    counter = 0
+    for i in range(0, 48):
+        result.append(tiles[counter])
+        counter += 1
+
+    return result
     
 
 def getSpritesBas(tiles):
-    tiles = prepareTiles(tiles)
-    with open("output/sprites.bin", "wb") as f:
+    if len(tiles) == 32:
+        tiles = prepareTiles(tiles)
+    else:
+        tiles = prepareTilesWithOutMirror(tiles)
+
+    with    open("output/sprites.bin", "wb") as f:
         for tile in tiles:
             f.write(bytearray(tile))
 
