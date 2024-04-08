@@ -15,27 +15,18 @@ sub printLife()
 	PRINT AT 22, 5; "  "  
 	PRINT AT 22, 5; currentLife
 	PRINT AT 22, 16; currentKeys
+    #ifdef HISCORE_ENABLED
+	    PRINT AT 23, 25 - LEN(STR$(score)); score
+    #endif
 	PRINT AT 22, 30; currentItems
 end sub
 
-function InArray(Needle as uByte, Haystack as uInteger, arraySize as ubyte) as ubyte
-	dim value as uByte
-	for i = 0 to arraySize
-		value = peek(Haystack + i)
-		if value = Needle
-			return value
-		end if
-	next i
-
-	return 0
-end function
-
 function isADamageTile(tile as ubyte) as UBYTE
-	for i = 0 to DAMAGE_TILES_ARRAY_SIZE
-		if InArray(tile, @damageTiles, DAMAGE_TILES_ARRAY_SIZE)
-			return 1
-		end if
-	next i
+    for i = 0 to DAMAGE_TILES_ARRAY_SIZE
+        if peek(@damageTiles + i) = tile
+            return 1
+        end if
+    next i
 	return 0
 end function
 
@@ -57,14 +48,7 @@ end function
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile as ubyte = GetTile(col, lin)
 
-    if tile > 0 and tile < 63 'is solid tile
-        if not invincible then
-            if isADamageTile(tile)
-                protaTouch()
-            end if
-        end if
-        return 1
-    end if
+    if tile > 0 and tile < 63 then return 1
 
     #ifdef SHOULD_KILL_ENEMIES_ENABLED
         if not SHOULD_KILL_ENEMIES then return 0
@@ -145,28 +129,6 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     dim tile as ubyte = GetTile(col, lin)
 
 	return tile > 0 and tile < 64 ' is solid tile
-end function
-
-Function fastcall hMirror (number as uByte) as uByte
-asm
-;17 bytes and 66 clock cycles
-Reverse:
-    ld b,a       ;b=ABCDEFGH
-    rrca         ;a=HABCDEFG
-    rrca         ;a=GHABCDEF
-    xor b
-    and %10101010
-    xor b        ;a=GBADCFEH
-    ld b,a       ;b=GBADCFEH
-    rrca         ;a=HGBADCFE
-    rrca         ;a=EHGBADCF
-    rrca         ;a=FEHGBADC
-    rrca         ;a=CFEHGBAD
-    xor b
-    and %01100110
-    xor b        ;a=GFEDCBAH
-    rrca         ;a=HGFEDCBA
-end asm
 end function
 
 #ifdef INIT_TEXTS

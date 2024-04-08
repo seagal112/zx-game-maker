@@ -1,7 +1,3 @@
-function removeScreenObject(type as ubyte) AS UBYTE
-	screenObjects(currentScreen, type) = 0
-end function
-
 sub mapDraw()
 	dim tile, index, y, x as integer
 
@@ -80,7 +76,7 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 		if currentKeys <> 0
 			currentKeys = currentKeys - 1
 			printLife()
-			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
+			screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX) = 0
 			BeepFX_Play(4)
 			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
 			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
@@ -163,7 +159,3 @@ sub drawSprites()
 
 	RenderFrame()
 END SUB
-
-sub drawBurst(x as ubyte, y as ubyte)
-	Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)
-end sub

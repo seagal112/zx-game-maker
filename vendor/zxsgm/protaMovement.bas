@@ -129,7 +129,7 @@ end sub
 
 sub leftKey()
 	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
-	animateProta()
+	protaFrame = getNextFrameRunning()
 	if onFirstColumn(PROTA_SPRITE)
 		moveScreen = 4
 	elseif canMoveLeft()
@@ -139,7 +139,7 @@ end sub
 
 sub rightKey()
 	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
-	animateProta()
+	protaFrame = getNextFrameRunning()
 	if onLastColumn(PROTA_SPRITE)
 		moveScreen = 6
 	elseif canMoveRight()
@@ -191,23 +191,26 @@ end sub
 function checkTileObject(tile as ubyte) as ubyte
 	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 		currentItems = currentItems + 1
+		#ifdef HISCORE_ENABLED
+			score = score + 100
+		#endif
 		printLife()
 		if currentItems >= GOAL_ITEMS
 			go to ending
 		end if
-		removeScreenObject(SCREEN_OBJECT_ITEM_INDEX)
+		screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 0
 		BeepFX_Play(5)
 		return 1
 	elseif tile = keyTile and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 		currentKeys = currentKeys + 1
 		printLife()
-		removeScreenObject(SCREEN_OBJECT_KEY_INDEX)
+		screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX) = 0
 		BeepFX_Play(3)
 		return 1
 	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 		currentLife = currentLife + LIFE_AMOUNT
 		printLife()
-		removeScreenObject(SCREEN_OBJECT_LIFE_INDEX)
+		screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX) = 0
 		BeepFX_Play(6)
 		return 1
 	end if
@@ -234,6 +237,30 @@ sub checkObjectContact()
 		return
 	elseif checkTileObject(tile11)
 		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col + 1, lin + 1)
+		return
+	end if
+end sub
+
+sub checkDamageByTile()
+    if invincible then return
+    
+    Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
+    Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
+
+	if isADamageTile(GetTile(col, lin))
+		protaTouch()
+		return
+	end if
+	if isADamageTile(GetTile(col + 1, lin))
+		protaTouch()
+		return
+	end if
+	if isADamageTile(GetTile(col, lin + 1))
+		protaTouch()
+		return
+	end if
+	if isADamageTile(GetTile(col + 1, lin + 1))
+		protaTouch()
 		return
 	end if
 end sub
