@@ -1,7 +1,7 @@
 import os
 
 
-def prepareTiles(tiles):
+def prepareTiles(tiles):  
     result = []
     mirroredTiles = []
     counter = 0
@@ -52,36 +52,46 @@ def flip_byte(b):
 def reorderArray(sprite):
     return [sprite[16], sprite[17], sprite[18], sprite[19], sprite[20], sprite[21], sprite[22], sprite[23], sprite[24], sprite[25], sprite[26], sprite[27], sprite[28], sprite[29], sprite[30], sprite[31], sprite[0], sprite[1], sprite[2], sprite[3], sprite[4], sprite[5], sprite[6], sprite[7], sprite[8], sprite[9], sprite[10], sprite[11], sprite[12], sprite[13], sprite[14], sprite[15]]
 
-def getTilesBas(tiles, attrs = {}):
+def getTilesBas():
     if not os.path.exists("output"):
         os.makedirs("output")
-        
+
+    with open('assets/tiles.zxp', 'r') as f:
+        lines = f.readlines()
+
+    lines = lines[2:]
+
+    # Separar las líneas de bits y las líneas de colores
+    bit_lines = lines[:48]
+
+    tiles = []
+    # convertir el array de bits en tiles de 8x8 de spectrum
+    for i in range(0, 48, 8):
+        for j in range(0, 256, 8):
+            tile = []
+            for k in range(8):
+                tile.append(int(bit_lines[i + k][j:j + 8], 2))
+            tiles.append(tile)
+
     # Guardar tiles en fichero bin para cargarlo desde basic
     with open("output/tiles.bin", "wb+") as f:
         for tile in tiles:
             f.write(bytearray(tile))
 
+    attrs = []
+    
+    # guardar en color_lineas de la linea 52 a la 57
+    color_lines = lines[49:56]
+
+    # convertir cada valor de cada una de esas lineas que estan separados por un espacio de hexadecimal a decimal y guardarlo todo en el array attrs
+    for line in color_lines:
+        for color in line.strip().split(" "):
+            if color:
+                attrs.append(int(color, 16))
+            
     # Guardar array de enteros de una dimension attrs en fichero binario para cargarlo desde basic
     attrs = [int(attr) for attr in attrs]
 
     with open("output/attrs.bin", "wb+") as f:
         for attr in attrs:
             f.write(attr.to_bytes(1, byteorder='big'))
-        
-            
-    # strOut = "dim tileSet2(" + str(len(tiles) - 1) + ",7) as ubyte = { _\n"
-    # for index, tile in enumerate(tiles):
-    #     strOut += "\t{"
-    #     iStr = [str(tile) for tile in tile] 
-    #     strOut += ",".join(iStr)
-    #     if index != len(tiles) - 1:
-    #         strOut += "}, _\n"
-    #     else:
-    #         strOut += "} _\n"
-    # strOut += "}\n\n"
-
-    # strOut = "dim attrSet2(" + str(len(attrs) - 1) + ") as ubyte = {"
-    # iStr = [str(attr) for attr in attrs] 
-    # strOut += ",".join(iStr)
-    # strOut += "}"
-    # return strOut

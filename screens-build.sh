@@ -25,8 +25,8 @@ python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png assets/screens/load
 python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.tmp.png
 mv assets/screens/loading.tmp.png.scr output/loading.bin
 
-python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/tiles.png -p assets/paperValues.txt -t tiles > output/tiles.bas
-python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -i assets/sprites.png -p assets/paperValues.txt -t sprites > output/sprites.bas
+python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
+python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t sprites
 
 cat output/title.png.scr.zx0 output/ending.png.scr.zx0 output/hud.png.scr.zx0 output/map.bin.zx0 output/enemies.bin.zx0 output/tiles.bin output/attrs.bin output/sprites.bin output/objectsInScreen.bin output/screenOffsets.bin output/enemiesInScreenOffsets.bin output/animatedTilesInScreen.bin > output/files.bin.zx0
 
