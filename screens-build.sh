@@ -22,7 +22,7 @@ python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
 java -jar ${BIN_FOLDER}zx0.jar -f output/hud.tmp.png.scr output/hud.png.scr.zx0
 
 python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png output/loading.tmp.png
-python3 ${BIN_FOLDER}pngoutput/screens/loading.tmp.png
+python3 ${BIN_FOLDER}png2scr.py output/loading.tmp.png
 mv output/loading.tmp.png.scr output/loading.bin
 
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
