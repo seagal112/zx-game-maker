@@ -72,6 +72,9 @@ def getTilesBas():
             for k in range(8):
                 tile.append(int(bit_lines[i + k][j:j + 8], 2))
             tiles.append(tile)
+    
+    #setear el primer tile a 0s
+    tiles[0] = [0] * 8
 
     # Guardar tiles en fichero bin para cargarlo desde basic
     with open("output/tiles.bin", "wb+") as f:
