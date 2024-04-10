@@ -9,21 +9,21 @@ SIZE5=0
 
 echo "const BEEP_FX_ADDRESS as uinteger=$SIZE0" >> output/config.bas
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png assets/screens/title.tmp.png
-python3 ${BIN_FOLDER}png2scr.py assets/screens/title.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.tmp.png.scr output/title.png.scr.zx0
+python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png output/title.tmp.png
+python3 ${BIN_FOLDER}png2scr.py output/title.tmp.png
+java -jar ${BIN_FOLDER}zx0.jar -f output/title.tmp.png.scr output/title.png.scr.zx0
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png assets/screens/ending.tmp.png
-python3 ${BIN_FOLDER}png2scr.py assets/screens/ending.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.tmp.png.scr output/ending.png.scr.zx0
+python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png output/ending.tmp.png
+python3 ${BIN_FOLDER}png2scr.py output/ending.tmp.png
+java -jar ${BIN_FOLDER}zx0.jar -f output/ending.tmp.png.scr output/ending.png.scr.zx0
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png assets/screens/hud.tmp.png
-python3 ${BIN_FOLDER}png2scr.py assets/screens/hud.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.tmp.png.scr output/hud.png.scr.zx0
+python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png output/hud.tmp.png
+python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
+java -jar ${BIN_FOLDER}zx0.jar -f output/hud.tmp.png.scr output/hud.png.scr.zx0
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png assets/screens/loading.tmp.png
-python3 ${BIN_FOLDER}png2scr.py assets/screens/loading.tmp.png
-mv assets/screens/loading.tmp.png.scr output/loading.bin
+python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png output/loading.tmp.png
+python3 ${BIN_FOLDER}pngoutput/screens/loading.tmp.png
+mv output/loading.tmp.png.scr output/loading.bin
 
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t sprites
