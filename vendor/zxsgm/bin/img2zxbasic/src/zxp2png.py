@@ -6,7 +6,10 @@ def generateSpritesPng():
         lines = f.readlines()
 
     # Separar las líneas de bits y las líneas de colores
-    bit_lines = lines[2:34]
+    if len(lines) < 45:
+        bit_lines = lines[2:34]
+    else:
+        bit_lines = lines[2:50]
 
     # Crear una nueva imagen en escala de grises con el tamaño correcto
     img = Image.new('RGB', (len(bit_lines[0])-1, len(bit_lines)))
