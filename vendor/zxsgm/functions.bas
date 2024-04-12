@@ -46,8 +46,10 @@ function allEnemiesKilled() as ubyte
         if decompressedEnemiesScreen(enemyId, 0) < 16
             continue for
         end if
-        if decompressedEnemiesScreen(enemyId, 8) > 0 'In the screen and still live
-            return 0
+        if decompressedEnemiesScreen(enemyId, 8) <> 99 'is not invincible'
+            if decompressedEnemiesScreen(enemyId, 8) > 0 'In the screen and still live
+                return 0
+            end if
         end if
     next enemyId
 
