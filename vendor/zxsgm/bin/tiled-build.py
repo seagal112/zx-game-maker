@@ -154,7 +154,6 @@ configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
-# configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
@@ -272,6 +271,11 @@ screenOffsets.append(currentOffset)
 
 if shouldKillEnemies == 1:
     configStr += "#DEFINE SHOULD_KILL_ENEMIES_ENABLED\n"
+
+if enemiesRespawn == 0:
+    configStr += "#DEFINE ENEMIES_NOT_RESPAWN_ENABLED\n"
+
+if shouldKillEnemies == 1 or enemiesRespawn == 0:
     configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
 else:
     configStr += "dim screensWon(0) as ubyte\n"

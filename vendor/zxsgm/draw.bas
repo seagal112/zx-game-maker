@@ -149,6 +149,12 @@ sub drawSprites()
 			if not getSpriteLin(i) then continue for
 			
 			tile = getSpriteTile(i)
+
+			#ifdef ENEMIES_NOT_RESPAWN_ENABLED
+				if decompressedEnemiesScreen(i, ENEMY_ALIVE) <> 99 and decompressedEnemiesScreen(i, ENEMY_TILE) > 15
+					if screensWon(currentScreen) then continue for
+				end if
+			#endif
 			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
 		next i
 	end if
