@@ -177,9 +177,8 @@ ending:
     #endif
 
     dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
-    pause 300
-    WHILE INKEY$<>"":WEND
-    WHILE INKEY$="":WEND
+    DO
+    LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 gameOver:
@@ -188,9 +187,8 @@ gameOver:
     #endif
 
     print at 7, 12; "GAME OVER"
-    pause 300
-    WHILE INKEY$<>"":WEND
-    WHILE INKEY$="":WEND
+    DO
+    LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 sub resetValues()
