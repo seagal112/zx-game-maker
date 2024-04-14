@@ -16,7 +16,6 @@ dim currentBulletSpriteId as ubyte
 
 dim protaFrame as ubyte = 0 
 dim enemFrame as ubyte = 0 
-dim animatedTilesFrame as ubyte = 0 
 
 dim kempston as uByte
 dim keyOption as String

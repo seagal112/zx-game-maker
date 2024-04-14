@@ -11,8 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": [ "-i", "sprites.png",
-            "-p", "paperValues.txt",
+            "args": [
             "-t", "sprites"
             ]
         }
