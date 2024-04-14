@@ -53,7 +53,6 @@ function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
     if tile > 0 and tile < 63 then return 1
 
     #ifdef SHOULD_KILL_ENEMIES_ENABLED
-        if not SHOULD_KILL_ENEMIES then return 0
         if screensWon(currentScreen) then return 0
     #endif
 
