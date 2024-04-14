@@ -124,8 +124,11 @@ for property in data['properties']:
         vtplayerMute = property['value']
     elif property['name'] == 'VTPLAYER_NEXTNOTE':
         vtplayerNextNote = property['value']
-    elif property['name'] == 'maxEnemiesPerScreen' and property['value'] < 6:
-        maxEnemiesPerScreen = property['value']
+    elif property['name'] == 'maxEnemiesPerScreen':
+        if property['value'] < 7:
+            maxEnemiesPerScreen = property['value']
+        else:
+            maxEnemiesPerScreen = 6
     elif property['name'] == 'spritesMergeModeXor':
         spritesMergeModeXor = 1 if property['value'] else 0
     elif property['name'] == 'spritesWithColors':
