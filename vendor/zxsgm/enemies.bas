@@ -34,6 +34,13 @@ sub moveEnemies()
         if decompressedEnemiesScreen(enemyId, ENEMY_TILE) = 0
             continue for
         end if
+        ' TODO: Implement respawn
+        ' #ifdef SHOULD_KILL_ENEMIES_ENABLED
+        '     if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) <> 99 and decompressedEnemiesScreen(enemyId, ENEMY_TILE) > 16
+        '         if screensWon(currentScreen) then continue for
+        '     end if
+        ' #endif
+        
         if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) > 0 'In the screen and still live
             dim tile as BYTE
             dim enemyCol as BYTE = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) 
