@@ -53,7 +53,7 @@ sub moveBullet()
                 if protaX + BULLET_DISTANCE > maxXScreenRight
                     limit = maxXScreenRight
                 else
-                    limit = protaX + BULLET_DISTANCE
+                    limit = protaX + BULLET_DISTANCE + 1
                 end if
                 if bulletPositionX > limit
                     bulletPositionX = 0
