@@ -18,14 +18,14 @@ bullet(7) = tileSet(1, 7)
 
 spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bullet)
 
-bullet(0) = hMirror(tileSet(1, 0))
-bullet(1) = hMirror(tileSet(1, 1))
-bullet(2) = hMirror(tileSet(1, 2))
-bullet(3) = hMirror(tileSet(1, 3))
-bullet(4) = hMirror(tileSet(1, 4))
-bullet(5) = hMirror(tileSet(1, 5))
-bullet(6) = hMirror(tileSet(1, 6))
-bullet(7) = hMirror(tileSet(1, 7))
+bullet(0) = tileSet(192, 0)
+bullet(1) = tileSet(192, 1)
+bullet(2) = tileSet(192, 2)
+bullet(3) = tileSet(192, 3)
+bullet(4) = tileSet(192, 4)
+bullet(5) = tileSet(192, 5)
+bullet(6) = tileSet(192, 6)
+bullet(7) = tileSet(192, 7)
 
 spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bullet)
 
@@ -152,6 +152,10 @@ sub damageEnemy(enemyToKill as Ubyte)
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 99 return 'invincible enemies
 
     decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) - 1
+    #ifdef HISCORE_ENABLED
+        score = score + 5
+        printLife()
+    #endif
 
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 0
         dim attr, tile, x, y, col, lin, tmpX, tmpY as ubyte
@@ -159,12 +163,12 @@ sub damageEnemy(enemyToKill as Ubyte)
         x = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_COL)
         y = decompressedEnemiesScreen(enemyToKill, ENEMY_CURRENT_LIN)
         saveSprite(enemyToKill, 0, 0, 0, 0)
-        drawBurst(x, y)
+        Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)
         
         BeepFX_Play(0)
 
         #ifdef SHOULD_KILL_ENEMIES_ENABLED
-            if SHOULD_KILL_ENEMIES and not screensWon(currentScreen)
+            if not screensWon(currentScreen)
                 if allEnemiesKilled()
                     screensWon(currentScreen) = 1
                     cleanEnemiesDoors()

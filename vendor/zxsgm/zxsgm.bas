@@ -48,7 +48,7 @@ load "" CODE ' Load files
 
 #include "GuSprites.zxbas"
 
-dim tileSet(191, 7) as ubyte at TILESET_DATA_ADDRESS
+dim tileSet(192, 7) as ubyte at TILESET_DATA_ADDRESS
 dim attrSet(191) as ubyte at ATTR_DATA_ADDRESS
 dim sprites(47, 31) as ubyte at SPRITES_DATA_ADDRESS
 dim screenObjectsInitial(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_DATA_ADDRESS
@@ -87,6 +87,14 @@ menu:
 
     dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
 
+    #ifdef HISCORE_ENABLED
+        if score > hiScore
+            hiScore = score
+        end if
+        PRINT AT 0, 22; "HI:"
+        PRINT AT 0, 26; hiScore
+    #endif
+
     do
         let keyOption = Inkey$
     loop until keyOption = "1" OR keyOption = "2" OR keyOption = "3" 
@@ -120,18 +128,20 @@ playGame:
     #ifdef MUSIC_ENABLED
         VortexTracker_Inicializar(1)
     #endif
-
-    swapScreen()
     
     resetValues()
 
     let lastFrameProta = framec
     let lastFrameOthers = framec
+
+    #ifdef HISCORE_ENABLED
+        PRINT AT 23, 20; "00000"
+    #endif
     do
         waitretrace
 
         if framec - lastFrameProta >= 3
-            animateProta()
+            protaFrame = getNextFrameRunning()
             let lastFrameProta = framec
         end if
 
@@ -141,12 +151,24 @@ playGame:
         end if
 
         protaMovement()
+        checkDamageByTile()
         moveEnemies()
         moveBullet()
         drawSprites()
-        checkMoveScreen()
-        checkRemainLife()
-        checkInvincible()
+
+        if moveScreen <> 0
+            moveToScreen(moveScreen)
+            moveScreen = 0
+        end if
+
+        if currentLife = 0 then go to gameOver
+
+        if invincible = 1
+            if framec - invincibleFrame >= INVINCIBLE_FRAMES
+                invincible = 0
+                invincibleFrame = 0
+            end if
+        end if
     loop
 
 ending:
@@ -155,9 +177,8 @@ ending:
     #endif
 
     dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
-    pause 300
-    WHILE INKEY$<>"":WEND
-    WHILE INKEY$="":WEND
+    DO
+    LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 gameOver:
@@ -166,9 +187,8 @@ gameOver:
     #endif
 
     print at 7, 12; "GAME OVER"
-    pause 300
-    WHILE INKEY$<>"":WEND
-    WHILE INKEY$="":WEND
+    DO
+    LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 sub resetValues()
@@ -187,27 +207,17 @@ sub resetValues()
     currentItems = 0
     ' removeScreenObjectFromBuffer()
     saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
-    setScreenElements()
-    setEnemies()
+    screenObjects = screenObjectsInitial
+    enemiesPerScreen = enemiesPerScreenInitial
     dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     for i = 0 to SCREENS_COUNT
         screensWon(i) = 0
     next i
+    #ifdef HISCORE_ENABLED
+        score = 0
+    #endif
     redrawScreen()
     ' drawSprites()
-end sub
-
-sub checkInvincible()
-    if invincible = 1
-        if framec - invincibleFrame >= INVINCIBLE_FRAMES
-            invincible = 0
-            invincibleFrame = 0
-        end if
-    end if
-end sub
-
-sub animateProta()
-    protaFrame = getNextFrameRunning()
 end sub
 
 sub animateOthers()
@@ -231,27 +241,10 @@ sub animateAnimatedTiles()
     next i
 end sub
 
-sub checkRemainLife()
-    if currentLife = 0
-        ' enemiesDraw(1)
-        go to gameOver
-    end if
+sub debugA(value as UBYTE)
+    PRINT AT 18, 10; "----"
+    PRINT AT 18, 10; value
 end sub
-
-sub checkMoveScreen()
-    if moveScreen <> 0
-        moveToScreen(moveScreen)
-        moveScreen = 0
-        ' if ENEMIES_RESPAWN
-        '     setEnemies()
-        ' end if
-    end if
-end sub
-
-' sub debugA(value as UBYTE)
-'     PRINT AT 18, 10; "----"
-'     PRINT AT 18, 10; value
-' end sub
 
 ' sub debugB(value as UBYTE)
 '     PRINT AT 18, 15; "  "

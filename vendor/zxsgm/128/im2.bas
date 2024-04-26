@@ -12,8 +12,7 @@ SUB FASTCALL IM2_Inicializar(address AS UInteger)
         ; Deshabilitamos las interrupciones
         ld hl,IM2_Table-256 ; Dirección del final de la tabla
         ld a,h
-        ; Ajustamos el valor de I al final de la
-        tabla
+        ; Ajustamos el valor de I al final de la tabla
         ld i,a
         ld hl,IM2_Tick
         ld a,l

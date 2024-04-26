@@ -78,6 +78,7 @@ enemiesRespawn = 0
 shooting = 1
 shouldKillEnemies = 0
 musicEnabled = 0
+hiScore = 0
 
 vtplayerInit = '0'
 vtplayerMute = '0'
@@ -115,14 +116,19 @@ for property in data['properties']:
         shouldKillEnemies = 1 if property['value'] else 0
     elif property['name'] == 'musicEnabled':
         musicEnabled = 1 if property['value'] else 0
+    elif property['name'] == 'hiScore':
+        hiScore = 1 if property['value'] else 0
     elif property['name'] == 'VTPLAYER_INIT':
         vtplayerInit = property['value']
     elif property['name'] == 'VTPLAYER_MUTE':
         vtplayerMute = property['value']
     elif property['name'] == 'VTPLAYER_NEXTNOTE':
         vtplayerNextNote = property['value']
-    elif property['name'] == 'maxEnemiesPerScreen' and property['value'] < 6:
-        maxEnemiesPerScreen = property['value']
+    elif property['name'] == 'maxEnemiesPerScreen':
+        if property['value'] < 7:
+            maxEnemiesPerScreen = property['value']
+        else:
+            maxEnemiesPerScreen = 6
     elif property['name'] == 'spritesMergeModeXor':
         spritesMergeModeXor = 1 if property['value'] else 0
     elif property['name'] == 'spritesWithColors':
@@ -148,7 +154,6 @@ configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
-# configStr += "const ENEMIES_RESPAWN as ubyte = " + str(enemiesRespawn) + "\n"
 configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
@@ -178,6 +183,11 @@ configStr += "\n"
 
 if musicEnabled == 1:
     configStr += "#DEFINE MUSIC_ENABLED\n"
+
+if hiScore == 1:
+    configStr += "#DEFINE HISCORE_ENABLED\n\n"
+    configStr += "dim score as uinteger = 0\n"
+    configStr += "dim hiScore as uinteger = 0\n"
 
 if spritesMergeModeXor == 1:
     configStr += "#DEFINE MERGE_WITH_XOR\n"
@@ -261,6 +271,11 @@ screenOffsets.append(currentOffset)
 
 if shouldKillEnemies == 1:
     configStr += "#DEFINE SHOULD_KILL_ENEMIES_ENABLED\n"
+
+if enemiesRespawn == 0:
+    configStr += "#DEFINE ENEMIES_NOT_RESPAWN_ENABLED\n"
+
+if shouldKillEnemies == 1 or enemiesRespawn == 0:
     configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
 else:
     configStr += "dim screensWon(0) as ubyte\n"

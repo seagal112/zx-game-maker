@@ -52,6 +52,9 @@ def flip_byte(b):
 def reorderArray(sprite):
     return [sprite[16], sprite[17], sprite[18], sprite[19], sprite[20], sprite[21], sprite[22], sprite[23], sprite[24], sprite[25], sprite[26], sprite[27], sprite[28], sprite[29], sprite[30], sprite[31], sprite[0], sprite[1], sprite[2], sprite[3], sprite[4], sprite[5], sprite[6], sprite[7], sprite[8], sprite[9], sprite[10], sprite[11], sprite[12], sprite[13], sprite[14], sprite[15]]
 
+def flipTile(tile):
+    return [flip_byte(b) for b in tile]
+
 def getTilesBas():
     if not os.path.exists("output"):
         os.makedirs("output")
@@ -80,6 +83,12 @@ def getTilesBas():
     with open("output/tiles.bin", "wb+") as f:
         for tile in tiles:
             f.write(bytearray(tile))
+
+        # voltear horizontalmente el segundo tile
+        tile = tiles[1]
+        tile0HorizontalFlip = flipTile(tile)
+
+        f.write(bytearray(tile0HorizontalFlip))
 
     attrs = []
     

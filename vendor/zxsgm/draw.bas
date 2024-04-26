@@ -1,7 +1,3 @@
-function removeScreenObject(type as ubyte) AS UBYTE
-	screenObjects(currentScreen, type) = 0
-end function
-
 sub mapDraw()
 	dim tile, index, y, x as integer
 
@@ -65,9 +61,9 @@ end sub
 
 sub redrawScreen()
 	' memset(22527,0,768)
-	' ClearScreen(7, 0, 0)
+    ' CancelOps()
+	ClearScreen(7, 0, 0) ' Modified for only cancelops and no clear screen
 	' dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
-	CancelOps()
 	FillWithTile(0, 32, 22, BACKGROUND_ATTRIBUTE, 0, 0)
 	' clearBox(0,0,120,112)
 	mapDraw()
@@ -80,7 +76,7 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 		if currentKeys <> 0
 			currentKeys = currentKeys - 1
 			printLife()
-			removeScreenObject(SCREEN_OBJECT_DOOR_INDEX)
+			screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX) = 0
 			BeepFX_Play(4)
 			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
 			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
@@ -153,6 +149,12 @@ sub drawSprites()
 			if not getSpriteLin(i) then continue for
 			
 			tile = getSpriteTile(i)
+
+			#ifdef ENEMIES_NOT_RESPAWN_ENABLED
+				if decompressedEnemiesScreen(i, ENEMY_ALIVE) <> 99 and decompressedEnemiesScreen(i, ENEMY_TILE) > 15
+					if screensWon(currentScreen) then continue for
+				end if
+			#endif
 			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
 		next i
 	end if
@@ -163,7 +165,3 @@ sub drawSprites()
 
 	RenderFrame()
 END SUB
-
-sub drawBurst(x as ubyte, y as ubyte)
-	Draw2x2Sprite(spritesSet(BURST_SPRITE_ID), x, y)
-end sub

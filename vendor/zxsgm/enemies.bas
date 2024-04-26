@@ -7,17 +7,9 @@ CONST ENEMY_HORIZONTAL_DIRECTION as UBYTE = 5
 CONST ENEMY_CURRENT_LIN as UBYTE = 6
 CONST ENEMY_CURRENT_COL as UBYTE = 7
 CONST ENEMY_ALIVE as UBYTE = 8
-CONST ENEMY_SPRITE as UBYTE = 9
+' CONST ENEMY_SPRITE as UBYTE = 9
 CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
-CONST ENEMY_COLOR as UBYTE = 11
-
-sub setScreenElements()
-    screenObjects = screenObjectsInitial
-end sub
-
-sub setEnemies()
-    enemiesPerScreen = enemiesPerScreenInitial
-end sub
+'CONST ENEMY_COLOR as UBYTE = 11
 
 function checkPlatformHasProtaOnTop(x as ubyte, y as ubyte) as ubyte
     dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
@@ -42,6 +34,12 @@ sub moveEnemies()
         if decompressedEnemiesScreen(enemyId, ENEMY_TILE) = 0
             continue for
         end if
+        #ifdef ENEMIES_NOT_RESPAWN_ENABLED
+            if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) <> 99 and decompressedEnemiesScreen(enemyId, ENEMY_TILE) > 15
+                if screensWon(currentScreen) then continue for
+            end if
+        #endif
+        
         if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) > 0 'In the screen and still live
             dim tile as BYTE
             dim enemyCol as BYTE = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) 
@@ -122,7 +120,10 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
     if protaY1 < enemyY0 then return
     if protaY0 > enemyY1 then return
 
-    protaTouch()
+    invincible = 1
+    invincibleFrame = framec
+    decrementLife()
+    BeepFX_Play(1)
 
 end sub
 
