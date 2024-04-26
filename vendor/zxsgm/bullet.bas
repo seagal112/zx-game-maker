@@ -97,6 +97,10 @@ sub checkBulletCollision()
         resetBullet()
     end if
 
+    #ifdef SHOULD_KILL_ENEMIES_ENABLED
+        if screensWon(currentScreen) return
+    #endif
+    
     for enemyId=0 TO MAX_ENEMIES_PER_SCREEN - 1
         if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16 then continue for ' not enemy
         if decompressedEnemiesScreen(enemyId, ENEMY_ALIVE) = 0 then continue for
