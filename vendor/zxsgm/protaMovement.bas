@@ -128,8 +128,11 @@ sub shoot()
 end sub
 
 sub leftKey()
-	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
-	protaFrame = getNextFrameRunning()
+	if getSpriteDirection(PROTA_SPRITE)
+		protaFrame = 4
+		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
+	end if
+
 	if onFirstColumn(PROTA_SPRITE)
 		moveScreen = 4
 	elseif canMoveLeft()
@@ -138,8 +141,11 @@ sub leftKey()
 end sub
 
 sub rightKey()
-	spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
-	protaFrame = getNextFrameRunning()
+	if not getSpriteDirection(PROTA_SPRITE)
+		protaFrame = 0
+		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
+	end if
+
 	if onLastColumn(PROTA_SPRITE)
 		moveScreen = 6
 	elseif canMoveRight()
