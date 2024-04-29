@@ -24,7 +24,8 @@ dim keyArray(4) as uInteger
 dim framec AS ubyte AT 23672
 
 dim lastFrameProta as ubyte = 0
-dim lastFrameOthers as ubyte = 0
+dim lastFrameEnemies as ubyte = 0
+dim lastFrameTiles as ubyte = 0
 
 const INVINCIBLE_FRAMES as ubyte = 25
 dim invincible as ubyte = 0
@@ -132,7 +133,8 @@ playGame:
     resetValues()
 
     let lastFrameProta = framec
-    let lastFrameOthers = framec
+    let lastFrameEnemies = framec
+    let lastFrameTiles = framec
 
     #ifdef HISCORE_ENABLED
         PRINT AT 23, 20; "00000"
@@ -140,14 +142,19 @@ playGame:
     do
         waitretrace
 
-        if framec - lastFrameProta >= 3
+        if framec - lastFrameProta >= ANIMATE_PERIOD_MAIN
             protaFrame = getNextFrameRunning()
             let lastFrameProta = framec
         end if
 
-        if framec - lastFrameOthers >= 10
-            animateOthers()
-            let lastFrameOthers = framec
+        if framec - lastFrameEnemies >= ANIMATE_PERIOD_ENEMY
+            animateEnemies()
+            let lastFrameEnemies = framec
+        end if
+
+        if framec - lastFrameTiles >= ANIMATE_PERIOD_TILE
+            animateAnimatedTiles()
+            let lastFrameTiles = framec
         end if
 
         protaMovement()
@@ -220,9 +227,8 @@ sub resetValues()
     ' drawSprites()
 end sub
 
-sub animateOthers()
+sub animateEnemies()
     enemFrame = not enemFrame
-    animateAnimatedTiles()
 end sub
 
 sub swapScreen()

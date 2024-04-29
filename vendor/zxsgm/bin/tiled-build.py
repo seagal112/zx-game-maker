@@ -95,6 +95,10 @@ initTexts = ""
 
 backgroundAttribute = 7
 
+animatePeriodMain = 3
+animatePeriodEnemy = 3
+animatePeriodTile = 10
+
 for property in data['properties']:
     if property['name'] == 'gameName':
         gameName = property['value']
@@ -137,6 +141,12 @@ for property in data['properties']:
         initTexts = property['value']
     elif property['name'] == 'backgroundAttribute':
         backgroundAttribute = property['value']
+    elif property['name'] == 'animatePeriodMain':
+        animatePeriodMain = property['value']
+    elif property['name'] == 'animatePeriodEnemy':
+        animatePeriodEnemy = property['value']
+    elif property['name'] == 'animatePeriodTile':
+        animatePeriodTile = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -164,6 +174,9 @@ configStr += "dim itemTile as ubyte = " + itemTile + "\n"
 configStr += "dim doorTile as ubyte = " + doorTile + "\n"
 configStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
 configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n"
+configStr += "const ANIMATE_PERIOD_MAIN as ubyte = " + str(animatePeriodMain) + "\n"
+configStr += "const ANIMATE_PERIOD_ENEMY as ubyte = " + str(animatePeriodEnemy) + "\n"
+configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n"
 # configStr += "const ANIMATED_TILES_ARRAY_SIZE as ubyte = " + str(len(animatedTilesIds) - 1) + "\n\n"
 
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
