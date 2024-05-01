@@ -97,7 +97,7 @@ sub checkBulletCollision()
         resetBullet()
     end if
 
-    #ifdef SHOULD_KILL_ENEMIES_ENABLED
+    #ifdef ENEMIES_NOT_RESPAWN_ENABLED
         if screensWon(currentScreen) return
     #endif
     
@@ -172,6 +172,16 @@ sub damageEnemy(enemyToKill as Ubyte)
         BeepFX_Play(0)
 
         #ifdef SHOULD_KILL_ENEMIES_ENABLED
+            if not screensWon(currentScreen)
+                if allEnemiesKilled()
+                    screensWon(currentScreen) = 1
+                    cleanEnemiesDoors()
+                end if
+            end if
+            return ' to prevent check twice if ENEMIES_NOT_RESPAWN_ENABLED is defined'
+        #endif
+
+        #ifdef ENEMIES_NOT_RESPAWN_ENABLED
             if not screensWon(currentScreen)
                 if allEnemiesKilled()
                     screensWon(currentScreen) = 1
