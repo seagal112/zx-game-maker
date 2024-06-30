@@ -133,14 +133,16 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub drawSprites()
-	if not invincible
-		Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
-	else
-		if invincibleBlink
-			invincibleBlink = not invincibleBlink
-			Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+	if (getSpriteLin(PROTA_SPRITE) < 41)
+		if not invincible
+				Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
 		else
-			invincibleBlink = not invincibleBlink
+			if invincibleBlink
+				invincibleBlink = not invincibleBlink
+				Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+			else
+				invincibleBlink = not invincibleBlink
+			end if
 		end if
 	end if
 	if enemiesPerScreen(currentScreen) > 0

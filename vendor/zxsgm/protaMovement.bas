@@ -164,9 +164,9 @@ sub upKey()
 end sub
 
 sub downKey()
-	if canMoveDown()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
-	end if
+	' if canMoveDown()
+	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
+	' end if
 end sub
 
 sub fireKey()
