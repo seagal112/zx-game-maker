@@ -9,21 +9,37 @@ SIZE5=0
 
 echo "const BEEP_FX_ADDRESS as uinteger=$SIZE0" >> output/config.bas
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png output/title.tmp.png
-python3 ${BIN_FOLDER}png2scr.py output/title.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f output/title.tmp.png.scr output/title.png.scr.zx0
+if [ -f assets/screens/title.scr ]; then
+    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.scr output/title.png.scr.zx0
+else
+    python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png output/title.tmp.png
+    python3 ${BIN_FOLDER}png2scr.py output/title.tmp.png
+    java -jar ${BIN_FOLDER}zx0.jar -f output/title.tmp.png.scr output/title.png.scr.zx0
+fi
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png output/ending.tmp.png
-python3 ${BIN_FOLDER}png2scr.py output/ending.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f output/ending.tmp.png.scr output/ending.png.scr.zx0
+if [ -f assets/screens/ending.scr ]; then
+    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.scr output/ending.png.scr.zx0
+else
+    python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png output/ending.tmp.png
+    python3 ${BIN_FOLDER}png2scr.py output/ending.tmp.png
+    java -jar ${BIN_FOLDER}zx0.jar -f output/ending.tmp.png.scr output/ending.png.scr.zx0
+fi
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png output/hud.tmp.png
-python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
-java -jar ${BIN_FOLDER}zx0.jar -f output/hud.tmp.png.scr output/hud.png.scr.zx0
+if [ -f assets/screens/hud.scr ]; then
+    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.scr output/hud.png.scr.zx0
+else
+    python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png output/hud.tmp.png
+    python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
+    java -jar ${BIN_FOLDER}zx0.jar -f output/hud.tmp.png.scr output/hud.png.scr.zx0
+fi
 
-python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png output/loading.tmp.png
-python3 ${BIN_FOLDER}png2scr.py output/loading.tmp.png
-mv output/loading.tmp.png.scr output/loading.bin
+if [ -f assets/screens/loading.scr ]; then
+    cp assets/screens/loading.scr output/loading.bin
+else
+    python3 ${BIN_FOLDER}fixColors.py assets/screens/loading.png output/loading.tmp.png
+    python3 ${BIN_FOLDER}png2scr.py output/loading.tmp.png
+    mv output/loading.tmp.png.scr output/loading.bin
+fi
 
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t sprites
