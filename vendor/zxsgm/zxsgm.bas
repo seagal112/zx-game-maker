@@ -116,6 +116,42 @@ menu:
         let keyArray(FIRE)=KEY0
     end if
 
+#ifdef PASSWORD_ENABLED
+function readKey() as ubyte
+    let k = GetKey
+    let keyOption = chr(k)
+    if keyOption = " " then go to menu
+    return k
+end function
+
+passwordScreen:
+    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+    PRINT AT 10, 10; "INSERT PASSWORD"
+    PRINT AT 18, 0; "PRESS SPACE TO RETURN TO MENU"
+    for i=0 to 7
+        PRINT AT 12, 10 + i; "*"
+    next i
+
+    let keyOption = ""
+    dim pass(7) as ubyte
+    dim passwordIndex as ubyte = 0
+
+    for i=0 to 7
+        WHILE GetKeyScanCode() <> 0
+        WEND
+        pass(i) = readKey()
+        PRINT AT 12, 10 + i; chr(pass(i))
+    next i
+
+    for i=0 to 7
+        if chr(pass(i)) <> password(i)
+            go to passwordScreen
+        end if
+    next i
+
+    go to playGame
+#endif
+
 playGame:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     currentScreen = INITIAL_SCREEN

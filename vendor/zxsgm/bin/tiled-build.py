@@ -99,6 +99,8 @@ animatePeriodMain = 3
 animatePeriodEnemy = 3
 animatePeriodTile = 10
 
+password = ""
+
 for property in data['properties']:
     if property['name'] == 'gameName':
         gameName = property['value']
@@ -147,6 +149,8 @@ for property in data['properties']:
         animatePeriodEnemy = property['value']
     elif property['name'] == 'animatePeriodTile':
         animatePeriodTile = property['value']
+    elif property['name'] == 'password':
+        password = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -206,7 +210,11 @@ if spritesMergeModeXor == 1:
     configStr += "#DEFINE MERGE_WITH_XOR\n"
 
 if spritesWithColors == 1:
-    configStr += "#DEFINE SPRITES_WITH_COLORS\n\n"
+    configStr += "#DEFINE SPRITES_WITH_COLORS\n"
+
+if len(password) > 0:
+    configStr += "#DEFINE PASSWORD_ENABLED\n"
+    configStr += "dim password as string = \"" + str(password) + "\"\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':

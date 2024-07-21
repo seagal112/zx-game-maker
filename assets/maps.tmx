@@ -20,6 +20,7 @@
   <property name="lifeAmount" type="int" value="5"/>
   <property name="maxEnemiesPerScreen" type="int" value="5"/>
   <property name="musicEnabled" type="bool" value="true"/>
+  <property name="password" value="12345678"/>
   <property name="shooting" type="bool" value="true"/>
   <property name="shouldKillEnemies" type="bool" value="false"/>
  </properties>
