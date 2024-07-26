@@ -12,7 +12,7 @@ sub decrementLife()
 end sub
 
 sub printLife()
-	PRINT AT 22, 5; "  "  
+	PRINT AT 22, 5; "   "  
 	PRINT AT 22, 5; currentLife
 	PRINT AT 22, 16; currentKeys
     #ifdef HISCORE_ENABLED
