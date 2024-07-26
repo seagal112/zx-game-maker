@@ -69,6 +69,7 @@ if spriteTileOffset == 0:
 
 # Global properties
 
+gameName = 'Game Name'
 initialLife = 40
 goalItems = 10
 damageAmount = 5
@@ -80,9 +81,9 @@ shouldKillEnemies = 0
 musicEnabled = 0
 hiScore = 0
 
-vtplayerInit = '0'
-vtplayerMute = '0'
-vtplayerNextNote = '0'
+vtplayerInit = 'EFAD'
+vtplayerMute = 'EFB5'
+vtplayerNextNote = 'EFB2'
 
 initialScreen = 2
 initialMainCharacterX = 8

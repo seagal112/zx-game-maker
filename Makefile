@@ -1,6 +1,9 @@
 BIN_FOLDER=vendor/zxsgm/bin/
 DOCKER_VERSION=latest
 
+PROJECT_NAME := $(shell jq -r '.properties | .[] | select(.name=="gameName") | .value' output/maps.json)
+PROJECT_NAME := $(if $(PROJECT_NAME),$(PROJECT_NAME),"Game Name")
+
 tiled-export:
 	tiled --export-map json assets/maps.tmx output/maps.json
 
@@ -28,7 +31,6 @@ compile:
 
 build:
 	$(MAKE) tiled-build
-	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
 
 	$(MAKE) check-fx
 	$(MAKE) screens-build
@@ -59,9 +61,7 @@ docker-push:
 	docker push rtorralba/zx-game-maker:${DOCKER_VERSION}
 
 run:
-	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
 	fuse --machine=plus2a dist/$(PROJECT_NAME).tap
 
 run-48:
-	$(eval PROJECT_NAME=$(shell jq '.properties | .[] | select(.name=="gameName") | .value' output/maps.json))
 	fuse --machine=48 dist/$(PROJECT_NAME).tap

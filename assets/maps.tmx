@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="34">
+<map version="1.11" tiledversion="1.11.0" class="ZXSpectrumGameMaker" orientation="orthogonal" renderorder="left-down" width="132" height="116" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="34">
  <editorsettings>
   <chunksize width="32" height="22"/>
+  <export target="../../../../../Descargas/maps.json" format="json"/>
  </editorsettings>
  <properties>
-  <property name="VTPLAYER_INIT" value="EFAD"/>
-  <property name="VTPLAYER_MUTE" value="EFB5"/>
-  <property name="VTPLAYER_NEXTNOTE" value="EFB2"/>
-  <property name="animatePeriodEnemy" type="int" value="3"/>
-  <property name="animatePeriodMain" type="int" value="3"/>
-  <property name="animatePeriodTile" type="int" value="10"/>
-  <property name="backgroundAttribute" type="int" value="7"/>
-  <property name="bulletDistance" type="int" value="0"/>
-  <property name="damageAmount" type="int" value="10"/>
-  <property name="enemiesRespawn" type="bool" value="true"/>
-  <property name="gameName" value="Game Name"/>
-  <property name="goalItems" type="int" value="2"/>
-  <property name="initialLife" type="int" value="50"/>
-  <property name="lifeAmount" type="int" value="5"/>
-  <property name="maxEnemiesPerScreen" type="int" value="5"/>
-  <property name="musicEnabled" type="bool" value="true"/>
-  <property name="password" value="12345678"/>
-  <property name="shooting" type="bool" value="true"/>
-  <property name="shouldKillEnemies" type="bool" value="false"/>
+  <property name="initialLife" type="int" value="100"/>
  </properties>
  <tileset firstgid="1" name="tiles" tilewidth="8" tileheight="8" tilecount="192" columns="32">
   <image source="tiles.png" width="256" height="48"/>
