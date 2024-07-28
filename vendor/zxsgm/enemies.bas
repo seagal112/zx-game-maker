@@ -11,17 +11,19 @@ CONST ENEMY_ALIVE as UBYTE = 8
 CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
 'CONST ENEMY_COLOR as UBYTE = 11
 
-function checkPlatformHasProtaOnTop(x as ubyte, y as ubyte) as ubyte
-    dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
-    dim protaX1 as ubyte = protaX0 + 2
-    dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
+#ifdef SIDE_VIEW
+    function checkPlatformHasProtaOnTop(x as ubyte, y as ubyte) as ubyte
+        dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
+        dim protaX1 as ubyte = protaX0 + 2
+        dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
 
-    if protaX1 < x then return 0
-    if protaX0 > x + 4 then return 0
-    if protaY0 <> y - 4 then return 0
+        if protaX1 < x then return 0
+        if protaX0 > x + 4 then return 0
+        if protaY0 <> y - 4 then return 0
 
-    return 1
-end function
+        return 1
+    end function
+#endif
 
 sub moveEnemies()
     dim counter as ubyte = 0
@@ -59,18 +61,20 @@ sub moveEnemies()
             decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
 
             if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16 ' Is a platform not an enemy, only 2 frames, 1 direction
-                if checkPlatformHasProtaOnTop(decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN))
-                    if decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
-                        if not CheckCollision(getSpriteCol(PROTA_SPRITE) + 1, getSpriteLin(PROTA_SPRITE))
-                            spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
-                        end if
-                    elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
-                        if not CheckCollision(getSpriteCol(PROTA_SPRITE) - 1, getSpriteLin(PROTA_SPRITE))
-                            spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)                       
+                #ifdef SIDE_VIEW
+                    if checkPlatformHasProtaOnTop(decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN))
+                        if decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
+                            if not CheckCollision(getSpriteCol(PROTA_SPRITE) + 1, getSpriteLin(PROTA_SPRITE))
+                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
+                            end if
+                        elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
+                            if not CheckCollision(getSpriteCol(PROTA_SPRITE) - 1, getSpriteLin(PROTA_SPRITE))
+                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)                       
+                            end if
                         end if
                     end if
-                end if
-                tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE)
+                    tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE)
+                #endif
             elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
                 tile = decompressedEnemiesScreen(enemyId, ENEMY_TILE)
             elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
@@ -127,24 +131,26 @@ sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
 
 end sub
 
-function checkPlatformByXY(x as ubyte, y as ubyte) as ubyte
-    dim maxEnemiesCount as ubyte = 0
-    dim enemiesKilled as ubyte = 1
+#ifdef SIDE_VIEW
+    function checkPlatformByXY(x as ubyte, y as ubyte) as ubyte
+        dim maxEnemiesCount as ubyte = 0
+        dim enemiesKilled as ubyte = 1
 
-    if enemiesPerScreen(currentScreen) = 0 then return 0
+        if enemiesPerScreen(currentScreen) = 0 then return 0
 
-    for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
-        if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16 then
-            dim enemyCol as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) 
-            dim enemyLin as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
+        for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
+            if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16 then
+                dim enemyCol as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL) 
+                dim enemyLin as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
 
-            if x < enemyCol - 2 then continue for
-            if x > enemyCol + 4 then continue for
-            if y <> enemyLin then continue for
-            
-            return 1
-        end if
-    next enemyId
+                if x < enemyCol - 2 then continue for
+                if x > enemyCol + 4 then continue for
+                if y <> enemyLin then continue for
+                
+                return 1
+            end if
+        next enemyId
 
-    return 0
-end function
+        return 0
+    end function
+#endif

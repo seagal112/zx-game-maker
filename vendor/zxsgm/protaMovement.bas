@@ -28,7 +28,9 @@ function canMoveDown() as ubyte
 	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
 	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
 	if CheckCollision(x, y + 1) return 0
-	if checkPlatformByXY(x, y + 4) return 0
+	#ifdef SIDE_VIEW
+		if checkPlatformByXY(x, y + 4) return 0
+	#endif
 	if CheckStaticPlatform(x, y + 4) return 0
 	if CheckStaticPlatform(x + 1, y + 4) return 0
 	if CheckStaticPlatform(x + 2, y + 4) return 0
