@@ -77,7 +77,7 @@ sub moveBullet()
         dim maxYScreenTop as ubyte = 0
     #endif
 
-    if bulletPositionX = 0
+    if bulletPositionX = 0 and bulletPositionY = 0
         return
     end if
     

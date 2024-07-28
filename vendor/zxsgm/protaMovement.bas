@@ -156,9 +156,11 @@ sub shoot()
 			bulletPositionX = getSpriteCol(PROTA_SPRITE)
 		#ifdef OVERHEAD_VIEW
 			elseif getSpriteDirection(PROTA_SPRITE) = 8
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) - 4
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) - 1
 			else
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) - 4
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 2
 		#endif
 		end if
 
@@ -169,8 +171,12 @@ sub shoot()
 end sub
 
 sub leftKey()
-	if getSpriteDirection(PROTA_SPRITE)
-		protaFrame = 4
+	if getSpriteDirection(PROTA_SPRITE) <> 0
+		#ifdef SIDE_VIEW
+			protaFrame = 4
+		#else
+			protaFrame = 2
+		#endif
 		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
 	end if
 
@@ -182,7 +188,7 @@ sub leftKey()
 end sub
 
 sub rightKey()
-	if not getSpriteDirection(PROTA_SPRITE)
+	if getSpriteDirection(PROTA_SPRITE) <> 1
 		protaFrame = 0
 		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
 	end if
@@ -198,6 +204,10 @@ sub upKey()
 	#ifdef SIDE_VIEW
 		jump()
 	#else
+		if getSpriteDirection(PROTA_SPRITE) <> 8
+			protaFrame = 4
+			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 8
+		end if
 		if canMoveUp()
 			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), protaFrame, 8)
 			if getSpriteLin(PROTA_SPRITE) < 2
@@ -209,6 +219,10 @@ end sub
 
 sub downKey()
 	#ifdef OVERHEAD_VIEW
+		if getSpriteDirection(PROTA_SPRITE) <> 2
+			protaFrame = 6
+			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 2
+		end if
 		if canMoveDown()
 			if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
 				moveScreen = 2
