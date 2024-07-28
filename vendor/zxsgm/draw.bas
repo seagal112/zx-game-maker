@@ -16,6 +16,26 @@ sub mapDraw()
 	next index
 end sub
 
+sub removeKeyDoors()
+	dim tile, index, y, x as integer
+
+	x = 0
+	y = 0
+	
+	for index=0 to SCREEN_LENGTH
+		tile = peek(@decompressedMap + index) - 1
+		if tile = doorTile
+			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
+		end if
+
+		x = x + 1
+		if x = screenWidth
+			x = 0
+			y = y + 1
+		end if
+	next index
+end sub
+
 sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 	if tile < 2 then return
 
@@ -78,8 +98,7 @@ function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
 			printLife()
 			screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX) = 0
 			BeepFX_Play(4)
-			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
-			FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
+			removeKeyDoors()
 		end if
 		return 1
 	else

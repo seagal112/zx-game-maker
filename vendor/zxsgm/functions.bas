@@ -73,16 +73,18 @@ sub protaTouch()
     BeepFX_Play(1)
 end sub
 
-function CheckStaticPlatform(x as uByte, y as uByte) as uByte
-    Dim col as uByte = x >> 1
-    Dim lin as uByte = y >> 1
+#ifdef SIDE_VIEW
+    function CheckStaticPlatform(x as uByte, y as uByte) as uByte
+        Dim col as uByte = x >> 1
+        Dim lin as uByte = y >> 1
 
-    dim tile as ubyte = GetTile(col, lin)
+        dim tile as ubyte = GetTile(col, lin)
 
-    if tile > 63 and tile < 80 return 1
+        if tile > 63 and tile < 80 return 1
 
-    return 0
-end function
+        return 0
+    end function
+#endif
 
 function CheckCollision(x as uByte, y as uByte) as uByte
     Dim xIsEven as uByte = (x bAnd 1) = 0
