@@ -74,7 +74,7 @@ sub moveBullet()
 
     #ifdef OVERHEAD_VIEW
         dim maxYScreenBottom as ubyte = 40
-        dim maxYScreenTop as ubyte = 0
+        dim maxYScreenTop as ubyte = 2
     #endif
 
     if bulletPositionX = 0 and bulletPositionY = 0
@@ -168,8 +168,14 @@ sub moveBullet()
 end sub
 
 sub checkBulletCollision()
+    if bulletPositionY = maxYScreenTop or bulletPositionY = maxYScreenBottom
+        resetBullet()
+        return
+    end if
+
     if isSolidTileByXY(bulletPositionX, bulletPositionY) or isSolidTileByXY(bulletPositionX, bulletPositionY + 1)
         resetBullet()
+        return
     end if
 
     #ifdef ENEMIES_NOT_RESPAWN_ENABLED
