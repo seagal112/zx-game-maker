@@ -46,7 +46,7 @@
                 "value": 10
             },
             {
-                "name": "backgroudAttribute",
+                "name": "backgroundAttribute",
                 "type": "int",
                 "value": 7
             },
@@ -82,6 +82,11 @@
                 "value": 2
             },
             {
+                "name": "hiScore",
+                "type": "bool",
+                "value": false
+            },
+            {
                 "name": "initialLife",
                 "type": "int",
                 "value": 50
@@ -109,7 +114,7 @@
             {
                 "name": "shooting",
                 "type": "bool",
-                "value": false
+                "value": true
             },
             {
                 "name": "shouldKillEnemies",

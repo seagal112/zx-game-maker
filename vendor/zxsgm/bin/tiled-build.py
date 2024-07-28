@@ -71,7 +71,7 @@ if spriteTileOffset == 0:
 
 gameName = 'Game Name'
 initialLife = 40
-goalItems = 10
+goalItems = 2
 damageAmount = 5
 lifeAmount = 5
 bulletDistance = 0
