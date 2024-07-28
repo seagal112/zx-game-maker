@@ -35,94 +35,135 @@ function canMoveDown() as ubyte
 	return 1
 end function
 
-function getNextFrameJumpingFalling() as ubyte
-	if (getSpriteDirection(PROTA_SPRITE))
-		return 3
-	else
-		return 7
-    end if
-end function
+#ifdef SIDE_VIEW
+	function getNextFrameJumpingFalling() as ubyte
+		if (getSpriteDirection(PROTA_SPRITE))
+			return 3
+		else
+			return 7
+		end if
+	end function
 
-sub checkIsJumping()
-	if jumpCurrentKey <> jumpStopValue
-		if getSpriteLin(PROTA_SPRITE) < 2
-			moveScreen = 8 ' stop jumping
-		elseif jumpCurrentKey < jumpStepsCount
-			if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
-				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
-			else
-				if not CheckCollision(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
+	sub checkIsJumping()
+		if jumpCurrentKey <> jumpStopValue
+			if getSpriteLin(PROTA_SPRITE) < 2
+				moveScreen = 8 ' stop jumping
+			elseif jumpCurrentKey < jumpStepsCount
+				if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
 					saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				else
+					if not CheckCollision(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
+						saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+					end if
 				end if
+				jumpCurrentKey = jumpCurrentKey + 1
+			else
+				jumpCurrentKey = jumpStopValue ' stop jumping
 			end if
-			jumpCurrentKey = jumpCurrentKey + 1
-		else
-			jumpCurrentKey = jumpStopValue ' stop jumping
-        end if
-	end if
-end sub
-
-function isFalling() as UBYTE
-	if canMoveDown()
-		return 1
-	else
-		if landed = 0
-			landed = 1
-			if getSpriteLin(PROTA_SPRITE) bAND 1 <> 0
-				saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1)
-			end if
-			resetProtaSpriteToRunning()
 		end if
-		return 0
-	end if
-end function
+	end sub
 
-sub gravity()
-	if jumpCurrentKey = jumpStopValue and isFalling()
-		if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
-			moveScreen = 2
-		else
-			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 2, getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
-		end if
-		landed = 0
-	end if
-end sub
-
-function getNextFrameRunning() as UBYTE
-	if getSpriteDirection(PROTA_SPRITE) = 1
-		if getSpriteTile(PROTA_SPRITE) = 0
+	function isFalling() as UBYTE
+		if canMoveDown()
 			return 1
 		else
+			if landed = 0
+				landed = 1
+				if getSpriteLin(PROTA_SPRITE) bAND 1 <> 0
+					saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1)
+				end if
+				resetProtaSpriteToRunning()
+			end if
 			return 0
 		end if
-	else
-        if getSpriteTile(PROTA_SPRITE) = 4
-            return 5
-		else
-			return 4
-        end if
-	end if
-end function
+	end function
 
-sub jump()
-	if jumpCurrentKey = jumpStopValue and landed
-		landed = 0
-		jumpCurrentKey = 0
-	end if
-end sub
+	sub gravity()
+		if jumpCurrentKey = jumpStopValue and isFalling()
+			if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
+				moveScreen = 2
+			else
+				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 2, getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+			end if
+			landed = 0
+		end if
+	end sub
+
+	sub jump()
+		if jumpCurrentKey = jumpStopValue and landed
+			landed = 0
+			jumpCurrentKey = 0
+		end if
+	end sub
+#endif
+
+function getNextFrameRunning() as UBYTE
+	#ifdef SIDE_VIEW
+		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
+			if getSpriteTile(PROTA_SPRITE) = 0
+				return 1
+			else
+				return 0
+			end if
+		else
+			if getSpriteTile(PROTA_SPRITE) = 4
+				return 5
+			else
+				return 4
+			end if
+		end if
+	#else
+		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
+			if getSpriteTile(PROTA_SPRITE) = 0
+				return 1
+			else
+				return 0
+			end if
+		elseif getSpriteDirection(PROTA_SPRITE) = 0 ' left
+			if getSpriteTile(PROTA_SPRITE) = 2
+				return 3
+			else
+				return 2
+			end if
+		elseif getSpriteDirection(PROTA_SPRITE) = 8 ' up
+			if getSpriteTile(PROTA_SPRITE) = 4
+				return 5
+			else
+				return 4
+			end if
+		else ' down
+			if getSpriteTile(PROTA_SPRITE) = 6
+				return 7
+			else
+				return 6
+			end if
+		end if
+	#endif
+end function
 
 sub shoot()
 	if not bulletInMovement()
+		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 		if getSpriteDirection(PROTA_SPRITE)
-			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			#ifdef SIDE_VIEW
+				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			#endif
 			bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-		else
-			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
+		elseif getSpriteDirection(PROTA_SPRITE) = 0
+			#ifdef SIDE_VIEW
+				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
+			#endif
 			bulletPositionX = getSpriteCol(PROTA_SPRITE)
+		#ifdef OVERHEAD_VIEW
+			elseif getSpriteDirection(PROTA_SPRITE) = 8
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+			else
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+		#endif
 		end if
 
 		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-		bulletDirectionIsRight = getSpriteDirection(PROTA_SPRITE)
+		bulletDirection = getSpriteDirection(PROTA_SPRITE)
 		BeepFX_Play(2)
 	end if
 end sub
@@ -154,27 +195,40 @@ sub rightKey()
 end sub
 
 sub upKey()
-	' if canMoveUp()
-	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
-	' 	if getSpriteLin(PROTA_SPRITE) < 2
-	' 		moveScreen = 8
-	' 	end if
-	' end if
-	jump()
+	#ifdef SIDE_VIEW
+		jump()
+	#else
+		if canMoveUp()
+			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), protaFrame, 8)
+			if getSpriteLin(PROTA_SPRITE) < 2
+				moveScreen = 8
+			end if
+		end if
+	#endif
 end sub
 
 sub downKey()
-	' if canMoveDown()
-	' 	saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 1)
-	' end if
+	#ifdef OVERHEAD_VIEW
+		if canMoveDown()
+			if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
+				moveScreen = 2
+			else
+				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 2)
+			end if
+		end if
+	#endif
 end sub
 
 sub fireKey()
-	if SHOOTING
+	#ifdef SIDE_VIEW
+		if SHOOTING
+			shoot()
+		else
+			jump()
+		end if
+	#else
 		shoot()
-	else
-		jump()
-	end if
+	#endif
 end sub
 
 sub keyboardListen()
@@ -274,6 +328,8 @@ end sub
 sub protaMovement()
 	keyboardListen()
 	checkObjectContact()
-	checkIsJumping()
-	gravity()
+	#ifdef SIDE_VIEW
+		checkIsJumping()
+		gravity()
+	#endif
 end sub

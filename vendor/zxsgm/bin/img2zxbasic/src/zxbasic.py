@@ -55,6 +55,15 @@ def reorderArray(sprite):
 def flipTile(tile):
     return [flip_byte(b) for b in tile]
 
+# funcion para rotar un tile de 8x8 90 grados
+# def rotateTile90g(tile):
+#     rotated_tile = [0] * 8
+#     for i in range(8):
+#         for j in range(8):
+#             if tile[j] & (1 << i):
+#                 rotated_tile[i] |= (1 << (7 - j))
+#     return rotated_tile
+
 def getTilesBas():
     if not os.path.exists("output"):
         os.makedirs("output")
@@ -89,6 +98,14 @@ def getTilesBas():
         tile0HorizontalFlip = flipTile(tile)
 
         f.write(bytearray(tile0HorizontalFlip))
+
+        # # girar 90 grados el segundo tile
+        # tile0Rotate90 = rotateTile90g(tile)
+        # f.write(bytearray(tile0Rotate90))
+
+        # # voltear verticalmente el tile rotado 90 grados
+        # tile0Rotate90VerticalFlip = flipTile(tile0Rotate90)
+        # f.write(bytearray(tile0Rotate90VerticalFlip))
 
     attrs = []
     

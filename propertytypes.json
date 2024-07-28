@@ -1,5 +1,16 @@
 [
     {
+        "id": 2,
+        "name": "gameView",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "side",
+            "overhead"
+        ],
+        "valuesAsFlags": false
+    },
+    {
         "color": "#ffa0a0a4",
         "drawFill": true,
         "id": 1,
@@ -58,6 +69,12 @@
                 "name": "gameName",
                 "type": "string",
                 "value": "Game Name"
+            },
+            {
+                "name": "gameView",
+                "propertyType": "gameView",
+                "type": "string",
+                "value": "side"
             },
             {
                 "name": "goalItems",

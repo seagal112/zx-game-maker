@@ -1,6 +1,12 @@
 const PROTA_SPRITE as ubyte = 6
 const BULLET_SPRITE_RIGHT_ID as ubyte = 48
-const BULLET_SPRITE_LEFT_ID as ubyte = 49
+#ifdef SIDE_VIEW
+    const BULLET_SPRITE_LEFT_ID as ubyte = 49
+#endif
+' #ifdef OVERHEAD_VIEW
+'     const BULLET_SPRITE_UP_ID as ubyte = 50
+'     const BULLET_SPRITE_DOWN_ID as ubyte = 51
+' #endif
 const LEFT as uByte = 0
 const RIGHT as uByte = 1
 const UP as uByte = 2

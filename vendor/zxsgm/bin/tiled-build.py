@@ -102,56 +102,61 @@ animatePeriodTile = 10
 
 password = ""
 
-for property in data['properties']:
-    if property['name'] == 'gameName':
-        gameName = property['value']
-    elif property['name'] == 'goalItems':
-        goalItems = property['value']
-    elif property['name'] == 'damageAmount':
-        damageAmount = property['value']
-    elif property['name'] == 'lifeAmount':
-        lifeAmount = property['value']
-    elif property['name'] == 'initialLife':
-        initialLife = property['value']
-    elif property['name'] == 'bulletDistance':
-        bulletDistance = property['value']
-    elif property['name'] == 'enemiesRespawn':
-        enemiesRespawn = 1 if property['value'] else 0
-    elif property['name'] == 'shooting':
-        shooting = 1 if property['value'] else 0
-    elif property['name'] == 'shouldKillEnemies':
-        shouldKillEnemies = 1 if property['value'] else 0
-    elif property['name'] == 'musicEnabled':
-        musicEnabled = 1 if property['value'] else 0
-    elif property['name'] == 'hiScore':
-        hiScore = 1 if property['value'] else 0
-    elif property['name'] == 'VTPLAYER_INIT':
-        vtplayerInit = property['value']
-    elif property['name'] == 'VTPLAYER_MUTE':
-        vtplayerMute = property['value']
-    elif property['name'] == 'VTPLAYER_NEXTNOTE':
-        vtplayerNextNote = property['value']
-    elif property['name'] == 'maxEnemiesPerScreen':
-        if property['value'] < 7:
-            maxEnemiesPerScreen = property['value']
-        else:
-            maxEnemiesPerScreen = 6
-    elif property['name'] == 'spritesMergeModeXor':
-        spritesMergeModeXor = 1 if property['value'] else 0
-    elif property['name'] == 'spritesWithColors':
-        spritesWithColors = 1 if property['value'] else 0
-    elif property['name'] == 'initTexts':
-        initTexts = property['value']
-    elif property['name'] == 'backgroundAttribute':
-        backgroundAttribute = property['value']
-    elif property['name'] == 'animatePeriodMain':
-        animatePeriodMain = property['value']
-    elif property['name'] == 'animatePeriodEnemy':
-        animatePeriodEnemy = property['value']
-    elif property['name'] == 'animatePeriodTile':
-        animatePeriodTile = property['value']
-    elif property['name'] == 'password':
-        password = property['value']
+gameView = 'side'
+
+if 'properties' in data:
+    for property in data['properties']:
+        if property['name'] == 'gameName':
+            gameName = property['value']
+        elif property['name'] == 'goalItems':
+            goalItems = property['value']
+        elif property['name'] == 'damageAmount':
+            damageAmount = property['value']
+        elif property['name'] == 'lifeAmount':
+            lifeAmount = property['value']
+        elif property['name'] == 'initialLife':
+            initialLife = property['value']
+        elif property['name'] == 'bulletDistance':
+            bulletDistance = property['value']
+        elif property['name'] == 'enemiesRespawn':
+            enemiesRespawn = 1 if property['value'] else 0
+        elif property['name'] == 'shooting':
+            shooting = 1 if property['value'] else 0
+        elif property['name'] == 'shouldKillEnemies':
+            shouldKillEnemies = 1 if property['value'] else 0
+        elif property['name'] == 'musicEnabled':
+            musicEnabled = 1 if property['value'] else 0
+        elif property['name'] == 'hiScore':
+            hiScore = 1 if property['value'] else 0
+        elif property['name'] == 'VTPLAYER_INIT':
+            vtplayerInit = property['value']
+        elif property['name'] == 'VTPLAYER_MUTE':
+            vtplayerMute = property['value']
+        elif property['name'] == 'VTPLAYER_NEXTNOTE':
+            vtplayerNextNote = property['value']
+        elif property['name'] == 'maxEnemiesPerScreen':
+            if property['value'] < 7:
+                maxEnemiesPerScreen = property['value']
+            else:
+                maxEnemiesPerScreen = 6
+        elif property['name'] == 'spritesMergeModeXor':
+            spritesMergeModeXor = 1 if property['value'] else 0
+        elif property['name'] == 'spritesWithColors':
+            spritesWithColors = 1 if property['value'] else 0
+        elif property['name'] == 'initTexts':
+            initTexts = property['value']
+        elif property['name'] == 'backgroundAttribute':
+            backgroundAttribute = property['value']
+        elif property['name'] == 'animatePeriodMain':
+            animatePeriodMain = property['value']
+        elif property['name'] == 'animatePeriodEnemy':
+            animatePeriodEnemy = property['value']
+        elif property['name'] == 'animatePeriodTile':
+            animatePeriodTile = property['value']
+        elif property['name'] == 'password':
+            password = property['value']
+        elif property['name'] == 'gameView':
+            gameView = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -216,6 +221,11 @@ if spritesWithColors == 1:
 if len(password) > 0:
     configStr += "#DEFINE PASSWORD_ENABLED\n"
     configStr += "dim password as string = \"" + str(password) + "\"\n"
+
+if gameView == 'overhead':
+    configStr += "#DEFINE OVERHEAD_VIEW\n"
+else:
+    configStr += "#DEFINE SIDE_VIEW\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':

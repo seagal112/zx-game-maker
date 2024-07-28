@@ -3,7 +3,7 @@ const BULLET_SPEED as ubyte = 2
 
 dim bulletPositionX as ubyte = 0
 dim bulletPositionY as ubyte = 0
-dim bulletDirectionIsRight as ubyte = 0
+dim bulletDirection as ubyte = 0
 
 dim bullet(7) as ubyte
 
@@ -18,16 +18,42 @@ bullet(7) = tileSet(1, 7)
 
 spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bullet)
 
-bullet(0) = tileSet(192, 0)
-bullet(1) = tileSet(192, 1)
-bullet(2) = tileSet(192, 2)
-bullet(3) = tileSet(192, 3)
-bullet(4) = tileSet(192, 4)
-bullet(5) = tileSet(192, 5)
-bullet(6) = tileSet(192, 6)
-bullet(7) = tileSet(192, 7)
+#ifdef SIDE_VIEW
+    bullet(0) = tileSet(192, 0)
+    bullet(1) = tileSet(192, 1)
+    bullet(2) = tileSet(192, 2)
+    bullet(3) = tileSet(192, 3)
+    bullet(4) = tileSet(192, 4)
+    bullet(5) = tileSet(192, 5)
+    bullet(6) = tileSet(192, 6)
+    bullet(7) = tileSet(192, 7)
 
-spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bullet)
+    spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bullet)
+#endif
+
+' #ifdef OVERHEAD_VIEW
+'     bullet(0) = tileSet(193, 0)
+'     bullet(1) = tileSet(193, 1)
+'     bullet(2) = tileSet(193, 2)
+'     bullet(3) = tileSet(193, 3)
+'     bullet(4) = tileSet(193, 4)
+'     bullet(5) = tileSet(193, 5)
+'     bullet(6) = tileSet(193, 6)
+'     bullet(7) = tileSet(193, 7)
+
+'     spritesSet(BULLET_SPRITE_UP_ID) = Create1x1Sprite(@bullet)
+
+'     bullet(0) = tileSet(194, 0)
+'     bullet(1) = tileSet(194, 1)
+'     bullet(2) = tileSet(194, 2)
+'     bullet(3) = tileSet(194, 3)
+'     bullet(4) = tileSet(194, 4)
+'     bullet(5) = tileSet(194, 5)
+'     bullet(6) = tileSet(194, 6)
+'     bullet(7) = tileSet(194, 7)
+
+'     spritesSet(BULLET_SPRITE_DOWN_ID) = Create1x1Sprite(@bullet)
+' #endif
 
 ' sub createBullet(directionRight as ubyte)
 '     if directionRight
@@ -46,50 +72,99 @@ sub moveBullet()
     dim maxXScreenLeft as ubyte = 2
     dim limit as ubyte = 0
 
-    if bulletPositionX <> 0
-        if BULLET_DISTANCE <> 0
-            dim protaX as byte = getSpriteCol(PROTA_SPRITE)
-            if bulletDirectionIsRight = 1
-                if protaX + BULLET_DISTANCE > maxXScreenRight
-                    limit = maxXScreenRight
-                else
-                    limit = protaX + BULLET_DISTANCE + 1
-                end if
-                if bulletPositionX > limit
-                    bulletPositionX = 0
-                else
-                    bulletPositionX = bulletPositionX + BULLET_SPEED
-                end if
+    #ifdef OVERHEAD_VIEW
+        dim maxYScreenBottom as ubyte = 40
+        dim maxYScreenTop as ubyte = 0
+    #endif
+
+    if bulletPositionX = 0
+        return
+    end if
+    
+    if BULLET_DISTANCE <> 0
+        dim protaX as byte = getSpriteCol(PROTA_SPRITE)
+        if bulletDirection = 1
+            if protaX + BULLET_DISTANCE > maxXScreenRight
+                limit = maxXScreenRight
             else
-                if protaX - BULLET_DISTANCE < maxXScreenLeft
-                    limit = maxXScreenLeft
+                limit = protaX + BULLET_DISTANCE + 1
+            end if
+            if bulletPositionX > limit
+                bulletPositionX = 0
+            else
+                bulletPositionX = bulletPositionX + BULLET_SPEED
+            end if
+        elseif bulletDirection = 0
+            if protaX - BULLET_DISTANCE < maxXScreenLeft
+                limit = maxXScreenLeft
+            else
+                limit = protaX - BULLET_DISTANCE + 1
+            end if
+            if bulletPositionX < limit
+                bulletPositionX = 0
+            else
+                bulletPositionX = bulletPositionX - BULLET_SPEED
+            end if
+        elseif bulletDirection = 8
+            #ifdef OVERHEAD_VIEW
+                if protaY - BULLET_DISTANCE < maxYScreenTop
+                    limit = maxYScreenTop
                 else
                     limit = protaX - BULLET_DISTANCE + 1
                 end if
-                if bulletPositionX < limit
-                    bulletPositionX = 0
+                if bulletPositionY < limit
+                    bulletPositionY = 0
                 else
-                    bulletPositionX = bulletPositionX - BULLET_SPEED
+                    bulletPositionY = bulletPositionY - BULLET_SPEED
                 end if
-            end if
-        else
-            if bulletDirectionIsRight = 1
-                if bulletPositionX > maxXScreenRight
-                    bulletPositionX = 0
+            #endif
+        elseif bulletDirection = 2
+            #ifdef OVERHEAD_VIEW
+                if protaY + BULLET_DISTANCE > maxYScreenBottom
+                    limit = maxYScreenBottom
                 else
-                    bulletPositionX = bulletPositionX + BULLET_SPEED
+                    limit = protaY + BULLET_DISTANCE + 1
                 end if
-            else
-                if bulletPositionX < maxXScreenLeft
-                    bulletPositionX = 0
+                if bulletPositionY > limit
+                    bulletPositionY = 0
                 else
-                    bulletPositionX = bulletPositionX - BULLET_SPEED
+                    bulletPositionY = bulletPositionY + BULLET_SPEED
                 end if
-            end if
+            #endif
         end if
-
-        checkBulletCollision()
+    else
+        if bulletDirection = 1
+            if bulletPositionX > maxXScreenRight
+                bulletPositionX = 0
+            else
+                bulletPositionX = bulletPositionX + BULLET_SPEED
+            end if
+        elseif bulletDirection = 0
+            if bulletPositionX < maxXScreenLeft
+                bulletPositionX = 0
+            else
+                bulletPositionX = bulletPositionX - BULLET_SPEED
+            end if
+        elseif bulletDirection = 8
+            #ifdef OVERHEAD_VIEW
+                if bulletPositionY < maxYScreenTop
+                    bulletPositionY = 0
+                else
+                    bulletPositionY = bulletPositionY - BULLET_SPEED
+                end if
+            #endif
+        elseif bulletDirection = 2
+            #ifdef OVERHEAD_VIEW
+                if bulletPositionY > maxYScreenBottom
+                    bulletPositionY = 0
+                else
+                    bulletPositionY = bulletPositionY + BULLET_SPEED
+                end if
+            #endif
+        end if
     end if
+
+    checkBulletCollision()
 end sub
 
 sub checkBulletCollision()
@@ -129,7 +204,7 @@ end sub
 sub resetBullet()
     bulletPositionX = 0
     bulletPositionY = 0
-    bulletDirectionIsRight = 0
+    bulletDirection = 0
 end sub
 
 sub cleanEnemiesDoors()
