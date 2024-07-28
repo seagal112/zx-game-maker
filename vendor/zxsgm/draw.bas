@@ -123,7 +123,9 @@ sub moveToScreen(direction as Ubyte)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
 		saveSprite(PROTA_SPRITE, MAX_LINE, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
-		jumpCurrentKey = 0
+		#ifdef SIDE_VIEW
+			jumpCurrentKey = 0
+		#endif
 		currentScreen = currentScreen - MAP_SCREENS_WIDTH_COUNT
 	end if
 

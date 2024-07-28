@@ -1,4 +1,5 @@
 dim landed as UBYTE = 1
+dim noKeyPressed as UBYTE = 0
 
 function canMoveLeft() as ubyte
 	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
@@ -102,13 +103,13 @@ end function
 function getNextFrameRunning() as UBYTE
 	#ifdef SIDE_VIEW
 		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
-			if getSpriteTile(PROTA_SPRITE) = 0
+			if protaFrame = 0
 				return 1
 			else
 				return 0
 			end if
 		else
-			if getSpriteTile(PROTA_SPRITE) = 4
+			if protaFrame = 4
 				return 5
 			else
 				return 4
@@ -116,25 +117,25 @@ function getNextFrameRunning() as UBYTE
 		end if
 	#else
 		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
-			if getSpriteTile(PROTA_SPRITE) = 0
+			if protaFrame = 0
 				return 1
 			else
 				return 0
 			end if
 		elseif getSpriteDirection(PROTA_SPRITE) = 0 ' left
-			if getSpriteTile(PROTA_SPRITE) = 2
+			if protaFrame = 2
 				return 3
 			else
 				return 2
 			end if
 		elseif getSpriteDirection(PROTA_SPRITE) = 8 ' up
-			if getSpriteTile(PROTA_SPRITE) = 4
+			if protaFrame = 4
 				return 5
 			else
 				return 4
 			end if
 		else ' down
-			if getSpriteTile(PROTA_SPRITE) = 6
+			if protaFrame = 6
 				return 7
 			else
 				return 6
@@ -174,11 +175,14 @@ end sub
 
 sub leftKey()
 	if getSpriteDirection(PROTA_SPRITE) <> 0
-		#ifdef SIDE_VIEW
-			protaFrame = 4
-		#else
-			protaFrame = 2
-		#endif
+		if noKeyPressed = 1
+			noKeyPressed = 0
+			#ifdef SIDE_VIEW
+				protaFrame = 4
+			#else
+				protaFrame = 2
+			#endif
+		end if
 		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 0
 	end if
 
@@ -191,7 +195,10 @@ end sub
 
 sub rightKey()
 	if getSpriteDirection(PROTA_SPRITE) <> 1
-		protaFrame = 0
+		if noKeyPressed = 1
+			noKeyPressed = 0
+			protaFrame = 0
+		end if
 		spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 1
 	end if
 
@@ -207,7 +214,10 @@ sub upKey()
 		jump()
 	#else
 		if getSpriteDirection(PROTA_SPRITE) <> 8
-			protaFrame = 4
+			if noKeyPressed = 1
+				noKeyPressed = 0
+				protaFrame = 4
+			end if
 			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 8
 		end if
 		if canMoveUp()
@@ -222,7 +232,10 @@ end sub
 sub downKey()
 	#ifdef OVERHEAD_VIEW
 		if getSpriteDirection(PROTA_SPRITE) <> 2
-			protaFrame = 6
+			if noKeyPressed = 1
+				noKeyPressed = 0
+				protaFrame = 6
+			end if
 			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 2
 		end if
 		if canMoveDown()
@@ -342,8 +355,12 @@ sub checkDamageByTile()
 end sub
 
 sub protaMovement()
+	if GetKeyScanCode()=0
+		noKeyPressed = 1
+	end if
 	keyboardListen()
 	checkObjectContact()
+
 	#ifdef SIDE_VIEW
 		checkIsJumping()
 		gravity()

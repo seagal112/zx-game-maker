@@ -14,10 +14,12 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
     {0, 0, 0, 0, 0} _
 }
 
-const jumpStopValue as ubyte = 255
-const jumpStepsCount as ubyte = 5
-dim jumpCurrentKey as ubyte = jumpStopValue
-dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
+#ifdef SIDE_VIEW
+    const jumpStopValue as ubyte = 255
+    const jumpStepsCount as ubyte = 5
+    dim jumpCurrentKey as ubyte = jumpStopValue
+    dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
+#endif
 
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     saveSpriteLin(sprite, lin)
@@ -51,13 +53,15 @@ sub saveSpriteLin(sprite as ubyte, lin as ubyte)
     spritesLinColTileAndFrame(sprite, 0) = lin
 end sub
 
-sub resetProtaSpriteToRunning()
-    if getSpriteDirection(PROTA_SPRITE)
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
-    else
-        saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
-    end if
-end sub
+#ifdef SIDE_VIEW
+    sub resetProtaSpriteToRunning()
+        if getSpriteDirection(PROTA_SPRITE)
+            saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
+        else
+            saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
+        end if
+    end sub
+#endif
 
 function onLastColumn(sprite as ubyte) as ubyte
     return getSpriteCol(sprite) = 60

@@ -244,7 +244,9 @@ sub resetValues()
     swapScreen()
 
     bulletPositionX = 0
-    jumpCurrentKey = jumpStopValue
+    #ifdef SIDE_VIEW
+        jumpCurrentKey = jumpStopValue
+    #endif
 
     invincible = 0
     invincibleFrame = 0
@@ -294,10 +296,10 @@ sub debugA(value as UBYTE)
     PRINT AT 18, 10; value
 end sub
 
-' sub debugB(value as UBYTE)
-'     PRINT AT 18, 15; "  "
-'     PRINT AT 18, 15; value
-' end sub
+sub debugB(value as UBYTE)
+    PRINT AT 18, 15; "  "
+    PRINT AT 18, 15; value
+end sub
 
 ' sub debugC(value as UBYTE)
 '     PRINT AT 18, 20; "  "
