@@ -172,17 +172,20 @@ end function
 #ifdef OVERHEAD_VIEW
 	sub shoot()
 		if bulletPositionX = 0 ' bullet not in movement
-			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 			if getSpriteDirection(PROTA_SPRITE) = 1
+				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
 				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 			elseif getSpriteDirection(PROTA_SPRITE) = 0
+				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE)
 				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 			elseif getSpriteDirection(PROTA_SPRITE) = 8
+				currentBulletSpriteId = BULLET_SPRITE_UP_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
 				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
 			else
+				currentBulletSpriteId = BULLET_SPRITE_DOWN_ID
 				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
 				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 2
 			end if

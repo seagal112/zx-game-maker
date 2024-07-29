@@ -10,7 +10,7 @@
   <property name="VTPLAYER_NEXTNOTE" value="F104"/>
   <property name="backgroundAttribute" type="int" value="48"/>
   <property name="gameView" propertytype="gameView" value="overhead"/>
-  <property name="hiScore" type="bool" value="true"/>
+  <property name="hiScore" type="bool" value="false"/>
   <property name="musicEnabled" type="bool" value="true"/>
   <property name="shouldKillEnemies" type="bool" value="true"/>
  </properties>

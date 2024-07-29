@@ -2,13 +2,11 @@
 
 const PROTA_SPRITE as ubyte = 6
 const BULLET_SPRITE_RIGHT_ID as ubyte = 48
-#ifdef SIDE_VIEW
-    const BULLET_SPRITE_LEFT_ID as ubyte = 49
+const BULLET_SPRITE_LEFT_ID as ubyte = 49
+#ifdef OVERHEAD_VIEW
+    const BULLET_SPRITE_UP_ID as ubyte = 50
+    const BULLET_SPRITE_DOWN_ID as ubyte = 51
 #endif
-' #ifdef OVERHEAD_VIEW
-'     const BULLET_SPRITE_UP_ID as ubyte = 50
-'     const BULLET_SPRITE_DOWN_ID as ubyte = 51
-' #endif
 const LEFT as uByte = 0
 const RIGHT as uByte = 1
 const UP as uByte = 2
@@ -66,11 +64,11 @@ dim animatedTilesInScreen(SCREENS_COUNT, MAX_ANIMATED_TILES_PER_SCREEN, 3) as ub
 InitGFXLib()
 SetTileset(@tileSet)
 
-dim spritesSet(49) as ubyte
+dim spritesSet(51) as ubyte
 dim spriteAddressIndex as uInteger = 0
 for i = 0 to 47
     spritesSet(i) = Create2x2Sprite(@sprites + (32 * spriteAddressIndex))
-    Draw2x2Sprite(spritesSet(i), 20, 20)
+    ' Draw2x2Sprite(spritesSet(i), 20, 20)
     spriteAddressIndex = spriteAddressIndex + 1
 next i
 
