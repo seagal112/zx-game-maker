@@ -1,3 +1,5 @@
+#include "../../output/config.bas"
+
 const PROTA_SPRITE as ubyte = 6
 const BULLET_SPRITE_RIGHT_ID as ubyte = 48
 #ifdef SIDE_VIEW
@@ -37,8 +39,6 @@ const INVINCIBLE_FRAMES as ubyte = 25
 dim invincible as ubyte = 0
 dim invincibleFrame as ubyte = 0
 dim invincibleBlink as ubyte = 0
-
-#include "../../output/config.bas"
 
 load "" CODE ' Load fx
 load "" CODE ' Load files
