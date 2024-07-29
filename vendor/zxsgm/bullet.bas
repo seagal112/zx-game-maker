@@ -63,10 +63,6 @@ spritesSet(BULLET_SPRITE_RIGHT_ID) = Create1x1Sprite(@bullet)
 '     end if
 ' end sub
 
-function bulletInMovement() as ubyte
-    return bulletPositionX <> 0
-end function
-
 sub moveBullet()
     dim maxXScreenRight as ubyte = 60
     dim maxXScreenLeft as ubyte = 2

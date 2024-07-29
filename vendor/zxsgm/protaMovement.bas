@@ -150,34 +150,48 @@ function getNextFrameRunning() as UBYTE
 	#endif
 end function
 
-sub shoot()
-	if not bulletInMovement()
-		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-		if getSpriteDirection(PROTA_SPRITE)
-			#ifdef SIDE_VIEW
+#ifdef SIDE_VIEW
+	sub shoot()
+		if bulletPositionX = 0 ' bullet not in movement
+			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			if getSpriteDirection(PROTA_SPRITE)
 				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-			#endif
-			bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-		elseif getSpriteDirection(PROTA_SPRITE) = 0
-			#ifdef SIDE_VIEW
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+			elseif getSpriteDirection(PROTA_SPRITE) = 0
 				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
-			#endif
-			bulletPositionX = getSpriteCol(PROTA_SPRITE)
-		#ifdef OVERHEAD_VIEW
-			elseif getSpriteDirection(PROTA_SPRITE) = 8
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) - 4
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) - 1
-			else
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) - 4
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 2
-		#endif
-		end if
+				bulletPositionX = getSpriteCol(PROTA_SPRITE)
+			end if
 
-		bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-		bulletDirection = getSpriteDirection(PROTA_SPRITE)
-		BeepFX_Play(2)
-	end if
-end sub
+			bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+			bulletDirection = getSpriteDirection(PROTA_SPRITE)
+			BeepFX_Play(2)
+		end if
+	end sub
+#endif
+
+#ifdef OVERHEAD_VIEW
+	sub shoot()
+		if bulletPositionX = 0 ' bullet not in movement
+			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			if getSpriteDirection(PROTA_SPRITE) = 1
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+			elseif getSpriteDirection(PROTA_SPRITE) = 0
+				bulletPositionX = getSpriteCol(PROTA_SPRITE)
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+			elseif getSpriteDirection(PROTA_SPRITE) = 8
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
+			else
+				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
+				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 2
+			end if
+
+			bulletDirection = getSpriteDirection(PROTA_SPRITE)
+			BeepFX_Play(2)
+		end if
+	end sub
+#endif
 
 sub leftKey()
 	if getSpriteDirection(PROTA_SPRITE) <> 0
