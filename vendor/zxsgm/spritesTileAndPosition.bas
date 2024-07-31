@@ -14,13 +14,6 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
     {0, 0, 0, 0, 0} _
 }
 
-#ifdef SIDE_VIEW
-    const jumpStopValue as ubyte = 255
-    const jumpStepsCount as ubyte = 5
-    dim jumpCurrentKey as ubyte = jumpStopValue
-    dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
-#endif
-
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
     saveSpriteLin(sprite, lin)
     spritesLinColTileAndFrame(sprite, 1) = col

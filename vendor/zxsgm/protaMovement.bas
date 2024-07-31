@@ -1,4 +1,3 @@
-dim landed as UBYTE = 1
 dim noKeyPressed as UBYTE = 0
 
 function canMoveLeft() as ubyte
@@ -95,13 +94,6 @@ end function
 				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 2, getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 			end if
 			landed = 0
-		end if
-	end sub
-
-	sub jump()
-		if jumpCurrentKey = jumpStopValue and landed
-			landed = 0
-			jumpCurrentKey = 0
 		end if
 	end sub
 #endif

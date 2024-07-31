@@ -134,6 +134,15 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
 	return tile > 0 and tile < 64 ' is solid tile
 end function
 
+#ifdef SIDE_VIEW
+	sub jump()
+        if jumpCurrentKey = jumpStopValue and landed
+            landed = 0
+            jumpCurrentKey = 0
+        end if
+    end sub
+#endif
+
 #ifdef INIT_TEXTS
     sub showInitTexts(Text as String)
         dim n as uByte

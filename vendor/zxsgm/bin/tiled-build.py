@@ -104,6 +104,8 @@ password = ""
 
 gameView = 'side'
 
+killJumpingOnTop = 0
+
 if 'properties' in data:
     for property in data['properties']:
         if property['name'] == 'gameName':
@@ -157,6 +159,8 @@ if 'properties' in data:
             password = property['value']
         elif property['name'] == 'gameView':
             gameView = property['value']
+        elif property['name'] == 'killJumpingOnTop':
+            killJumpingOnTop = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -226,6 +230,9 @@ if gameView == 'overhead':
     configStr += "#DEFINE OVERHEAD_VIEW\n"
 else:
     configStr += "#DEFINE SIDE_VIEW\n"
+
+if killJumpingOnTop == 1:
+    configStr += "#DEFINE KILL_JUMPING_ON_TOP\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':

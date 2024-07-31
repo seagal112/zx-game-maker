@@ -92,6 +92,11 @@
                 "value": 50
             },
             {
+                "name": "killJumpingOnTop",
+                "type": "bool",
+                "value": false
+            },
+            {
                 "name": "lifeAmount",
                 "type": "int",
                 "value": 5

@@ -7,6 +7,13 @@ const BULLET_SPRITE_LEFT_ID as ubyte = 49
     const BULLET_SPRITE_UP_ID as ubyte = 50
     const BULLET_SPRITE_DOWN_ID as ubyte = 51
 #endif
+#ifdef SIDE_VIEW
+    const jumpStopValue as ubyte = 255
+    const jumpStepsCount as ubyte = 5
+    dim landed as UBYTE = 1
+    dim jumpCurrentKey as ubyte = jumpStopValue
+    dim jumpArray(jumpStepsCount - 1) AS byte = {-2, -2, -2, -2, -2}
+#endif
 const LEFT as uByte = 0
 const RIGHT as uByte = 1
 const UP as uByte = 2

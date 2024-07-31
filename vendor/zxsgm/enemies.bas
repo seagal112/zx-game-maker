@@ -100,24 +100,42 @@ sub moveEnemies()
             saveSprite(enemyId, decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), tile, decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION))
 
             if decompressedEnemiesScreen(enemyId, ENEMY_TILE) > 15
-                checkProtaCollision(decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN))
+                checkProtaCollision(enemyId)
             end if
         end if
     next enemyId
 end sub
 
-sub checkProtaCollision(enemyCol as ubyte, enemyLin as ubyte)
+sub checkProtaCollision(enemyId as ubyte)
     if invincible = 1 then return
 
-    dim protaX0 as ubyte = getSpriteLin(PROTA_SPRITE)
-    dim protaY0 as ubyte = getSpriteCol(PROTA_SPRITE)
+    dim enemyCol as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL)
+    dim enemyLin as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
+
+    dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
+    dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
     dim protaX1 as ubyte = protaX0 + 2
     dim protaY1 as ubyte = protaY0 + 2
 
-    dim enemyX0 as ubyte = enemyLin
-    dim enemyY0 as ubyte = enemyCol
+    dim enemyX0 as ubyte = enemyCol
+    dim enemyY0 as ubyte = enemyLin
     dim enemyX1 as ubyte = enemyX0 + 2
     dim enemyY1 as ubyte = enemyY0 + 2
+
+    #ifdef SIDE_VIEW
+        #ifdef KILL_JUMPING_ON_TOP
+            if not landed
+                if (protaY1 + 2) = enemyY0
+                    if protaX0 >= (enemyX0-1) and protaX0 <= (enemyX1+1)
+                        damageEnemy(enemyId)
+                        landed = 1
+                        jump()
+                        return
+                    end if
+                end if
+            end if
+        #endif
+    #endif
 
     if protaX1 < enemyX0 then return
     if protaX0 > enemyX1 then return
