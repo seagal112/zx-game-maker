@@ -260,6 +260,13 @@ sub downKey()
 				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 2)
 			end if
 		end if
+	#else
+		dim x as ubyte = getSpriteCol(PROTA_SPRITE)
+		dim y as ubyte = getSpriteLin(PROTA_SPRITE)
+
+		if CheckStaticPlatform(x, y + 4) or CheckStaticPlatform(x + 1, y + 4) or CheckStaticPlatform(x + 2, y + 4)
+			saveSprite(PROTA_SPRITE, y + 2, x, protaFrame, 2)
+		end if
 	#endif
 end sub
 
