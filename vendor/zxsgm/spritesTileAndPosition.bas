@@ -55,10 +55,10 @@ end function
 
 #ifdef SIDE_VIEW
     sub resetProtaSpriteToRunning()
-        if getSpriteDirection(PROTA_SPRITE)
-            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
+        if protaDirection
+            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_RIGHT, protaDirection)
         else
-            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
+            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_LEFT, protaDirection)
         end if
     end sub
 #endif

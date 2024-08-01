@@ -37,7 +37,7 @@ end function
 
 #ifdef SIDE_VIEW
 	function getNextFrameJumpingFalling() as ubyte
-		if (getSpriteDirection(PROTA_SPRITE))
+		if (protaDirection)
 			return 3
 		else
 			return 7
@@ -50,10 +50,10 @@ end function
 				moveScreen = 8 ' stop jumping
 			elseif jumpCurrentKey < jumpStepsCount
 				if CheckStaticPlatform(protaX, protaY + jumpArray(jumpCurrentKey))
-					saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+					saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), protaDirection)
 				else
 					if not CheckCollision(protaX, protaY + jumpArray(jumpCurrentKey))
-						saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+						saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), protaDirection)
 					end if
 				end if
 				jumpCurrentKey = jumpCurrentKey + 1
@@ -84,7 +84,7 @@ end function
 			if protaY >= MAX_LINE
 				moveScreen = 2
 			else
-				saveSprite(PROTA_SPRITE, protaY + 2, protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				saveSprite(PROTA_SPRITE, protaY + 2, protaX, getNextFrameJumpingFalling(), protaDirection)
 			end if
 			landed = 0
 		end if
@@ -93,7 +93,7 @@ end function
 
 function getNextFrameRunning() as UBYTE
 	#ifdef SIDE_VIEW
-		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
+		if protaDirection = 1 ' right
 			if protaFrame = 0
 				return 1
 			else
@@ -107,19 +107,19 @@ function getNextFrameRunning() as UBYTE
 			end if
 		end if
 	#else
-		if getSpriteDirection(PROTA_SPRITE) = 1 ' right
+		if protaDirection = 1 ' right
 			if protaFrame = 0
 				return 1
 			else
 				return 0
 			end if
-		elseif getSpriteDirection(PROTA_SPRITE) = 0 ' left
+		elseif protaDirection = 0 ' left
 			if protaFrame = 2
 				return 3
 			else
 				return 2
 			end if
-		elseif getSpriteDirection(PROTA_SPRITE) = 8 ' up
+		elseif protaDirection = 8 ' up
 			if protaFrame = 4
 				return 5
 			else
@@ -144,16 +144,16 @@ end function
 		if bulletPositionX <> 0 return ' bullet in movement
 
 		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-		if getSpriteDirection(PROTA_SPRITE)
+		if protaDirection
 			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 			bulletPositionX = protaX + 2
-		elseif getSpriteDirection(PROTA_SPRITE) = 0
+		elseif protaDirection = 0
 			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
 			bulletPositionX = protaX
 		end if
 
 		bulletPositionY = protaY + 1
-		bulletDirection = getSpriteDirection(PROTA_SPRITE)
+		bulletDirection = protaDirection
 		BeepFX_Play(2)
 	end sub
 #endif
@@ -166,15 +166,15 @@ end function
 
 		if bulletPositionX <> 0 return ' bullet in movement
 
-		if getSpriteDirection(PROTA_SPRITE) = 1
+		if protaDirection = 1
 			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 			bulletPositionX = protaX + 2
 			bulletPositionY = protaY + 1
-		elseif getSpriteDirection(PROTA_SPRITE) = 0
+		elseif protaDirection = 0
 			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
 			bulletPositionX = protaX
 			bulletPositionY = protaY + 1
-		elseif getSpriteDirection(PROTA_SPRITE) = 8
+		elseif protaDirection = 8
 			currentBulletSpriteId = BULLET_SPRITE_UP_ID
 			bulletPositionX = protaX + 1
 			bulletPositionY = protaY + 1
@@ -184,13 +184,13 @@ end function
 			bulletPositionY = protaY + 2
 		end if
 
-		bulletDirection = getSpriteDirection(PROTA_SPRITE)
+		bulletDirection = protaDirection
 		BeepFX_Play(2)
 	end sub
 #endif
 
 sub leftKey()
-	if getSpriteDirection(PROTA_SPRITE) <> 0
+	if protaDirection <> 0
 		if noKeyPressed = 1
 			noKeyPressed = 0
 			#ifdef SIDE_VIEW
@@ -210,7 +210,7 @@ sub leftKey()
 end sub
 
 sub rightKey()
-	if getSpriteDirection(PROTA_SPRITE) <> 1
+	if protaDirection <> 1
 		if noKeyPressed = 1
 			noKeyPressed = 0
 			protaFrame = 0
@@ -229,7 +229,7 @@ sub upKey()
 	#ifdef SIDE_VIEW
 		jump()
 	#else
-		if getSpriteDirection(PROTA_SPRITE) <> 8
+		if protaDirection <> 8
 			if noKeyPressed = 1
 				noKeyPressed = 0
 				protaFrame = 4
@@ -247,7 +247,7 @@ end sub
 
 sub downKey()
 	#ifdef OVERHEAD_VIEW
-		if getSpriteDirection(PROTA_SPRITE) <> 2
+		if protaDirection <> 2
 			if noKeyPressed = 1
 				noKeyPressed = 0
 				protaFrame = 6
@@ -324,21 +324,16 @@ sub checkObjectContact()
 	Dim col as uByte = protaX >> 1
     Dim lin as uByte = protaY >> 1
 
-	dim tile00 as UBYTE = GetTile(col, lin)
-	dim tile01 as UBYTE = GetTile(col + 1, lin)
-	dim tile10 as UBYTE = GetTile(col, lin + 1)
-	dim tile11 as UBYTE = GetTile(col + 1, lin + 1)
-
-	if checkTileObject(tile00)
+	if checkTileObject(GetTile(col, lin))
 		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin)
 		return
-	elseif checkTileObject(tile01)
+	elseif checkTileObject(GetTile(col + 1, lin))
 		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col + 1, lin)
 		return
-	elseif checkTileObject(tile10)
+	elseif checkTileObject(GetTile(col, lin + 1))
 		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col, lin + 1)
 		return
-	elseif checkTileObject(tile11)
+	elseif checkTileObject(GetTile(col + 1, lin + 1))
 		FillWithTileChecked(0, 1, 1, BACKGROUND_ATTRIBUTE, col + 1, lin + 1)
 		return
 	end if

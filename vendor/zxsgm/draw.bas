@@ -1,12 +1,11 @@
 sub mapDraw()
-	dim tile, index, y, x as integer
+	dim index, y, x as integer
 
 	x = 0
 	y = 0
 	
 	for index=0 to SCREEN_LENGTH
-		tile = peek(@decompressedMap + index) - 1
-		drawTile(tile, x, y)
+		drawTile(peek(@decompressedMap + index) - 1, x, y)
 
 		x = x + 1
 		if x = screenWidth
@@ -17,14 +16,13 @@ sub mapDraw()
 end sub
 
 sub removeKeyDoors()
-	dim tile, index, y, x as integer
+	dim index, y, x as integer
 
 	x = 0
 	y = 0
 	
 	for index=0 to SCREEN_LENGTH
-		tile = peek(@decompressedMap + index) - 1
-		if tile = doorTile
+		if peek(@decompressedMap + index) - 1 = doorTile
 			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 		end if
 
@@ -132,16 +130,16 @@ end function
 sub moveToScreen(direction as Ubyte)
 	' removeAllObjects()
 	if direction = 6
-		saveSprite(PROTA_SPRITE, protaY, 0, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, protaY, 0, getSpriteTile(PROTA_SPRITE), protaDirection)
 		currentScreen = currentScreen + 1
 	elseif direction = 4
-		saveSprite(PROTA_SPRITE, protaY, 60, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, protaY, 60, getSpriteTile(PROTA_SPRITE), protaDirection)
 		currentScreen = currentScreen - 1
 	elseif direction = 2
-		saveSprite(PROTA_SPRITE, 0, protaX, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, 0, protaX, getSpriteTile(PROTA_SPRITE), protaDirection)
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		saveSprite(PROTA_SPRITE, MAX_LINE, protaX, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, MAX_LINE, protaX, getSpriteTile(PROTA_SPRITE), protaDirection)
 		#ifdef SIDE_VIEW
 			jumpCurrentKey = 0
 		#endif
@@ -167,18 +165,15 @@ sub drawSprites()
 		end if
 	end if
 	if enemiesPerScreen(currentScreen) > 0
-		dim tile as ubyte
 		for i = 0 to enemiesPerScreen(currentScreen) - 1
 			if not getSpriteLin(i) then continue for
 			
-			tile = getSpriteTile(i)
-
 			#ifdef ENEMIES_NOT_RESPAWN_ENABLED
 				if decompressedEnemiesScreen(i, ENEMY_ALIVE) <> 99 and decompressedEnemiesScreen(i, ENEMY_TILE) > 15
 					if screensWon(currentScreen) then continue for
 				end if
 			#endif
-			Draw2x2Sprite(spritesSet(tile), getSpriteCol(i), getSpriteLin(i))
+			Draw2x2Sprite(spritesSet(getSpriteTile(i)), getSpriteCol(i), getSpriteLin(i))
 		next i
 	end if
 

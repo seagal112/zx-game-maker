@@ -24,10 +24,7 @@ CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
 #endif
 
 sub moveEnemies()
-    dim counter as ubyte = 0
-    dim frame as ubyte = 0
     dim maxEnemiesCount as ubyte = 0
-    dim firstXExecuted as ubyte = 0
 
     if enemiesPerScreen(currentScreen) > 0 then maxEnemiesCount = enemiesPerScreen(currentScreen) - 1
     for enemyId=0 TO maxEnemiesCount
@@ -109,14 +106,11 @@ end sub
 sub checkProtaCollision(enemyId as ubyte)
     if invincible = 1 then return
 
-    dim enemyCol as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL)
-    dim enemyLin as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
-
     dim protaX1 as ubyte = protaX + 2
     dim protaY1 as ubyte = protaY + 2
 
-    dim enemyX0 as ubyte = enemyCol
-    dim enemyY0 as ubyte = enemyLin
+    dim enemyX0 as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL)
+    dim enemyY0 as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
     dim enemyX1 as ubyte = enemyX0 + 2
     dim enemyY1 as ubyte = enemyY0 + 2
 
@@ -149,9 +143,6 @@ end sub
 
 #ifdef SIDE_VIEW
     function checkPlatformByXY(x as ubyte, y as ubyte) as ubyte
-        dim maxEnemiesCount as ubyte = 0
-        dim enemiesKilled as ubyte = 1
-
         if enemiesPerScreen(currentScreen) = 0 then return 0
 
         for enemyId=0 TO enemiesPerScreen(currentScreen) - 1
