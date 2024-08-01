@@ -15,7 +15,12 @@ DIM spritesLinColTileAndFrame(screenSpritesCount - 1, spritesDataCount - 1) as u
 }
 
 sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, directionRight as ubyte)
-    saveSpriteLin(sprite, lin)
+    if sprite = PROTA_SPRITE
+        protaX = col
+        protaY = lin
+        protaDirection = directionRight
+    end if
+    spritesLinColTileAndFrame(sprite, 0) = lin
     spritesLinColTileAndFrame(sprite, 1) = col
     spritesLinColTileAndFrame(sprite, 2) = tile
     spritesLinColTileAndFrame(sprite, 3) = directionRight
@@ -27,10 +32,16 @@ sub saveSprite(sprite as ubyte, lin as ubyte, col as ubyte, tile as ubyte, direc
 end sub
 
 function getSpriteLin(sprite as ubyte) as ubyte
+    if sprite = PROTA_SPRITE
+        return protaY
+    end if
     return spritesLinColTileAndFrame(sprite, 0)
 end function
 
 function getSpriteCol(sprite as ubyte) as ubyte
+    if sprite = PROTA_SPRITE
+        return protaX
+    end if
     return spritesLinColTileAndFrame(sprite, 1)
 end function
 
@@ -42,16 +53,12 @@ function getSpriteDirection(sprite as ubyte) as ubyte
     return spritesLinColTileAndFrame(sprite, 3)
 end function
 
-sub saveSpriteLin(sprite as ubyte, lin as ubyte)
-    spritesLinColTileAndFrame(sprite, 0) = lin
-end sub
-
 #ifdef SIDE_VIEW
     sub resetProtaSpriteToRunning()
         if getSpriteDirection(PROTA_SPRITE)
-            saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
+            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_RIGHT, getSpriteDirection(PROTA_SPRITE))
         else
-            saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE), FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
+            saveSprite(PROTA_SPRITE, protaY, protaX, FIRST_RUNNING_PROTA_SPRITE_LEFT, getSpriteDirection(PROTA_SPRITE))
         end if
     end sub
 #endif

@@ -45,6 +45,14 @@ dim invincible as ubyte = 0
 dim invincibleFrame as ubyte = 0
 dim invincibleBlink as ubyte = 0
 
+dim protaX as ubyte
+dim protaY as ubyte
+dim protaDirection as ubyte
+
+#ifdef SHOOTING_ENABLED
+    dim noKeyPressedForShoot as UBYTE = 1
+#endif
+
 load "" CODE ' Load fx
 load "" CODE ' Load files
 

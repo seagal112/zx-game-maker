@@ -13,13 +13,11 @@ CONST ENEMY_VERTICAL_DIRECTION as UBYTE = 10
 
 #ifdef SIDE_VIEW
     function checkPlatformHasProtaOnTop(x as ubyte, y as ubyte) as ubyte
-        dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
-        dim protaX1 as ubyte = protaX0 + 2
-        dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
+        dim protaX1 as ubyte = protaX + 2
 
         if protaX1 < x then return 0
-        if protaX0 > x + 4 then return 0
-        if protaY0 <> y - 4 then return 0
+        if protaX > x + 4 then return 0
+        if protaY <> y - 4 then return 0
 
         return 1
     end function
@@ -64,12 +62,14 @@ sub moveEnemies()
                 #ifdef SIDE_VIEW
                     if checkPlatformHasProtaOnTop(decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL), decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN))
                         if decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = 1
-                            if not CheckCollision(getSpriteCol(PROTA_SPRITE) + 1, getSpriteLin(PROTA_SPRITE))
-                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
+                            if not CheckCollision(protaX + 1, protaY)
+                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = protaX + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)
+                                protaX = spritesLinColTileAndFrame(PROTA_SPRITE, 1)
                             end if
                         elseif decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION) = -1
-                            if not CheckCollision(getSpriteCol(PROTA_SPRITE) - 1, getSpriteLin(PROTA_SPRITE))
-                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = getSpriteCol(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)                       
+                            if not CheckCollision(protaX - 1, protaY)
+                                spritesLinColTileAndFrame(PROTA_SPRITE, 1) = protaX + decompressedEnemiesScreen(enemyId, ENEMY_HORIZONTAL_DIRECTION)                       
+                                protaX = spritesLinColTileAndFrame(PROTA_SPRITE, 1)
                             end if
                         end if
                     end if
@@ -90,7 +90,7 @@ sub moveEnemies()
             decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN) = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN) + decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION)
 
             ' if decompressedEnemiesScreen(enemyId, ENEMY_TILE) < 16
-            '     saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION))
+            '     saveSpriteLin(PROTA_SPRITE, protaY + decompressedEnemiesScreen(enemyId, ENEMY_VERTICAL_DIRECTION))
             ' end if
 
             if enemFrame
@@ -112,10 +112,8 @@ sub checkProtaCollision(enemyId as ubyte)
     dim enemyCol as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_COL)
     dim enemyLin as ubyte = decompressedEnemiesScreen(enemyId, ENEMY_CURRENT_LIN)
 
-    dim protaX0 as ubyte = getSpriteCol(PROTA_SPRITE)
-    dim protaY0 as ubyte = getSpriteLin(PROTA_SPRITE)
-    dim protaX1 as ubyte = protaX0 + 2
-    dim protaY1 as ubyte = protaY0 + 2
+    dim protaX1 as ubyte = protaX + 2
+    dim protaY1 as ubyte = protaY + 2
 
     dim enemyX0 as ubyte = enemyCol
     dim enemyY0 as ubyte = enemyLin
@@ -126,7 +124,7 @@ sub checkProtaCollision(enemyId as ubyte)
         #ifdef KILL_JUMPING_ON_TOP
             if not landed
                 if (protaY1 + 2) = enemyY0
-                    if protaX0 >= (enemyX0-1) and protaX0 <= (enemyX1+1)
+                    if protaX >= (enemyX0-1) and protaX <= (enemyX1+1)
                         damageEnemy(enemyId)
                         landed = 1
                         jump()
@@ -138,9 +136,9 @@ sub checkProtaCollision(enemyId as ubyte)
     #endif
 
     if protaX1 < enemyX0 then return
-    if protaX0 > enemyX1 then return
+    if protaX > enemyX1 then return
     if protaY1 < enemyY0 then return
-    if protaY0 > enemyY1 then return
+    if protaY > enemyY1 then return
 
     invincible = 1
     invincibleFrame = framec

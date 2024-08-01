@@ -178,7 +178,6 @@ configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
-configStr += "const SHOOTING as ubyte = " + str(shooting) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
 configStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
@@ -192,6 +191,9 @@ configStr += "const ANIMATE_PERIOD_MAIN as ubyte = " + str(animatePeriodMain) + 
 configStr += "const ANIMATE_PERIOD_ENEMY as ubyte = " + str(animatePeriodEnemy) + "\n"
 configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n"
 # configStr += "const ANIMATED_TILES_ARRAY_SIZE as ubyte = " + str(len(animatedTilesIds) - 1) + "\n\n"
+
+if shooting == 1:
+    configStr += "#DEFINE SHOOTING_ENABLED\n"
 
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"

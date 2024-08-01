@@ -1,44 +1,36 @@
 dim noKeyPressed as UBYTE = 0
 
 function canMoveLeft() as ubyte
-	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
-	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-	if CheckDoor(x - 1, y)
+	if CheckDoor(protaX - 1, protaY)
 		return 0
 	end if
-	return not CheckCollision(x - 1, y)
+	return not CheckCollision(protaX - 1, protaY)
 end function
 
 function canMoveRight() as ubyte
-	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
-	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-	if CheckDoor(x + 1, y)
+	if CheckDoor(protaX + 1, protaY)
 		return 0
 	end if
-	return not CheckCollision(x + 1, y)
+	return not CheckCollision(protaX + 1, protaY)
 end function
 
 function canMoveUp() as ubyte
-	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
-	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-	if CheckDoor(x, y - 1)
+	if CheckDoor(protaX, protaY - 1)
 		return 0
 	end if
-	return not CheckCollision(x, y - 1)
+	return not CheckCollision(protaX, protaY - 1)
 end function
 
 function canMoveDown() as ubyte
-	dim x as ubyte = getSpriteCol(PROTA_SPRITE)
-	dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-	if CheckDoor(x, y + 1)
+	if CheckDoor(protaX, protaY + 1)
 		return 0
 	end if
-	if CheckCollision(x, y + 1) return 0
+	if CheckCollision(protaX, protaY + 1) return 0
 	#ifdef SIDE_VIEW
-		if checkPlatformByXY(x, y + 4) return 0
-		if CheckStaticPlatform(x, y + 4) return 0
-		if CheckStaticPlatform(x + 1, y + 4) return 0
-		if CheckStaticPlatform(x + 2, y + 4) return 0
+		if checkPlatformByXY(protaX, protaY + 4) return 0
+		if CheckStaticPlatform(protaX, protaY + 4) return 0
+		if CheckStaticPlatform(protaX + 1, protaY + 4) return 0
+		if CheckStaticPlatform(protaX + 2, protaY + 4) return 0
 	#endif
 	return 1
 end function
@@ -54,14 +46,14 @@ end function
 
 	sub checkIsJumping()
 		if jumpCurrentKey <> jumpStopValue
-			if getSpriteLin(PROTA_SPRITE) < 2
+			if protaY < 2
 				moveScreen = 8 ' stop jumping
 			elseif jumpCurrentKey < jumpStepsCount
-				if CheckStaticPlatform(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
-					saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				if CheckStaticPlatform(protaX, protaY + jumpArray(jumpCurrentKey))
+					saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 				else
-					if not CheckCollision(getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey))
-						saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + jumpArray(jumpCurrentKey), getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+					if not CheckCollision(protaX, protaY + jumpArray(jumpCurrentKey))
+						saveSprite(PROTA_SPRITE, protaY + jumpArray(jumpCurrentKey), protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 					end if
 				end if
 				jumpCurrentKey = jumpCurrentKey + 1
@@ -77,8 +69,9 @@ end function
 		else
 			if landed = 0
 				landed = 1
-				if getSpriteLin(PROTA_SPRITE) bAND 1 <> 0
-					saveSpriteLin(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1)
+				if protaY bAND 1 <> 0
+					' saveSpriteLin(PROTA_SPRITE, protaY - 1)
+					protaY = protaY - 1
 				end if
 				resetProtaSpriteToRunning()
 			end if
@@ -88,10 +81,10 @@ end function
 
 	sub gravity()
 		if jumpCurrentKey = jumpStopValue and isFalling()
-			if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
+			if protaY >= MAX_LINE
 				moveScreen = 2
 			else
-				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 2, getSpriteCol(PROTA_SPRITE), getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
+				saveSprite(PROTA_SPRITE, protaY + 2, protaX, getNextFrameJumpingFalling(), getSpriteDirection(PROTA_SPRITE))
 			end if
 			landed = 0
 		end if
@@ -144,47 +137,55 @@ end function
 
 #ifdef SIDE_VIEW
 	sub shoot()
-		if bulletPositionX = 0 ' bullet not in movement
-			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-			if getSpriteDirection(PROTA_SPRITE)
-				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-			elseif getSpriteDirection(PROTA_SPRITE) = 0
-				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE)
-			end if
+		if not noKeyPressedForShoot return
 
-			bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-			bulletDirection = getSpriteDirection(PROTA_SPRITE)
-			BeepFX_Play(2)
+		noKeyPressedForShoot = 0
+		
+		if bulletPositionX <> 0 return ' bullet in movement
+
+		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+		if getSpriteDirection(PROTA_SPRITE)
+			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			bulletPositionX = protaX + 2
+		elseif getSpriteDirection(PROTA_SPRITE) = 0
+			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
+			bulletPositionX = protaX
 		end if
+
+		bulletPositionY = protaY + 1
+		bulletDirection = getSpriteDirection(PROTA_SPRITE)
+		BeepFX_Play(2)
 	end sub
 #endif
 
 #ifdef OVERHEAD_VIEW
 	sub shoot()
-		if bulletPositionX = 0 ' bullet not in movement
-			if getSpriteDirection(PROTA_SPRITE) = 1
-				currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 2
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-			elseif getSpriteDirection(PROTA_SPRITE) = 0
-				currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE)
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-			elseif getSpriteDirection(PROTA_SPRITE) = 8
-				currentBulletSpriteId = BULLET_SPRITE_UP_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 1
-			else
-				currentBulletSpriteId = BULLET_SPRITE_DOWN_ID
-				bulletPositionX = getSpriteCol(PROTA_SPRITE) + 1
-				bulletPositionY = getSpriteLin(PROTA_SPRITE) + 2
-			end if
+		if not noKeyPressedForShoot return
 
-			bulletDirection = getSpriteDirection(PROTA_SPRITE)
-			BeepFX_Play(2)
+		noKeyPressedForShoot = 0
+
+		if bulletPositionX <> 0 return ' bullet in movement
+
+		if getSpriteDirection(PROTA_SPRITE) = 1
+			currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
+			bulletPositionX = protaX + 2
+			bulletPositionY = protaY + 1
+		elseif getSpriteDirection(PROTA_SPRITE) = 0
+			currentBulletSpriteId = BULLET_SPRITE_LEFT_ID
+			bulletPositionX = protaX
+			bulletPositionY = protaY + 1
+		elseif getSpriteDirection(PROTA_SPRITE) = 8
+			currentBulletSpriteId = BULLET_SPRITE_UP_ID
+			bulletPositionX = protaX + 1
+			bulletPositionY = protaY + 1
+		else
+			currentBulletSpriteId = BULLET_SPRITE_DOWN_ID
+			bulletPositionX = protaX + 1
+			bulletPositionY = protaY + 2
 		end if
+
+		bulletDirection = getSpriteDirection(PROTA_SPRITE)
+		BeepFX_Play(2)
 	end sub
 #endif
 
@@ -204,7 +205,7 @@ sub leftKey()
 	if onFirstColumn(PROTA_SPRITE)
 		moveScreen = 4
 	elseif canMoveLeft()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) - 1, protaFrame, 0)
+		saveSprite(PROTA_SPRITE, protaY, protaX - 1, protaFrame, 0)
 	end if
 end sub
 
@@ -220,7 +221,7 @@ sub rightKey()
 	if onLastColumn(PROTA_SPRITE)
 		moveScreen = 6
 	elseif canMoveRight()
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), getSpriteCol(PROTA_SPRITE) + 1, protaFrame, 1)
+		saveSprite(PROTA_SPRITE, protaY, protaX + 1, protaFrame, 1)
 	end if
 end sub
 
@@ -236,8 +237,8 @@ sub upKey()
 			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 8
 		end if
 		if canMoveUp()
-			saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) - 1, getSpriteCol(PROTA_SPRITE), protaFrame, 8)
-			if getSpriteLin(PROTA_SPRITE) < 2
+			saveSprite(PROTA_SPRITE, protaY - 1, protaX, protaFrame, 8)
+			if protaY < 2
 				moveScreen = 8
 			end if
 		end if
@@ -254,30 +255,21 @@ sub downKey()
 			spritesLinColTileAndFrame(PROTA_SPRITE, 3) = 2
 		end if
 		if canMoveDown()
-			if getSpriteLin(PROTA_SPRITE) >= MAX_LINE
+			if protaY >= MAX_LINE
 				moveScreen = 2
 			else
-				saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE) + 1, getSpriteCol(PROTA_SPRITE), protaFrame, 2)
+				saveSprite(PROTA_SPRITE, protaY + 1, protaX, protaFrame, 2)
 			end if
 		end if
 	#else
-		dim x as ubyte = getSpriteCol(PROTA_SPRITE)
-		dim y as ubyte = getSpriteLin(PROTA_SPRITE)
-
-		if CheckStaticPlatform(x, y + 4) or CheckStaticPlatform(x + 1, y + 4) or CheckStaticPlatform(x + 2, y + 4)
-			saveSprite(PROTA_SPRITE, y + 2, x, protaFrame, 2)
+		if CheckStaticPlatform(protaX, protaY + 4) or CheckStaticPlatform(protaX + 1, protaY + 4) or CheckStaticPlatform(protaX + 2, protaY + 4)
+			protaY = protaY + 2
 		end if
 	#endif
 end sub
 
 sub fireKey()
-	#ifdef SIDE_VIEW
-		if SHOOTING
-			shoot()
-		else
-			jump()
-		end if
-	#else
+	#ifdef SHOOTING_ENABLED
 		shoot()
 	#endif
 end sub
@@ -329,8 +321,8 @@ function checkTileObject(tile as ubyte) as ubyte
 end function
 
 sub checkObjectContact()
-	Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
-    Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
+	Dim col as uByte = protaX >> 1
+    Dim lin as uByte = protaY >> 1
 
 	dim tile00 as UBYTE = GetTile(col, lin)
 	dim tile01 as UBYTE = GetTile(col + 1, lin)
@@ -355,8 +347,8 @@ end sub
 sub checkDamageByTile()
     if invincible then return
     
-    Dim col as uByte = getSpriteCol(PROTA_SPRITE) >> 1
-    Dim lin as uByte = getSpriteLin(PROTA_SPRITE) >> 1
+    Dim col as uByte = protaX >> 1
+    Dim lin as uByte = protaY >> 1
 
 	if isADamageTile(GetTile(col, lin))
 		protaTouch()
@@ -379,6 +371,9 @@ end sub
 sub protaMovement()
 	if GetKeyScanCode()=0
 		noKeyPressed = 1
+	end if
+	if MultiKeys(keyArray(FIRE)) = 0
+		noKeyPressedForShoot = 1
 	end if
 	keyboardListen()
 	checkObjectContact()

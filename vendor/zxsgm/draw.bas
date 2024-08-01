@@ -132,16 +132,16 @@ end function
 sub moveToScreen(direction as Ubyte)
 	' removeAllObjects()
 	if direction = 6
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 0, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, protaY, 0, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + 1
 	elseif direction = 4
-		saveSprite(PROTA_SPRITE, getSpriteLin(PROTA_SPRITE), 60, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, protaY, 60, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen - 1
 	elseif direction = 2
-		saveSprite(PROTA_SPRITE, 0, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, 0, protaX, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		currentScreen = currentScreen + MAP_SCREENS_WIDTH_COUNT
 	elseif direction = 8
-		saveSprite(PROTA_SPRITE, MAX_LINE, getSpriteCol(PROTA_SPRITE), getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
+		saveSprite(PROTA_SPRITE, MAX_LINE, protaX, getSpriteTile(PROTA_SPRITE), getSpriteDirection(PROTA_SPRITE))
 		#ifdef SIDE_VIEW
 			jumpCurrentKey = 0
 		#endif
@@ -154,13 +154,13 @@ sub moveToScreen(direction as Ubyte)
 end sub
 
 sub drawSprites()
-	if (getSpriteLin(PROTA_SPRITE) < 41)
+	if (protaY < 41)
 		if not invincible
-				Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+			Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), protaX, protaY)
 		else
 			if invincibleBlink
 				invincibleBlink = not invincibleBlink
-				Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), getSpriteCol(PROTA_SPRITE), getSpriteLin(PROTA_SPRITE))
+				Draw2x2Sprite(spritesSet(getSpriteTile(PROTA_SPRITE)), protaX, protaY)
 			else
 				invincibleBlink = not invincibleBlink
 			end if

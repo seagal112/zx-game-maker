@@ -76,7 +76,6 @@ sub moveBullet()
     end if
     
     if BULLET_DISTANCE <> 0
-        dim protaX as byte = getSpriteCol(PROTA_SPRITE)
         if bulletDirection = 1
             if protaX + BULLET_DISTANCE > maxXScreenRight
                 limit = maxXScreenRight
