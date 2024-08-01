@@ -54,12 +54,12 @@ for tileset in data['tilesets']:
             if tile['type'] == 'life':
                 lifeTile = str(tile['id'])
             if tile['type'] == 'animated':
-                animatedTilesIds.append(str(tile['id']))
+                animatedTilesIds.append(tile['id'])
             if tile['type'] == 'damage':
-                damageTiles.append(str(tile['id']))
+                damageTiles.append(tile['id'])
             if tile['type'] == 'animated-damage':
-                animatedTilesIds.append(str(tile['id']))
-                damageTiles.append(str(tile['id']))
+                animatedTilesIds.append(tile['id'])
+                damageTiles.append(tile['id'])
     elif tileset['name'] == 'sprites':
         spriteTileOffset = tileset['firstgid']
 
@@ -180,17 +180,20 @@ configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
-configStr += "dim damageTiles(" + str(damageTilesCount) + ") as ubyte = {" + ",".join(damageTiles) + "}\n"
-configStr += "dim animatedTiles(" + str(animatedTilesIdsCount) + ") as ubyte = {" + ",".join(animatedTilesIds) + "}\n"
 configStr += "dim keyTile as ubyte = " + keyTile + "\n"
 configStr += "dim itemTile as ubyte = " + itemTile + "\n"
 configStr += "dim doorTile as ubyte = " + doorTile + "\n"
 configStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
-configStr += "const DAMAGE_TILES_ARRAY_SIZE as ubyte = " + str(len(damageTiles) - 1) + "\n"
 configStr += "const ANIMATE_PERIOD_MAIN as ubyte = " + str(animatePeriodMain) + "\n"
 configStr += "const ANIMATE_PERIOD_ENEMY as ubyte = " + str(animatePeriodEnemy) + "\n"
-configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n"
-# configStr += "const ANIMATED_TILES_ARRAY_SIZE as ubyte = " + str(len(animatedTilesIds) - 1) + "\n\n"
+configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n\n"
+
+
+# save damage tiles in file .bin instead variable
+with open("output/damageTiles.bin", "wb") as f:
+    f.write(bytearray(damageTiles))
+
+configStr += "const DAMAGE_TILES_COUNT as ubyte = " + str(damageTilesCount) + "\n"
 
 if shooting == 1:
     configStr += "#DEFINE SHOOTING_ENABLED\n"
@@ -263,8 +266,8 @@ for layer in data['layers']:
 
                 # screens[idx][mapY][mapX % screenWidth] = tile
 
-                if tile in animatedTilesIds and len(screenAnimatedTiles[idx]) < maxAnimatedTilesPerScreen:
-                    screenAnimatedTiles[idx].append([int(tile), mapX, mapY, 0])
+                if int(tile) in animatedTilesIds and len(screenAnimatedTiles[idx]) < maxAnimatedTilesPerScreen:
+                    screenAnimatedTiles[idx].append([tile, mapX, mapY, 0])
 
                 if tile == keyTile:
                     screenObjects[idx]['key'] = 1
@@ -295,7 +298,7 @@ for screen in screenAnimatedTiles:
 with open("output/animatedTilesInScreen.bin", "wb") as f:
     for screen in screenAnimatedTiles:
         for tile in screenAnimatedTiles[screen]:
-            f.write(bytearray([tile[0], tile[1], tile[2], tile[3]]))
+            f.write(bytearray([int(tile[0]), int(tile[1]), int(tile[2]), int(tile[3])]))
 
 # configStr += "dim screenObjectsInitial(" + str(screensCount - 1) + ", 3) as ubyte = { _\n"
 # for screen in screenObjects:
@@ -479,13 +482,11 @@ with open(outputDir + "enemiesInScreenOffsets.bin", "wb") as f:
     for offset in enemiesInScreenOffsets:
         f.write(offset.to_bytes(2, byteorder='little'))
 
-configStr += "dim enemiesPerScreen(" + str(screensCount - 1) + ") as ubyte\n"
-configStr += "dim enemiesPerScreenInitial(" + str(screensCount - 1) + ") as ubyte = {"
+with open("output/enemiesPerScreen.bin", "wb") as f:
+    f.write(bytearray(enemiesPerScreen))
 
-for i in enemiesPerScreen:
-    configStr += str(i) + ', '
-configStr = configStr[:-2]
-configStr += "}\n\n"
+with open("output/enemiesPerScreenInitial.bin", "wb") as f:
+    f.write(bytearray(enemiesPerScreen))
 
 configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 11) as byte\n"
 

@@ -22,7 +22,7 @@ sub printLife()
 end sub
 
 function isADamageTile(tile as ubyte) as UBYTE
-    for i = 0 to DAMAGE_TILES_ARRAY_SIZE
+    for i = 0 to DAMAGE_TILES_COUNT
         if peek(@damageTiles + i) = tile
             return 1
         end if
