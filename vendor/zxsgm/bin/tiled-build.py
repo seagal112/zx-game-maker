@@ -180,10 +180,10 @@ configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
 configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
-configStr += "dim keyTile as ubyte = " + keyTile + "\n"
-configStr += "dim itemTile as ubyte = " + itemTile + "\n"
-configStr += "dim doorTile as ubyte = " + doorTile + "\n"
-configStr += "dim lifeTile as ubyte = " + lifeTile + "\n"
+configStr += "const KEY_TILE as ubyte = " + keyTile + "\n"
+configStr += "const ITEM_TILE as ubyte = " + itemTile + "\n"
+configStr += "const DOOR_TILE as ubyte = " + doorTile + "\n"
+configStr += "const LIFE_TILE as ubyte = " + lifeTile + "\n"
 configStr += "const ANIMATE_PERIOD_MAIN as ubyte = " + str(animatePeriodMain) + "\n"
 configStr += "const ANIMATE_PERIOD_ENEMY as ubyte = " + str(animatePeriodEnemy) + "\n"
 configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n\n"
@@ -202,7 +202,7 @@ configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
 
-configStr += "const BACKGROUND_ATTRIBUTE = " + str(backgroundAttribute) + "\n\n"
+configStr += "const BACKGROUND_ATTRIBUTE = " + str(backgroundAttribute) + "\n"
 
 if len(initTexts) > 0:
     configStr += "#DEFINE INIT_TEXTS\n"
@@ -285,7 +285,9 @@ configStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
 configStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n"
 configStr += "const SCREENS_COUNT as ubyte = " + str(screensCount - 1) + "\n\n"
 
-configStr += "dim screenObjects(" + str(screensCount - 1) + ", 3) as ubyte\n"
+with open("output/screenObjects.bin", "wb") as f:
+    for screen in screenObjects:
+        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life']]))
 
 with open("output/objectsInScreen.bin", "wb") as f:
     for screen in screenObjects:
@@ -319,10 +321,8 @@ if shouldKillEnemies == 1:
 if enemiesRespawn == 0:
     configStr += "#DEFINE ENEMIES_NOT_RESPAWN_ENABLED\n"
 
-if shouldKillEnemies == 1 or enemiesRespawn == 0:
-    configStr += "dim screensWon(" + str(screensCount) + ") as ubyte\n"
-else:
-    configStr += "dim screensWon(0) as ubyte\n"
+with open("output/screensWon.bin", "wb") as f:
+    f.write(bytearray([0] * screensCount))
 
 for idx, screen in enumerate(screens):
     label = 'screen' + str(idx).zfill(3)
@@ -488,10 +488,11 @@ with open("output/enemiesPerScreen.bin", "wb") as f:
 with open("output/enemiesPerScreenInitial.bin", "wb") as f:
     f.write(bytearray(enemiesPerScreen))
 
-configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 11) as byte\n"
+# configStr += "dim decompressedEnemiesScreen(" + str(maxEnemiesPerScreen - 1) + ", 11) as byte\n"
 
-if spritesWithColors == 1:
-    configStr += "dim unpaintEnemiesArray(" + str(maxEnemiesPerScreen - 1) + ", 1) as byte\n"
+with open("output/decompressedEnemiesScreen.bin", "wb") as f:
+    for i in range(maxEnemiesPerScreen):
+        f.write(bytearray([0] * 11))
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(configStr, file=text_file)

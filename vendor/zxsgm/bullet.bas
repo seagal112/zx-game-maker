@@ -61,15 +61,15 @@ spritesSet(BULLET_SPRITE_LEFT_ID) = Create1x1Sprite(@bullet)
 '     end if
 ' end sub
 
-sub moveBullet()
-    dim maxXScreenRight as ubyte = 60
-    dim maxXScreenLeft as ubyte = 2
-    dim limit as ubyte = 0
+dim maxXScreenRight as ubyte = 60
+dim maxXScreenLeft as ubyte = 2
+#ifdef OVERHEAD_VIEW
+    dim maxYScreenBottom as ubyte = 40
+    dim maxYScreenTop as ubyte = 2
+#endif
 
-    #ifdef OVERHEAD_VIEW
-        dim maxYScreenBottom as ubyte = 40
-        dim maxYScreenTop as ubyte = 2
-    #endif
+sub moveBullet()
+    dim limit as ubyte = 0
 
     if bulletPositionX = 0 and bulletPositionY = 0
         return

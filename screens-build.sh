@@ -44,7 +44,24 @@ fi
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t sprites
 
-cat output/title.png.scr.zx0 output/ending.png.scr.zx0 output/hud.png.scr.zx0 output/map.bin.zx0 output/enemies.bin.zx0 output/tiles.bin output/attrs.bin output/sprites.bin output/objectsInScreen.bin output/screenOffsets.bin output/enemiesInScreenOffsets.bin output/animatedTilesInScreen.bin output/damageTiles.bin output/enemiesPerScreen.bin output/enemiesPerScreen.bin > output/files.bin.zx0
+cat output/title.png.scr.zx0 \
+    output/ending.png.scr.zx0 \
+    output/hud.png.scr.zx0 \
+    output/map.bin.zx0 \
+    output/enemies.bin.zx0 \
+    output/tiles.bin \
+    output/attrs.bin \
+    output/sprites.bin \
+    output/objectsInScreen.bin \
+    output/screenOffsets.bin \
+    output/enemiesInScreenOffsets.bin \
+    output/animatedTilesInScreen.bin \
+    output/damageTiles.bin \
+    output/enemiesPerScreen.bin \
+    output/enemiesPerScreen.bin \
+    output/screenObjects.bin \
+    output/screensWon.bin \
+    output/decompressedEnemiesScreen.bin > output/files.bin.zx0
 
 SIZEFX=$(stat --printf="%s" assets/fx/fx.tap)
 SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
@@ -63,16 +80,22 @@ SIZE12=$(stat --printf="%s" output/animatedTilesInScreen.bin)
 SIZE13=$(stat --printf="%s" output/damageTiles.bin)
 SIZE14=$(stat --printf="%s" output/enemiesPerScreen.bin)
 SIZE15=$(stat --printf="%s" output/enemiesPerScreen.bin)
+SIZE16=$(stat --printf="%s" output/screenObjects.bin)
+SIZE17=$(stat --printf="%s" output/screensWon.bin)
+SIZE18=$(stat --printf="%s" output/decompressedEnemiesScreen.bin)
 tilesetAddress=$(echo "$SIZE0 + $SIZE1 + $SIZE2 + $SIZE3 + $SIZE4 + $SIZE5" | bc)
 attrAddress=$(echo "$tilesetAddress + $SIZE6" | bc)
 spritesAddress=$(echo "$attrAddress + $SIZE7" | bc)
-screenObjectsAddress=$(echo "$spritesAddress + $SIZE8" | bc)
-screenOffsetsAddress=$(echo "$screenObjectsAddress + $SIZE9" | bc)
+screenObjectsInitial=$(echo "$spritesAddress + $SIZE8" | bc)
+screenOffsetsAddress=$(echo "$screenObjectsInitial + $SIZE9" | bc)
 enemiesInScreenOffsets=$(echo "$screenOffsetsAddress + $SIZE10" | bc)
 animatedTilesInScreen=$(echo "$enemiesInScreenOffsets + $SIZE11" | bc)
 damageTiles=$(echo "$animatedTilesInScreen + $SIZE12" | bc)
 enemiesPerScreen=$(echo "$damageTiles + $SIZE13" | bc)
 enemiesPerScreenInitial=$(echo "$enemiesPerScreen + $SIZE14" | bc)
+screenObjects=$(echo "$enemiesPerScreenInitial + $SIZE15" | bc)
+screensWon=$(echo "$screenObjects + $SIZE16" | bc)
+decompressedEnemiesScreen=$(echo "$screensWon + $SIZE17" | bc)
 
 echo "const TITLE_SCREEN_ADDRESS as uinteger=$SIZE0" >> output/config.bas
 address=$(echo "$SIZE0 + $SIZE1" | bc)
@@ -86,13 +109,16 @@ echo "const ENEMIES_DATA_ADDRESS as uinteger=$address" >> output/config.bas
 echo "const TILESET_DATA_ADDRESS as uinteger=$tilesetAddress" >> output/config.bas
 echo "const ATTR_DATA_ADDRESS as uinteger=$attrAddress" >> output/config.bas
 echo "const SPRITES_DATA_ADDRESS as uinteger=$spritesAddress" >> output/config.bas
-echo "const SCREEN_OBJECTS_DATA_ADDRESS as uinteger=$screenObjectsAddress" >> output/config.bas
+echo "const SCREEN_OBJECTS_INITIAL_DATA_ADDRESS as uinteger=$screenObjectsInitial" >> output/config.bas
 echo "const SCREEN_OFFSETS_DATA_ADDRESS as uinteger=$screenOffsetsAddress" >> output/config.bas
 echo "const ENEMIES_IN_SCREEN_OFFSETS_DATA_ADDRESS as uinteger=$enemiesInScreenOffsets" >> output/config.bas
 echo "const ANIMATED_TILES_IN_SCREEN_DATA_ADDRESS as uinteger=$animatedTilesInScreen" >> output/config.bas
 echo "const DAMAGE_TILES_DATA_ADDRESS as uinteger=$damageTiles" >> output/config.bas
 echo "const ENEMIES_PER_SCREEN_DATA_ADDRESS as uinteger=$enemiesPerScreen" >> output/config.bas
 echo "const ENEMIES_PER_SCREEN_INITIAL_DATA_ADDRESS as uinteger=$enemiesPerScreenInitial" >> output/config.bas
+echo "const SCREEN_OBJECTS_DATA_ADDRESS as uinteger=$screenObjects" >> output/config.bas
+echo "const SCREENS_WON_DATA_ADDRESS as uinteger=$screensWon" >> output/config.bas
+echo "const DECOMPRESSED_ENEMIES_SCREEN_DATA_ADDRESS as uinteger=$decompressedEnemiesScreen" >> output/config.bas
 
 wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0
 

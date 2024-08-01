@@ -22,7 +22,7 @@ sub removeKeyDoors()
 	y = 0
 	
 	for index=0 to SCREEN_LENGTH
-		if peek(@decompressedMap + index) - 1 = doorTile
+		if peek(@decompressedMap + index) - 1 = DOOR_TILE
 			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 		end if
 
@@ -58,19 +58,19 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 		return
 	end if
 	
-	if tile = itemTile
+	if tile = ITEM_TILE
 		if screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 			SetTileChecked(tile, attrSet(tile), x, y)
 		end if
-	elseif tile = keyTile
+	elseif tile = KEY_TILE
 		if screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 			SetTileChecked(tile, attrSet(tile), x, y)
 		end if
-	elseif tile = doorTile
+	elseif tile = DOOR_TILE
 		if screenObjects(currentScreen, SCREEN_OBJECT_DOOR_INDEX)
 			SetTile(tile, attrSet(tile), x, y)
 		end if
-	elseif tile = lifeTile
+	elseif tile = LIFE_TILE
 		if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 			SetTileChecked(tile, attrSet(tile), x, y)
 		end if
@@ -90,7 +90,7 @@ sub redrawScreen()
 end sub
 
 function checkTileIsDoor(col as ubyte, lin as ubyte) as ubyte
-	if GetTile(col, lin) = doorTile
+	if GetTile(col, lin) = DOOR_TILE
 		if currentKeys <> 0
 			currentKeys = currentKeys - 1
 			printLife()

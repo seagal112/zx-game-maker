@@ -71,13 +71,16 @@ load "" CODE ' Load files
 dim tileSet(192, 7) as ubyte at TILESET_DATA_ADDRESS
 dim attrSet(191) as ubyte at ATTR_DATA_ADDRESS
 dim sprites(47, 31) as ubyte at SPRITES_DATA_ADDRESS
-dim screenObjectsInitial(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_DATA_ADDRESS
+dim screenObjectsInitial(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_INITIAL_DATA_ADDRESS
 dim screensOffsets(SCREENS_COUNT) as uInteger at SCREEN_OFFSETS_DATA_ADDRESS
 dim enemiesInScreenOffsets(SCREENS_COUNT) as uInteger at ENEMIES_IN_SCREEN_OFFSETS_DATA_ADDRESS
 dim animatedTilesInScreen(SCREENS_COUNT, MAX_ANIMATED_TILES_PER_SCREEN, 3) as ubyte at ANIMATED_TILES_IN_SCREEN_DATA_ADDRESS
 dim damageTiles(DAMAGE_TILES_COUNT) as ubyte at DAMAGE_TILES_DATA_ADDRESS
 dim enemiesPerScreen(SCREENS_COUNT) as ubyte at ENEMIES_PER_SCREEN_DATA_ADDRESS
 dim enemiesPerScreenInitial(SCREENS_COUNT) as ubyte at ENEMIES_PER_SCREEN_INITIAL_DATA_ADDRESS
+dim screenObjects(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_DATA_ADDRESS
+dim screensWon(SCREENS_COUNT) as ubyte at SCREENS_WON_DATA_ADDRESS
+dim decompressedEnemiesScreen(MAX_ENEMIES_PER_SCREEN, 11) as byte at DECOMPRESSED_ENEMIES_SCREEN_DATA_ADDRESS
 
 InitGFXLib()
 SetTileset(@tileSet)

@@ -292,7 +292,7 @@ sub keyboardListen()
 end sub
 
 function checkTileObject(tile as ubyte) as ubyte
-	if tile = itemTile and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
+	if tile = ITEM_TILE and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
 		currentItems = currentItems + 1
 		#ifdef HISCORE_ENABLED
 			score = score + 100
@@ -304,13 +304,13 @@ function checkTileObject(tile as ubyte) as ubyte
 		screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 0
 		BeepFX_Play(5)
 		return 1
-	elseif tile = keyTile and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
+	elseif tile = KEY_TILE and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 		currentKeys = currentKeys + 1
 		printLife()
 		screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX) = 0
 		BeepFX_Play(3)
 		return 1
-	elseif tile = lifeTile and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
+	elseif tile = LIFE_TILE and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 		currentLife = currentLife + LIFE_AMOUNT
 		printLife()
 		screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX) = 0
