@@ -68,7 +68,11 @@ load "" CODE ' Load files
 
 #include "GuSprites.zxbas"
 
-dim tileSet(192, 7) as ubyte at TILESET_DATA_ADDRESS
+#ifdef SIDE_VIEW
+    dim tileSet(192, 7) as ubyte at TILESET_DATA_ADDRESS
+#else
+    dim tileSet(194, 7) as ubyte at TILESET_DATA_ADDRESS
+#endif
 dim attrSet(191) as ubyte at ATTR_DATA_ADDRESS
 dim sprites(47, 31) as ubyte at SPRITES_DATA_ADDRESS
 dim screenObjectsInitial(SCREENS_COUNT, 3) as ubyte at SCREEN_OBJECTS_INITIAL_DATA_ADDRESS
