@@ -56,13 +56,18 @@ dim protaDirection as ubyte
 load "" CODE ' Load fx
 load "" CODE ' Load files
 
-#ifdef MUSIC_ENABLED
+#ifdef ENABLED_128k
     #include "128/im2.bas"
     #include "128/vortexTracker.bas"
     #include "128/functions.bas"
     PaginarMemoria(4)
     load "" CODE ' Load vtplayer
     load "" CODE ' Load music
+    PaginarMemoria(0)
+    PaginarMemoria(3)
+    load "" CODE TITLE_SCREEN_ADDRESS ' Load title screen
+    load "" CODE ENDING_SCREEN_ADDRESS ' Load ending screen
+    load "" CODE HUD_SCREEN_ADDRESS ' Load hud screen
     PaginarMemoria(0)
 #endif
 
@@ -111,11 +116,14 @@ next i
 
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
-    #ifdef MUSIC_ENABLED
+    #ifdef ENABLED_128k
         VortexTracker_Stop()
+        PaginarMemoria(3)
+            dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
+        PaginarMemoria(0)
+    #else
+        dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
     #endif
-
-    dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
 
     #ifdef HISCORE_ENABLED
         if score > hiScore
@@ -191,8 +199,13 @@ playGame:
         next i
     #endif
 
-    #ifdef MUSIC_ENABLED
+    #ifdef ENABLED_128k
+        PaginarMemoria(3)
+        dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
+        PaginarMemoria(0)
         VortexTracker_Inicializar(1)
+    #else
+        dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     #endif
     
     resetValues()
@@ -244,17 +257,20 @@ playGame:
     loop
 
 ending:
-    #ifdef MUSIC_ENABLED
+    #ifdef ENABLED_128k
         VortexTracker_Stop()
+        PaginarMemoria(3)
+            dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
+        PaginarMemoria(0)
+    #else
+        dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
     #endif
-
-    dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
     DO
     LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 gameOver:
-    #ifdef MUSIC_ENABLED
+    #ifdef ENABLED_128k
         VortexTracker_Stop()
     #endif
 
@@ -283,7 +299,6 @@ sub resetValues()
     saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
     screenObjects = screenObjectsInitial
     enemiesPerScreen = enemiesPerScreenInitial
-    dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     for i = 0 to SCREENS_COUNT
         screensWon(i) = 0
     next i

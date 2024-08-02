@@ -78,7 +78,7 @@ bulletDistance = 0
 enemiesRespawn = 0
 shooting = 1
 shouldKillEnemies = 0
-musicEnabled = 0
+enabled128K = 0
 hiScore = 0
 
 vtplayerInit = 'EFAD'
@@ -126,8 +126,8 @@ if 'properties' in data:
             shooting = 1 if property['value'] else 0
         elif property['name'] == 'shouldKillEnemies':
             shouldKillEnemies = 1 if property['value'] else 0
-        elif property['name'] == 'musicEnabled':
-            musicEnabled = 1 if property['value'] else 0
+        elif property['name'] == '128Kenabled':
+            enabled128K = 1 if property['value'] else 0
         elif property['name'] == 'hiScore':
             hiScore = 1 if property['value'] else 0
         elif property['name'] == 'VTPLAYER_INIT':
@@ -179,7 +179,6 @@ configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
-configStr += "const MUSIC_ENABLED as ubyte = " + str(musicEnabled) + "\n"
 configStr += "const KEY_TILE as ubyte = " + keyTile + "\n"
 configStr += "const ITEM_TILE as ubyte = " + itemTile + "\n"
 configStr += "const DOOR_TILE as ubyte = " + doorTile + "\n"
@@ -213,8 +212,8 @@ if len(initTexts) > 0:
 
 configStr += "\n"
 
-if musicEnabled == 1:
-    configStr += "#DEFINE MUSIC_ENABLED\n"
+if enabled128K == 1:
+    configStr += "#DEFINE ENABLED_128k\n"
 
 if hiScore == 1:
     configStr += "#DEFINE HISCORE_ENABLED\n\n"

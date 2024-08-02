@@ -29,7 +29,7 @@ weight_counts = {
     "Sprites": np.array([int(values[8])]),
     "Objetos": np.array([int(values[9])]),
     "Offsets de pantalla": np.array([int(values[10])]),
-    "Offsets de enemigos": np.array([int(values[11])]),
+    "Tiles de daño": np.array([int(values[11])]),
     "Tiles animados": np.array([int(values[12])]),
     "Espacio libre": np.array([free]),
 }

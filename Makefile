@@ -1,8 +1,12 @@
+SHELL := /bin/bash
+
 BIN_FOLDER=vendor/zxsgm/bin/
 DOCKER_VERSION=latest
 
 PROJECT_NAME := $(shell jq -r '.properties | .[] | select(.name=="gameName") | .value' output/maps.json)
 PROJECT_NAME := $(if $(PROJECT_NAME),$(PROJECT_NAME),"Game Name")
+
+ENABLED_128K := $(shell jq -r '.properties | .[] | select(.name=="128Kenabled") | .value' output/maps.json)
 
 tiled-export:
 	tiled --export-map json assets/maps.tmx output/maps.json
@@ -41,12 +45,14 @@ build:
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
 	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin
 
-	@if [ -f assets/music/music.tap ]; then\
-		echo "Music detected";\
-		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap > dist/$(PROJECT_NAME).tap;\
-		# cat output/loader.tap output/loading.tap output/main.tap output/files.tap > dist/$(PROJECT_NAME).tap;\
+	@if [[ $(ENABLED_128K) == true ]]; then\
+		echo "128K ENABLED!";\
+		wine ${BIN_FOLDER}bin2tap.exe -o output/title.tap -a 49152 output/title.png.scr.zx0;\
+		wine ${BIN_FOLDER}bin2tap.exe -o output/ending.tap -a 49152 output/ending.png.scr.zx0;\
+		wine ${BIN_FOLDER}bin2tap.exe -o output/hud.tap -a 49152 output/hud.png.scr.zx0;\
+		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap output/title.tap output/ending.tap output/hud.tap > dist/$(PROJECT_NAME).tap;\
 	else\
-		cat output/loader.tap output/loading.tap output/main.tap > dist/$(PROJECT_NAME).tap;\
+		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap > dist/$(PROJECT_NAME).tap;\
 	fi
 	
 

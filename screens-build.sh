@@ -1,4 +1,7 @@
 BIN_FOLDER=vendor/zxsgm/bin/
+
+enabled128K=$(jq -r '.properties | .[] | select(.name=="128Kenabled") | .value' output/maps.json)
+
 # 49152
 SIZE0=49152
 SIZE1=0
@@ -44,10 +47,12 @@ fi
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t tiles
 python3 ${BIN_FOLDER}img2zxbasic/src/img2zxbasic.py -t sprites
 
-cat output/title.png.scr.zx0 \
-    output/ending.png.scr.zx0 \
-    output/hud.png.scr.zx0 \
-    output/map.bin.zx0 \
+rm -f output/files.bin.zx0
+
+if [[ $enabled128K != true ]]; then
+    cat output/title.png.scr.zx0 output/ending.png.scr.zx0 output/hud.png.scr.zx0 > output/files.bin.zx0
+fi
+cat output/map.bin.zx0 \
     output/enemies.bin.zx0 \
     output/tiles.bin \
     output/attrs.bin \
@@ -61,13 +66,19 @@ cat output/title.png.scr.zx0 \
     output/enemiesPerScreen.bin \
     output/screenObjects.bin \
     output/screensWon.bin \
-    output/decompressedEnemiesScreen.bin > output/files.bin.zx0
+    output/decompressedEnemiesScreen.bin >> output/files.bin.zx0
 
 SIZEFX=$(stat --printf="%s" assets/fx/fx.tap)
 SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
-SIZE1=$(stat --printf="%s" output/title.png.scr.zx0)
-SIZE2=$(stat --printf="%s" output/ending.png.scr.zx0)
-SIZE3=$(stat --printf="%s" output/hud.png.scr.zx0)
+if [[ $enabled128K == true ]]; then
+    SIZE1=0
+    SIZE2=0
+    SIZE3=0
+else
+    SIZE1=$(stat --printf="%s" output/title.png.scr.zx0)
+    SIZE2=$(stat --printf="%s" output/ending.png.scr.zx0)
+    SIZE3=$(stat --printf="%s" output/hud.png.scr.zx0)
+fi
 SIZE4=$(stat --printf="%s" output/map.bin.zx0)
 SIZE5=$(stat --printf="%s" output/enemies.bin.zx0)
 SIZE6=$(stat --printf="%s" output/tiles.bin)
@@ -97,11 +108,17 @@ screenObjects=$(echo "$enemiesPerScreenInitial + $SIZE15" | bc)
 screensWon=$(echo "$screenObjects + $SIZE16" | bc)
 decompressedEnemiesScreen=$(echo "$screensWon + $SIZE17" | bc)
 
-echo "const TITLE_SCREEN_ADDRESS as uinteger=$SIZE0" >> output/config.bas
+if [[ $enabled128K != true ]]; then
+    echo "const TITLE_SCREEN_ADDRESS as uinteger=$SIZE0" >> output/config.bas
+fi
 address=$(echo "$SIZE0 + $SIZE1" | bc)
-echo "const ENDING_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+if [[ $enabled128K != true ]]; then
+    echo "const ENDING_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+fi
 address=$(echo "$address + $SIZE2" | bc)
-echo "const HUD_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+if [[ $enabled128K != true ]]; then
+    echo "const HUD_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+fi
 address=$(echo "$address + $SIZE3" | bc)
 echo "const MAPS_DATA_ADDRESS as uinteger=$address" >> output/config.bas
 address=$(echo "$address + $SIZE4" | bc)
@@ -120,6 +137,20 @@ echo "const SCREEN_OBJECTS_DATA_ADDRESS as uinteger=$screenObjects" >> output/co
 echo "const SCREENS_WON_DATA_ADDRESS as uinteger=$screensWon" >> output/config.bas
 echo "const DECOMPRESSED_ENEMIES_SCREEN_DATA_ADDRESS as uinteger=$decompressedEnemiesScreen" >> output/config.bas
 
+if [[ $enabled128K == true ]]; then
+    baseAddress=49152
+    echo "const TITLE_SCREEN_ADDRESS as uinteger=$baseAddress" >> output/config.bas
+    titleAddress=$(stat --printf="%s" output/title.png.scr.zx0)
+    address=$(echo "$SIZE0 + $titleAddress" | bc)
+    echo "const ENDING_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+    endingAddress=$(stat --printf="%s" output/ending.png.scr.zx0)
+    address=$(echo "$address + $endingAddress" | bc)
+    echo "const HUD_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+fi
+
 wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0
 
-python3 vendor/zxsgm/bin/memoryImageGenerator.py $SIZEFX,$SIZE1,$SIZE2,$SIZE3,$SIZE4,$SIZE5,$SIZE6,$SIZE7,$SIZE8,$SIZE9,$SIZE10,$SIZE11,$SIZE12
+enemiesSize=$(echo "$SIZE5 + $SIZE11 + $SIZE14 + $SIZE15 + $SIZE18" | bc)
+mapsSize=$(echo "$SIZE4 + $SIZE16 + $SIZE17" | bc)
+
+python3 vendor/zxsgm/bin/memoryImageGenerator.py $SIZEFX,$SIZE1,$SIZE2,$SIZE3,$mapsSize,$enemiesSize,$SIZE6,$SIZE7,$SIZE8,$SIZE9,$SIZE10,$SIZE13,$SIZE12
