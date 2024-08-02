@@ -2,16 +2,6 @@ BIN_FOLDER=vendor/zxsgm/bin/
 
 enabled128K=$(jq -r '.properties | .[] | select(.name=="128Kenabled") | .value' output/maps.json)
 
-# 49152
-SIZE0=49152
-SIZE1=0
-SIZE2=0
-SIZE3=0
-SIZE4=0
-SIZE5=0
-
-echo "const BEEP_FX_ADDRESS as uinteger=$SIZE0" >> output/config.bas
-
 if [ -f assets/screens/title.scr ]; then
     java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.scr output/title.png.scr.zx0
 else
@@ -68,13 +58,20 @@ cat output/map.bin.zx0 \
     output/screensWon.bin \
     output/decompressedEnemiesScreen.bin >> output/files.bin.zx0
 
-SIZEFX=$(stat --printf="%s" assets/fx/fx.tap)
-SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
+SIZE0=49152
+
+if [[ $enabled128K != true ]]; then
+    echo "const BEEP_FX_ADDRESS as uinteger=$SIZE0" >> output/config.bas
+    SIZEFX=$(stat --printf="%s" assets/fx/fx.tap)
+else
+    SIZEFX=0
+fi
 if [[ $enabled128K == true ]]; then
     SIZE1=0
     SIZE2=0
     SIZE3=0
 else
+    SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
     SIZE1=$(stat --printf="%s" output/title.png.scr.zx0)
     SIZE2=$(stat --printf="%s" output/ending.png.scr.zx0)
     SIZE3=$(stat --printf="%s" output/hud.png.scr.zx0)
@@ -138,10 +135,11 @@ echo "const SCREENS_WON_DATA_ADDRESS as uinteger=$screensWon" >> output/config.b
 echo "const DECOMPRESSED_ENEMIES_SCREEN_DATA_ADDRESS as uinteger=$decompressedEnemiesScreen" >> output/config.bas
 
 if [[ $enabled128K == true ]]; then
-    baseAddress=49152
+    sizeFX=$(stat --printf="%s" assets/fx/fx.tap)
+    baseAddress=$(echo "$sizeFX + $SIZE0" | bc)
     echo "const TITLE_SCREEN_ADDRESS as uinteger=$baseAddress" >> output/config.bas
     titleAddress=$(stat --printf="%s" output/title.png.scr.zx0)
-    address=$(echo "$SIZE0 + $titleAddress" | bc)
+    address=$(echo "$baseAddress + $titleAddress" | bc)
     echo "const ENDING_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
     endingAddress=$(stat --printf="%s" output/ending.png.scr.zx0)
     address=$(echo "$address + $endingAddress" | bc)

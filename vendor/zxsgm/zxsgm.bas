@@ -49,11 +49,20 @@ dim protaX as ubyte
 dim protaY as ubyte
 dim protaDirection as ubyte
 
+dim soundToPlay as ubyte = 1
+
 #ifdef SHOOTING_ENABLED
     dim noKeyPressedForShoot as UBYTE = 1
 #endif
 
-load "" CODE ' Load fx
+#ifdef ENABLED_128k
+    PaginarMemoria(3)
+    load "" CODE $c000 ' Load fx
+    PaginarMemoria(0)
+#else
+    load "" CODE ' Load fx
+#endif
+
 load "" CODE ' Load files
 
 #ifdef ENABLED_128k
