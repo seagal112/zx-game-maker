@@ -36,6 +36,16 @@
                 "value": "EFB2"
             },
             {
+                "name": "ammo",
+                "type": "int",
+                "value": -1
+            },
+            {
+                "name": "ammoIncrement",
+                "type": "int",
+                "value": 10
+            },
+            {
                 "name": "animatePeriodEnemy",
                 "type": "int",
                 "value": 3

@@ -14,6 +14,10 @@ end sub
 sub printLife()
 	PRINT AT 22, 5; "   "  
 	PRINT AT 22, 5; currentLife
+    #ifdef AMMO_ENABLED
+        PRINT AT 22, 9; "   "  
+        PRINT AT 22, 9; currentAmmo
+    #endif
 	PRINT AT 22, 16; currentKeys
     #ifdef HISCORE_ENABLED
 	    PRINT AT 23, 25 - LEN(STR$(score)); score

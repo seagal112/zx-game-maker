@@ -37,6 +37,7 @@ maxAnimatedTilesPerScreen = 3
 damageTiles = []
 animatedTilesIds = []
 screenAnimatedTiles = defaultdict(dict)
+ammoTile = 0
 keyTile = 0
 itemTile = 0
 doorTile = 0
@@ -45,6 +46,8 @@ lifeTile = 0
 for tileset in data['tilesets']:
     if tileset['name'] == 'tiles':
         for tile in tileset['tiles']:
+            if tile['type'] == 'ammo':
+                ammoTile = str(tile['id'])
             if tile['type'] == 'key':
                 keyTile = str(tile['id'])
             if tile['type'] == 'item':
@@ -106,6 +109,9 @@ gameView = 'side'
 
 killJumpingOnTop = 0
 
+ammo = -1
+ammoIncrement = 10
+
 if 'properties' in data:
     for property in data['properties']:
         if property['name'] == 'gameName':
@@ -161,6 +167,10 @@ if 'properties' in data:
             gameView = property['value']
         elif property['name'] == 'killJumpingOnTop':
             killJumpingOnTop = 1 if property['value'] else 0
+        elif property['name'] == 'ammo':
+            ammo = property['value']
+        elif property['name'] == 'ammoIncrement':
+            ammoIncrement = property['value']
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -179,6 +189,7 @@ configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
 configStr += "const SHOULD_KILL_ENEMIES as ubyte = " + str(shouldKillEnemies) + "\n"
+configStr += "const AMMO_TILE as ubyte = " + ammoTile + "\n"
 configStr += "const KEY_TILE as ubyte = " + keyTile + "\n"
 configStr += "const ITEM_TILE as ubyte = " + itemTile + "\n"
 configStr += "const DOOR_TILE as ubyte = " + doorTile + "\n"
@@ -238,6 +249,11 @@ else:
 if killJumpingOnTop == 1:
     configStr += "#DEFINE KILL_JUMPING_ON_TOP\n"
 
+if ammo > -1:
+    configStr += "#DEFINE AMMO_ENABLED\n"
+    configStr += "dim currentAmmo as ubyte = " + str(ammo) + "\n"
+    configStr += "const AMMO_INCREMENT as ubyte = " + str(ammoIncrement) + "\n"
+
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
         screensCount = len(layer['chunks'])
@@ -250,6 +266,7 @@ for layer in data['layers']:
         for idx, screen in enumerate(layer['chunks']):
             screens.append(array.array('B', screen['data']))
 
+            screenObjects[idx]['ammo'] = 0
             screenObjects[idx]['key'] = 0
             screenObjects[idx]['item'] = 0
             screenObjects[idx]['door'] = 0
@@ -276,25 +293,28 @@ for layer in data['layers']:
                     screenObjects[idx]['door'] = 1
                 elif tile == lifeTile:
                     screenObjects[idx]['life'] = 1
+                elif tile == ammoTile:
+                    screenObjects[idx]['ammo'] = 1
                 
 configStr += "const MAP_SCREENS_WIDTH_COUNT as ubyte = " + str(mapCols) + "\n"
 configStr += "const SCREEN_OBJECT_ITEM_INDEX as ubyte = 0 \n"
 configStr += "const SCREEN_OBJECT_KEY_INDEX as ubyte = 1 \n"
 configStr += "const SCREEN_OBJECT_DOOR_INDEX as ubyte = 2 \n"
 configStr += "const SCREEN_OBJECT_LIFE_INDEX as ubyte = 3 \n"
+configStr += "const SCREEN_OBJECT_AMMO_INDEX as ubyte = 4 \n"
 configStr += "const SCREENS_COUNT as ubyte = " + str(screensCount - 1) + "\n\n"
 
 with open("output/screenObjects.bin", "wb") as f:
     for screen in screenObjects:
-        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life']]))
+        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life'], screenObjects[screen]['ammo']]))
 
 with open("output/objectsInScreen.bin", "wb") as f:
     for screen in screenObjects:
-        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life']]))
+        f.write(bytearray([screenObjects[screen]['item'], screenObjects[screen]['key'], screenObjects[screen]['door'], screenObjects[screen]['life'], screenObjects[screen]['ammo']]))
 
 for screen in screenAnimatedTiles:
     for i in range(3 - len(screenAnimatedTiles[screen])):
-        screenAnimatedTiles[screen].append([0, 0, 0, 0])
+        screenAnimatedTiles[screen].append([0, 0, 0, 0, 0])
 
 with open("output/animatedTilesInScreen.bin", "wb") as f:
     for screen in screenAnimatedTiles:

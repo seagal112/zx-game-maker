@@ -137,10 +137,15 @@ end function
 
 #ifdef SIDE_VIEW
 	sub shoot()
-		if not noKeyPressedForShoot return
-
+		if not noKeyPressedForShoot then return
 		noKeyPressedForShoot = 0
-		
+
+		#ifdef AMMO_ENABLED
+			if currentAmmo = 0 then return
+			currentAmmo = currentAmmo - 1
+			printLife()
+		#endif
+
 		if bulletPositionX <> 0 return ' bullet in movement
 
 		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
@@ -160,9 +165,15 @@ end function
 
 #ifdef OVERHEAD_VIEW
 	sub shoot()
-		if not noKeyPressedForShoot return
+		if not noKeyPressedForShoot then return
 
 		noKeyPressedForShoot = 0
+
+		#ifdef AMMO_ENABLED
+			if currentAmmo = 0 then return
+			currentAmmo = currentAmmo - 1
+			printLife()
+		#endif
 
 		if bulletPositionX <> 0 return ' bullet in movement
 
@@ -314,6 +325,12 @@ function checkTileObject(tile as ubyte) as ubyte
 		currentLife = currentLife + LIFE_AMOUNT
 		printLife()
 		screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX) = 0
+		BeepFX_Play(6)
+		return 1
+	elseif tile = AMMO_TILE and screenObjects(currentScreen, SCREEN_OBJECT_AMMO_INDEX)
+		currentAmmo = currentAmmo + AMMO_INCREMENT
+		printLife()
+		screenObjects(currentScreen, SCREEN_OBJECT_AMMO_INDEX) = 0
 		BeepFX_Play(6)
 		return 1
 	end if

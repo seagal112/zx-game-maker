@@ -9,6 +9,7 @@
   <property name="VTPLAYER_INIT" value="F0FF"/>
   <property name="VTPLAYER_MUTE" value="F107"/>
   <property name="VTPLAYER_NEXTNOTE" value="F104"/>
+  <property name="ammo" type="int" value="0"/>
   <property name="backgroundAttribute" type="int" value="48"/>
   <property name="gameView" propertytype="gameView" value="overhead"/>
   <property name="hiScore" type="bool" value="false"/>
@@ -33,6 +34,7 @@
   <tile id="100" type="animated-damage"/>
   <tile id="101" type="damage"/>
   <tile id="166" type="damage"/>
+  <tile id="187" type="ammo"/>
   <tile id="188" type="door"/>
   <tile id="189" type="life"/>
   <tile id="190" type="item"/>
@@ -100,7 +102,7 @@
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,192,1,1,4,4,4,4,4,4,
-4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,188,1,1,1,1,1,1,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,
 4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,

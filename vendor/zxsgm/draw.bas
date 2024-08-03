@@ -53,7 +53,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 		end if
 	#endif
 
-	if tile < 188
+	if tile < 187
 		SetTile(tile, attrSet(tile), x, y)
 		return
 	end if
@@ -72,6 +72,10 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 		end if
 	elseif tile = LIFE_TILE
 		if screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
+			SetTileChecked(tile, attrSet(tile), x, y)
+		end if
+	elseif tile = AMMO_TILE
+		if screenObjects(currentScreen, SCREEN_OBJECT_AMMO_INDEX)
 			SetTileChecked(tile, attrSet(tile), x, y)
 		end if
 	end if
