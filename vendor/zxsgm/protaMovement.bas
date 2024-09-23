@@ -140,13 +140,13 @@ end function
 		if not noKeyPressedForShoot then return
 		noKeyPressedForShoot = 0
 
+		if bulletPositionX <> 0 return ' bullet in movement
+
 		#ifdef AMMO_ENABLED
 			if currentAmmo = 0 then return
 			currentAmmo = currentAmmo - 1
 			printLife()
 		#endif
-
-		if bulletPositionX <> 0 return ' bullet in movement
 
 		currentBulletSpriteId = BULLET_SPRITE_RIGHT_ID
 		if protaDirection
