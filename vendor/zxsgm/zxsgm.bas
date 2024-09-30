@@ -126,7 +126,9 @@ next i
 menu:
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     #ifdef ENABLED_128k
-        VortexTracker_Stop()
+        #ifdef MUSIC_ENABLED
+            VortexTracker_Stop()
+        #endif
         PaginarMemoria(3)
             dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
         PaginarMemoria(0)
@@ -212,7 +214,9 @@ playGame:
         PaginarMemoria(3)
         dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
         PaginarMemoria(0)
-        VortexTracker_Inicializar(1)
+        #ifdef MUSIC_ENABLED
+            VortexTracker_Inicializar(1)
+        #endif
     #else
         dzx0Standard(HUD_SCREEN_ADDRESS, $4000)
     #endif
@@ -267,7 +271,9 @@ playGame:
 
 ending:
     #ifdef ENABLED_128k
-        VortexTracker_Stop()
+        #ifdef MUSIC_ENABLED
+            VortexTracker_Stop()
+        #endif
         PaginarMemoria(3)
             dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
         PaginarMemoria(0)
@@ -280,7 +286,9 @@ ending:
 
 gameOver:
     #ifdef ENABLED_128k
-        VortexTracker_Stop()
+        #ifdef MUSIC_ENABLED
+            VortexTracker_Stop()
+        #endif
     #endif
 
     print at 7, 12; "GAME OVER"

@@ -112,6 +112,8 @@ killJumpingOnTop = 0
 ammo = -1
 ammoIncrement = 10
 
+musicEnabled = 0
+
 if 'properties' in data:
     for property in data['properties']:
         if property['name'] == 'gameName':
@@ -171,6 +173,8 @@ if 'properties' in data:
             ammo = property['value']
         elif property['name'] == 'ammoIncrement':
             ammoIncrement = property['value']
+        elif property['name'] == 'musicEnabled':
+            musicEnabled = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -253,6 +257,9 @@ if ammo > -1:
     configStr += "#DEFINE AMMO_ENABLED\n"
     configStr += "dim currentAmmo as ubyte = " + str(ammo) + "\n"
     configStr += "const AMMO_INCREMENT as ubyte = " + str(ammoIncrement) + "\n"
+
+if musicEnabled == 1:
+    configStr += "#DEFINE MUSIC_ENABLED\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':
