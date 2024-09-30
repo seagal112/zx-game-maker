@@ -30,8 +30,6 @@ free = bankMemory - total
 
 weight_counts["Free-Memory"] = np.array([free])
 
-print(weight_counts)
-
 species = (
     "",
     "",
