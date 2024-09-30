@@ -46,6 +46,8 @@ build:
 
 	python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 128 --heap-address 23755 -S 24576 -O 4 main.bas --mmap output/map.txt -D HIDE_LOAD_MSG -o output/main.bin
 
+	python3 check-memory.py
+
 	wine ${BIN_FOLDER}bas2tap.exe -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
 	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin
@@ -63,7 +65,6 @@ build:
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap > dist/$(PROJECT_FILE_NAME).tap;\
 	fi
 	
-
 build-dev:
 	rm -f output/*
 	$(MAKE) tiled-export
