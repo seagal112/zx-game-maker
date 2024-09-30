@@ -70,6 +70,11 @@ if [[ $enabled128K == true ]]; then
     SIZE1=0
     SIZE2=0
     SIZE3=0
+    SFX=$(stat --printf="%s" assets/fx/fx.tap)
+    S1=$(stat --printf="%s" output/title.png.scr.zx0)
+    S2=$(stat --printf="%s" output/ending.png.scr.zx0)
+    S3=$(stat --printf="%s" output/hud.png.scr.zx0)
+    python3 vendor/zxsgm/bin/memoryImageGenerator.py FX:$SFX,Init-Screen:$S1,End-Screen:$S2,HUD:$S3 memory-bank-3.png
 else
     SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
     SIZE1=$(stat --printf="%s" output/title.png.scr.zx0)
@@ -149,6 +154,6 @@ fi
 wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0
 
 enemiesSize=$(echo "$SIZE5 + $SIZE11 + $SIZE14 + $SIZE15 + $SIZE18" | bc)
-mapsSize=$(echo "$SIZE4 + $SIZE16 + $SIZE17" | bc)
+mapsSize=$(echo "$SIZE4 + $SIZE10 + $SIZE16 + $SIZE17" | bc)
 
-python3 vendor/zxsgm/bin/memoryImageGenerator.py $SIZEFX,$SIZE1,$SIZE2,$SIZE3,$mapsSize,$enemiesSize,$SIZE6,$SIZE7,$SIZE8,$SIZE9,$SIZE10,$SIZE13,$SIZE12
+python3 vendor/zxsgm/bin/memoryImageGenerator.py FX:$SIZEFX,Init-Screen:$SIZE1,End-Screen:$SIZE2,HUD:$SIZE3,Maps:$mapsSize,Enemies:$enemiesSize,Tileset:$SIZE6,Attributes:$SIZE7,Sprites:$SIZE8,Objects:$SIZE9,Damage-Tiles:$SIZE13,Animated-Tiles:$SIZE12 memory-bank-0.png

@@ -2,40 +2,50 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import hashlib
 
-values = sys.argv[1].split(',')
+
+# function that generate hex color from string
+def stringToColor(s):
+    # Generate a hash of the string
+    hash_object = hashlib.md5(s.encode())
+    # Convert the hash to a hex color code
+    hex_color = '#' + hash_object.hexdigest()[:6]
+    return hex_color
+
+bars = sys.argv[1].split(',')
+
+weight_counts = {}
 
 total = 0
-for value in values:
-    total += int(value)
+for bar in bars:
+    values = bar.split(':')
+    if int(values[1]) == 0:
+        continue
+    total += int(values[1])
+    weight_counts[values[0]] = np.array([int(values[1])])
 
 bankMemory = 16383
 free = bankMemory - total
+
+weight_counts["Free-Memory"] = np.array([free])
+
+print(weight_counts)
 
 species = (
     "",
     "",
     "",
 )
-weight_counts = {
-    "FX": np.array([int(values[0])]),
-    "Pantalla Inicial": np.array([int(values[1])]),
-    "Pantalla Final": np.array([int(values[2])]),
-    "HUD": np.array([int(values[3])]),
-    "Mapas": np.array([int(values[4])]),
-    "Enemigos": np.array([int(values[5])]),
-    "Tileset": np.array([int(values[6])]),
-    "Atributos": np.array([int(values[7])]),
-    "Sprites": np.array([int(values[8])]),
-    "Objetos": np.array([int(values[9])]),
-    "Offsets de pantalla": np.array([int(values[10])]),
-    "Tiles de daño": np.array([int(values[11])]),
-    "Tiles animados": np.array([int(values[12])]),
-    "Espacio libre": np.array([free]),
-}
 width = 2
 
-colors = ['#0000cd', '#cd0000','#cd00cd', '#00cd00','#00cdcd', '#cdcd00','#0000ff', '#ff0000','#ff00ff', '#00ff00','#00ffff', '#ffff00','#ae24d1', '#999999']
+# initialize colors
+colors = []
+
+for label, weight_count in weight_counts.items():
+    if label == "Free-Memory":
+        colors.append("#999999")
+    colors.append(stringToColor(label))
 
 fig, ax = plt.subplots()
 bottom = np.zeros(3)
@@ -52,4 +62,4 @@ ax.legend(loc="upper right")
 if not os.path.exists("dist"):
     os.mkdir("dist")
 
-plt.savefig("dist/memory.png", dpi=150, bbox_inches="tight", orientation = 'portrait')
+plt.savefig("dist/" + sys.argv[2], dpi=150, bbox_inches="tight", orientation = 'portrait')
