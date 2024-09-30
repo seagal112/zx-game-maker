@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 BIN_FOLDER=vendor/zxsgm/bin/
-DOCKER_VERSION=latest
+DOCKER_VERSION=1.0rc
 
 PROJECT_NAME := $(shell jq -r '.properties | .[] | select(.name=="gameName") | .value' output/maps.json)
 PROJECT_NAME := $(if $(PROJECT_NAME),$(PROJECT_NAME),"Game Name")
