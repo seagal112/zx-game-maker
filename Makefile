@@ -65,6 +65,7 @@ build:
 	
 
 build-dev:
+	rm -f output/*
 	$(MAKE) tiled-export
 	$(MAKE)	build
 
