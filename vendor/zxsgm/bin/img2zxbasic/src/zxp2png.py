@@ -26,7 +26,7 @@ def generateSpritesPng():
             img.putpixel((x, y), color)
 
     # Guardar la imagen como PNG
-    img.save('output/sprites.png')
+    img.save('assets/sprites.png')
 
 def generateTilesPng():
         # Leer el archivo ZXP
@@ -78,7 +78,7 @@ def generateTilesPng():
             img.putpixel((x, y), colorBinary)
 
     # Guardar la imagen como PNG
-    img.save('output/tiles.png')
+    img.save('assets/tiles.png')
 
 def binaryToZxSpectrumColor(colorInt, bright):
     zxSpectrumColorsToRgb = {

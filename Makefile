@@ -52,8 +52,6 @@ build:
 	wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin
 	wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin
 
-	echo $(ENABLED_128K)
-
 	@if [[ $(ENABLED_128K) == true ]]; then\
 		echo "128K ENABLED!";\
 		wine ${BIN_FOLDER}bin2tap.exe -o output/title.tap -a 49152 output/title.png.scr.zx0;\
@@ -64,9 +62,10 @@ build:
 		echo "48K ENABLED!";\
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap > dist/$(PROJECT_FILE_NAME).tap;\
 	fi
+
+	rm -f output/*
 	
 build-dev:
-	rm -f output/*
 	$(MAKE) tiled-export
 	$(MAKE)	build
 
