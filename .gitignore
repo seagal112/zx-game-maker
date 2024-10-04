@@ -7,3 +7,4 @@ vendor/zxsgm/bin/zxbasic/*
 *.tmp.png
 *.tmp.png.scr
 dist
+*.tiled-session
