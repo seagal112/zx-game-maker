@@ -288,7 +288,7 @@ ending:
         dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
     #endif
     DO
-    LOOP UNTIL GetKeyScanCode()
+    LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
 
 gameOver:
