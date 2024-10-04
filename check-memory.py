@@ -7,7 +7,7 @@ memoryAddress = last_line.split(":")[0]
 if int(memoryAddress, 16) > 0xC000:
     print("")
     print("========================================================")
-    print("ERROR: Memory address is greater than $C000")
+    print("ERROR: Memory address " + memoryAddress + " is greater than $C000")
     print("Try to disable some features in the map configuration")
     print("========================================================")
     print("")
