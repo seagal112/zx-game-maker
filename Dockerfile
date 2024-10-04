@@ -16,5 +16,6 @@ COPY vendor /app/vendor
 COPY Makefile /app/Makefile
 COPY main.bas /app/main.bas
 COPY screens-build.sh /app/screens-build.sh
+COPY check-memory.py /app/check-memory.py
 
 ENTRYPOINT [ "make", "build" ]
