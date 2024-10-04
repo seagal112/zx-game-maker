@@ -63,7 +63,7 @@ build:
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap > dist/$(PROJECT_FILE_NAME).tap;\
 	fi
 
-	rm -f output/*
+	rm -f output/*.zx0 output/*.bin output/*.tap output/*.bas
 	
 build-dev:
 	$(MAKE) tiled-export
