@@ -114,8 +114,8 @@ ammoIncrement = 10
 
 musicEnabled = 0
 
-ink = 0
-paper = 7
+ink = 7
+paper = 0
 border = 0
 
 waitPressKeyAfterLoad = 0
