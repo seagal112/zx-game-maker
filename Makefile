@@ -45,6 +45,9 @@ compile:
 	mv -f main.tap output/$(PROJECT_NAME).tap
 
 build:
+	@echo "==============================================="
+	@echo "=            ZX Spectrum Game Maker           ="
+	@echo -e "===============================================\n"
 	@rm -f output/compile.log
 
 	@if [[ $(ENABLED_128K) == true ]]; then\
@@ -85,7 +88,7 @@ build:
 	@rm -f output/*.zx0 output/*.bin output/*.tap output/*.bas
 	@echo -e "OK!\n"
 
-	@echo -e "Game compiled successfully! You can find at dist/$(PROJECT_FILE_NAME).tap.\n"
+	@echo -e "Game compiled successfully! You can find it at dist/$(PROJECT_FILE_NAME).tap.\n"
 	
 build-dev:
 	$(MAKE) tiled-export
