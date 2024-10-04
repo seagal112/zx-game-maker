@@ -18,4 +18,4 @@ COPY main.bas /app/main.bas
 COPY screens-build.sh /app/screens-build.sh
 COPY check-memory.py /app/check-memory.py
 
-ENTRYPOINT [ "make", "build" ]
+ENTRYPOINT [ "make", "build", "--no-print-directory", "--silent" ]
