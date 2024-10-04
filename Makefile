@@ -45,7 +45,7 @@ compile:
 	mv -f main.tap output/$(PROJECT_NAME).tap
 
 build:
-	@rm output/compile.log
+	@rm -f output/compile.log
 
 	@if [[ $(ENABLED_128K) == true ]]; then\
 		echo -e "128K Version\n";\
