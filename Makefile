@@ -14,7 +14,7 @@ ifeq ($(ENABLED_128K),)
 endif
 
 tiled-export:
-	tiled --export-map json assets/maps.tmx output/maps.json
+	tiled --export-map json assets/map/maps.tmx output/maps.json
 
 tiled-build:
 	python3 ${BIN_FOLDER}tiled-build.py

@@ -114,6 +114,12 @@ ammoIncrement = 10
 
 musicEnabled = 0
 
+ink = 0
+paper = 7
+border = 0
+
+waitPressKeyAfterLoad = 0
+
 if 'properties' in data:
     for property in data['properties']:
         if property['name'] == 'gameName':
@@ -175,6 +181,14 @@ if 'properties' in data:
             ammoIncrement = property['value']
         elif property['name'] == 'musicEnabled':
             musicEnabled = 1 if property['value'] else 0
+        elif property['name'] == 'ink':
+            ink = property['value']
+        elif property['name'] == 'paper':
+            paper = property['value']
+        elif property['name'] == 'border':
+            border = property['value']
+        elif property['name'] == 'waitPressKeyAfterLoad':
+            waitPressKeyAfterLoad = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -260,6 +274,14 @@ if ammo > -1:
 
 if musicEnabled == 1:
     configStr += "#DEFINE MUSIC_ENABLED\n"
+
+configStr += "const INK_VALUE as ubyte = " + str(ink) + "\n"
+configStr += "const PAPER_VALUE as ubyte = " + str(paper) + "\n"
+configStr += "const BORDER_VALUE as ubyte = " + str(border) + "\n"
+
+if waitPressKeyAfterLoad == 1:
+    configStr += "#DEFINE WAIT_PRESS_KEY_AFTER_LOAD\n"
+    configStr += "dim firstLoad as ubyte = 1\n"
 
 for layer in data['layers']:
     if layer['type'] == 'tilelayer':

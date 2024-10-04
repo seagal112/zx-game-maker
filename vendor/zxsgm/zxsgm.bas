@@ -124,6 +124,13 @@ next i
 #include "protaMovement.bas"
 
 menu:
+    #ifdef WAIT_PRESS_KEY_AFTER_LOAD
+        if firstLoad
+            firstLoad = 0
+            DO
+            LOOP UNTIL GetKeyScanCode()
+        end if
+    #endif
     INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
     #ifdef ENABLED_128k
         #ifdef MUSIC_ENABLED
@@ -201,7 +208,7 @@ passwordScreen:
 #endif
 
 playGame:
-    INK 7: PAPER 0: BORDER 0: BRIGHT 0: FLASH 0: CLS
+    INK INK_VALUE: PAPER PAPER_VALUE: BORDER BORDER_VALUE
     currentScreen = INITIAL_SCREEN
 
     #ifdef INIT_TEXTS
@@ -281,7 +288,7 @@ ending:
         dzx0Standard(ENDING_SCREEN_ADDRESS, $4000)
     #endif
     DO
-    LOOP UNTIL MultiKeys(KEYENTER)
+    LOOP UNTIL GetKeyScanCode()
     go to menu
 
 gameOver:

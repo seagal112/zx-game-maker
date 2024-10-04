@@ -72,7 +72,7 @@ def getTilesBas():
     if not os.path.exists("output"):
         os.makedirs("output")
 
-    with open('assets/tiles.zxp', 'r') as f:
+    with open('assets/map/tiles.zxp', 'r') as f:
         lines = f.readlines()
 
     lines = lines[2:]

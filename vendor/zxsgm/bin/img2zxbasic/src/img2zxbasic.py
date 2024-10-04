@@ -39,7 +39,7 @@ def main(argv):
         th = 16
         tw = 16
 
-        sprites = ioUser.getTiles("output/sprites.png", tw, th)
+        sprites = ioUser.getTiles("assets/map/sprites.png", tw, th)
 
         codedSprites = []
 

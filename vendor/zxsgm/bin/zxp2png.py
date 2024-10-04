@@ -39,4 +39,4 @@ def zxp_to_png(zxp_file, png_file):
     img.save(png_file)
 
 # Uso de la función
-zxp_to_png('assets/tiles.zxp', 'output.png')
+zxp_to_png('assets/map/tiles.zxp', 'output.png')

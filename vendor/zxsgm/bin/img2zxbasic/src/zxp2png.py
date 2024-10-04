@@ -2,7 +2,7 @@ from PIL import Image
 
 def generateSpritesPng():
     # Leer el archivo ZXP
-    with open('assets/sprites.zxp', 'r') as f:
+    with open('assets/map/sprites.zxp', 'r') as f:
         lines = f.readlines()
 
     # Separar las líneas de bits y las líneas de colores
@@ -26,11 +26,11 @@ def generateSpritesPng():
             img.putpixel((x, y), color)
 
     # Guardar la imagen como PNG
-    img.save('assets/sprites.png')
+    img.save('assets/map/sprites.png')
 
 def generateTilesPng():
         # Leer el archivo ZXP
-    with open('assets/tiles.zxp', 'r') as f:
+    with open('assets/map/tiles.zxp', 'r') as f:
         lines = f.readlines()
 
     # Separar las líneas de bits y las líneas de colores
@@ -78,7 +78,7 @@ def generateTilesPng():
             img.putpixel((x, y), colorBinary)
 
     # Guardar la imagen como PNG
-    img.save('assets/tiles.png')
+    img.save('assets/map/tiles.png')
 
 def binaryToZxSpectrumColor(colorInt, bright):
     zxSpectrumColorsToRgb = {

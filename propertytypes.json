@@ -1,6 +1,6 @@
 [
     {
-        "id": 2,
+        "id": 1,
         "name": "gameView",
         "storageType": "string",
         "type": "enum",
@@ -13,7 +13,7 @@
     {
         "color": "#ffa0a0a4",
         "drawFill": true,
-        "id": 1,
+        "id": 2,
         "members": [
             {
                 "name": "128Kenabled",
@@ -66,6 +66,11 @@
                 "value": 7
             },
             {
+                "name": "border",
+                "type": "string",
+                "value": "0"
+            },
+            {
                 "name": "bulletDistance",
                 "type": "int",
                 "value": 0
@@ -107,6 +112,11 @@
                 "value": 50
             },
             {
+                "name": "ink",
+                "type": "string",
+                "value": "7"
+            },
+            {
                 "name": "killJumpingOnTop",
                 "type": "bool",
                 "value": false
@@ -122,6 +132,16 @@
                 "value": 5
             },
             {
+                "name": "musicEnabled",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "paper",
+                "type": "string",
+                "value": "0"
+            },
+            {
                 "name": "password",
                 "type": "string",
                 "value": ""
@@ -133,6 +153,11 @@
             },
             {
                 "name": "shouldKillEnemies",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "waitPressKeyAfterLoad",
                 "type": "bool",
                 "value": false
             }
