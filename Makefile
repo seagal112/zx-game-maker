@@ -79,6 +79,14 @@ build:
 		wine ${BIN_FOLDER}bin2tap.exe -o output/ending.tap -a 49152 output/ending.png.scr.zx0;\
 		wine ${BIN_FOLDER}bin2tap.exe -o output/hud.tap -a 49152 output/hud.png.scr.zx0;\
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap output/title.tap output/ending.tap output/hud.tap > dist/$(PROJECT_FILE_NAME).tap;\
+		if [ -f output/intro.scr.zx0 ]; then\
+			wine ${BIN_FOLDER}bin2tap.exe -o output/intro.tap -a 49152 output/intro.scr.zx0;\
+			cat output/intro.tap >> dist/$(PROJECT_FILE_NAME).tap;\
+		fi;\
+		if [ -f output/gameover.scr.zx0 ]; then\
+			wine ${BIN_FOLDER}bin2tap.exe -o output/gameover.tap -a 49152 output/gameover.scr.zx0;\
+			cat output/gameover.tap >> dist/$(PROJECT_FILE_NAME).tap;\
+		fi;\
 	else\
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap > dist/$(PROJECT_FILE_NAME).tap;\
 	fi

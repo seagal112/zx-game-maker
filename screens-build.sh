@@ -74,7 +74,21 @@ if [[ $enabled128K == true ]]; then
     S1=$(stat --printf="%s" output/title.png.scr.zx0)
     S2=$(stat --printf="%s" output/ending.png.scr.zx0)
     S3=$(stat --printf="%s" output/hud.png.scr.zx0)
-    python3 vendor/zxsgm/bin/memoryImageGenerator.py FX:$SFX,Init-Screen:$S1,End-Screen:$S2,HUD:$S3 memory-bank-3.png
+    params=FX:$SFX,Init-Screen:$S1,End-Screen:$S2,HUD:$S3
+
+    if [ -f assets/screens/intro.scr ]; then
+        java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/intro.scr output/intro.scr.zx0
+        S4=$(stat --printf="%s" output/intro.scr.zx0)
+        params=$params,Intro-Screen:$S4
+    fi
+
+    if [ -f assets/screens/gameover.scr ]; then
+        java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/gameover.scr output/gameover.scr.zx0
+        S5=$(stat --printf="%s" output/gameover.scr.zx0)
+        params=$params,Gameover-Screen:$S5
+    fi
+
+    python3 vendor/zxsgm/bin/memoryImageGenerator.py $params memory-bank-3.png
 else
     SIZE0=$(echo "$SIZEFX + $SIZE0" | bc)
     SIZE1=$(stat --printf="%s" output/title.png.scr.zx0)
@@ -149,6 +163,20 @@ if [[ $enabled128K == true ]]; then
     endingAddress=$(stat --printf="%s" output/ending.png.scr.zx0)
     address=$(echo "$address + $endingAddress" | bc)
     echo "const HUD_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+
+    if [ -f assets/screens/intro.scr ]; then
+        hudAddress=$(stat --printf="%s" output/hud.png.scr.zx0)
+        address=$(echo "$address + $hudAddress" | bc)
+        echo "const INTRO_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+        echo "#DEFINE INTRO_SCREEN_ENABLED" >> output/config.bas
+    fi
+
+    if [ -f assets/screens/gameover.scr ]; then
+        introAddress=$(stat --printf="%s" output/intro.scr.zx0)
+        address=$(echo "$address + $introAddress" | bc)
+        echo "const GAMEOVER_SCREEN_ADDRESS as uinteger=$address" >> output/config.bas
+        echo "#DEFINE GAMEOVER_SCREEN_ENABLED" >> output/config.bas
+    fi
 fi
 
 wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0

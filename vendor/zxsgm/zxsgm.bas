@@ -77,6 +77,12 @@ load "" CODE ' Load files
     load "" CODE TITLE_SCREEN_ADDRESS ' Load title screen
     load "" CODE ENDING_SCREEN_ADDRESS ' Load ending screen
     load "" CODE HUD_SCREEN_ADDRESS ' Load hud screen
+    #ifdef INTRO_SCREEN_ENABLED
+        load "" CODE INTRO_SCREEN_ADDRESS ' Load intro screen
+    #endif
+    #ifdef GAMEOVER_SCREEN_ENABLED
+        load "" CODE GAMEOVER_SCREEN_ADDRESS ' Load game over screen
+    #endif
     PaginarMemoria(0)
 #endif
 
@@ -207,6 +213,16 @@ passwordScreen:
     go to playGame
 #endif
 
+#ifdef ENABLED_128k
+    #ifdef INTRO_SCREEN_ENABLED
+        PaginarMemoria(3)
+            dzx0Standard(INTRO_SCREEN_ADDRESS, $4000)
+        PaginarMemoria(0)
+        DO
+        LOOP UNTIL MultiKeys(KEYENTER)
+    #endif
+#endif
+
 playGame:
     INK INK_VALUE: PAPER PAPER_VALUE: BORDER BORDER_VALUE
     currentScreen = INITIAL_SCREEN
@@ -298,7 +314,18 @@ gameOver:
         #endif
     #endif
 
-    print at 7, 12; "GAME OVER"
+    #ifdef ENABLED_128k
+        #ifdef GAMEOVER_SCREEN_ENABLED
+            PaginarMemoria(3)
+                dzx0Standard(GAMEOVER_SCREEN_ADDRESS, $4000)
+            PaginarMemoria(0)
+        #else
+            PRINT AT 7, 12; "GAME OVER"
+        #endif
+    #else
+        print at 7, 12; "GAME OVER"
+    #endif
+    
     DO
     LOOP UNTIL MultiKeys(KEYENTER)
     go to menu
