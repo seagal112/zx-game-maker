@@ -3,27 +3,27 @@ BIN_FOLDER=vendor/zxsgm/bin/
 enabled128K=$(jq -r '.properties | .[] | select(.name=="128Kenabled") | .value' output/maps.json)
 
 if [ -f assets/screens/title.scr ]; then
-    wine ${BIN_FOLDER}zx0.exe -f assets/screens/title.scr output/title.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f assets/screens/title.scr output/title.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png output/title.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/title.tmp.png
-    wine ${BIN_FOLDER}zx0.exe -f output/title.tmp.png.scr output/title.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f output/title.tmp.png.scr output/title.png.scr.zx0
 fi
 
 if [ -f assets/screens/ending.scr ]; then
-    wine ${BIN_FOLDER}zx0.exe -f assets/screens/ending.scr output/ending.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f assets/screens/ending.scr output/ending.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png output/ending.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/ending.tmp.png
-    wine ${BIN_FOLDER}zx0.exe -f output/ending.tmp.png.scr output/ending.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f output/ending.tmp.png.scr output/ending.png.scr.zx0
 fi
 
 if [ -f assets/screens/hud.scr ]; then
-    wine ${BIN_FOLDER}zx0.exe -f assets/screens/hud.scr output/hud.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f assets/screens/hud.scr output/hud.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png output/hud.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
-    wine ${BIN_FOLDER}zx0.exe -f output/hud.tmp.png.scr output/hud.png.scr.zx0
+    ${BIN_FOLDER}zx0 -f output/hud.tmp.png.scr output/hud.png.scr.zx0
 fi
 
 if [ -f assets/screens/loading.scr ]; then
@@ -77,13 +77,13 @@ if [[ $enabled128K == true ]]; then
     params=FX:$SFX,Init-Screen:$S1,End-Screen:$S2,HUD:$S3
 
     if [ -f assets/screens/intro.scr ]; then
-        wine ${BIN_FOLDER}zx0.exe -f assets/screens/intro.scr output/intro.scr.zx0
+        ${BIN_FOLDER}zx0 -f assets/screens/intro.scr output/intro.scr.zx0
         S4=$(stat --printf="%s" output/intro.scr.zx0)
         params=$params,Intro-Screen:$S4
     fi
 
     if [ -f assets/screens/gameover.scr ]; then
-        wine ${BIN_FOLDER}zx0.exe -f assets/screens/gameover.scr output/gameover.scr.zx0
+        ${BIN_FOLDER}zx0 -f assets/screens/gameover.scr output/gameover.scr.zx0
         S5=$(stat --printf="%s" output/gameover.scr.zx0)
         params=$params,Gameover-Screen:$S5
     fi
@@ -179,7 +179,7 @@ if [[ $enabled128K == true ]]; then
     fi
 fi
 
-wine ${BIN_FOLDER}bin2tap.exe -o output/files.tap -a $SIZE0 output/files.bin.zx0
+python ${BIN_FOLDER}bin2tap.py output/files.bin.zx0 output/files.tap $SIZE0 
 
 enemiesSize=$(echo "$SIZE5 + $SIZE11 + $SIZE14 + $SIZE15 + $SIZE18" | bc)
 mapsSize=$(echo "$SIZE4 + $SIZE10 + $SIZE16 + $SIZE17" | bc)

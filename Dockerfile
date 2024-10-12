@@ -1,11 +1,7 @@
-FROM python:3.10.0-slim-buster
+FROM python:3.13.0-slim-bookworm
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN dpkg --add-architecture i386
-RUN apt-get update; apt-get install -y libgl1 default-jre wine32 make wget bc jq
-
-RUN winecfg
+RUN apt-get update
+RUN apt-get install -y libgl1 make wget bc jq libglib2.0-0
 
 WORKDIR /app
 

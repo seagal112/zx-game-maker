@@ -70,7 +70,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -ne "Building TAP file... "
-	@wine ${BIN_FOLDER}bas2tap.exe -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap >> output/compile.log
+	${BIN_FOLDER}bas2tap -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap >> output/compile.log
 	python ${BIN_FOLDER}/bin2tap.py output/loading.bin output/loading.tap 16384 >> output/compile.log
 	python ${BIN_FOLDER}/bin2tap.py output/main.bin output/main.tap 24576 >> output/compile.log
 
