@@ -71,20 +71,20 @@ build:
 
 	@echo -ne "Building TAP file... "
 	@wine ${BIN_FOLDER}bas2tap.exe -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap >> output/compile.log
-	@wine ${BIN_FOLDER}bin2tap.exe -o output/loading.tap -a 16384 output/loading.bin >> output/compile.log
-	@wine ${BIN_FOLDER}bin2tap.exe -o output/main.tap -a 24576 output/main.bin >> output/compile.log
+	python ${BIN_FOLDER}/bin2tap.py output/loading.bin output/loading.tap 16384 >> output/compile.log
+	python ${BIN_FOLDER}/bin2tap.py output/main.bin output/main.tap 24576 >> output/compile.log
 
 	@if [[ $(ENABLED_128K) == true ]]; then\
-		wine ${BIN_FOLDER}bin2tap.exe -o output/title.tap -a 49152 output/title.png.scr.zx0;\
-		wine ${BIN_FOLDER}bin2tap.exe -o output/ending.tap -a 49152 output/ending.png.scr.zx0;\
-		wine ${BIN_FOLDER}bin2tap.exe -o output/hud.tap -a 49152 output/hud.png.scr.zx0;\
+		python ${BIN_FOLDER}/bin2tap.py output/title.png.scr.zx0 output/title.tap 49152 >> output/compile.log;\
+		python ${BIN_FOLDER}/bin2tap.py output/ending.png.scr.zx0 output/ending.tap 49152 >> output/compile.log;\
+		python ${BIN_FOLDER}/bin2tap.py output/hud.png.scr.zx0 output/hud.tap 49152 >> output/compile.log;\
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap output/title.tap output/ending.tap output/hud.tap > dist/$(PROJECT_FILE_NAME).tap;\
 		if [ -f output/intro.scr.zx0 ]; then\
-			wine ${BIN_FOLDER}bin2tap.exe -o output/intro.tap -a 49152 output/intro.scr.zx0;\
+			python ${BIN_FOLDER}/bin2tap.py output/intro.scr.zx0 output/intro.tap 49152 >> output/compile.log;\
 			cat output/intro.tap >> dist/$(PROJECT_FILE_NAME).tap;\
 		fi;\
 		if [ -f output/gameover.scr.zx0 ]; then\
-			wine ${BIN_FOLDER}bin2tap.exe -o output/gameover.tap -a 49152 output/gameover.scr.zx0;\
+			python ${BIN_FOLDER}/bin2tap.py output/gameover.scr.zx0 output/gameover.tap 49152 >> output/compile.log;\
 			cat output/gameover.tap >> dist/$(PROJECT_FILE_NAME).tap;\
 		fi;\
 	else\
