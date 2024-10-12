@@ -3,27 +3,27 @@ BIN_FOLDER=vendor/zxsgm/bin/
 enabled128K=$(jq -r '.properties | .[] | select(.name=="128Kenabled") | .value' output/maps.json)
 
 if [ -f assets/screens/title.scr ]; then
-    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/title.scr output/title.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f assets/screens/title.scr output/title.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/title.png output/title.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/title.tmp.png
-    java -jar ${BIN_FOLDER}zx0.jar -f output/title.tmp.png.scr output/title.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f output/title.tmp.png.scr output/title.png.scr.zx0
 fi
 
 if [ -f assets/screens/ending.scr ]; then
-    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/ending.scr output/ending.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f assets/screens/ending.scr output/ending.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/ending.png output/ending.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/ending.tmp.png
-    java -jar ${BIN_FOLDER}zx0.jar -f output/ending.tmp.png.scr output/ending.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f output/ending.tmp.png.scr output/ending.png.scr.zx0
 fi
 
 if [ -f assets/screens/hud.scr ]; then
-    java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/hud.scr output/hud.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f assets/screens/hud.scr output/hud.png.scr.zx0
 else
     python3 ${BIN_FOLDER}fixColors.py assets/screens/hud.png output/hud.tmp.png
     python3 ${BIN_FOLDER}png2scr.py output/hud.tmp.png
-    java -jar ${BIN_FOLDER}zx0.jar -f output/hud.tmp.png.scr output/hud.png.scr.zx0
+    wine ${BIN_FOLDER}zx0.exe -f output/hud.tmp.png.scr output/hud.png.scr.zx0
 fi
 
 if [ -f assets/screens/loading.scr ]; then
@@ -77,13 +77,13 @@ if [[ $enabled128K == true ]]; then
     params=FX:$SFX,Init-Screen:$S1,End-Screen:$S2,HUD:$S3
 
     if [ -f assets/screens/intro.scr ]; then
-        java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/intro.scr output/intro.scr.zx0
+        wine ${BIN_FOLDER}zx0.exe -f assets/screens/intro.scr output/intro.scr.zx0
         S4=$(stat --printf="%s" output/intro.scr.zx0)
         params=$params,Intro-Screen:$S4
     fi
 
     if [ -f assets/screens/gameover.scr ]; then
-        java -jar ${BIN_FOLDER}zx0.jar -f assets/screens/gameover.scr output/gameover.scr.zx0
+        wine ${BIN_FOLDER}zx0.exe -f assets/screens/gameover.scr output/gameover.scr.zx0
         S5=$(stat --printf="%s" output/gameover.scr.zx0)
         params=$params,Gameover-Screen:$S5
     fi
