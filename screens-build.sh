@@ -179,7 +179,7 @@ if [[ $enabled128K == true ]]; then
     fi
 fi
 
-python ${BIN_FOLDER}bin2tap.py output/files.bin.zx0 output/files.tap $SIZE0 
+bin2tap output/files.bin.zx0 output/files.tap $SIZE0 
 
 enemiesSize=$(echo "$SIZE5 + $SIZE11 + $SIZE14 + $SIZE15 + $SIZE18" | bc)
 mapsSize=$(echo "$SIZE4 + $SIZE10 + $SIZE16 + $SIZE17" | bc)

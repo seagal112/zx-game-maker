@@ -71,20 +71,20 @@ build:
 
 	@echo -ne "Building TAP file... "
 	${BIN_FOLDER}bas2tap -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap >> output/compile.log
-	python ${BIN_FOLDER}/bin2tap.py output/loading.bin output/loading.tap 16384 >> output/compile.log
-	python ${BIN_FOLDER}/bin2tap.py output/main.bin output/main.tap 24576 >> output/compile.log
+	bin2tap output/loading.bin output/loading.tap 16384 >> output/compile.log
+	bin2tap output/main.bin output/main.tap 24576 >> output/compile.log
 
 	@if [[ $(ENABLED_128K) == true ]]; then\
-		python ${BIN_FOLDER}/bin2tap.py output/title.png.scr.zx0 output/title.tap 49152 >> output/compile.log;\
-		python ${BIN_FOLDER}/bin2tap.py output/ending.png.scr.zx0 output/ending.tap 49152 >> output/compile.log;\
-		python ${BIN_FOLDER}/bin2tap.py output/hud.png.scr.zx0 output/hud.tap 49152 >> output/compile.log;\
+		bin2tap output/title.png.scr.zx0 output/title.tap 49152 >> output/compile.log;\
+		bin2tap output/ending.png.scr.zx0 output/ending.tap 49152 >> output/compile.log;\
+		bin2tap output/hud.png.scr.zx0 output/hud.tap 49152 >> output/compile.log;\
 		cat output/loader.tap output/loading.tap output/main.tap assets/fx/fx.tap output/files.tap assets/music/music.tap output/title.tap output/ending.tap output/hud.tap > dist/$(PROJECT_FILE_NAME).tap;\
 		if [ -f output/intro.scr.zx0 ]; then\
-			python ${BIN_FOLDER}/bin2tap.py output/intro.scr.zx0 output/intro.tap 49152 >> output/compile.log;\
+			bin2tap output/intro.scr.zx0 output/intro.tap 49152 >> output/compile.log;\
 			cat output/intro.tap >> dist/$(PROJECT_FILE_NAME).tap;\
 		fi;\
 		if [ -f output/gameover.scr.zx0 ]; then\
-			python ${BIN_FOLDER}/bin2tap.py output/gameover.scr.zx0 output/gameover.tap 49152 >> output/compile.log;\
+			bin2tap output/gameover.scr.zx0 output/gameover.tap 49152 >> output/compile.log;\
 			cat output/gameover.tap >> dist/$(PROJECT_FILE_NAME).tap;\
 		fi;\
 	else\
