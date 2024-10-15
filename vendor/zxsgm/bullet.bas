@@ -71,9 +71,15 @@ dim maxXScreenLeft as ubyte = 2
 sub moveBullet()
     dim limit as ubyte = 0
 
-    if bulletPositionX = 0 and bulletPositionY = 0
+    if bulletPositionX = 0
         return
     end if
+
+    #ifdef OVERHEAD_VIEW
+        if bulletPositionY = 0
+            return
+        end if
+    #endif
     
     if BULLET_DISTANCE <> 0
         if bulletDirection = 1
