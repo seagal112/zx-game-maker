@@ -70,7 +70,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -ne "Building TAP file... "
-	${BIN_FOLDER}bas2tap -a10 -s"$(PROJECT_NAME)" ${BIN_FOLDER}loader.bas output/loader.tap >> output/compile.log
+	bin2tap vendor/zxsgm/loader.bin output/loader.tap 10 --header "$(PROJECT_NAME)" --block_type 1 >> output/compile.log
 	bin2tap output/loading.bin output/loading.tap 16384 >> output/compile.log
 	bin2tap output/main.bin output/main.tap 24576 >> output/compile.log
 
