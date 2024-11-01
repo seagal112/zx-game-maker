@@ -37,7 +37,7 @@ check-fx:
 
 screens-build:
 	@echo -ne "Building screens... "
-	@bash screens-build.sh >> output/compile.log
+	@python3 screens-build.py >> output/compile.log
 	@echo -e "OK!\n"
 
 compile:
@@ -93,7 +93,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -en "Removing temporary files... "
-	@rm -f output/*.zx0 output/*.bin output/*.tap output/*.bas
+	#@rm -f output/*.zx0 output/*.bin output/*.tap output/*.bas
 	@echo -e "OK!\n"
 
 	@echo -e "Game compiled successfully! You can find it at dist/$(PROJECT_FILE_NAME).tap.\n"
