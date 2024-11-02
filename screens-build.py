@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import shutil
 import subprocess
 import json
 import sys
@@ -44,12 +45,7 @@ process_screen("title")
 process_screen("ending")
 process_screen("hud")
 
-if os.path.isfile(SCREENS_FOLDER + "loading.scr"):
-    run_command("cp " + SCREENS_FOLDER + "loading.scr " + OUTPUT_FOLDER + "loading.bin")
-else:
-    os.system(BIN_FOLDER + "fixColors.py " + SCREENS_FOLDER + "loading.png " + OUTPUT_FOLDER + "loading.tmp.png")
-    os.system(BIN_FOLDER + "png2scr.py " + OUTPUT_FOLDER + "loading.tmp.png")
-    run_command("mv " + OUTPUT_FOLDER + "loading.tmp.png.scr " + OUTPUT_FOLDER + "loading.bin")
+shutil.copy(SCREENS_FOLDER + "loading.scr", OUTPUT_FOLDER + "loading.bin")
 
 os.system(BIN_FOLDER + "img2zxbasic/src/img2zxbasic.py -t tiles")
 os.system(BIN_FOLDER + "img2zxbasic/src/img2zxbasic.py -t sprites")
