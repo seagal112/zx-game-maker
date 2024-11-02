@@ -12,13 +12,13 @@ MAPS_FILE = str(Path("assets/map/maps.tmx"))
 ZXBASIC_PATH = str(Path("vendor/zxsgm/bin/zxbasic/zxbc.py"))
 
 def get_project_name():
-    with open(Path("output/maps.json"), "r") as f:
+    with open(str(Path("output/maps.json")), "r") as f:
         maps_json = json.load(f)
     project_name = next((prop["value"] for prop in maps_json["properties"] if prop["name"] == "gameName"), "Game Name")
     return project_name
 
 def get_enabled_128k():
-    with open(Path("output/maps.json"), "r") as f:
+    with open(str(Path("output/maps.json")), "r") as f:
         maps_json = json.load(f)
     enabled_128k = next((prop["value"] for prop in maps_json["properties"] if prop["name"] == "128Kenabled"), False)
     return enabled_128k
@@ -52,7 +52,7 @@ def tiled_export():
 
 def tiled_build():
     print("Building tiled into code... ", end="")
-    run_command("python3 " + TILED_SCRIPT)
+    os.system(TILED_SCRIPT)
     print("OK!")
 
 def check_fx():

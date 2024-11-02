@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import array
 import json
 import math
