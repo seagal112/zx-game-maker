@@ -1,7 +1,10 @@
 import os
 import sys
 
-last_line = os.popen("tail -n 1 output/map.txt").read()
+with open("output/map.txt", "r") as file:
+    lines = file.readlines()
+    last_line = lines[-1]
+
 memoryAddress = last_line.split(":")[0]
 
 if int(memoryAddress, 16) > 0xC000:
