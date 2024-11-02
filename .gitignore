@@ -8,3 +8,4 @@ vendor/zxsgm/bin/zxbasic/*
 *.tmp.png.scr
 dist
 *.tiled-session
+.vscode
