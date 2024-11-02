@@ -19,8 +19,6 @@ tiled-export:
 tiled-build:
 	@echo -ne "Exporting game from Tiled... "
 	@python3 ${BIN_FOLDER}tiled-build.py >> output/compile.log
-	@cat output/screen*.bin.zx0 > output/map.bin.zx0
-	@cat output/enemiesInScreen*.bin.zx0 > output/enemies.bin.zx0
 	@echo -e "OK!\n"
 
 check-fx:

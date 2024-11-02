@@ -544,3 +544,15 @@ with open("output/decompressedEnemiesScreen.bin", "wb") as f:
 
 with open(outputDir + "config.bas", "w") as text_file:
     print(configStr, file=text_file)
+
+with open(outputDir + 'map.bin.zx0', 'wb') as outfile:
+    for idx in range(screensCount):
+        label = 'screen' + str(idx).zfill(3)
+        with open(outputDir + label + '.bin.zx0', 'rb') as infile:
+            outfile.write(infile.read())
+
+with open(outputDir + 'enemies.bin.zx0', 'wb') as outfile:
+    for idx in range(screensCount):
+        label = 'enemiesInScreen' + str(idx).zfill(3)
+        with open(outputDir + label + '.bin.zx0', 'rb') as infile:
+            outfile.write(infile.read())
