@@ -7,8 +7,7 @@ from pathlib import Path
 
 verbose = False
 
-BIN_FOLDER = Path("vendor/zxsgm/bin/")
-TILED_SCRIPT = Path("vendor/zxsgm/bin/tiled-build.py")
+TILED_SCRIPT = str(Path("vendor/zxsgm/bin/tiled-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
 ZXBASIC_PATH = str(Path("vendor/zxsgm/bin/zxbasic/zxbc.py"))
 
@@ -27,8 +26,15 @@ def get_enabled_128k():
 PROJECT_NAME = get_project_name()
 PROJECT_FILE_NAME = PROJECT_NAME.replace(" ", "-")
 ENABLED_128K = get_enabled_128k()
-OUTPUT_FILE = Path(f"dist/{PROJECT_FILE_NAME}.tap")
-DEFAULT_FX = Path("assets/fx/default_fx.tap")
+OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
+DEFAULT_FX = str(Path("assets/fx/default_fx.tap"))
+
+#tiled export command by os
+
+if os.name == "nt":
+    TILED_EXPORT_COMMAND = "c:\Program Files\Tiled\tiled.exe --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
+else:
+    TILED_EXPORT_COMMAND = "tiled --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
 
 def run_command(command):
     global verbose
@@ -37,17 +43,17 @@ def run_command(command):
     else:
         result = subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     if result != 0:
-        print(f"Error executing command: {command}")
+        print("Error executing command: " + command)
         sys.exit(1)
 
 def tiled_export():
     print("Exporting game from Tiled... ", end="")
-    run_command("tiled --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json")))
+    run_command(TILED_EXPORT_COMMAND)
     print("OK!")
 
 def tiled_build():
     print("Building tiled into code... ", end="")
-    run_command(f"python3 {TILED_SCRIPT}")
+    run_command("python3 " + TILED_SCRIPT)
     print("OK!")
 
 def check_fx():
@@ -57,12 +63,12 @@ def check_fx():
         print("OK!")
     if not os.path.isfile("assets/fx/fx.tap"):
         print("FX not detected. Applying default... ", end="")
-        shutil.copy(f"{DEFAULT_FX}", str(Path("assets/fx/fx.tap")))
+        shutil.copy(DEFAULT_FX, str(Path("assets/fx/fx.tap")))
         print("OK!")
 
 def screens_build():
     print("Building screens... ", end="")
-    run_command(f"python3 screens-build.py")
+    run_command("python3 screens-build.py")
     print("OK!")
 
 def compiling_game():
@@ -72,7 +78,7 @@ def compiling_game():
 
 def check_memory():
     print("Checking memory... ", end="")
-    run_command(f"python3 check-memory.py")
+    run_command("python3 check-memory.py")
     print("OK!")
 
 def concatenate_files(output_file, input_files):
@@ -152,7 +158,7 @@ def build():
 
     remove_temp_files()
 
-    print(f"Game compiled successfully! You can find it at dist/{PROJECT_FILE_NAME}.tap.\n")
+    print("Game compiled successfully! You can find it at dist/" + PROJECT_FILE_NAME + ".tap.\n")
 
 def main():
     global verbose
