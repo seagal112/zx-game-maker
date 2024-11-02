@@ -31,7 +31,7 @@ DEFAULT_FX = str(Path("assets/fx/default_fx.tap"))
 
 if os.name == "nt":
     program_files = os.environ["ProgramFiles"]
-    TILED_EXPORT_COMMAND = program_files + "\Tiled\tiled.exe --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
+    TILED_EXPORT_COMMAND = "\"" + program_files + "\\Tiled\\tiled.exe\" --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
 else:
     TILED_EXPORT_COMMAND = "tiled --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
 
