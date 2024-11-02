@@ -12,27 +12,26 @@ MAPS_FILE = str(Path("assets/map/maps.tmx"))
 ZXBASIC_PATH = str(Path("vendor/zxsgm/bin/zxbasic/zxbc.py"))
 
 def get_project_name():
-    with open("output/maps.json", "r") as f:
+    with open(Path("output/maps.json"), "r") as f:
         maps_json = json.load(f)
     project_name = next((prop["value"] for prop in maps_json["properties"] if prop["name"] == "gameName"), "Game Name")
     return project_name
 
 def get_enabled_128k():
-    with open("output/maps.json", "r") as f:
+    with open(Path("output/maps.json"), "r") as f:
         maps_json = json.load(f)
     enabled_128k = next((prop["value"] for prop in maps_json["properties"] if prop["name"] == "128Kenabled"), False)
     return enabled_128k
 
-PROJECT_NAME = get_project_name()
-PROJECT_FILE_NAME = PROJECT_NAME.replace(" ", "-")
-ENABLED_128K = get_enabled_128k()
+PROJECT_NAME = ""
+PROJECT_FILE_NAME = ""
+ENABLED_128K = ""
 OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
 DEFAULT_FX = str(Path("assets/fx/default_fx.tap"))
 
-#tiled export command by os
-
 if os.name == "nt":
-    TILED_EXPORT_COMMAND = "c:\Program Files\Tiled\tiled.exe --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
+    program_files = os.environ["ProgramFiles"]
+    TILED_EXPORT_COMMAND = program_files + "\Tiled\tiled.exe --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
 else:
     TILED_EXPORT_COMMAND = "tiled --export-map json " + MAPS_FILE + " " + str(Path("output/maps.json"))
 
@@ -143,6 +142,10 @@ def build():
     print("============================================")
 
     tiled_export()
+
+    PROJECT_NAME = get_project_name()
+    PROJECT_FILE_NAME = PROJECT_NAME.replace(" ", "-")
+    ENABLED_128K = get_enabled_128k()
 
     tiled_build()
 
