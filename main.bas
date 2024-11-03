@@ -1,1 +1,1 @@
-#include "vendor/zxsgm/zxsgm.bas"
+#include "src/zxsgm.bas"

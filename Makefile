@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-BIN_FOLDER=vendor/zxsgm/bin/
+BIN_FOLDER=src/bin/
 DOCKER_VERSION=1.0rc
 
 PROJECT_NAME := $(shell jq -r '.properties | .[] | select(.name=="gameName") | .value' output/maps.json)
@@ -29,7 +29,7 @@ check-fx:
 	fi
 	@if [ ! -f assets/fx/fx.tap ]; then\
 		echo -ne "FX not detected. Applying default... ";\
-		cp -f vendor/zxsgm/default/fx.tap assets/fx/fx.tap;\
+		cp -f src/default/fx.tap assets/fx/fx.tap;\
 		echo -e "OK!\n";\
 	fi
 
@@ -68,7 +68,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -ne "Building TAP file... "
-	bin2tap vendor/zxsgm/loader.bin output/loader.tap 10 --header "$(PROJECT_NAME)" --block_type 1 >> output/compile.log
+	bin2tap src/loader.bin output/loader.tap 10 --header "$(PROJECT_NAME)" --block_type 1 >> output/compile.log
 	bin2tap output/loading.bin output/loading.tap 16384 >> output/compile.log
 	bin2tap output/main.bin output/main.tap 24576 >> output/compile.log
 

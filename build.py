@@ -7,10 +7,10 @@ from pathlib import Path
 
 verbose = False
 
-TILED_SCRIPT = str(Path("vendor/zxsgm/bin/tiled-build.py"))
-SCREENS_BUILD_SCRIPT = str(Path("vendor/zxsgm/bin/screens-build.py"))
+TILED_SCRIPT = str(Path("src/bin/tiled-build.py"))
+SCREENS_BUILD_SCRIPT = str(Path("src/bin/screens-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
-ZXBASIC_PATH = str(Path("vendor/zxsgm/bin/zxbasic/zxbc.py"))
+ZXBASIC_PATH = str(Path("src/bin/zxbasic/zxbc.py"))
 
 def get_project_name():
     with open(str(Path("output/maps.json")), "r") as f:
@@ -27,7 +27,7 @@ def get_enabled_128k():
 PROJECT_NAME = ""
 PROJECT_FILE_NAME = ""
 ENABLED_128K = ""
-DEFAULT_FX = str(Path("vendor/zxsgm/default/fx.tap"))
+DEFAULT_FX = str(Path("src/default/fx.tap"))
 
 if os.name == "nt":
     program_files = os.environ["ProgramFiles"]
@@ -77,7 +77,7 @@ def compiling_game():
 
 def check_memory():
     print("Checking memory... ", end="")
-    run_command("python vendor/zxsgm/bin/check-memory.py")
+    run_command("python src/bin/check-memory.py")
     print("OK!")
 
 def concatenate_files(output_file, input_files):
@@ -92,7 +92,7 @@ def taps_build():
     OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
     
     print("Building TAP files... ", end="")
-    run_command("bin2tap " + str(Path("vendor/zxsgm/loader.bin")) + " " + str(Path("output/loader.tap")) + " 10 --header \"" + PROJECT_NAME + "\" --block_type 1")
+    run_command("bin2tap " + str(Path("src/loader.bin")) + " " + str(Path("output/loader.tap")) + " 10 --header \"" + PROJECT_NAME + "\" --block_type 1")
     run_command("bin2tap " + str(Path("output/loading.bin")) + " " + str(Path("output/loading.tap")) + " 16384")
     run_command("bin2tap " + str(Path("output/main.bin")) + " " + str(Path("output/main.tap")) + " 24576")
 
@@ -170,7 +170,7 @@ def build():
 
     taps_build()
 
-    remove_temp_files()
+    #remove_temp_files()
 
     print("Game compiled successfully! You can find it at dist/" + PROJECT_FILE_NAME + ".tap.\n")
 
