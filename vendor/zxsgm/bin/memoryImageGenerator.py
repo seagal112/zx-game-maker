@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 
-import sys
-import matplotlib.pyplot as plt
-import numpy as np
 import os
+import sys
 import hashlib
+import numpy as np
+import pandas as pd
+import plotly.express as px
 
-
-# function that generate hex color from string
+# Función que genera un color hex a partir de una cadena
 def stringToColor(s):
-    # Generate a hash of the string
+    # Generar un hash de la cadena
     hash_object = hashlib.md5(s.encode())
-    # Convert the hash to a hex color code
+    # Convertir el hash a un código de color hex
     hex_color = '#' + hash_object.hexdigest()[:6]
     return hex_color
 
@@ -32,34 +32,31 @@ free = bankMemory - total
 
 weight_counts["Free-Memory"] = np.array([free])
 
-species = (
-    "",
-    "",
-    "",
-)
-width = 2
-
-# initialize colors
+# Inicializar colores
 colors = []
-
-for label, weight_count in weight_counts.items():
+labels = []
+for label in weight_counts.keys():
     if label == "Free-Memory":
         colors.append("#999999")
-    colors.append(stringToColor(label))
+    else:
+        colors.append(stringToColor(label))
+    labels.append(label + " (" + str(weight_counts[label][0]) + " bytes)")
 
-fig, ax = plt.subplots()
-bottom = np.zeros(3)
+# Crear DataFrame para Plotly Express
+data = {
+    'Label': labels,
+    'Value': [weight_count[0] for weight_count in weight_counts.values()],
+    'Color': colors,
+    'x': ['' for weight_count in weight_counts.values()]
+}
 
-counter = 0
-for label, weight_count in weight_counts.items():
-    p = ax.bar(species, weight_count, width=0.3, label=label + " (" + str(weight_count[0]) + " bytes)", bottom=bottom, color=colors[counter])
-    bottom += weight_count
-    counter += 1
+df = pd.DataFrame(data)
 
-ax.set_title("Memoria ocupada (" + str(free) + " bytes libres)")
-ax.legend(loc="upper right")
+# Crear gráfico de barras apiladas
+fig = px.pie(df, names='Label', values='Value', title=f"Memoria ocupada ({free} bytes libres)", color='Label', color_discrete_sequence=colors, category_orders={"Label": labels})
 
+# Guardar gráfico
 if not os.path.exists("dist"):
     os.mkdir("dist")
 
-plt.savefig("dist/" + sys.argv[2], dpi=150, bbox_inches="tight", orientation = 'portrait')
+fig.write_image("dist/" + sys.argv[2], format='png', scale=1.5)

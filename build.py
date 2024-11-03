@@ -26,8 +26,7 @@ def get_enabled_128k():
 PROJECT_NAME = ""
 PROJECT_FILE_NAME = ""
 ENABLED_128K = ""
-OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
-DEFAULT_FX = str(Path("assets/fx/default_fx.tap"))
+DEFAULT_FX = str(Path("vendor/zxsgm/default/fx.tap"))
 
 if os.name == "nt":
     program_files = os.environ["ProgramFiles"]
@@ -52,7 +51,7 @@ def tiled_export():
 
 def tiled_build():
     print("Building tiled into code... ", end="")
-    os.system(TILED_SCRIPT)
+    run_command(TILED_SCRIPT)
     print("OK!")
 
 def check_fx():
@@ -67,7 +66,7 @@ def check_fx():
 
 def screens_build():
     print("Building screens... ", end="")
-    run_command("python3 screens-build.py")
+    run_command("python screens-build.py")
     print("OK!")
 
 def compiling_game():
@@ -77,7 +76,7 @@ def compiling_game():
 
 def check_memory():
     print("Checking memory... ", end="")
-    run_command("python3 check-memory.py")
+    run_command("python check-memory.py")
     print("OK!")
 
 def concatenate_files(output_file, input_files):
@@ -87,6 +86,10 @@ def concatenate_files(output_file, input_files):
                 out_file.write(in_file.read())
 
 def taps_build():
+    global PROJECT_NAME
+
+    OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
+    
     print("Building TAP files... ", end="")
     run_command("bin2tap " + str(Path("vendor/zxsgm/loader.bin")) + " " + str(Path("output/loader.tap")) + " 10 --header \"" + PROJECT_NAME + "\" --block_type 1")
     run_command("bin2tap " + str(Path("output/loading.bin")) + " " + str(Path("output/loading.tap")) + " 16384")
@@ -124,7 +127,6 @@ def taps_build():
             str(Path("output/files.tap")),
         ]
 
-    
     concatenate_files(OUTPUT_FILE, input_files)
 
     print("OK!")
@@ -137,6 +139,9 @@ def remove_temp_files():
     print("OK!\n")
 
 def build():
+    global PROJECT_NAME
+    global PROJECT_FILE_NAME
+    global ENABLED_128K
     print("============================================")
     print("=          ZX SPECTRUM GAME MAKER          =")
     print("============================================")
@@ -146,6 +151,11 @@ def build():
     PROJECT_NAME = get_project_name()
     PROJECT_FILE_NAME = PROJECT_NAME.replace(" ", "-")
     ENABLED_128K = get_enabled_128k()
+
+    if ENABLED_128K:
+        print("Mode 128K enabled!")
+    else:
+        print("Mode 48K enabled!")
 
     tiled_build()
 

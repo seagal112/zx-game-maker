@@ -5,7 +5,7 @@ RUN apt-get install -y libgl1 make wget jq libglib2.0-0
 
 WORKDIR /app
 
-RUN pip install numpy opencv-python Pillow matplotlib bin2tap
+RUN pip install numpy opencv-python pandas plotly kaleido bin2tap
 
 COPY --from=rtorralba/zxbasic:latest /zxbasic /app/vendor/zxsgm/bin/zxbasic
 COPY vendor /app/vendor
