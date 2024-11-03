@@ -35,7 +35,7 @@ check-fx:
 
 screens-build:
 	@echo -ne "Building screens... "
-	@python3 screens-build.py >> output/compile.log
+	@python3 ${BIN_FOLDER}screens-build.py >> output/compile.log
 	@echo -e "OK!\n"
 
 compile:
@@ -64,7 +64,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -ne "Checking memory... "	
-	@python3 check-memory.py
+	@python3 ${BIN_FOLDER}check-memory.py
 	@echo -e "OK!\n"
 
 	@echo -ne "Building TAP file... "

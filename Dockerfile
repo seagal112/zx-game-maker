@@ -11,7 +11,7 @@ COPY --from=rtorralba/zxbasic:latest /zxbasic /app/vendor/zxsgm/bin/zxbasic
 COPY vendor /app/vendor
 COPY Makefile /app/Makefile
 COPY main.bas /app/main.bas
-COPY screens-build.py /app/screens-build.py
-COPY check-memory.py /app/check-memory.py
+COPY vendor/zxsgm/bin/screens-build.py /app/vendor/zxsgm/bin/screens-build.py
+COPY vendor/zxsgm/bin/check-memory.py /app/vendor/zxsgm/bin/check-memory.py
 
 ENTRYPOINT [ "make", "build", "--no-print-directory", "--silent" ]

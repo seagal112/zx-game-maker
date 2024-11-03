@@ -8,6 +8,7 @@ from pathlib import Path
 verbose = False
 
 TILED_SCRIPT = str(Path("vendor/zxsgm/bin/tiled-build.py"))
+SCREENS_BUILD_SCRIPT = str(Path("vendor/zxsgm/bin/screens-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
 ZXBASIC_PATH = str(Path("vendor/zxsgm/bin/zxbasic/zxbc.py"))
 
@@ -66,7 +67,7 @@ def check_fx():
 
 def screens_build():
     print("Building screens... ", end="")
-    run_command("python screens-build.py")
+    run_command(SCREENS_BUILD_SCRIPT)
     print("OK!")
 
 def compiling_game():
@@ -76,7 +77,7 @@ def compiling_game():
 
 def check_memory():
     print("Checking memory... ", end="")
-    run_command("python check-memory.py")
+    run_command("python vendor/zxsgm/bin/check-memory.py")
     print("OK!")
 
 def concatenate_files(output_file, input_files):
