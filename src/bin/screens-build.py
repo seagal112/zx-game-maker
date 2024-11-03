@@ -21,6 +21,7 @@ else:
 BIN_FOLDER = str(Path("src/bin/")) + path_separator
 OUTPUT_FOLDER = str(Path("output/")) + path_separator
 SCREENS_FOLDER = str(Path("assets/screens/")) + path_separator
+MAP_FOLDER = str(Path("assets/map/")) + path_separator
 
 # Leer el valor de enabled128K desde output/maps.json
 with open(OUTPUT_FOLDER + "maps.json", "r") as f:
@@ -42,8 +43,13 @@ process_screen("hud")
 
 shutil.copy(SCREENS_FOLDER + "loading.scr", OUTPUT_FOLDER + "loading.bin")
 
-os.system(BIN_FOLDER + "img2zxbasic/src/img2zxbasic.py -t tiles")
-os.system(BIN_FOLDER + "img2zxbasic/src/img2zxbasic.py -t sprites")
+tilesPath = str(Path("assets/map/tiles.zxp"))
+spritesPath = str(Path("assets/map/sprites.zxp"))
+
+os.system("zxp2gus -t tiles -i " + tilesPath + " -o " + MAP_FOLDER + " -f png")
+os.system("zxp2gus -t sprites -i " + spritesPath + " -o " + MAP_FOLDER + " -f png")
+os.system("zxp2gus -t tiles -i " + tilesPath + " -o output -f bin")
+os.system("zxp2gus -t sprites -i " + spritesPath + " -o output -f bin")
 
 if os.path.isfile(OUTPUT_FOLDER + "files.bin.zx0"):
     os.remove(OUTPUT_FOLDER + "files.bin.zx0")
