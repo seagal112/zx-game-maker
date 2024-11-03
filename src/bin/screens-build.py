@@ -34,12 +34,7 @@ def run_command(command):
         sys.exit(1)
 
 def process_screen(screen_name):
-    if os.path.isfile(SCREENS_FOLDER + screen_name + ".scr"):
-        run_command(BIN_FOLDER + ZX0 + " -f " + SCREENS_FOLDER + screen_name + ".scr " + OUTPUT_FOLDER + screen_name + ".png.scr.zx0")
-    else:
-        os.system(BIN_FOLDER + "fixColors.py " + SCREENS_FOLDER + screen_name + ".png " + OUTPUT_FOLDER + screen_name + ".tmp.png")
-        os.system(BIN_FOLDER + "png2scr.py " + OUTPUT_FOLDER + screen_name + ".tmp.png")
-        run_command(BIN_FOLDER + ZX0 + " -f " + OUTPUT_FOLDER + screen_name + ".tmp.png.scr " + OUTPUT_FOLDER + screen_name + ".png.scr.zx0")
+    run_command(BIN_FOLDER + ZX0 + " -f " + SCREENS_FOLDER + screen_name + ".scr " + OUTPUT_FOLDER + screen_name + ".png.scr.zx0")
 
 process_screen("title")
 process_screen("ending")
