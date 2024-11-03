@@ -72,7 +72,7 @@ def screens_build():
 
 def compiling_game():
     print("Compiling game... ", end="")
-    run_command(ZXBASIC_PATH + " -H 128 --heap-address 23755 -S 24576 -O 4 main.bas --mmap " + str(Path("output/map.txt")) + " -D HIDE_LOAD_MSG -o " + str(Path("output/main.bin")))
+    run_command(ZXBASIC_PATH + " -H 128 --heap-address 23755 -S 24576 -O 4 " + str(Path("src/main.bas")) + " --mmap " + str(Path("output/map.txt")) + " -D HIDE_LOAD_MSG -o " + str(Path("output/main.bin")))
     print("OK!")
 
 def check_memory():
@@ -92,7 +92,7 @@ def taps_build():
     OUTPUT_FILE = str(Path("dist/" + PROJECT_FILE_NAME + ".tap"))
     
     print("Building TAP files... ", end="")
-    run_command("bin2tap " + str(Path("src/loader.bin")) + " " + str(Path("output/loader.tap")) + " 10 --header \"" + PROJECT_NAME + "\" --block_type 1")
+    run_command("bin2tap " + str(Path("src/bin/loader.bin")) + " " + str(Path("output/loader.tap")) + " 10 --header \"" + PROJECT_NAME + "\" --block_type 1")
     run_command("bin2tap " + str(Path("output/loading.bin")) + " " + str(Path("output/loading.tap")) + " 16384")
     run_command("bin2tap " + str(Path("output/main.bin")) + " " + str(Path("output/main.tap")) + " 24576")
 

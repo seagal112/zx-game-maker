@@ -39,7 +39,7 @@ screens-build:
 	@echo -e "OK!\n"
 
 compile:
-	python3 ${BIN_FOLDER}zxbasic/zxbc.py -W 500 -taB main.bas
+	python3 ${BIN_FOLDER}zxbasic/zxbc.py -W 500 -taB src/main.bas
 	mv -f main.tap output/$(PROJECT_NAME).tap
 
 build:
@@ -60,7 +60,7 @@ build:
 	$(MAKE) screens-build
 
 	@echo -ne "Compiling game... "
-	@python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 128 --heap-address 23755 -S 24576 -O 4 main.bas --mmap output/map.txt -D HIDE_LOAD_MSG --expect-warnings=999 -o output/main.bin
+	@python3 ${BIN_FOLDER}zxbasic/zxbc.py -H 128 --heap-address 23755 -S 24576 -O 4 src/main.bas --mmap output/map.txt -D HIDE_LOAD_MSG --expect-warnings=999 -o output/main.bin
 	@echo -e "OK!\n"
 
 	@echo -ne "Checking memory... "	
@@ -68,7 +68,7 @@ build:
 	@echo -e "OK!\n"
 
 	@echo -ne "Building TAP file... "
-	bin2tap src/loader.bin output/loader.tap 10 --header "$(PROJECT_NAME)" --block_type 1 >> output/compile.log
+	bin2tap src/bin/loader.bin output/loader.tap 10 --header "$(PROJECT_NAME)" --block_type 1 >> output/compile.log
 	bin2tap output/loading.bin output/loading.tap 16384 >> output/compile.log
 	bin2tap output/main.bin output/main.tap 24576 >> output/compile.log
 
