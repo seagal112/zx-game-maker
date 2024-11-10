@@ -54,20 +54,10 @@ end function
 function isSolidTileByColLin(col as ubyte, lin as ubyte) as ubyte
 	dim tile as ubyte = GetTile(col, lin)
 
-    if tile > 0 and tile < 63 then return 1
+    if tile > 64 then return 0
+    if tile < 1 then return 0
 
-    #ifdef SHOULD_KILL_ENEMIES_ENABLED
-        if screensWon(currentScreen) then return 0
-    #endif
-
-    if tile = 63 then
-        if allEnemiesKilled()
-            return 0
-        else
-            return 1
-        end if
-    end if
-	return 0
+	return 1
 end function
 
 sub protaTouch()
