@@ -1,0 +1,9 @@
+numpy
+opencv-python
+pandas
+plotly
+kaleido
+Pillow
+bin2tap
+zxp2gus
+zxbasic

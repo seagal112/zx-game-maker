@@ -9,3 +9,4 @@ src/bin/zxbasic/*
 dist
 *.tiled-session
 .vscode
+venv/*

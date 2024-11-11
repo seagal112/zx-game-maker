@@ -10,7 +10,6 @@ verbose = False
 TILED_SCRIPT = str(Path("src/bin/tiled-build.py"))
 SCREENS_BUILD_SCRIPT = str(Path("src/bin/screens-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
-ZXBASIC_PATH = str(Path("src/bin/zxbasic/zxbc.py"))
 
 def get_project_name():
     with open(str(Path("output/maps.json")), "r") as f:
@@ -72,7 +71,7 @@ def screens_build():
 
 def compiling_game():
     print("Compiling game... ", end="")
-    run_command(ZXBASIC_PATH + " -H 128 --heap-address 23755 -S 24576 -O 4 " + str(Path("src/main.bas")) + " --mmap " + str(Path("output/map.txt")) + " -D HIDE_LOAD_MSG -o " + str(Path("output/main.bin")))
+    run_command("zxbc -H 128 --heap-address 23755 -S 24576 -O 4 " + str(Path("src/main.bas")) + " --mmap " + str(Path("output/map.txt")) + " -D HIDE_LOAD_MSG -o " + str(Path("output/main.bin")))
     print("OK!")
 
 def check_memory():

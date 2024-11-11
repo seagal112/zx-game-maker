@@ -1,3 +1,4 @@
+' Deprecated using loader.bin
 10 BORDER NOT PI:PAPER NOT PI:INK PI
 20 CLEAR 24575
 30 POKE 23739,111
