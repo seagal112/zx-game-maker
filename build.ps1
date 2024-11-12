@@ -2,7 +2,6 @@ $python = Get-Command python -ErrorAction SilentlyContinue
 
 if ($null -eq $python) {
     Write-Host "Python no esta instalado. Por favor, instala Python antes de continuar." -ForegroundColor Red
-    #esperar a que pulse una tecla para no cerrar la ventana
     Read-Host "Pulse una tecla para cerrar..."
     exit 1
 }
