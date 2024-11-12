@@ -29,6 +29,7 @@ Grupo de Telegram: [https://t.me/zx_spectrum_game_maker](https://t.me/zx_spectru
 * [Jimmy Devesa](https://twitter.com/Jimmy_Devesa) Música
 * [Isaías](https://isaiasdiaz.itch.io/) make-game.bat
 * [shiru8bit](http://shiru.untergrund.net) Beeper FX Sounds
+* [Juan Antonio](https://x.com/JuanAntonio1072) bin2tap example and loader.bin
 
 ## Special Thanks
 
