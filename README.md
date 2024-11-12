@@ -1,43 +1,22 @@
-# ZX Game Maker
+<img src="https://gm.retrojuegos.org/images/company_logo.png" alt="drawing" width="200" align="center"/>
 
-Tool for create ZX Spectrum games visually using [Tiled](https://www.mapeditor.org/) and the image editor that you prefers. We recommend [ZX Paintbrush](https://sourcesolutions.itch.io/zx-paintbrush), But you can use whatever you want just using ZX Spectrum requeriments (color, size)
+# ZX Spectrum Game Maker
+
+Herramienta para crear juegos para ZX Spectrum de manera visual usando [Tiled](https://www.mapeditor.org/) y el editor de imágenes que prefieras.
+
+Recomendamos usar [ZX Paintbrush](https://sourcesolutions.itch.io/zx-paintbrush), pero puedes usar el editor que quieras siempre y cuando las imágenes cumplan las restricciones del ZX Spectrum (color, tamaño)
 
 ## Tech
 
-ZX Game Maker use [Boriel's ZX Basic](https://zxbasic.readthedocs.io/en/docs/) and [GuSprites sprites library](https://github.com/gusmanb/GuSprites) and python for scripting
+ZX Game Maker usa [Boriel's ZX Basic](https://zxbasic.readthedocs.io/en/docs/), [GuSprites sprites library](https://github.com/gusmanb/GuSprites) y python para scripting
 
-## Installation
+## Como empezar
 
-Install python 3.12 or newer [https://www.python.org/downloads/](https://www.python.org/downloads/)
-Download and unzip this repository and rename the folder with game name, for example your-game-folder.
+Puedes aprender como usar el ZX Game Maker en la siguiente documentación
 
-Then open console (PowerShell in windows) and execute the following:
+[Documentation](https://gm.retrojuegos.org/)
 
-```bash
-cd your-game-folder
-python -m venv venv
-pip install -r requeriments.txt
-```
-
-## Usage
-
-Activate virtual environment:
-
-### Linux/MacOS
-```bash
-source venv/bin/activate
-```
-
-### Windows
-```bash
-source venv\Scripts\activate
-```
-
-Modify the game into assets folder and for compile and create game excute the following command:
-
-```bash
-python build.py
-```
+Grupo de Telegram: [https://t.me/zx_spectrum_game_maker](https://t.me/zx_spectrum_game_maker)
 
 ## Créditos
 
@@ -47,7 +26,9 @@ python build.py
 * [Andy Balaam](https://github.com/andybalaam) bas2tap
 * [Einar Saukas](https://github.com/einar-saukas) ZX0
 * [PixelArtM](https://twitter.com/PixelArtM) Sprites
+* [Jimmy Devesa](https://twitter.com/Jimmy_Devesa) Música
 * [Isaías](https://isaiasdiaz.itch.io/) make-game.bat
+* [shiru8bit](http://shiru.untergrund.net) Beeper FX Sounds
 
 ## Special Thanks
 
@@ -59,5 +40,19 @@ python build.py
 * [Augusto Ruiz](https://github.com/AugustoRuiz)
 * [@briefer_666](https://briefer.itch.io/)
 * [cronomantic](https://github.com/cronomantic)
+* [Juan Antonio](https://x.com/JuanAntonio1072)
 
 Y a todo el grupo de ZX Basic de Boriel de Telegram
+
+## Licencia
+
+El ZX Spectrum Game Maker se distribuye bajo una licencia MIT. Puedes hacer juegos como quieras, pero incluye en un lugar visible el logo en la pantalla de inicio del juego, y en la web donde lo distribuyas, tanto el logo como el enlace a esta página, así otras personas podrán beneficiarse del uso del motor:
+
+<img src="https://gm.retrojuegos.org/images/logo_spectrum.png" alt="Logo ZX Spectrum Game Maker para ZX Spectrum">
+
+Si usas assets del motor, cosa que desaconsejamos por aquello de la originalidad, debes mencionar en los créditos en funcion de lo que uses:
+
+* Gráficos: al motor y a [PixelArtM](https://twitter.com/PixelArtM)
+* Efectos de sonido: a [shiru8bit](http://shiru.untergrund.net)
+
+Si quieres hacer copias físicas sólo tienes que añadir también el logo en un lugar visible y avisarnos, siempre es agradable saber de estos nuevos desarrollos.
