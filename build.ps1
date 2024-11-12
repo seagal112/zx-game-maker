@@ -1,7 +1,7 @@
 $python = Get-Command python -ErrorAction SilentlyContinue
 
 if ($null -eq $python) {
-    Write-Host "Python no está instalado. Por favor, instala Python antes de continuar." -ForegroundColor Red
+    Write-Host "Python no esta instalado. Por favor, instala Python antes de continuar." -ForegroundColor Red
     #esperar a que pulse una tecla para no cerrar la ventana
     Read-Host "Pulse una tecla para cerrar..."
     exit 1
@@ -27,7 +27,6 @@ if (-not $env:VIRTUAL_ENV) {
     .\venv\Scripts\Activate.ps1
 }
 
-# Comprobar si el archivo requeriments.txt existe
 $requerimentsFile = ".\requeriments.txt"
 if (-not (Test-Path $requerimentsFile)) {
     Write-Host "No se encontró el archivo requeriments.txt" -ForegroundColor Red
@@ -35,12 +34,10 @@ if (-not (Test-Path $requerimentsFile)) {
     exit 1
 }
 
-# Leer las dependencias de requeriments.txt
 $requeriments = Get-Content $requerimentsFile
 $installed_packages = & pip freeze
 $installed_package_names = $installed_packages -replace '==.*', ''
 
-# Comprobar si todas las dependencias están instaladas
 $all_installed = $true
 foreach ($requirement in $requeriments) {
     $requirement_name = $requirement -replace '==.*', ''
@@ -51,7 +48,7 @@ foreach ($requirement in $requeriments) {
 }
 
 if ($all_installed) {
-    Write-Host "Todas las dependencias ya están instaladas." -ForegroundColor Green
+    Write-Host "Todas las dependencias ya estan instaladas." -ForegroundColor Green
 } else {
     Write-Host "Instalando requerimientos..." -ForegroundColor Yellow
     pip install -r .\requeriments.txt
