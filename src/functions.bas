@@ -86,36 +86,25 @@ function CheckCollision(x as uByte, y as uByte) as uByte
     Dim col as uByte = x >> 1
     Dim lin as uByte = y >> 1
 
-    if xIsEven and yIsEven
-        if isSolidTileByColLin(col, lin) then return 1
-		if isSolidTileByColLin(col + 1, lin) then return 1
-    	if isSolidTileByColLin(col, lin + 1) then return 1
-		if isSolidTileByColLin(col + 1, lin + 1) then return 1
-    elseif xIsEven and not yIsEven
-        if isSolidTileByColLin(col, lin) then return 1
-		if isSolidTileByColLin(col + 1, lin) then return 1
-        if isSolidTileByColLin(col, lin + 1) then return 1
-		if isSolidTileByColLin(col + 1, lin + 1) then return 1
-    	if isSolidTileByColLin(col, lin + 2) then return 1
-		if isSolidTileByColLin(col + 1, lin + 2) then return 1
-	elseif not xIsEven and yIsEven
-		if isSolidTileByColLin(col, lin) then return 1
-		if isSolidTileByColLin(col + 1, lin) then return 1
-		if isSolidTileByColLin(col + 2, lin) then return 1
-		if isSolidTileByColLin(col, lin + 1) then return 1
-		if isSolidTileByColLin(col + 1, lin + 1) then return 1
-		if isSolidTileByColLin(col + 2, lin + 1) then return 1
-    elseif not xIsEven and not yIsEven
-        if isSolidTileByColLin(col, lin) then return 1
-		if isSolidTileByColLin(col + 1, lin) then return 1
-		if isSolidTileByColLin(col + 2, lin) then return 1
-    	if isSolidTileByColLin(col, lin + 1) then return 1
-		if isSolidTileByColLin(col + 1, lin + 1) then return 1
-		if isSolidTileByColLin(col + 2, lin + 1) then return 1
+    if isSolidTileByColLin(col, lin) then return 1
+    if isSolidTileByColLin(col + 1, lin) then return 1
+    if isSolidTileByColLin(col, lin + 1) then return 1
+    if isSolidTileByColLin(col + 1, lin + 1) then return 1
+    
+    if not yIsEven
         if isSolidTileByColLin(col, lin + 2) then return 1
-		if isSolidTileByColLin(col + 1, lin + 2) then return 1
+        if isSolidTileByColLin(col + 1, lin + 2) then return 1
+    end if
+
+    if not xIsEven
+        if isSolidTileByColLin(col + 2, lin) then return 1
+        if isSolidTileByColLin(col + 2, lin + 1) then return 1
+    end if
+
+    if not xIsEven and not yIsEven
 		if isSolidTileByColLin(col + 2, lin + 2) then return 1
     end if
+
 	return 0
 end function
 
