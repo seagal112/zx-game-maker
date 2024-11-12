@@ -5,6 +5,10 @@ import shutil
 import sys
 from pathlib import Path
 
+if os.getenv('VIRTUAL_ENV') is None:
+    print("Please activate the virtual environment before running this script.")
+    sys.exit(1)
+
 verbose = False
 
 TILED_SCRIPT = str(Path("src/bin/tiled-build.py"))
