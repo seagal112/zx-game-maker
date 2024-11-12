@@ -47,13 +47,9 @@ foreach ($requirement in $requeriments) {
     }
 }
 
-if ($all_installed) {
-    Write-Host "Todas las dependencias ya estan instaladas." -ForegroundColor Green
-} else {
+if (-not $all_installed) {
     Write-Host "Instalando requerimientos..." -ForegroundColor Yellow
     pip install -r .\requeriments.txt
 }
-
-Write-Host "Ejecutando build" -ForegroundColor Yellow
 
 python .\build.py
