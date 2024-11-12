@@ -22,8 +22,6 @@ Grupo de Telegram: [https://t.me/zx_spectrum_game_maker](https://t.me/zx_spectru
 
 * [Raül Torralba](https://github.com/rtorralba) (Autor)
 * [Juan J. Martínez](https://github.com/reidrac) png2src
-* [Michal Jurica](https://sourceforge.net/u/mikezt/) [ub880d](https://sourceforge.net/u/ub880d) bin2tap
-* [Andy Balaam](https://github.com/andybalaam) bas2tap
 * [Einar Saukas](https://github.com/einar-saukas) ZX0
 * [PixelArtM](https://twitter.com/PixelArtM) Sprites
 * [Jimmy Devesa](https://twitter.com/Jimmy_Devesa) Música
