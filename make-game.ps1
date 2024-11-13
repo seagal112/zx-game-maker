@@ -18,7 +18,7 @@ $venv = ".\venv\Scripts\Activate.ps1"
 
 if (-not (Test-Path $venv)) {
     Write-Host "Creando entorno virtual venv..." -ForegroundColor Yellow
-    python -m venv venv
+    py -m venv venv
 }
 
 if (-not $env:VIRTUAL_ENV) {
@@ -51,6 +51,6 @@ if (-not $all_installed) {
     pip install -r .\requeriments.txt
 }
 
-python .\build.py
+py .\build.py
 
 Read-Host "Pulse una tecla para cerrar..."
