@@ -1,4 +1,4 @@
-$python = Get-Command python -ErrorAction SilentlyContinue
+$python = Get-Command py -ErrorAction SilentlyContinue
 
 if ($null -eq $python) {
     Write-Host "Python no esta instalado. Por favor, instala Python antes de continuar." -ForegroundColor Red
@@ -9,7 +9,7 @@ if ($null -eq $python) {
 $pythonVersion = $python.Version.Major + $python.Version.Minor / 100
 
 if ($pythonVersion -lt 3.12) {
-    Write-Host "La versión de Python es menor que 3.12. Por favor, instala Python 3.12 o superior." -ForegroundColor Red
+    Write-Host "La version de Python es menor que 3.12. Por favor, instala Python 3.12 o superior." -ForegroundColor Red
     Read-Host "Pulse una tecla para cerrar..."
     exit 1
 }
