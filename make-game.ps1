@@ -52,3 +52,5 @@ if (-not $all_installed) {
 }
 
 python .\build.py
+
+Read-Host "Pulse una tecla para cerrar..."
