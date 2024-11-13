@@ -41,7 +41,6 @@ $all_installed = $true
 foreach ($requirement in $requeriments) {
     $requirement_name = $requirement -replace '==.*', ''
     if (-not ($installed_package_names -contains $requirement_name)) {
-        Write-Host "Falta instalar: $requirement_name" -ForegroundColor Yellow
         $all_installed = $false
     }
 }
