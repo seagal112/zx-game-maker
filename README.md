@@ -45,9 +45,11 @@ Y a todo el grupo de ZX Basic de Boriel de Telegram
 
 ## Licencia
 
-El ZX Spectrum Game Maker se distribuye bajo una licencia MIT. Puedes hacer juegos como quieras, pero incluye en un lugar visible el logo en la pantalla de inicio del juego, y en la web donde lo distribuyas, tanto el logo como el enlace a esta página, así otras personas podrán beneficiarse del uso del motor:
+El ZX Spectrum Game Maker se distribuye bajo una licencia GNU AFFERO GENERAL PUBLIC LICENSE. Puedes hacer juegos como quieras, pero incluye en un lugar visible el logo en la pantalla de inicio del juego, y en la web donde lo distribuyas, tanto el logo como el enlace a esta página, así otras personas podrán beneficiarse del uso del motor:
 
 <img src="https://gm.retrojuegos.org/images/logo_spectrum.png" alt="Logo ZX Spectrum Game Maker para ZX Spectrum">
+
+**Si haces modificaciones sobre el código del motor en tu versión debes públicarla de acuerdo a la licencia GNU AFFERO GENERAL PUBLIC LICENSE**
 
 Si usas assets del motor, cosa que desaconsejamos por aquello de la originalidad, debes mencionar en los créditos en funcion de lo que uses:
 
