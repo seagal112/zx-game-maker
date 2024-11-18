@@ -120,6 +120,9 @@ ink = 7
 paper = 0
 border = 0
 
+keysEnabled = 1
+itemsEnabled = 1
+
 waitPressKeyAfterLoad = 0
 
 if 'properties' in data:
@@ -191,6 +194,10 @@ if 'properties' in data:
             border = property['value']
         elif property['name'] == 'waitPressKeyAfterLoad':
             waitPressKeyAfterLoad = 1 if property['value'] else 0
+        elif property['name'] == 'keysEnabled':
+            keysEnabled = 1 if property['value'] else 0
+        elif property['name'] == 'itemsEnabled':
+            itemsEnabled = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -231,6 +238,12 @@ if shooting == 1:
 configStr += "#DEFINE VTPLAYER_INIT $" + str(vtplayerInit) + "\n"
 configStr += "#DEFINE VTPLAYER_MUTE $" + str(vtplayerMute) + "\n"
 configStr += "#DEFINE VTPLAYER_NEXTNOTE $" + str(vtplayerNextNote) + "\n\n"
+
+if keysEnabled == 1:
+    configStr += "#DEFINE KEYS_ENABLED\n"
+
+if itemsEnabled == 1:
+    configStr += "#DEFINE ITEMS_ENABLED\n"
 
 configStr += "const BACKGROUND_ATTRIBUTE = " + str(backgroundAttribute) + "\n"
 

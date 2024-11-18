@@ -117,6 +117,16 @@
                 "value": "7"
             },
             {
+                "name": "itemsEnabled",
+                "type": "bool",
+                "value": true
+            },
+            {
+                "name": "keysEnabled",
+                "type": "bool",
+                "value": true
+            },
+            {
                 "name": "killJumpingOnTop",
                 "type": "bool",
                 "value": false

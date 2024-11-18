@@ -18,6 +18,8 @@
   <property name="goalItems" type="int" value="2"/>
   <property name="hiScore" type="bool" value="false"/>
   <property name="initialLife" type="int" value="50"/>
+  <property name="itemsEnabled" type="bool" value="true"/>
+  <property name="keysEnabled" type="bool" value="true"/>
   <property name="killJumpingOnTop" type="bool" value="true"/>
   <property name="lifeAmount" type="int" value="5"/>
   <property name="maxEnemiesPerScreen" type="int" value="5"/>
