@@ -11,8 +11,8 @@ if os.getenv('VIRTUAL_ENV') is None:
 
 verbose = False
 
-TILED_SCRIPT = str(Path("src/bin/tiled-build.py"))
-SCREENS_BUILD_SCRIPT = str(Path("src/bin/screens-build.py"))
+TILED_SCRIPT = "python " + str(Path("src/bin/tiled-build.py"))
+SCREENS_BUILD_SCRIPT = "python " + str(Path("src/bin/screens-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
 
 def get_project_name():
