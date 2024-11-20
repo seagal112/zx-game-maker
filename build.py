@@ -11,8 +11,10 @@ if os.getenv('VIRTUAL_ENV') is None:
 
 verbose = False
 
-TILED_SCRIPT = "python " + str(Path("src/bin/tiled-build.py"))
-SCREENS_BUILD_SCRIPT = "python " + str(Path("src/bin/screens-build.py"))
+python_executable = str(Path(sys.executable)) + " "
+
+TILED_SCRIPT = python_executable + str(Path("src/bin/tiled-build.py"))
+SCREENS_BUILD_SCRIPT = python_executable + str(Path("src/bin/screens-build.py"))
 MAPS_FILE = str(Path("assets/map/maps.tmx"))
 
 def get_project_name():
@@ -80,7 +82,7 @@ def compiling_game():
 
 def check_memory():
     print("Checking memory... ", end="")
-    run_command("python src/bin/check-memory.py")
+    run_command(python_executable + "src/bin/check-memory.py")
     print("OK!")
 
 def concatenate_files(output_file, input_files):
