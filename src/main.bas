@@ -148,10 +148,6 @@ menu:
         dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
     #endif
 
-    print "hola"
-    DO
-    LOOP UNTIL GetKeyScanCode()
-
     #ifdef HISCORE_ENABLED
         if score > hiScore
             hiScore = score
