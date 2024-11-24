@@ -1,3 +1,8 @@
+sub pauseUntilPressKey()
+    WHILE INKEY$<>"":WEND
+    WHILE INKEY$="":WEND
+end sub
+
 sub decrementLife()
 	if (currentLife = 0)
 		return

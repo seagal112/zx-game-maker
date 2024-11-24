@@ -170,7 +170,7 @@ address = SIZE0 + SIZE1
 
 if not enabled128K:
     with open(config_bas_path, 'a') as config_bas:
-        config_bas.write("const END_SCREEN_ADDRESS as uinteger={}\n".format(address))
+        config_bas.write("const ENDING_SCREEN_ADDRESS as uinteger={}\n".format(address))
 
 address += SIZE2
 
