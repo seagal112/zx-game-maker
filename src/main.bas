@@ -22,7 +22,6 @@ const FIRE as uByte = 4
 
 dim currentLife as UBYTE = 100
 dim currentKeys as UBYTE = 0
-dim currentItems as UBYTE = 0
 dim moveScreen as ubyte
 dim currentScreen as UBYTE = 0
 dim currentBulletSpriteId as ubyte
@@ -148,6 +147,10 @@ menu:
     #else
         dzx0Standard(TITLE_SCREEN_ADDRESS, $4000)
     #endif
+
+    print "hola"
+    DO
+    LOOP UNTIL GetKeyScanCode()
 
     #ifdef HISCORE_ENABLED
         if score > hiScore
@@ -345,7 +348,11 @@ sub resetValues()
     currentLife = INITIAL_LIFE
     currentKeys = 2 mod 2
     currentKeys = 0
-    currentItems = 0
+    if ITEMS_COUNTDOWN
+        currentItems = ITEMS_TO_FIND
+    else
+        currentItems = 0
+    end if
     ' removeScreenObjectFromBuffer()
     saveSprite(PROTA_SPRITE, INITIAL_MAIN_CHARACTER_Y, INITIAL_MAIN_CHARACTER_X, 0, 1)
     screenObjects = screenObjectsInitial

@@ -312,12 +312,12 @@ end sub
 
 function checkTileObject(tile as ubyte) as ubyte
 	if tile = ITEM_TILE and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
-		currentItems = currentItems + 1
+		currentItems = currentItems + ITEMS_INCREMENT
 		#ifdef HISCORE_ENABLED
 			score = score + 100
 		#endif
 		printLife()
-		if currentItems >= GOAL_ITEMS
+		if currentItems = GOAL_ITEMS
 			go to ending
 		end if
 		screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 0

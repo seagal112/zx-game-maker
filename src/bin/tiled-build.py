@@ -123,6 +123,8 @@ border = 0
 keysEnabled = 1
 itemsEnabled = 1
 
+itemsCountdown = 0
+
 waitPressKeyAfterLoad = 0
 
 if 'properties' in data:
@@ -198,6 +200,8 @@ if 'properties' in data:
             keysEnabled = 1 if property['value'] else 0
         elif property['name'] == 'itemsEnabled':
             itemsEnabled = 1 if property['value'] else 0
+        elif property['name'] == 'itemsCountdown':
+            itemsCountdown = 1 if property['value'] else 0
 
 if len(damageTiles) == 0:
     damageTiles.append('0')
@@ -211,7 +215,6 @@ configStr += "const screenWidth as ubyte = " + str(screenWidth) + "\n"
 configStr += "const screenHeight as ubyte = " + str(screenHeight) + "\n"
 configStr += "const INITIAL_LIFE as ubyte = " + str(initialLife) + "\n"
 configStr += "const MAX_LINE as ubyte = " + str(screenHeight * 2 - 4) + "\n"
-configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
 configStr += "const DAMAGE_AMOUNT as ubyte = " + str(damageAmount) + "\n"
 configStr += "const LIFE_AMOUNT as ubyte = " + str(lifeAmount) + "\n"
 configStr += "const BULLET_DISTANCE as ubyte = " + str(bulletDistance) + "\n"
@@ -224,6 +227,17 @@ configStr += "const LIFE_TILE as ubyte = " + lifeTile + "\n"
 configStr += "const ANIMATE_PERIOD_MAIN as ubyte = " + str(animatePeriodMain) + "\n"
 configStr += "const ANIMATE_PERIOD_ENEMY as ubyte = " + str(animatePeriodEnemy) + "\n"
 configStr += "const ANIMATE_PERIOD_TILE as ubyte = " + str(animatePeriodTile) + "\n\n"
+
+configStr += "const ITEMS_COUNTDOWN as ubyte = " + str(itemsCountdown) + "\n"
+configStr += "const ITEMS_TO_FIND as ubyte = " + str(goalItems) + "\n"
+if itemsCountdown == 1:
+    configStr += "const ITEMS_INCREMENT as ubyte = -1\n"
+    configStr += "const GOAL_ITEMS as ubyte = 0 \n"
+    configStr += "dim currentItems as ubyte = " + str(goalItems) + "\n"
+else:
+    configStr += "const ITEMS_INCREMENT as ubyte = 1\n"
+    configStr += "const GOAL_ITEMS as ubyte = " + str(goalItems) + "\n"
+    configStr += "dim currentItems as ubyte = 0\n\n"
 
 
 # save damage tiles in file .bin instead variable
