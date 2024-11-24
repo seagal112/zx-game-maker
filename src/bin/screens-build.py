@@ -53,8 +53,11 @@ os.system("zxp2gus -t sprites -i " + spritesPath + " -o " + MAP_FOLDER + " -f pn
 os.system("zxp2gus -t tiles -i " + tilesPath + " -o output -f bin")
 os.system("zxp2gus -t sprites -i " + spritesPath + " -o output -f bin")
 
-if os.path.isfile(OUTPUT_FOLDER + "files.bin.zx0"):
-    os.remove(OUTPUT_FOLDER + "files.bin.zx0")
+# Archivo de salida
+output_file = OUTPUT_FOLDER + "files.bin"
+
+if os.path.isfile(output_file):
+    os.remove(output_file)
 
 if not enabled128K:
     files_to_concatenate = [
@@ -63,7 +66,7 @@ if not enabled128K:
         OUTPUT_FOLDER + "hud.png.scr.zx0",
     ]
     
-    with open(OUTPUT_FOLDER + "files.bin", 'wb') as outfile:
+    with open(output_file, 'wb') as outfile:
         for fname in files_to_concatenate:
             with open(fname, 'rb') as infile:
                 outfile.write(infile.read())
@@ -85,9 +88,6 @@ input_files = [
     OUTPUT_FOLDER + "screensWon.bin",
     OUTPUT_FOLDER + "decompressedEnemiesScreen.bin"
 ]
-
-# Archivo de salida
-output_file = OUTPUT_FOLDER + "files.bin.zx0"
 
 # Concatenar archivos de entrada en el archivo de salida
 with open(output_file, 'ab') as outfile:
@@ -222,7 +222,7 @@ if enabled128K:
             config_bas.write("const GAMEOVER_SCREEN_ADDRESS as uinteger={}\n".format(baseAddress))
             config_bas.write("#DEFINE GAMEOVER_SCREEN_ENABLED\n")
 
-os.system("bin2tap " + OUTPUT_FOLDER + "files.bin.zx0 " + OUTPUT_FOLDER + "files.tap " + str(SIZE0))
+os.system("bin2tap " + output_file + " " + OUTPUT_FOLDER + "files.tap " + str(SIZE0))
 
 enemiesSize = SIZE5 + SIZE11 + SIZE14 + SIZE15 + SIZE18
 mapsSize = SIZE4 + SIZE10 + SIZE16 + SIZE17
