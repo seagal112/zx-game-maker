@@ -123,8 +123,31 @@ function isSolidTileByXY(x as ubyte, y as ubyte) as ubyte
     
     dim tile as ubyte = GetTile(col, lin)
 
-	return tile > 0 and tile < 64 ' is solid tile
+	if tile > 0 and tile < 64 then
+        return tile
+    else
+        return 0
+    end if
 end function
+
+sub removeTilesFromScreen(tile as ubyte)
+	dim index, y, x as integer
+
+	x = 0
+	y = 0
+	
+	for index=0 to SCREEN_LENGTH
+		if peek(@decompressedMap + index) - 1 = tile
+			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
+		end if
+
+		x = x + 1
+		if x = screenWidth
+			x = 0
+			y = y + 1
+		end if
+	next index
+end sub
 
 #ifdef SIDE_VIEW
 	sub jump()

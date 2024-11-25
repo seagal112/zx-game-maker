@@ -54,6 +54,10 @@ dim soundToPlay as ubyte = 1
     dim noKeyPressedForShoot as UBYTE = 1
 #endif
 
+#ifdef USE_BREAKABLE_TILE
+    BREAKABLE_TILE = 62
+#endif
+
 #ifdef ENABLED_128k
     PaginarMemoria(3)
     load "" CODE $c000 ' Load fx
@@ -104,6 +108,10 @@ dim enemiesPerScreenInitial(SCREENS_COUNT) as ubyte at ENEMIES_PER_SCREEN_INITIA
 dim screenObjects(SCREENS_COUNT, 4) as ubyte at SCREEN_OBJECTS_DATA_ADDRESS
 dim screensWon(SCREENS_COUNT) as ubyte at SCREENS_WON_DATA_ADDRESS
 dim decompressedEnemiesScreen(MAX_ENEMIES_PER_SCREEN, 11) as byte at DECOMPRESSED_ENEMIES_SCREEN_DATA_ADDRESS
+
+#ifdef USE_BREAKABLE_TILE
+dim brokenTiles(SCREENS_COUNT) as ubyte at BROKEN_TILES_DATA_ADDRESS
+#endif
 
 InitGFXLib()
 SetTileset(@tileSet)

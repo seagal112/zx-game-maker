@@ -172,9 +172,28 @@ sub checkBulletCollision()
         return
     end if
 
-    if isSolidTileByXY(bulletPositionX, bulletPositionY) or isSolidTileByXY(bulletPositionX, bulletPositionY + 1)
+    dim tile as ubyte = isSolidTileByXY(bulletPositionX, bulletPositionY)
+    if tile
         resetBullet()
+        #ifdef USE_BREAKABLE_TILE
+            if tile = BREAKABLE_TILE
+                brokenTiles(currentScreen) = 1
+                removeTilesFromScreen(62)
+            end if
+        #endif
         return
+    else
+        tile = isSolidTileByXY(bulletPositionX, bulletPositionY + 1)
+        if tile
+            resetBullet()
+            #ifdef USE_BREAKABLE_TILE
+                if tile = BREAKABLE_TILE
+                    brokenTiles(currentScreen) = 1
+                    removeTilesFromScreen(62)
+                end if
+            #endif
+            return
+        end if
     end if
 
     #ifdef ENEMIES_NOT_RESPAWN_ENABLED
@@ -212,26 +231,6 @@ sub resetBullet()
     bulletDirection = 0
 end sub
 
-sub cleanEnemiesDoors()
-	dim tile, index, y, x as integer
-
-	x = 0
-	y = 0
-	
-	for index=0 to SCREEN_LENGTH
-		tile = peek(@decompressedMap + index) - 1
-		if tile = 63 ' if is background, bullet or enemy kill door dont draw
-			SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
-		end if
-
-		x = x + 1
-		if x = screenWidth
-			x = 0
-			y = y + 1
-		end if
-	next index
-end sub
-
 sub damageEnemy(enemyToKill as Ubyte)
     if decompressedEnemiesScreen(enemyToKill, ENEMY_ALIVE) = 99 return 'invincible enemies
 
@@ -255,7 +254,7 @@ sub damageEnemy(enemyToKill as Ubyte)
             if not screensWon(currentScreen)
                 if allEnemiesKilled()
                     screensWon(currentScreen) = 1
-                    cleanEnemiesDoors()
+                    removeTilesFromScreen(63)
                 end if
             end if
             return ' to prevent check twice if ENEMIES_NOT_RESPAWN_ENABLED is defined'
@@ -265,7 +264,7 @@ sub damageEnemy(enemyToKill as Ubyte)
             if not screensWon(currentScreen)
                 if allEnemiesKilled()
                     screensWon(currentScreen) = 1
-                    cleanEnemiesDoors()
+                    removeTilesFromScreen(63)
                 end if
             end if
         #endif
