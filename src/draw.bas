@@ -39,7 +39,7 @@ sub drawTile(tile as ubyte, x as ubyte, y as ubyte)
 			if brokenTiles(currentScreen)
 				SetTile(0, BACKGROUND_ATTRIBUTE, x, y)
 			else
-				SetTile(tile, attrSet(tile), x, y)
+				SetTileChecked(tile, attrSet(tile), x, y)
 			end if
 			return
 		end if

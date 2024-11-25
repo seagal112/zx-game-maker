@@ -53,11 +53,6 @@ dim soundToPlay as ubyte = 1
 #ifdef SHOOTING_ENABLED
     dim noKeyPressedForShoot as UBYTE = 1
 #endif
-
-#ifdef USE_BREAKABLE_TILE
-    BREAKABLE_TILE = 62
-#endif
-
 #ifdef ENABLED_128k
     PaginarMemoria(3)
     load "" CODE $c000 ' Load fx
@@ -364,6 +359,11 @@ sub resetValues()
     for i = 0 to SCREENS_COUNT
         screensWon(i) = 0
     next i
+    #ifdef USE_BREAKABLE_TILE
+        for i = 0 to SCREENS_COUNT
+            brokenTiles(i) = 0
+        next i
+    #endif
     #ifdef HISCORE_ENABLED
         score = 0
     #endif

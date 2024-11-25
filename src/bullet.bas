@@ -172,23 +172,33 @@ sub checkBulletCollision()
         return
     end if
 
-    dim tile as ubyte = isSolidTileByXY(bulletPositionX, bulletPositionY)
+    dim xToCheck as ubyte
+
+    if bulletDirection = 1
+        xToCheck = bulletPositionX + 1
+    else
+        xToCheck = bulletPositionX
+    end if
+
+    dim tile as ubyte = isSolidTileByXY(xToCheck, bulletPositionY)
     if tile
         resetBullet()
         #ifdef USE_BREAKABLE_TILE
-            if tile = BREAKABLE_TILE
+            if tile = 62
                 brokenTiles(currentScreen) = 1
+                BeepFX_Play(1)
                 removeTilesFromScreen(62)
             end if
         #endif
         return
     else
-        tile = isSolidTileByXY(bulletPositionX, bulletPositionY + 1)
+        tile = isSolidTileByXY(xToCheck, bulletPositionY + 1)
         if tile
             resetBullet()
             #ifdef USE_BREAKABLE_TILE
-                if tile = BREAKABLE_TILE
+                if tile = 62
                     brokenTiles(currentScreen) = 1
+                    BeepFX_Play(1)
                     removeTilesFromScreen(62)
                 end if
             #endif
