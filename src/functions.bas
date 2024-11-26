@@ -30,6 +30,7 @@ sub printLife()
 	    PRINT AT 23, 25 - LEN(STR$(score)); score
     #endif
     #ifdef ITEMS_ENABLED
+        PRINT AT 22, 30; "  "
 	    PRINT AT 22, 30; currentItems
     #endif
 end sub
