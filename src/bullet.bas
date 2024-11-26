@@ -186,7 +186,7 @@ sub checkBulletCollision()
         #ifdef USE_BREAKABLE_TILE
             if tile = 62
                 brokenTiles(currentScreen) = 1
-                BeepFX_Play(1)
+                BeepFX_Play(0)
                 removeTilesFromScreen(62)
             end if
         #endif
@@ -198,7 +198,7 @@ sub checkBulletCollision()
             #ifdef USE_BREAKABLE_TILE
                 if tile = 62
                     brokenTiles(currentScreen) = 1
-                    BeepFX_Play(1)
+                    BeepFX_Play(0)
                     removeTilesFromScreen(62)
                 end if
             #endif
