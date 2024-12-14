@@ -1,38 +1,30 @@
 dim noKeyPressed as UBYTE = 0
 
 function canMoveLeft() as ubyte
-	#ifdef KEYS_ENABLED
 	if CheckDoor(protaX - 1, protaY)
 		return 0
 	end if
-	#endif
 	return not CheckCollision(protaX - 1, protaY)
 end function
 
 function canMoveRight() as ubyte
-	#ifdef KEYS_ENABLED
 	if CheckDoor(protaX + 1, protaY)
 		return 0
 	end if
-	#endif
 	return not CheckCollision(protaX + 1, protaY)
 end function
 
 function canMoveUp() as ubyte
-	#ifdef KEYS_ENABLED
 	if CheckDoor(protaX, protaY - 1)
 		return 0
 	end if
-	#endif
 	return not CheckCollision(protaX, protaY - 1)
 end function
 
 function canMoveDown() as ubyte
-	#ifdef KEYS_ENABLED
 	if CheckDoor(protaX, protaY + 1)
 		return 0
 	end if
-	#endif
 	if CheckCollision(protaX, protaY + 1) return 0
 	#ifdef SIDE_VIEW
 		if checkPlatformByXY(protaX, protaY + 4) return 0
@@ -68,7 +60,18 @@ end function
 			else
 				jumpCurrentKey = jumpStopValue ' stop jumping
 			end if
+			
+			#ifdef VARIABLE_JUMP	
+			if MultiKeys(keyArray(UP)) = 0 then
+				if jumpCurrentKey < (jumpStepsCount)
+					jumpCurrentKey =  jumpStepsCount '+  (jumpStepsCount - jumpCurrentKey)
+				end if
+			end if
+			#endif
+
 		end if
+		
+		
 	end sub
 
 	function isFalling() as UBYTE
@@ -312,25 +315,23 @@ end sub
 
 function checkTileObject(tile as ubyte) as ubyte
 	if tile = ITEM_TILE and screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX)
-		currentItems = currentItems + ITEMS_INCREMENT
+		currentItems = currentItems + 1
 		#ifdef HISCORE_ENABLED
 			score = score + 100
 		#endif
 		printLife()
-		if currentItems = GOAL_ITEMS
+		if currentItems >= GOAL_ITEMS
 			go to ending
 		end if
 		screenObjects(currentScreen, SCREEN_OBJECT_ITEM_INDEX) = 0
 		BeepFX_Play(5)
 		return 1
-	#ifdef KEYS_ENABLED
 	elseif tile = KEY_TILE and screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX)
 		currentKeys = currentKeys + 1
 		printLife()
 		screenObjects(currentScreen, SCREEN_OBJECT_KEY_INDEX) = 0
 		BeepFX_Play(3)
 		return 1
-	#endif
 	elseif tile = LIFE_TILE and screenObjects(currentScreen, SCREEN_OBJECT_LIFE_INDEX)
 		currentLife = currentLife + LIFE_AMOUNT
 		printLife()
